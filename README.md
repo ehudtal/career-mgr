@@ -2,7 +2,9 @@
 A set of tools and features to help Braven Fellows and Alumni manage their careers, especially in terms of getting their first job out of college.
 
 
-## Docker Setup
+## Setup
+
+### Docker (preferred)
 
 Using docker, it's very easy to get the application up and running. We don't even need to worry about keeping database passwords out of the repo, because Docker will spin up a database that only this application has access to, on a private network.
 
@@ -40,5 +42,42 @@ Be sure to re-source this file in any open console windows to get it to work. No
     
     # run database migrations
     career rake db:migrate
+
+
+### Non-Docker (untested)
+
+First, we need to copy a couple of environment files in the app directory:
+
+    cp .env.example .env
+    cp .env.database.example .env.database
+
+Change the POSTGRES_PASSWORD in `.env` and `.env.database`, and make sure you use the same password for both.
+
+Now install nodejs and ruby 2.4:
+
+    apt-get install nodejs ruby=2.4
+
+You may have to pre-pend "sudo" to installation commands if you're not running as root. Now install the bundler gem:
+
+    gem install bundler
+
+Now you can let the Rails app install all the needed Ruby gems for you:
+
+    bundle install
+
+Note, bundler will complain (but still work) if you try to do this as root - you don't need to, unless you're in a VM (or docker) where there is ONLY a root user.
+
+You'll need to also setup PostgreSQL server, which is out of the scope of this README. Be sure to setup the `postgres` user with the password you picked above. Then run:
+
+    rake db:create db:migrate
+
+Now you should be able to run the app using the following command. We're specifying the same non-standard 3010 port so this rails app doesn't conflict with any others you may be running:
+
+    rails s -p 3010
+
+Go to http://localhost:3010 in your favorite browser. If everything's working correctly, you should see the greeting, "Yay! You're on Rails!"
+
+
+## Conclusion
 
 This README will be updated as the app gets fleshed out and more complicated. For now, enjoy the magic of an app that does nothing, but in a very sophisticated way - requiring no special drivers, libraries, or database servers, or versions of ruby to be installed on your system directly. Magic!
