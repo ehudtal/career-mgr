@@ -78,6 +78,23 @@ Now you should be able to run the app using the following command. We're specify
 Go to http://localhost:3010 in your favorite browser. If everything's working correctly, you should see the greeting, "Yay! You're on Rails!"
 
 
+## Continuing Development
+
+Whenever you pull in changes from upstream, you should run these commands in the root directory of the app:
+
+    docker-compose build career-mgr
+    docker-compose stop career-mgr
+    docker-compose up -d --force-recreate career-mgr
+    
+    docker-compose exec career-mgr rake db:migrate
+    
+    docker-compose exec career-mgr rspec
+
+If you make updates to `Gemfile` on your own, run the first group of commands above. If you create migrations of your own, run the `rake db:migrate` command to update the database.
+
+Periodically, run rspec to ensure that you haven't broken any existing tests with your code changes. And you should be adding your own tests, right? ;) Definitely run rspec before creating a pull request.
+
+
 ## Conclusion
 
 This README will be updated as the app gets fleshed out and more complicated. For now, enjoy the magic of an app that does nothing, but in a very sophisticated way - requiring no special drivers, libraries, or database servers, or versions of ruby to be installed on your system directly. Magic!
