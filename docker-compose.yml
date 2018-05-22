@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+      
+  career-mgr:
+    build: .
+    ports:
+      - "3010:3010"
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+
+  database:
+    image: postgres
+    env_file:
+      - .env.database
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

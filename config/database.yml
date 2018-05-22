@@ -1,0 +1,17 @@
+# PRODUCTION and STAGING aren't required as this file is automatically created in those environments.
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV['DATABASE_HOST'] %>
+  pool: 5
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+
+development:
+  <<: *default
+  database: career-mgr_development
+
+test:
+  <<: *default
+  database: career-mgr_test
