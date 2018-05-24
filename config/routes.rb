@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cohorts
   resources :courses
   resources :sites
   resources :contacts
