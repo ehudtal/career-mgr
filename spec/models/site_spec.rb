@@ -5,7 +5,8 @@ RSpec.describe Site, type: :model do
   ##############
   # Associations
   ##############
-
+  
+  it { should have_many :courses }
 
   #############
   # Validations
