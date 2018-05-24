@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_24_212753) do
+ActiveRecord::Schema.define(version: 2018_05_24_214113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cohort_fellows", force: :cascade do |t|
+    t.decimal "grade", precision: 8, scale: 4
+    t.decimal "attendance", precision: 8, scale: 4
+    t.integer "nps_response"
+    t.integer "endorsement"
+    t.integer "professionalism"
+    t.integer "teamwork"
+    t.text "feedback"
+    t.integer "fellow_id"
+    t.integer "cohort_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_id", "fellow_id"], name: "index_cohort_fellows_on_cohort_id_and_fellow_id", unique: true
+  end
 
   create_table "cohorts", force: :cascade do |t|
     t.string "name"
