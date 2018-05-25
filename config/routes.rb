@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :coaches
   resources :employers
   resources :locations
   resources :interests
