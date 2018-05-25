@@ -10,6 +10,8 @@ RSpec.describe Cohort, type: :model do
   it { should have_many :cohort_fellows }
   it { should have_many :fellows }
   
+  it { should have_and_belong_to_many :coaches }
+  
   #############
   # Validations
   #############
