@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_152430) do
+ActiveRecord::Schema.define(version: 2018_05_25_153600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 2018_05_25_152430) do
     t.bigint "cohort_id", null: false
     t.index ["coach_id"], name: "index_coaches_cohorts_on_coach_id"
     t.index ["cohort_id"], name: "index_coaches_cohorts_on_cohort_id"
+  end
+
+  create_table "coaches_employers", id: false, force: :cascade do |t|
+    t.bigint "coach_id", null: false
+    t.bigint "employer_id", null: false
+    t.index ["coach_id"], name: "index_coaches_employers_on_coach_id"
+    t.index ["employer_id"], name: "index_coaches_employers_on_employer_id"
   end
 
   create_table "cohort_fellows", force: :cascade do |t|
@@ -82,6 +89,20 @@ ActiveRecord::Schema.define(version: 2018_05_25_152430) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_employers_on_name", unique: true
+  end
+
+  create_table "employers_industries", id: false, force: :cascade do |t|
+    t.bigint "industry_id", null: false
+    t.bigint "employer_id", null: false
+    t.index ["employer_id"], name: "index_employers_industries_on_employer_id"
+    t.index ["industry_id"], name: "index_employers_industries_on_industry_id"
+  end
+
+  create_table "employers_locations", id: false, force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.bigint "employer_id", null: false
+    t.index ["employer_id"], name: "index_employers_locations_on_employer_id"
+    t.index ["location_id"], name: "index_employers_locations_on_location_id"
   end
 
   create_table "employment_statuses", force: :cascade do |t|
