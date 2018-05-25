@@ -6,6 +6,8 @@ RSpec.describe Interest, type: :model do
   # Associations
   ##############
 
+  it { should have_and_belong_to_many :fellows }
+  it { should have_and_belong_to_many :opportunities }
 
   #############
   # Validations
