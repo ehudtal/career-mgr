@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_030410) do
+ActiveRecord::Schema.define(version: 2018_05_25_031524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,18 @@ ActiveRecord::Schema.define(version: 2018_05_25_030410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_employment_statuses_on_name", unique: true
+  end
+
+  create_table "fellow_opportunities", force: :cascade do |t|
+    t.date "secured_on"
+    t.text "staff_notes"
+    t.integer "fellow_id"
+    t.integer "opportunity_id"
+    t.integer "opportunity_stage_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fellow_id", "opportunity_id"], name: "index_fellow_opportunities_on_fellow_id_and_opportunity_id", unique: true
+    t.index ["opportunity_stage_id"], name: "index_fellow_opportunities_on_opportunity_stage_id"
   end
 
   create_table "fellows", force: :cascade do |t|

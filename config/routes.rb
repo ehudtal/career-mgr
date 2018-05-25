@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :fellow_opportunities
   resources :opportunity_stages
   resources :employment_statuses
   resources :opportunities

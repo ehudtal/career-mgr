@@ -1,0 +1,2 @@
+module FellowOpportunitiesHelper
+end

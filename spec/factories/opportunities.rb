@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :opportunity do
     name "Opportunity"
-    employer_id 1
+    association :employer
   end
 end
