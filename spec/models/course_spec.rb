@@ -8,6 +8,8 @@ RSpec.describe Course, type: :model do
 
   it { should belong_to :site }
   
+  it { should have_many :cohorts }
+  
   #############
   # Validations
   #############
