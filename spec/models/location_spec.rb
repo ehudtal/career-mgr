@@ -8,6 +8,9 @@ RSpec.describe Location, type: :model do
 
   it { should have_one :contact }
   
+  it { should have_and_belong_to_many :employers }
+  it { should have_and_belong_to_many :opportunities }
+  
   #############
   # Validations
   #############
