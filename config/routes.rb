@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :interests
   resources :industries
   resources :cohort_fellows
   resources :cohorts
