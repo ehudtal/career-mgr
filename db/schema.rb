@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_150404) do
+ActiveRecord::Schema.define(version: 2018_05_25_152430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,13 @@ ActiveRecord::Schema.define(version: 2018_05_25_150404) do
     t.index ["name"], name: "index_industries_on_name", unique: true
   end
 
+  create_table "industries_opportunities", id: false, force: :cascade do |t|
+    t.bigint "industry_id", null: false
+    t.bigint "opportunity_id", null: false
+    t.index ["industry_id"], name: "index_industries_opportunities_on_industry_id"
+    t.index ["opportunity_id"], name: "index_industries_opportunities_on_opportunity_id"
+  end
+
   create_table "interests", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -147,10 +154,24 @@ ActiveRecord::Schema.define(version: 2018_05_25_150404) do
     t.index ["name"], name: "index_interests_on_name", unique: true
   end
 
+  create_table "interests_opportunities", id: false, force: :cascade do |t|
+    t.bigint "interest_id", null: false
+    t.bigint "opportunity_id", null: false
+    t.index ["interest_id"], name: "index_interests_opportunities_on_interest_id"
+    t.index ["opportunity_id"], name: "index_interests_opportunities_on_opportunity_id"
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "locations_opportunities", id: false, force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.bigint "opportunity_id", null: false
+    t.index ["location_id"], name: "index_locations_opportunities_on_location_id"
+    t.index ["opportunity_id"], name: "index_locations_opportunities_on_opportunity_id"
   end
 
   create_table "opportunities", force: :cascade do |t|
