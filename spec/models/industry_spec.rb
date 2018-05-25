@@ -4,7 +4,9 @@ RSpec.describe Industry, type: :model do
   ##############
   # Associations
   ##############
-
+  
+  it { should have_and_belong_to_many :employers }
+  it { should have_and_belong_to_many :opportunities }
 
   #############
   # Validations
