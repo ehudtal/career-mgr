@@ -12,6 +12,10 @@ RSpec.describe Fellow, type: :model do
   it { should have_many :cohort_fellows }
   it { should have_many :cohorts }
   
+  it { should have_and_belong_to_many :interests }
+  
+  it { should belong_to :employment_status }
+  
   #############
   # Validations
   #############
