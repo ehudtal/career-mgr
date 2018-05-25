@@ -5,6 +5,8 @@ RSpec.describe OpportunityStage, type: :model do
   ##############
   # Associations
   ##############
+  
+  it { should have_many :fellow_opportunities }
 
   #############
   # Validations
