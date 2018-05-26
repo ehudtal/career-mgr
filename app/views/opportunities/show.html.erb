@@ -10,5 +10,13 @@
   <%= @opportunity.description %>
 </p>
 
+<p>
+  <strong>Industries</strong>
+  
+  <% @opportunity.industries.each do |industry| %>
+    <%= industry.name %><br>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_employer_opportunity_path(@employer, @opportunity) %> |
 <%= link_to 'Back', employer_opportunities_path(@employer) %>

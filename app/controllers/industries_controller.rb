@@ -4,7 +4,7 @@ class IndustriesController < ApplicationController
   # GET /industries
   # GET /industries.json
   def index
-    @industries = Industry.all
+    @industries = Industry.order('name asc').all
   end
 
   # GET /industries/1
