@@ -95,7 +95,11 @@ RSpec.describe CoursesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_semester) { valid_attributes[:semester] + ' 2'}
+      let(:new_semester) { 
+        list = Course::VALID_SEMESTERS
+        list[(list.index(valid_attributes[:semester]) + 1) % list.size]
+      }
+      
       let(:new_attributes) { {semester: new_semester} }
 
       it "updates the requested course" do
