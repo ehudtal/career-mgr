@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
   get 'home/welcome'
   
+  resources :employers do
+    resources :opportunities
+  end
+
   resources :fellow_opportunities
   resources :opportunity_stages
   resources :employment_statuses
-  resources :opportunities
   resources :coaches
-  resources :employers
   resources :locations
   resources :interests
   resources :industries

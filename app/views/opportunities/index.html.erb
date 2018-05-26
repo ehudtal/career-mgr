@@ -17,10 +17,9 @@
       <tr>
         <td><%= opportunity.name %></td>
         <td><%= opportunity.description %></td>
-        <td><%= opportunity.employer_id %></td>
-        <td><%= link_to 'Show', opportunity %></td>
-        <td><%= link_to 'Edit', edit_opportunity_path(opportunity) %></td>
-        <td><%= link_to 'Destroy', opportunity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', employer_opportunity_path(@employer, opportunity) %></td>
+        <td><%= link_to 'Edit', edit_employer_opportunity_path(@employer, opportunity) %></td>
+        <td><%= link_to 'Destroy', employer_opportunity_path(@employer, opportunity), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Opportunity', new_opportunity_path %>
+<%= link_to 'New Opportunity', new_employer_opportunity_path(@employer) %>

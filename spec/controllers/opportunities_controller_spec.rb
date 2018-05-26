@@ -33,7 +33,10 @@ RSpec.describe OpportunitiesController, type: :controller do
   let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id }
   let(:invalid_attributes) { { employer_id: ''} }
   
-  before { allow_any_instance_of(Opportunity).to receive(:employer).and_return(employer) }
+  before do
+    allow(Employer).to receive(:find).with(employer.id.to_s).and_return(employer)
+    allow_any_instance_of(Opportunity).to receive(:employer).and_return(employer)
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -43,7 +46,7 @@ RSpec.describe OpportunitiesController, type: :controller do
   describe "GET #index" do
     it "returns a success response" do
       opportunity = Opportunity.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {employer_id: employer.id}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -51,14 +54,14 @@ RSpec.describe OpportunitiesController, type: :controller do
   describe "GET #show" do
     it "returns a success response" do
       opportunity = Opportunity.create! valid_attributes
-      get :show, params: {id: opportunity.to_param}, session: valid_session
+      get :show, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
 
   describe "GET #new" do
     it "returns a success response" do
-      get :new, params: {}, session: valid_session
+      get :new, params: {employer_id: employer.id}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -66,7 +69,7 @@ RSpec.describe OpportunitiesController, type: :controller do
   describe "GET #edit" do
     it "returns a success response" do
       opportunity = Opportunity.create! valid_attributes
-      get :edit, params: {id: opportunity.to_param}, session: valid_session
+      get :edit, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -75,19 +78,19 @@ RSpec.describe OpportunitiesController, type: :controller do
     context "with valid params" do
       it "creates a new Opportunity" do
         expect {
-          post :create, params: {opportunity: valid_attributes}, session: valid_session
+          post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
         }.to change(Opportunity, :count).by(1)
       end
 
       it "redirects to the created opportunity" do
-        post :create, params: {opportunity: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Opportunity.last)
+        post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(employer_opportunity_path(employer, Opportunity.last))
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {opportunity: invalid_attributes}, session: valid_session
+        post :create, params: {employer_id: employer.id, opportunity: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
     end
@@ -100,7 +103,7 @@ RSpec.describe OpportunitiesController, type: :controller do
 
       it "updates the requested opportunity" do
         opportunity = Opportunity.create! valid_attributes
-        put :update, params: {id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
+        put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
         opportunity.reload
         
         expect(opportunity.name).to eq(new_name)
@@ -108,15 +111,15 @@ RSpec.describe OpportunitiesController, type: :controller do
 
       it "redirects to the opportunity" do
         opportunity = Opportunity.create! valid_attributes
-        put :update, params: {id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(opportunity)
+        put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(employer_opportunity_path(employer, opportunity))
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
         opportunity = Opportunity.create! valid_attributes
-        put :update, params: {id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
+        put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
     end
@@ -126,14 +129,14 @@ RSpec.describe OpportunitiesController, type: :controller do
     it "destroys the requested opportunity" do
       opportunity = Opportunity.create! valid_attributes
       expect {
-        delete :destroy, params: {id: opportunity.to_param}, session: valid_session
+        delete :destroy, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
       }.to change(Opportunity, :count).by(-1)
     end
 
     it "redirects to the opportunities list" do
       opportunity = Opportunity.create! valid_attributes
-      delete :destroy, params: {id: opportunity.to_param}, session: valid_session
-      expect(response).to redirect_to(opportunities_url)
+      delete :destroy, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
+      expect(response).to redirect_to(employer_opportunities_url(employer))
     end
   end
 

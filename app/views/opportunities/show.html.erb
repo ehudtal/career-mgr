@@ -10,10 +10,5 @@
   <%= @opportunity.description %>
 </p>
 
-<p>
-  <strong>Employer:</strong>
-  <%= @opportunity.employer_id %>
-</p>
-
-<%= link_to 'Edit', edit_opportunity_path(@opportunity) %> |
-<%= link_to 'Back', opportunities_path %>
+<%= link_to 'Edit', edit_employer_opportunity_path(@employer, @opportunity) %> |
+<%= link_to 'Back', employer_opportunities_path(@employer) %>
