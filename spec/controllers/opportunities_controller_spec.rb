@@ -28,13 +28,12 @@ RSpec.describe OpportunitiesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:employer) { build :employer, id: 1001 }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id }
+  let(:invalid_attributes) { { employer_id: ''} }
+  
+  before { allow_any_instance_of(Opportunity).to receive(:employer).and_return(employer) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -96,15 +95,15 @@ RSpec.describe OpportunitiesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:new_name) { valid_attributes[:name] + ' 2' }
+      let(:new_attributes) { {name: new_name} }
 
       it "updates the requested opportunity" do
         opportunity = Opportunity.create! valid_attributes
         put :update, params: {id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
         opportunity.reload
-        skip("Add assertions for updated state")
+        
+        expect(opportunity.name).to eq(new_name)
       end
 
       it "redirects to the opportunity" do

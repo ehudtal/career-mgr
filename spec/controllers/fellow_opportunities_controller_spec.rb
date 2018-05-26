@@ -28,13 +28,18 @@ RSpec.describe FellowOpportunitiesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # FellowOpportunity. As you add validations to FellowOpportunity, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:fellow) { build :fellow, id: 1001 }
+  let(:opportunity) { build :opportunity, id: 1002 }
+  let(:opportunity_stage) { build :opportunity_stage, id: 1003 }
+  
+  let(:valid_attributes) { attributes_for :fellow_opportunity, fellow_id: fellow.id, opportunity_id: opportunity.id, opportunity_stage_id: opportunity_stage.id }
+  let(:invalid_attributes) { {fellow_id: ''} }
+  
+  before do
+    allow_any_instance_of(FellowOpportunity).to receive(:fellow).and_return(fellow)
+    allow_any_instance_of(FellowOpportunity).to receive(:opportunity).and_return(opportunity)
+    allow_any_instance_of(FellowOpportunity).to receive(:opportunity_stage).and_return(opportunity_stage)
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -96,15 +101,15 @@ RSpec.describe FellowOpportunitiesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:new_staff_notes) { valid_attributes[:staff_notes].to_s + ' 2' }
+      let(:new_attributes) { {staff_notes: new_staff_notes} }
 
       it "updates the requested fellow_opportunity" do
         fellow_opportunity = FellowOpportunity.create! valid_attributes
         put :update, params: {id: fellow_opportunity.to_param, fellow_opportunity: new_attributes}, session: valid_session
         fellow_opportunity.reload
-        skip("Add assertions for updated state")
+        
+        expect(fellow_opportunity.staff_notes).to eq(new_staff_notes)
       end
 
       it "redirects to the fellow_opportunity" do

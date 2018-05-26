@@ -28,13 +28,16 @@ RSpec.describe CohortFellowsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # CohortFellow. As you add validations to CohortFellow, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:cohort) { build :cohort, id: 1001 }
+  let(:fellow) { build :fellow, id: 1002 }
+  
+  let(:valid_attributes) { attributes_for :cohort_fellow, cohort_id: cohort.id, fellow_id: fellow.id }
+  let(:invalid_attributes) { {cohort_id: ''} }
+  
+  before do
+    allow_any_instance_of(CohortFellow).to receive(:cohort).and_return(cohort)
+    allow_any_instance_of(CohortFellow).to receive(:fellow).and_return(fellow)
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -96,15 +99,15 @@ RSpec.describe CohortFellowsController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:new_feedback) { valid_attributes[:feedback] + ' 2' }
+      let(:new_attributes) { {feedback: new_feedback} }
 
       it "updates the requested cohort_fellow" do
         cohort_fellow = CohortFellow.create! valid_attributes
         put :update, params: {id: cohort_fellow.to_param, cohort_fellow: new_attributes}, session: valid_session
         cohort_fellow.reload
-        skip("Add assertions for updated state")
+
+        expect(cohort_fellow.feedback).to eq(new_feedback)
       end
 
       it "redirects to the cohort_fellow" do

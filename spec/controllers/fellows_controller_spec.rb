@@ -28,13 +28,12 @@ RSpec.describe FellowsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Fellow. As you add validations to Fellow, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:employment_status) { build :employment_status, id: 1001 }
+  
+  let(:valid_attributes) { attributes_for :fellow, employment_status_id: employment_status.id }
+  let(:invalid_attributes) { {first_name: ''} }
+  
+  before { allow_any_instance_of(Fellow).to receive(:employment_status).and_return(employment_status) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -96,15 +95,15 @@ RSpec.describe FellowsController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:new_first_name) { valid_attributes[:first_name] + ' 2' }
+      let(:new_attributes) { {first_name: new_first_name} }
 
       it "updates the requested fellow" do
         fellow = Fellow.create! valid_attributes
         put :update, params: {id: fellow.to_param, fellow: new_attributes}, session: valid_session
         fellow.reload
-        skip("Add assertions for updated state")
+        
+        expect(fellow.first_name).to eq(new_first_name)
       end
 
       it "redirects to the fellow" do

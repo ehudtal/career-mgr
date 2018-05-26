@@ -28,13 +28,12 @@ RSpec.describe CoursesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Course. As you add validations to Course, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:site) { build :site, id: 1001 }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:valid_attributes) { attributes_for :course, site_id: site.id }
+  let(:invalid_attributes) { {site_id: ''} }
+  
+  before { allow_any_instance_of(Course).to receive(:site).and_return(site) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -96,15 +95,15 @@ RSpec.describe CoursesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:new_semester) { valid_attributes[:semester] + ' 2'}
+      let(:new_attributes) { {semester: new_semester} }
 
       it "updates the requested course" do
         course = Course.create! valid_attributes
         put :update, params: {id: course.to_param, course: new_attributes}, session: valid_session
         course.reload
-        skip("Add assertions for updated state")
+        
+        expect(course.semester).to eq(new_semester)
       end
 
       it "redirects to the course" do
