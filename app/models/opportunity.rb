@@ -5,5 +5,5 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :interests
   has_and_belongs_to_many :locations
   
-  validates :employer_id, presence: true
+  validates :employer_id, :name, presence: true
 end

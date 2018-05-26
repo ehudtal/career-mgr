@@ -17,4 +17,5 @@ RSpec.describe Opportunity, type: :model do
   #############
 
   it { should validate_presence_of :employer_id }
+  it { should validate_presence_of :name }
 end

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :course do
     semester "Fall"
-    year 2018
+    sequence(:year){|i| 2018 + i}
     
     association :site
   end

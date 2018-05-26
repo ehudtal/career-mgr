@@ -8,7 +8,7 @@ class Fellow < ApplicationRecord
   
   belongs_to :employment_status
   
-  validates :first_name, :last_name, presence: true
+  validates :first_name, :last_name, :employment_status_id, presence: true
   
   def cohort
     cohorts.order('id desc').first
