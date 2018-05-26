@@ -18,4 +18,8 @@ RSpec.describe OpportunityStage, type: :model do
     subject { create :opportunity_stage }
     it { should validate_uniqueness_of :name }
   end
+
+  it { should validate_numericality_of(:probability).is_greater_than_or_equal_to(0.0) }
+  it { should validate_numericality_of(:probability).is_less_than_or_equal_to(1.0) }
+  it { should validate_numericality_of(:probability).allow_nil }
 end
