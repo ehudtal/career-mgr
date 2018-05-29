@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# remove all existing objects to start fresh!
+[Industry, Interest, Employer].each(&:destroy_all)
+
 ['Agriculture', 'Education', 'Information'].each do |name|
   Industry.create(name: name)
 end
