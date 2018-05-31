@@ -16,13 +16,7 @@
     <%= form.text_field :name %>
   </div>
   
-  <p>
-    Industries<br>
-    <% Industry.all.each do |industry| %>
-      <%= check_box_tag("employer[industry_ids][]", industry.id, @employer.industries.include?(industry)) %>
-      <%= label_tag("employer[industry_ids][]", industry.name, style: 'display: inline;') %><br>
-    <% end %>
-  </p>
+  <%= render 'industries/check_boxes', object: @employer %>
 
   <div class="actions">
     <%= form.submit %>
