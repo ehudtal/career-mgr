@@ -25,6 +25,10 @@ Now create the needed databases, and run any necessary migrations:
 
     docker-compose exec career-mgr rake db:create db:migrate
 
+If you'd like to start out with some basic seed data to better see how the system works, run this:
+
+    docker-compose exec career-mgr rake db:seed
+
 We've configured Docker to run our Rails app on port 3010, so go to http://localhost:3010 in your favorite browser. If everything's working correctly, you should see the greeting, "Yay! You're on Rails!"
 
 To interact with the app in the console, run this:
@@ -93,6 +97,10 @@ Whenever you pull in changes from upstream, you should run these commands in the
 If you make updates to `Gemfile` on your own, run the first group of commands above. If you create migrations of your own, run the `rake db:migrate` command to update the database.
 
 Periodically, run rspec to ensure that you haven't broken any existing tests with your code changes. And you should be adding your own tests, right? ;) Definitely run rspec before creating a pull request.
+
+If you'd like to reset the database to the original seed data (with example employers, industries, and interests), you can re-run this command at any time:
+
+    docker-compose exec career-mgr rake db:seed
 
 
 ## Conclusion
