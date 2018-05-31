@@ -30,6 +30,8 @@ RSpec.describe EmployersController, type: :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) { attributes_for :employer }
   let(:invalid_attributes) { {name: ''} }
+  
+  let(:industry) { create :industry }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -79,6 +81,11 @@ RSpec.describe EmployersController, type: :controller do
         post :create, params: {employer: valid_attributes}, session: valid_session
         expect(response).to redirect_to(Employer.last)
       end
+      
+      it "associates specified industries with the employer" do
+        post :create, params: {employer: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        expect(Employer.last.industries).to include(industry)
+      end
     end
 
     context "with invalid params" do
@@ -106,6 +113,14 @@ RSpec.describe EmployersController, type: :controller do
         employer = Employer.create! valid_attributes
         put :update, params: {id: employer.to_param, employer: valid_attributes}, session: valid_session
         expect(response).to redirect_to(employer)
+      end
+      
+      it "associates the industry with the employer" do
+        employer = Employer.create! valid_attributes
+        put :update, params: {id: employer.to_param, employer: new_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        employer.reload
+        
+        expect(employer.industries).to include(industry)
       end
     end
 
