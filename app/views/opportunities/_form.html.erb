@@ -20,6 +20,11 @@
     <%= form.label :description %>
     <%= form.text_area :description %>
   </div>
+  
+  <%= render 'industries/check_boxes', object: opportunity %>
+  
+  <%= render 'interests/check_boxes', object: opportunity %>
+  
 
   <div class="actions">
     <%= form.submit %>

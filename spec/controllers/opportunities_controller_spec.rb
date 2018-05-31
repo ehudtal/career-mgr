@@ -29,6 +29,9 @@ RSpec.describe OpportunitiesController, type: :controller do
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
   let(:employer) { build :employer, id: 1001 }
+  
+  let(:industry) { create :industry }
+  let(:interest) { create :interest }
 
   let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id }
   let(:invalid_attributes) { { employer_id: ''} }
@@ -86,6 +89,16 @@ RSpec.describe OpportunitiesController, type: :controller do
         post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
         expect(response).to redirect_to(employer_opportunity_path(employer, Opportunity.last))
       end
+
+      it "associates specified industries with the opportunity" do
+        post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        expect(Opportunity.last.industries).to include(industry)
+      end
+
+      it "associates specified interests with the opportunity" do
+        post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+        expect(Opportunity.last.interests).to include(interest)
+      end
     end
 
     context "with invalid params" do
@@ -113,6 +126,22 @@ RSpec.describe OpportunitiesController, type: :controller do
         opportunity = Opportunity.create! valid_attributes
         put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
         expect(response).to redirect_to(employer_opportunity_path(employer, opportunity))
+      end
+
+      it "associates specified industries with the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        opportunity.reload
+        
+        expect(opportunity.industries).to include(industry)
+      end
+
+      it "associates specified interests with the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+        opportunity.reload
+        
+        expect(opportunity.interests).to include(interest)
       end
     end
 

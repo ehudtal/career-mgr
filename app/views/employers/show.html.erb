@@ -5,13 +5,7 @@
   <%= @employer.name %>
 </p>
 
-<p>
-  <strong>Industries</strong><br>
-  
-  <% @employer.industries.each do |industry| %>
-    <%= industry.name %><br>
-  <% end %>
-</p>
+<%= render 'industries/list', object: @employer %>
 
 <%= link_to "Opportunities (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %> |
 <%= link_to 'Edit', edit_employer_path(@employer) %> |
