@@ -1,0 +1,32 @@
+<%= form_with(model: [employer, opportunity], local: true) do |form| %>
+  <% if opportunity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(opportunity.errors.count, "error") %> prohibited this opportunity from being saved:</h2>
+
+      <ul>
+      <% opportunity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  
+  <%= render 'industries/check_boxes', object: opportunity %>
+  
+  <%= render 'interests/check_boxes', object: opportunity %>
+  
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

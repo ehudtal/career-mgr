@@ -1,0 +1,24 @@
+<%= form_with(model: employer, local: true) do |form| %>
+  <% if employer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(employer.errors.count, "error") %> prohibited this employer from being saved:</h2>
+
+      <ul>
+      <% employer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  
+  <%= render 'industries/check_boxes', object: @employer %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

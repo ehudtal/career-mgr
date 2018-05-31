@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Secured on:</strong>
+  <%= @fellow_opportunity.secured_on %>
+</p>
+
+<p>
+  <strong>Staff notes:</strong>
+  <%= @fellow_opportunity.staff_notes %>
+</p>
+
+<p>
+  <strong>Fellow:</strong>
+  <%= @fellow_opportunity.fellow_id %>
+</p>
+
+<p>
+  <strong>Opportunity:</strong>
+  <%= @fellow_opportunity.opportunity_id %>
+</p>
+
+<p>
+  <strong>Opportunity stage:</strong>
+  <%= @fellow_opportunity.opportunity_stage_id %>
+</p>
+
+<%= link_to 'Edit', edit_fellow_opportunity_path(@fellow_opportunity) %> |
+<%= link_to 'Back', fellow_opportunities_path %>
