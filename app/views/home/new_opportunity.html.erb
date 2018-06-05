@@ -1,0 +1,9 @@
+<h2>Choose an existing employer:</h2>
+
+<ul>
+  <li><%= link_to 'Add a New Employer', new_employer_path %></li>
+  
+  <% @employers.each do |employer| %>
+    <li><%= link_to employer.name, new_employer_opportunity_path(employer) %></li>
+  <% end %>
+</ul>

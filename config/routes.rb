@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'home/welcome'
+  get 'home/new_opportunity', as: 'new_opportunity'
   
   resources :employers do
     resources :opportunities
