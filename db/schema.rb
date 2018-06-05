@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_153600) do
+ActiveRecord::Schema.define(version: 2018_06_05_215940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,13 +98,6 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.index ["industry_id"], name: "index_employers_industries_on_industry_id"
   end
 
-  create_table "employers_locations", id: false, force: :cascade do |t|
-    t.bigint "location_id", null: false
-    t.bigint "employer_id", null: false
-    t.index ["employer_id"], name: "index_employers_locations_on_employer_id"
-    t.index ["location_id"], name: "index_employers_locations_on_location_id"
-  end
-
   create_table "employment_statuses", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -186,6 +179,9 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "locateable_id"
+    t.string "locateable_type"
+    t.index ["locateable_id", "locateable_type"], name: "index_locations_on_locateable_id_and_locateable_type"
   end
 
   create_table "locations_opportunities", id: false, force: :cascade do |t|
