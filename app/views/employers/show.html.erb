@@ -7,6 +7,10 @@
 
 <%= render 'industries/list', object: @employer %>
 
-<%= link_to "Opportunities (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %> |
+<p>
+  <%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
+  <%= link_to "Opportunities (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %><br>
+</p>
+
 <%= link_to 'Edit', edit_employer_path(@employer) %> |
 <%= link_to 'Back', employers_path %>

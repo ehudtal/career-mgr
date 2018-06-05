@@ -28,8 +28,15 @@ RSpec.describe LocationsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Location. As you add validations to Location, be sure to
   # adjust the attributes here as well.
+  let(:employer) { build :employer, id: 1001 }
+  
   let(:valid_attributes) { attributes_for :location }
   let(:invalid_attributes) { {name: ''} }
+  
+  before do
+    allow(Employer).to receive(:find).with(employer.id.to_s).and_return(employer)
+    allow_any_instance_of(Location).to receive(:employer).and_return(employer)
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -39,7 +46,7 @@ RSpec.describe LocationsController, type: :controller do
   describe "GET #index" do
     it "returns a success response" do
       location = Location.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {employer_id: employer.id}, session: valid_session
       expect(response).to be_successful
     end
   end
