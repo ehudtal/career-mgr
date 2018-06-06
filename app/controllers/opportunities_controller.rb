@@ -5,7 +5,7 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.json
   def index
-    @opportunities = @employer.opportunities.all
+    @opportunities = @opportunities.all
   end
 
   # GET /opportunities/1
@@ -15,7 +15,7 @@ class OpportunitiesController < ApplicationController
 
   # GET /opportunities/new
   def new
-    @opportunity = @employer.opportunities.build
+    @opportunity = @opportunities.build
   end
 
   # GET /opportunities/1/edit
@@ -25,7 +25,7 @@ class OpportunitiesController < ApplicationController
   # POST /opportunities
   # POST /opportunities.json
   def create
-    @opportunity = @employer.opportunities.build(opportunity_params)
+    @opportunity = @opportunities.build(opportunity_params)
 
     respond_to do |format|
       if @opportunity.save
@@ -63,17 +63,19 @@ class OpportunitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_opportunity
-      @opportunity = @employer.opportunities.find(params[:id])
-    end
+  
+  def set_employer
+    @employer = Employer.find(params[:employer_id]) if params[:employer_id]
+    @opportunities = @employer ? @employer.opportunities : Opportunity.all
+  end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_opportunity
+    @opportunity = @opportunities.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def opportunity_params
-      params.require(:opportunity).permit(:name, :description, :employer_id, industry_ids: [], interest_ids: [])
-    end
-    
-    def set_employer
-      @employer = Employer.find(params[:employer_id])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def opportunity_params
+    params.require(:opportunity).permit(:name, :description, :employer_id, industry_ids: [], interest_ids: [])
+  end
 end

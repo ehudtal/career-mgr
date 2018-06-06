@@ -1,9 +1,9 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @employer.name %> Opportunities</h1>
+<h1><%= @employer ? "#{@employer.name} " : '' %>Opportunities</h1>
 
-<%= render "opportunities/list", opportunities: @opportunities, employer: @employer %>
+<%= render "opportunities/list", opportunities: @opportunities %>
 
 <br>
 
-<%= link_to 'New Opportunity', new_employer_opportunity_path(@employer) %>
+<%= link_to 'Add New Opportunity', (@employer ? new_employer_opportunity_path(@employer) : new_opportunity_path), class: 'button' %>

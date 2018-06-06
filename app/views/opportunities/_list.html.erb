@@ -12,11 +12,11 @@
   <tbody>
     <% opportunities.each do |opportunity| %>
       <tr>
-        <td><%= employer.name %>
-        <td><%= link_to opportunity.name, employer_opportunity_path(employer, opportunity) %></td>
+        <td><%= opportunity.employer.name %>
+        <td><%= link_to opportunity.name, employer_opportunity_path(opportunity.employer, opportunity) %></td>
         <td><%= opportunity.description %></td>
-        <td><%= link_to 'Edit', edit_employer_opportunity_path(employer, opportunity) %></td>
-        <td><%= link_to 'Delete', employer_opportunity_path(employer, opportunity), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_employer_opportunity_path(opportunity.employer, opportunity) %></td>
+        <td><%= link_to 'Delete', employer_opportunity_path(opportunity.employer, opportunity), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
