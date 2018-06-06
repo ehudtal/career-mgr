@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     resources :locations
     resources :opportunities
   end
+  
+  resources :opportunities, only: [:index]
 
   resources :fellow_opportunities
   resources :opportunity_stages
