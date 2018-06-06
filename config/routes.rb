@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   
   resources :employers do
     resources :locations
-    resources :opportunities
+    resources :opportunities, shallow: true
   end
   
   resources :opportunities, only: [:index]

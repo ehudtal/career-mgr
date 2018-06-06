@@ -24,7 +24,8 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe OpportunitiesController, type: :controller do
-
+  render_views
+  
   # This should return the minimal set of attributes required to create a valid
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
@@ -54,6 +55,82 @@ RSpec.describe OpportunitiesController, type: :controller do
     end
   end
 
+  describe "GET #show" do
+    it "returns a success response" do
+      opportunity = Opportunity.create! valid_attributes
+      get :show, params: {id: opportunity.to_param}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+
+  describe "GET #edit" do
+    it "returns a success response" do
+      opportunity = Opportunity.create! valid_attributes
+      get :edit, params: {id: opportunity.to_param}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+
+  describe "PUT #update" do
+    context "with valid params" do
+      let(:new_name) { valid_attributes[:name] + ' 2' }
+      let(:new_attributes) { {name: new_name} }
+
+      it "updates the requested opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.name).to eq(new_name)
+      end
+
+      it "redirects to the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(opportunity_path(opportunity))
+      end
+
+      it "associates specified industries with the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.industries).to include(industry)
+      end
+
+      it "associates specified interests with the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.interests).to include(interest)
+      end
+    end
+
+    context "with invalid params" do
+      it "returns a success response (i.e. to display the 'edit' template)" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
+        expect(response).to be_successful
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "destroys the requested opportunity" do
+      opportunity = Opportunity.create! valid_attributes
+      expect {
+        delete :destroy, params: {id: opportunity.to_param}, session: valid_session
+      }.to change(Opportunity, :count).by(-1)
+    end
+
+    it "redirects to the opportunities list" do
+      opportunity = Opportunity.create! valid_attributes
+      delete :destroy, params: {id: opportunity.to_param}, session: valid_session
+      expect(response).to redirect_to(employer_opportunities_url(employer))
+    end
+  end
+
   describe "with employer nesting" do    
     describe "GET #index" do
       it "returns a success response" do
@@ -63,25 +140,9 @@ RSpec.describe OpportunitiesController, type: :controller do
       end
     end
 
-    describe "GET #show" do
-      it "returns a success response" do
-        opportunity = Opportunity.create! valid_attributes
-        get :show, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
-        expect(response).to be_successful
-      end
-    end
-
     describe "GET #new" do
       it "returns a success response" do
         get :new, params: {employer_id: employer.id}, session: valid_session
-        expect(response).to be_successful
-      end
-    end
-
-    describe "GET #edit" do
-      it "returns a success response" do
-        opportunity = Opportunity.create! valid_attributes
-        get :edit, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
         expect(response).to be_successful
       end
     end
@@ -96,7 +157,7 @@ RSpec.describe OpportunitiesController, type: :controller do
 
         it "redirects to the created opportunity" do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
-          expect(response).to redirect_to(employer_opportunity_path(employer, Opportunity.last))
+          expect(response).to redirect_to(opportunity_path(Opportunity.last))
         end
 
         it "associates specified industries with the opportunity" do
@@ -115,66 +176,6 @@ RSpec.describe OpportunitiesController, type: :controller do
           post :create, params: {employer_id: employer.id, opportunity: invalid_attributes}, session: valid_session
           expect(response).to be_successful
         end
-      end
-    end
-
-    describe "PUT #update" do
-      context "with valid params" do
-        let(:new_name) { valid_attributes[:name] + ' 2' }
-        let(:new_attributes) { {name: new_name} }
-
-        it "updates the requested opportunity" do
-          opportunity = Opportunity.create! valid_attributes
-          put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
-          opportunity.reload
-        
-          expect(opportunity.name).to eq(new_name)
-        end
-
-        it "redirects to the opportunity" do
-          opportunity = Opportunity.create! valid_attributes
-          put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
-          expect(response).to redirect_to(employer_opportunity_path(employer, opportunity))
-        end
-
-        it "associates specified industries with the opportunity" do
-          opportunity = Opportunity.create! valid_attributes
-          put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
-          opportunity.reload
-        
-          expect(opportunity.industries).to include(industry)
-        end
-
-        it "associates specified interests with the opportunity" do
-          opportunity = Opportunity.create! valid_attributes
-          put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: new_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
-          opportunity.reload
-        
-          expect(opportunity.interests).to include(interest)
-        end
-      end
-
-      context "with invalid params" do
-        it "returns a success response (i.e. to display the 'edit' template)" do
-          opportunity = Opportunity.create! valid_attributes
-          put :update, params: {employer_id: employer.id, id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
-          expect(response).to be_successful
-        end
-      end
-    end
-
-    describe "DELETE #destroy" do
-      it "destroys the requested opportunity" do
-        opportunity = Opportunity.create! valid_attributes
-        expect {
-          delete :destroy, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
-        }.to change(Opportunity, :count).by(-1)
-      end
-
-      it "redirects to the opportunities list" do
-        opportunity = Opportunity.create! valid_attributes
-        delete :destroy, params: {employer_id: employer.id, id: opportunity.to_param}, session: valid_session
-        expect(response).to redirect_to(employer_opportunities_url(employer))
       end
     end
   end
