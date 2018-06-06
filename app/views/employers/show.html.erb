@@ -9,6 +9,9 @@
 <%= render 'opportunities/list', object: @employer %>
 <%= link_to "View details (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %>
 
-<hr />
+<h2>Locations</h2>
+<%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
+
+
 <%= link_to 'Edit', edit_employer_path(@employer) %> |
 <%= link_to 'Back to All Employers', employers_path %>

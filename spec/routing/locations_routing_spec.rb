@@ -4,35 +4,35 @@ RSpec.describe LocationsController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/locations").to route_to("locations#index")
+      expect(:get => "/employers/1/locations").to route_to("locations#index", employer_id: '1')
     end
 
     it "routes to #new" do
-      expect(:get => "/locations/new").to route_to("locations#new")
+      expect(:get => "/employers/1/locations/new").to route_to("locations#new", employer_id: '1')
     end
 
     it "routes to #show" do
-      expect(:get => "/locations/1").to route_to("locations#show", :id => "1")
+      expect(:get => "/employers/1/locations/1").to route_to("locations#show", employer_id: '1', :id => "1")
     end
 
     it "routes to #edit" do
-      expect(:get => "/locations/1/edit").to route_to("locations#edit", :id => "1")
+      expect(:get => "/employers/1/locations/1/edit").to route_to("locations#edit", employer_id: '1', :id => "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/locations").to route_to("locations#create")
+      expect(:post => "/employers/1/locations").to route_to("locations#create", employer_id: '1')
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/locations/1").to route_to("locations#update", :id => "1")
+      expect(:put => "/employers/1/locations/1").to route_to("locations#update", employer_id: '1', :id => "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/locations/1").to route_to("locations#update", :id => "1")
+      expect(:patch => "/employers/1/locations/1").to route_to("locations#update", employer_id: '1', :id => "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/locations/1").to route_to("locations#destroy", :id => "1")
+      expect(:delete => "/employers/1/locations/1").to route_to("locations#destroy", employer_id: '1', :id => "1")
     end
 
   end

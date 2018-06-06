@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'home/new_opportunity', as: 'new_opportunity'
   
   resources :employers do
+    resources :locations
     resources :opportunities
   end
 
@@ -10,7 +11,6 @@ Rails.application.routes.draw do
   resources :opportunity_stages
   resources :employment_statuses
   resources :coaches
-  resources :locations
   resources :interests
   resources :industries
   resources :cohort_fellows
