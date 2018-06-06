@@ -1,12 +1,14 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @employer.name %>
-</p>
+<h1><%= @employer.name %></h1>
 
+<h2>Industries</h2>
 <%= render 'industries/list', object: @employer %>
 
-<%= link_to "Opportunities (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %> |
+<h2>Opportunities</h2>
+<%= render 'opportunities/list', object: @employer %>
+<%= link_to "View details (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %>
+
+<hr />
 <%= link_to 'Edit', edit_employer_path(@employer) %> |
-<%= link_to 'Back', employers_path %>
+<%= link_to 'Back to All Employers', employers_path %>
