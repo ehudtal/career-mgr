@@ -7,7 +7,8 @@
 
 <h2>Opportunities</h2>
 <%= render 'opportunities/list', object: @employer %>
-<%= link_to "View details (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %>
+<%= link_to "View details (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %><br>
+<%= link_to 'New Opportunity', new_employer_opportunity_path(@employer) %>
 
 <h2>Locations</h2>
 <%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
