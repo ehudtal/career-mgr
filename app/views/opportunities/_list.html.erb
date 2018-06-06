@@ -1,5 +1,22 @@
-<ul>  
-  <% object.opportunities.each do |opportunity| %>
-    <li><%= opportunity.name %></li>
-  <% end %>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Employer</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% opportunities.each do |opportunity| %>
+      <tr>
+        <td><%= opportunity.name %></td>
+        <td><%= opportunity.description %></td>
+        <td><%= link_to 'Show', employer_opportunity_path(employer, opportunity) %></td>
+        <td><%= link_to 'Edit', edit_employer_opportunity_path(employer, opportunity) %></td>
+        <td><%= link_to 'Destroy', employer_opportunity_path(employer, opportunity), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
