@@ -59,10 +59,16 @@ a.button:hover {
   text-decoration: none;
 }
 
-.edit,
-.delete,
-.back {
+table .edit,
+table .delete,
+table .back,
+.actions {
   font-size: 0.75em;
+}
+
+.actions {
+  margin-top: 2em;
+  border-top: 1px solid #CCC;
 }
 
 #masthead {
