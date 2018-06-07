@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      opportunity:
+        job_posting_url: 
+          one: "Job Posting URL"
+          other: "Job Posting URLs"
+        
