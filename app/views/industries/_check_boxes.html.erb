@@ -2,7 +2,7 @@
 <div class="industries checklist">
   <h3>Industries</h3>
   <% Industry.order('name asc').each do |industry| %>
-    <%= check_box_tag("#{object_name}[industry_ids][#{industry.id}]", industry.id, object.industries.include?(industry)) %>
-    <%= label_tag("#{object_name}[industry_ids][#{industry.id}]", industry.name, style: 'display: inline;') %><br>
+    <%= check_box_tag("#{object_name}[industry_ids][]", industry.id, object.industries.include?(industry)) %>
+    <%= label_tag("#{object_name}[industry_ids][]", industry.name, style: 'display: inline;') %><br>
   <% end %>
 </div>
