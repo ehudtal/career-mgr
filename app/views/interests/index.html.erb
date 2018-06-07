@@ -7,7 +7,7 @@
     <% @interests.each do |interest| %>
       <tr>
         <td><%= link_to interest.name, interest %></td>
-        <td><%= link_to 'Edit', edit_interest_path(interest), class='edit' %></td>
+        <td><%= link_to 'Edit', edit_interest_path(interest), class: 'edit' %></td>
         <td><%= link_to 'Delete', interest, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
       </tr>
     <% end %>
