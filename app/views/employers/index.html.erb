@@ -7,8 +7,8 @@
     <% @employers.each do |employer| %>
       <tr>
         <td><%= link_to employer.name, employer %></td>
-        <td><%= link_to 'Edit', edit_employer_path(employer), class: 'button' %></td>
-        <td><%= link_to 'Delete', employer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %></td>
+        <td><%= link_to 'Edit', edit_employer_path(employer), class: 'edit' %></td>
+        <td><%= link_to 'Delete', employer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
       </tr>
     <% end %>
   </tbody>
@@ -16,4 +16,4 @@
 
 <br>
 
-<%= link_to 'Add New Employer', new_employer_path, class: 'button' %>
+<%= link_to 'Add New Employer', new_employer_path, class: 'button add' %>

@@ -1,3 +1,6 @@
+# take all the servers down
+docker-compose down
+
 # rebuild/reload the docker container
 docker-compose build career-mgr
 docker-compose stop career-mgr
@@ -8,3 +11,6 @@ docker-compose exec career-mgr rake db:migrate
 
 # run specs!
 docker-compose exec career-mgr rspec
+
+#bring everything back up
+docker-compose up

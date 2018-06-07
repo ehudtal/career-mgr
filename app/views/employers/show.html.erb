@@ -14,5 +14,5 @@
 <%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
 
 
-<%= link_to 'Edit', edit_employer_path(@employer) %> |
-<%= link_to 'Back to All Employers', employers_path %>
+<%= link_to 'Edit', edit_employer_path(@employer), class: 'edit' %> |
+<%= link_to 'Back to All Employers', employers_path, class: 'back' %>
