@@ -24,6 +24,7 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe LocationsController, type: :controller do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Location. As you add validations to Location, be sure to
@@ -56,7 +57,7 @@ RSpec.describe LocationsController, type: :controller do
       location = Location.create! valid_attributes
       allow(employer.locations).to receive(:find).and_return(location)
 
-      get :show, params: {employer_id: employer.id, id: location.to_param}, session: valid_session
+      get :show, params: {id: location.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -71,9 +72,8 @@ RSpec.describe LocationsController, type: :controller do
   describe "GET #edit" do
     it "returns a success response" do
       location = Location.create! valid_attributes
-      allow(employer.locations).to receive(:find).and_return(location)
 
-      get :edit, params: {employer_id: employer.id, id: location.to_param}, session: valid_session
+      get :edit, params: {id: location.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -88,7 +88,7 @@ RSpec.describe LocationsController, type: :controller do
 
       it "redirects to the created location" do
         post :create, params: {employer_id: employer.id, location: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(employer_location_path(employer, Location.last))
+        expect(response).to redirect_to(location_path(Location.last))
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe LocationsController, type: :controller do
         location = Location.create! valid_attributes
         allow(employer.locations).to receive(:find).and_return(location)
 
-        put :update, params: {employer_id: employer.id, id: location.to_param, location: new_attributes}, session: valid_session
+        put :update, params: {id: location.to_param, location: new_attributes}, session: valid_session
         location.reload
         
         expect(location.name).to eq(new_name)
@@ -119,8 +119,8 @@ RSpec.describe LocationsController, type: :controller do
         location = Location.create! valid_attributes
         allow(employer.locations).to receive(:find).and_return(location)
 
-        put :update, params: {employer_id: employer.id, id: location.to_param, location: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(employer_location_path(employer, location))
+        put :update, params: {id: location.to_param, location: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(location_path(location))
       end
     end
 
@@ -129,7 +129,7 @@ RSpec.describe LocationsController, type: :controller do
         location = Location.create! valid_attributes
         allow(employer.locations).to receive(:find).and_return(location)
 
-        put :update, params: {employer_id: employer.id, id: location.to_param, location: invalid_attributes}, session: valid_session
+        put :update, params: {id: location.to_param, location: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
     end
@@ -141,7 +141,7 @@ RSpec.describe LocationsController, type: :controller do
       allow(employer.locations).to receive(:find).and_return(location)
 
       expect {
-        delete :destroy, params: {employer_id: employer.id, id: location.to_param}, session: valid_session
+        delete :destroy, params: {id: location.to_param}, session: valid_session
       }.to change(Location, :count).by(-1)
     end
 

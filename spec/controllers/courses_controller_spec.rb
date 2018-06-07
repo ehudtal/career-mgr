@@ -24,6 +24,7 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe CoursesController, type: :controller do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Course. As you add validations to Course, be sure to

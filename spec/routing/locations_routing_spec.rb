@@ -12,11 +12,11 @@ RSpec.describe LocationsController, type: :routing do
     end
 
     it "routes to #show" do
-      expect(:get => "/employers/1/locations/1").to route_to("locations#show", employer_id: '1', :id => "1")
+      expect(:get => "/locations/1").to route_to("locations#show", :id => "1")
     end
 
     it "routes to #edit" do
-      expect(:get => "/employers/1/locations/1/edit").to route_to("locations#edit", employer_id: '1', :id => "1")
+      expect(:get => "/locations/1/edit").to route_to("locations#edit", :id => "1")
     end
 
     it "routes to #create" do
@@ -24,15 +24,15 @@ RSpec.describe LocationsController, type: :routing do
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/employers/1/locations/1").to route_to("locations#update", employer_id: '1', :id => "1")
+      expect(:put => "/locations/1").to route_to("locations#update", :id => "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/employers/1/locations/1").to route_to("locations#update", employer_id: '1', :id => "1")
+      expect(:patch => "/locations/1").to route_to("locations#update", :id => "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/employers/1/locations/1").to route_to("locations#destroy", employer_id: '1', :id => "1")
+      expect(:delete => "/locations/1").to route_to("locations#destroy", :id => "1")
     end
 
   end

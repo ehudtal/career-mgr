@@ -5,7 +5,6 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.json
   def index
-    @opportunities = @opportunities.all
   end
 
   # GET /opportunities/1
@@ -56,8 +55,8 @@ class OpportunitiesController < ApplicationController
   # DELETE /opportunities/1.json
   def destroy
     employer = @opportunity.employer
-    
     @opportunity.destroy
+
     respond_to do |format|
       format.html { redirect_to employer_opportunities_url(employer), notice: 'Opportunity was successfully destroyed.' }
       format.json { head :no_content }

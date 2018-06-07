@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
+  render_views
 
   describe "GET #welcome" do
     it "returns http success" do

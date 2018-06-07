@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   get 'home/welcome'
   get 'home/new_opportunity', as: 'new_opportunity'
   
-  resources :employers do
+  resources :employers, shallow: true do
     resources :locations
-    resources :opportunities, shallow: true
+    resources :opportunities
   end
   
   resources :opportunities, only: [:index]

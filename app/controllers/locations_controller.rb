@@ -5,7 +5,6 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.json
   def index
-    @locations = @employer.locations
   end
 
   # GET /locations/1
@@ -15,7 +14,7 @@ class LocationsController < ApplicationController
 
   # GET /locations/new
   def new
-    @location = @employer.locations.build
+    @location = @locations.build
   end
 
   # GET /locations/1/edit
@@ -25,11 +24,11 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    @location = @employer.locations.build(location_params)
+    @location = @locations.build(location_params)
 
     respond_to do |format|
       if @location.save
-        format.html { redirect_to employer_location_path(@employer, @location), notice: 'Location was successfully created.' }
+        format.html { redirect_to location_path(@location), notice: 'Location was successfully created.' }
         format.json { render :show, status: :created, location: @location }
       else
         format.html { render :new }
@@ -43,7 +42,7 @@ class LocationsController < ApplicationController
   def update
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to employer_location_path(@employer, @location), notice: 'Location was successfully updated.' }
+        format.html { redirect_to location_path(@location), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location }
       else
         format.html { render :edit }
@@ -55,25 +54,29 @@ class LocationsController < ApplicationController
   # DELETE /locations/1
   # DELETE /locations/1.json
   def destroy
+    employer = @location.locateable
     @location.destroy
+
     respond_to do |format|
-      format.html { redirect_to employer_locations_url(@employer), notice: 'Location was successfully destroyed.' }
+      format.html { redirect_to employer_locations_url(employer), notice: 'Location was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_location
-      @location = @employer.locations.find(params[:id])
-    end
+  
+  def set_employer
+    @employer = Employer.find(params[:employer_id]) if params[:employer_id]
+    @locations = @employer ? @employer.locations : Location.all
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
-      params.require(:location).permit(:name)
-    end
-    
-    def set_employer
-      @employer = Employer.find(params[:employer_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_location
+    @location = @locations.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def location_params
+    params.require(:location).permit(:name)
+  end
 end
