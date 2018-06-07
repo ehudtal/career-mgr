@@ -50,5 +50,7 @@
   <%= @contact.contactable_type %>
 </p>
 
-<%= link_to 'Edit', edit_contact_path(@contact) %> |
-<%= link_to 'Back', contacts_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_contact_path(@contact), class: 'edit' %> |
+  <%= link_to 'Back', contacts_path %>
+</footer>

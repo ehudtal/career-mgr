@@ -10,5 +10,7 @@
   <%= @interest.description %>
 </p>
 
-<%= link_to 'Edit', edit_interest_path(@interest) %> |
-<%= link_to 'Back', interests_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_interest_path(@interest), class: 'edit' %> |
+  <%= link_to 'Back', interests_path, class: 'back' %>
+</footer>

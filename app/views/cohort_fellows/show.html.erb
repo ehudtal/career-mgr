@@ -45,5 +45,7 @@
   <%= @cohort_fellow.cohort_id %>
 </p>
 
-<%= link_to 'Edit', edit_cohort_fellow_path(@cohort_fellow) %> |
-<%= link_to 'Back', cohort_fellows_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_cohort_fellow_path(@cohort_fellow), class: 'edit' %> |
+  <%= link_to 'Back', cohort_fellows_path %>
+</footer>

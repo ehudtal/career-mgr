@@ -5,5 +5,7 @@
   <%= @location.name %>
 </p>
 
-<%= link_to 'Edit', edit_location_path(@location) %> |
-<%= link_to 'Back', locations_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_location_path(@location), class: 'edit' %> |
+  <%= link_to 'Back', locations_path, class: 'back' %>
+</footer>
