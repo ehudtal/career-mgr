@@ -99,3 +99,7 @@ tr:first-child {
 .checklist label {
   cursor: pointer;
 }
+
+#notice {
+  font-weight: bold;
+}
