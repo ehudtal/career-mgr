@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resources :tasks
   get 'home/welcome'
   get 'home/new_opportunity', as: 'new_opportunity'
   
   resources :employers, shallow: true do
     resources :locations
-    resources :opportunities
+    resources :opportunities do
+      resources :tasks
+    end
   end
   
   resources :opportunities, only: [:index]

@@ -1,10 +1,10 @@
 class TasksController < ApplicationController
+  before_action :set_opportunity
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
   end
 
   # GET /tasks/1
@@ -14,7 +14,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @task = @tasks.new
   end
 
   # GET /tasks/1/edit
@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = @tasks.new(task_params)
 
     respond_to do |format|
       if @task.save
@@ -54,21 +54,29 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
+    opportunity = @task.taskable
+    
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to opportunity_tasks_url(opportunity), notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
+  
+  def set_opportunity
+    @opportunity = Opportunity.find(params[:opportunity_id]) if params[:opportunity_id]
+    @tasks = @opportunity ? @opportunity.tasks : Task.all
+  end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = @tasks.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def task_params
-      params.require(:task).permit(:name, :due_at, :completed, :notes, :taskable_id, :taskable_type)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def task_params
+    params.require(:task).permit(:name, :due_at, :completed, :notes, :taskable_id, :taskable_type)
+  end
 end

@@ -3,12 +3,20 @@ require "rails_helper"
 RSpec.describe TasksController, type: :routing do
   describe "routing" do
 
-    it "routes to #index" do
-      expect(:get => "/tasks").to route_to("tasks#index")
-    end
+    describe 'nested under opportunities' do
+      let(:opportunity_id) { '1001' }
+      
+      it "routes to #index" do
+        expect(:get => "/opportunities/#{opportunity_id}/tasks").to route_to("tasks#index", opportunity_id: opportunity_id)
+      end
 
-    it "routes to #new" do
-      expect(:get => "/tasks/new").to route_to("tasks#new")
+      it "routes to #new" do
+        expect(:get => "/opportunities/#{opportunity_id}/tasks/new").to route_to("tasks#new", opportunity_id: opportunity_id)
+      end
+
+      it "routes to #create" do
+        expect(:post => "/opportunities/#{opportunity_id}/tasks").to route_to("tasks#create", opportunity_id: opportunity_id)
+      end
     end
 
     it "routes to #show" do
@@ -17,10 +25,6 @@ RSpec.describe TasksController, type: :routing do
 
     it "routes to #edit" do
       expect(:get => "/tasks/1/edit").to route_to("tasks#edit", :id => "1")
-    end
-
-    it "routes to #create" do
-      expect(:post => "/tasks").to route_to("tasks#create")
     end
 
     it "routes to #update via PUT" do

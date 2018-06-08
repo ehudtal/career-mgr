@@ -1,9 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @task.name %>
-</p>
+<h1><%= @task.opportunity.name %>: <%= @task.name %></h1>
 
 <p>
   <strong>Due at:</strong>
@@ -18,16 +15,6 @@
 <p>
   <strong>Notes:</strong>
   <%= @task.notes %>
-</p>
-
-<p>
-  <strong>Taskable:</strong>
-  <%= @task.taskable_id %>
-</p>
-
-<p>
-  <strong>Taskable type:</strong>
-  <%= @task.taskable_type %>
 </p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |
