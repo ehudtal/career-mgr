@@ -26,6 +26,26 @@
     <%= form.text_field :job_posting_url %>
   </div>
   
+  <h3>Tasks:</h3>
+  <ul>
+    <%= form.fields_for :tasks do |tasks_form| %>
+      <li>
+        <div class="field">
+          <%= tasks_form.label :name %>
+          <%= tasks_form.text_field :name %>
+        </div>
+        
+        <div class="field">
+          <%= tasks_form.label :due_at %>
+          <%= tasks_form.text_field :due_at, class: "datetime" %><br>
+
+          <%= tasks_form.check_box :_destroy %>
+          <%= tasks_form.label :_destroy, 'remove task', style: 'display: inline;' %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  
   <%= render 'industries/check_boxes', object: opportunity %>
   
   <%= render 'interests/check_boxes', object: opportunity %>
@@ -35,3 +55,7 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+  $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
+</script>

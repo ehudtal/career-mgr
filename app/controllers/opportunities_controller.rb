@@ -15,10 +15,12 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities/new
   def new
     @opportunity = @opportunities.build
+    3.times{ @opportunity.tasks.build }
   end
 
   # GET /opportunities/1/edit
   def edit
+    @opportunity.tasks.build
   end
 
   # POST /opportunities
@@ -77,6 +79,10 @@ class OpportunitiesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def opportunity_params
-    params.require(:opportunity).permit(:name, :description, :employer_id, :job_posting_url, industry_ids: [], interest_ids: [])
+    params.require(:opportunity).permit(
+      :name, :description, :employer_id, :job_posting_url, 
+      industry_ids: [], 
+      interest_ids: [], 
+      tasks_attributes: [:id, :name, :due_at, :_destroy])
   end
 end

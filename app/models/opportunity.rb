@@ -7,7 +7,7 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :interests
   has_and_belongs_to_many :locations
   
-  accepts_nested_attributes_for :industries
+  accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true
 
   validates :name, presence: true
   
