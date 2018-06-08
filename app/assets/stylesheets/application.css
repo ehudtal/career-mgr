@@ -115,3 +115,7 @@ tr:first-child {
 #notice {
   font-weight: bold;
 }
+
+.red-border {
+  border: 2px solid red;
+}

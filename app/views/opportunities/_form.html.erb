@@ -29,7 +29,7 @@
   <h3>Tasks:</h3>
   <ul>
     <%= form.fields_for :tasks do |tasks_form| %>
-      <li>
+      <li class="task_fields">
         <div class="field">
           <%= tasks_form.label :name %>
           <%= tasks_form.text_field :name %>
@@ -39,8 +39,8 @@
           <%= tasks_form.label :due_at %>
           <%= tasks_form.text_field :due_at, class: "datetime" %><br>
 
-          <%= tasks_form.check_box :_destroy %>
-          <%= tasks_form.label :_destroy, 'remove task', style: 'display: inline;' %>
+          <%= tasks_form.hidden_field :_destroy, class: "task_remove_hidden" %>
+          <%= link_to 'remove', '#', class: 'task_remove' %>
         </div>
       </li>
     <% end %>
@@ -58,4 +58,10 @@
 
 <script>
   $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
+  
+  $('.task_remove').click(function(event){
+    event.preventDefault();
+    $(this).closest('.task_fields').find('.task_remove_hidden').attr('value', '1');
+    $(this).closest('.task_fields').hide();
+  });
 </script>
