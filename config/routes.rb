@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tasks
   get 'home/welcome'
   get 'home/new_opportunity', as: 'new_opportunity'
   
