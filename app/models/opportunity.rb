@@ -5,6 +5,8 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :interests
   has_and_belongs_to_many :locations
   
+  accepts_nested_attributes_for :industries
+
   validates :name, presence: true
   
   before_save :normalize_url
