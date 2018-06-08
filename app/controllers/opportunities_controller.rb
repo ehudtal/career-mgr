@@ -15,7 +15,7 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities/new
   def new
     @opportunity = @opportunities.build
-    3.times{ @opportunity.tasks.build }
+    @opportunity.tasks.build
   end
 
   # GET /opportunities/1/edit
