@@ -26,6 +26,12 @@
     <%= form.text_field :job_posting_url %>
   </div>
   
+  <!-- 
+    Caution! If you edit the task sub-form below, you NEED to update
+    the corresponding new_task_fields method in opportunities.coffee file.
+    
+    Otherwise, dynamically added tasks in the form won't reflect the changes.
+  -->
   <h3>Tasks:</h3>
   <ul>
     <%= form.fields_for :tasks do |tasks_form| %>
