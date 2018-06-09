@@ -7,10 +7,10 @@ RSpec.describe Employer, type: :model do
   ##############
   
   it { should have_many :opportunities }
+  it { should have_many :locations }
 
   it { should have_and_belong_to_many :coaches }
   it { should have_and_belong_to_many :industries }
-  it { should have_and_belong_to_many :locations }
   
   #############
   # Validations

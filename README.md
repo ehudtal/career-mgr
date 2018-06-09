@@ -102,6 +102,16 @@ If you'd like to reset the database to the original seed data (with example empl
 
     docker-compose exec career-mgr rake db:seed
 
+## Testing
+
+You can run the test suite like so:
+
+    docker-compose exec career-mgr rspec
+
+You can open a dedicated terminal window and have tests run automatically as you code:
+
+    docker-compose exec career-mgr guard
+
 
 ## Conclusion
 

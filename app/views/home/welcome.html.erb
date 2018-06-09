@@ -1,12 +1,7 @@
-<h2>Complicated Things</h2>
-
+<%= link_to 'Add New Opportunity', new_opportunity_path, class: "button" %>
 <ul>
   <li><%= link_to "Employers (#{Employer.count})", employers_path %></li>
-</ul>
-
-<h2>Simple Things</h2>
-
-<ul>
+  <li><%= link_to "Opportunities (#{Opportunity.count})", opportunities_path %></li>
   <li><%= link_to "Industries (#{Industry.count})", industries_path %></li>
   <li><%= link_to "Interests (#{Interest.count})", interests_path %></li>
 </ul>

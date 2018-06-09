@@ -1,0 +1,10 @@
+# rebuild/reload the docker container
+docker-compose build career-mgr
+docker-compose stop career-mgr
+docker-compose up -d --force-recreate career-mgr
+
+# run db migrations
+docker-compose exec career-mgr rake db:migrate
+
+# run specs!
+docker-compose exec career-mgr rspec

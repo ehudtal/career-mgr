@@ -1,12 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @employer.name %>
-</p>
+<h1><%= @employer.name %></h1>
 
+<h2>Industries</h2>
 <%= render 'industries/list', object: @employer %>
 
-<%= link_to "Opportunities (#{@employer.opportunities.count})", employer_opportunities_path(@employer) %> |
-<%= link_to 'Edit', edit_employer_path(@employer) %> |
-<%= link_to 'Back', employers_path %>
+<h2>Opportunities</h2>
+<%= render "opportunities/list", opportunities: @employer.opportunities, employer: @employer %>
+<br />
+<%= link_to 'Add Opportunity', new_employer_opportunity_path(@employer), class: 'button' %>
+
+<h2>Locations</h2>
+<%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_employer_path(@employer), class: 'edit' %> |
+  <%= link_to 'Back to All Employers', employers_path, class: 'back' %>
+</footer>

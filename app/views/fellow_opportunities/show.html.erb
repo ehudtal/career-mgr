@@ -25,5 +25,7 @@
   <%= @fellow_opportunity.opportunity_stage_id %>
 </p>
 
-<%= link_to 'Edit', edit_fellow_opportunity_path(@fellow_opportunity) %> |
-<%= link_to 'Back', fellow_opportunities_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_fellow_opportunity_path(@fellow_opportunity), class: 'edit' %> |
+  <%= link_to 'Back', fellow_opportunities_path, class: 'back' %>
+</footer>

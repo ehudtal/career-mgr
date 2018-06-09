@@ -24,6 +24,7 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe EmployersController, type: :controller do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Employer. As you add validations to Employer, be sure to
@@ -59,6 +60,12 @@ RSpec.describe EmployersController, type: :controller do
       get :new, params: {}, session: valid_session
       expect(response).to be_successful
     end
+    
+    it "sets the redirect session variable when requested" do
+      get :new, params: {redirect: 'new_opportunity'}, session: valid_session
+      expect(response).to be_successful
+      expect(session[:requested_redirect]).to eq('new_opportunity')
+    end
   end
 
   describe "GET #edit" do
@@ -82,6 +89,11 @@ RSpec.describe EmployersController, type: :controller do
         expect(response).to redirect_to(Employer.last)
       end
       
+      it "redirects to new opporunity if requested" do
+        post :create, params: {employer: valid_attributes}, session: valid_session.merge(requested_redirect: 'new_opportunity')
+        expect(response).to redirect_to(new_employer_opportunity_path(Employer.last))
+      end
+
       it "associates specified industries with the employer" do
         post :create, params: {employer: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
         expect(Employer.last.industries).to include(industry)

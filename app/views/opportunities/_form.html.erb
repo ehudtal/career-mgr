@@ -20,6 +20,33 @@
     <%= form.label :description %>
     <%= form.text_area :description %>
   </div>
+
+  <div class="field">
+    <%= form.label :job_posting_url %>
+    <%= form.text_field :job_posting_url %>
+  </div>
+  
+  <h3>Tasks:</h3>
+  <ul>
+    <%= form.fields_for :tasks do |tasks_form| %>
+      <li class="task_fields removeable_fields">
+        <div class="field">
+          <%= tasks_form.label :name %>
+          <%= tasks_form.text_field :name %>
+        </div>
+        
+        <div class="field">
+          <%= tasks_form.label :due_at %>
+          <%= tasks_form.text_field :due_at, class: "datetime" %><br>
+
+          <%= tasks_form.hidden_field :_destroy, class: "remove_hidden" %>
+          <%= link_to 'remove', '#', class: 'remove' %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  
+  <p><%= link_to '+add another task', '#', class: 'new_task' %></p>
   
   <%= render 'industries/check_boxes', object: opportunity %>
   

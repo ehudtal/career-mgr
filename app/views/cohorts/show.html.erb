@@ -10,5 +10,7 @@
   <%= @cohort.course_id %>
 </p>
 
-<%= link_to 'Edit', edit_cohort_path(@cohort) %> |
-<%= link_to 'Back', cohorts_path %>
+<footer class="actions">
+  <%= link_to 'Edit', edit_cohort_path(@cohort), class: 'edit' %> |
+  <%= link_to 'Back', cohorts_path %>
+</footer>

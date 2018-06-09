@@ -2,5 +2,5 @@
 
 <%= render 'form', employer: @employer, opportunity: @opportunity %>
 
-<%= link_to 'Show', employer_opportunity_path(@employer, @opportunity) %> |
-<%= link_to 'Back', employer_opportunities_path(@employer) %>
+<%= link_to 'Show', opportunity_path(@opportunity) %> |
+<%= link_to 'Back', employer_opportunities_path(@opportunity.employer) %>

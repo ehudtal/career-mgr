@@ -5,7 +5,6 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.json
   def index
-    @opportunities = @employer.opportunities.all
   end
 
   # GET /opportunities/1
@@ -15,21 +14,23 @@ class OpportunitiesController < ApplicationController
 
   # GET /opportunities/new
   def new
-    @opportunity = @employer.opportunities.build
+    @opportunity = @opportunities.build
+    @opportunity.tasks.build
   end
 
   # GET /opportunities/1/edit
   def edit
+    @opportunity.tasks.build
   end
 
   # POST /opportunities
   # POST /opportunities.json
   def create
-    @opportunity = @employer.opportunities.build(opportunity_params)
+    @opportunity = @opportunities.build(opportunity_params)
 
     respond_to do |format|
       if @opportunity.save
-        format.html { redirect_to employer_opportunity_path(@employer, @opportunity), notice: 'Opportunity was successfully created.' }
+        format.html { redirect_to @opportunity, notice: 'Opportunity was successfully created.' }
         format.json { render :show, status: :created, location: @opportunity }
       else
         format.html { render :new }
@@ -43,7 +44,7 @@ class OpportunitiesController < ApplicationController
   def update
     respond_to do |format|
       if @opportunity.update(opportunity_params)
-        format.html { redirect_to employer_opportunity_path(@employer, @opportunity), notice: 'Opportunity was successfully updated.' }
+        format.html { redirect_to @opportunity, notice: 'Opportunity was successfully updated.' }
         format.json { render :show, status: :ok, location: @opportunity }
       else
         format.html { render :edit }
@@ -55,25 +56,33 @@ class OpportunitiesController < ApplicationController
   # DELETE /opportunities/1
   # DELETE /opportunities/1.json
   def destroy
+    employer = @opportunity.employer
     @opportunity.destroy
+
     respond_to do |format|
-      format.html { redirect_to employer_opportunities_url(@employer), notice: 'Opportunity was successfully destroyed.' }
+      format.html { redirect_to employer_opportunities_url(employer), notice: 'Opportunity was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_opportunity
-      @opportunity = @employer.opportunities.find(params[:id])
-    end
+  
+  def set_employer
+    @employer = Employer.find(params[:employer_id]) if params[:employer_id]
+    @opportunities = @employer ? @employer.opportunities : Opportunity.all
+  end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_opportunity
+    @opportunity = @opportunities.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def opportunity_params
-      params.require(:opportunity).permit(:name, :description, :employer_id, industry_ids: [], interest_ids: [])
-    end
-    
-    def set_employer
-      @employer = Employer.find(params[:employer_id])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def opportunity_params
+    params.require(:opportunity).permit(
+      :name, :description, :employer_id, :job_posting_url, 
+      industry_ids: [], 
+      interest_ids: [], 
+      tasks_attributes: [:id, :name, :due_at, :_destroy])
+  end
 end

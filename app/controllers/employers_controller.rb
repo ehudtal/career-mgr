@@ -28,7 +28,10 @@ class EmployersController < ApplicationController
 
     respond_to do |format|
       if @employer.save
-        format.html { redirect_to @employer, notice: 'Employer was successfully created.' }
+        format.html do
+          redirect_to(follow_redirect || employer_path(@employer), notice: 'Employer was successfully created.')
+        end
+        
         format.json { render :show, status: :created, location: @employer }
       else
         format.html { render :new }

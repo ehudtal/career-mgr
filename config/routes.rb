@@ -1,15 +1,20 @@
 Rails.application.routes.draw do
   get 'home/welcome'
+  get 'home/new_opportunity', as: 'new_opportunity'
   
-  resources :employers do
-    resources :opportunities
+  resources :employers, shallow: true do
+    resources :locations
+    resources :opportunities do
+      resources :tasks
+    end
   end
+  
+  resources :opportunities, only: [:index]
 
   resources :fellow_opportunities
   resources :opportunity_stages
   resources :employment_statuses
   resources :coaches
-  resources :locations
   resources :interests
   resources :industries
   resources :cohort_fellows

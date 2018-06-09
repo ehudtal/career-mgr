@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_153600) do
+ActiveRecord::Schema.define(version: 2018_06_08_203646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,20 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.index ["site_id"], name: "index_courses_on_site_id"
   end
 
+  create_table "deadlines", force: :cascade do |t|
+    t.string "name"
+    t.datetime "due_at"
+    t.boolean "completed"
+    t.text "notes"
+    t.integer "task_id"
+    t.string "task_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["completed"], name: "index_deadlines_on_completed"
+    t.index ["due_at"], name: "index_deadlines_on_due_at"
+    t.index ["task_id", "task_type"], name: "index_deadlines_on_task_id_and_task_type"
+  end
+
   create_table "employers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -96,13 +110,6 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.bigint "employer_id", null: false
     t.index ["employer_id"], name: "index_employers_industries_on_employer_id"
     t.index ["industry_id"], name: "index_employers_industries_on_industry_id"
-  end
-
-  create_table "employers_locations", id: false, force: :cascade do |t|
-    t.bigint "location_id", null: false
-    t.bigint "employer_id", null: false
-    t.index ["employer_id"], name: "index_employers_locations_on_employer_id"
-    t.index ["location_id"], name: "index_employers_locations_on_location_id"
   end
 
   create_table "employment_statuses", force: :cascade do |t|
@@ -186,6 +193,9 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "locateable_id"
+    t.string "locateable_type"
+    t.index ["locateable_id", "locateable_type"], name: "index_locations_on_locateable_id_and_locateable_type"
   end
 
   create_table "locations_opportunities", id: false, force: :cascade do |t|
@@ -201,6 +211,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.integer "employer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "job_posting_url"
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
   end
 
@@ -217,6 +228,20 @@ ActiveRecord::Schema.define(version: 2018_05_25_153600) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_sites_on_name", unique: true
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "name"
+    t.date "due_at"
+    t.boolean "completed", default: false
+    t.text "notes"
+    t.integer "taskable_id"
+    t.string "taskable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["completed"], name: "index_tasks_on_completed"
+    t.index ["due_at"], name: "index_tasks_on_due_at"
+    t.index ["taskable_id", "taskable_type"], name: "index_tasks_on_taskable_id_and_taskable_type"
   end
 
 end

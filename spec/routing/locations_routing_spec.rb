@@ -4,11 +4,11 @@ RSpec.describe LocationsController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/locations").to route_to("locations#index")
+      expect(:get => "/employers/1/locations").to route_to("locations#index", employer_id: '1')
     end
 
     it "routes to #new" do
-      expect(:get => "/locations/new").to route_to("locations#new")
+      expect(:get => "/employers/1/locations/new").to route_to("locations#new", employer_id: '1')
     end
 
     it "routes to #show" do
@@ -20,7 +20,7 @@ RSpec.describe LocationsController, type: :routing do
     end
 
     it "routes to #create" do
-      expect(:post => "/locations").to route_to("locations#create")
+      expect(:post => "/employers/1/locations").to route_to("locations#create", employer_id: '1')
     end
 
     it "routes to #update via PUT" do
