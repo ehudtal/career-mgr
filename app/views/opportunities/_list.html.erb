@@ -1,22 +1,26 @@
-<table>
-  <thead>
-    <tr>
-      <th>Employer</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th colspan="2">Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% opportunities.each do |opportunity| %>
+<% if opportunities.empty? %>
+  <p class="empty-list">There are no opportunities for this employer yet.</p>
+<% else %>
+  <table>
+    <thead>
       <tr>
-        <td><%= opportunity.employer.name %>
-        <td><%= link_to opportunity.name, opportunity_path(opportunity) %></td>
-        <td><%= opportunity.description %></td>
-        <td><%= link_to 'Edit', edit_opportunity_path(opportunity), class: 'edit' %></td>
-        <td><%= link_to 'Delete', opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        <th>Employer</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th colspan="2">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% opportunities.each do |opportunity| %>
+        <tr>
+          <td><%= opportunity.employer.name %>
+          <td><%= link_to opportunity.name, opportunity_path(opportunity) %></td>
+          <td><%= opportunity.description %></td>
+          <td><%= link_to 'Edit', edit_opportunity_path(opportunity), class: 'edit' %></td>
+          <td><%= link_to 'Delete', opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
