@@ -4,6 +4,8 @@
 
 $ ->
   new_task_fields = (index) ->
+    index = $('.task_fields').length
+    
     "<li class=\"task_fields removeable_fields\">
         <div class=\"field\">
           <label for=\"opportunity_tasks_attributes_#{index}_name\">Name</label>
@@ -30,7 +32,6 @@ $ ->
   $('a.new_task').click (event) ->
     event.preventDefault()
 
-    index = $('.task_fields').length
     $('.task_fields').last().after(new_task_fields(index))
     
     $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
