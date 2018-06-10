@@ -10,14 +10,5 @@ class Opportunity < ApplicationRecord
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true
 
   validates :name, presence: true
-  
-  before_save :normalize_url
-  
-  private
-  
-  def normalize_url
-    unless job_posting_url.blank? || job_posting_url =~ /^http/
-      self.job_posting_url = "http://#{job_posting_url}"
-    end
-  end
+  validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
 end

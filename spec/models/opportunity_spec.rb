@@ -21,42 +21,27 @@ RSpec.describe Opportunity, type: :model do
 
   it { should validate_presence_of :name }
   
-  ###############
-  # Normalization
-  ###############
-
-  describe 'normalizing job posting url' do
-    let(:url_without_protocol) { 'example.com' }
-    let(:url_with_protocol) { 'http://example.com' }
-    
-    it "adds protocol if missing" do
-      opportunity = Opportunity.new job_posting_url: url_without_protocol
-      opportunity.send(:normalize_url)
+  describe 'validating job_posting_url' do
+    it "rejects invalid urls" do
+      opportunity = Opportunity.new job_posting_url: 'a b c'
       
-      expect(opportunity.job_posting_url).to eq url_with_protocol
+      expect(opportunity).to_not be_valid
+      expect(opportunity.errors[:job_posting_url]).to include('is an invalid URL')
     end
     
-    it "doesn't add protocol if already included" do
-      opportunity = Opportunity.new job_posting_url: url_with_protocol
-      opportunity.send(:normalize_url)
+    it "allows blank urls" do
+      opportunity = Opportunity.new
+      opportunity.valid?
       
-      expect(opportunity.job_posting_url).to eq url_with_protocol
+      expect(opportunity.errors[:job_posting_url]).to_not include('is an invalid URL')
     end
     
-    it "doesn't add protocol of url is blank" do
-      opportunity = Opportunity.new job_posting_url: ''
-      opportunity.send(:normalize_url)
-      
-      expect(opportunity.job_posting_url).to eq ''
-    end
-    
-    it "normalizes before save" do
-      opportunity = Opportunity.new attributes_for(:opportunity)
+    it "sets the protocol if missing" do
+      url = 'example.com'
+      opportunity = Opportunity.new job_posting_url: url
+      opportunity.valid?
 
-      allow(opportunity).to receive(:employer).and_return(employer)
-      expect(opportunity).to receive(:normalize_url)
-
-      opportunity.save
+      expect(opportunity.job_posting_url).to eq("http://#{url}")
     end
   end
 end
