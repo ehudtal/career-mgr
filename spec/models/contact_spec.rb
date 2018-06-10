@@ -24,4 +24,6 @@ RSpec.describe Contact, type: :model do
     subject { create :contact }
     it { should validate_uniqueness_of(:contactable_id).scoped_to(:contactable_type) }
   end
+  
+  it_behaves_like "valid url", :url
 end
