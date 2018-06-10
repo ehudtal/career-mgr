@@ -54,6 +54,8 @@
   
   <p><%= link_to '+add another task', '#', class: 'new_task' %></p>
   
+  <%= render 'locations/check_boxes', parent: opportunity.employer, object: opportunity %>
+  
   <%= render 'industries/check_boxes', object: opportunity %>
   
   <%= render 'interests/check_boxes', object: opportunity %>

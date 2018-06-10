@@ -4,7 +4,7 @@
   <table>
     <thead>
       <tr>
-        <th>Employer</th>
+        <th><%= locations.first.locateable.class.name %></th>
         <th>Name</th>
         <th>Address</th>
         <th colspan="2">Actions</th>
@@ -12,11 +12,11 @@
     </thead>
 
     <tbody>
-      <% locations.each do |location| %>
+      <% locations.order('name asc').each do |location| %>
         <tr>
-          <td><%= location.employer.name %>
+          <td><%= location.locateable.name %>
           <td><%= link_to location.name, location_path(location) %></td>
-          <td><%= location.friendly_address %></td>
+          <td><%= location.label %></td>
           <td><%= link_to 'Edit', edit_location_path(location), class: 'edit' %></td>
           <td><%= link_to 'Delete', location_path(location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
         </tr>

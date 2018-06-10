@@ -82,7 +82,8 @@ class OpportunitiesController < ApplicationController
     params.require(:opportunity).permit(
       :name, :description, :employer_id, :job_posting_url, 
       industry_ids: [], 
-      interest_ids: [], 
+      interest_ids: [],
+      location_ids: [],
       tasks_attributes: [:id, :name, :due_at, :_destroy])
   end
 end
