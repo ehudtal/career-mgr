@@ -45,7 +45,7 @@ guard :rspec, cmd: "rspec" do
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
   
-  watch(rails.views) do |m|
+  watch(rails.view_dirs) do |m|
     [rspec.spec.call("controllers/#{m[1]}_controller")]
   end
 
