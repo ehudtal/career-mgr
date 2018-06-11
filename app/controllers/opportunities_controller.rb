@@ -84,6 +84,11 @@ class OpportunitiesController < ApplicationController
       industry_ids: [], 
       interest_ids: [],
       location_ids: [],
-      tasks_attributes: [:id, :name, :due_at, :_destroy])
+      tasks_attributes: [:id, :name, :due_at, :_destroy],
+      locations_attributes: [
+        :id, :name, :locateable_id, :locateable_type,
+        contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
+      ]
+    )
   end
 end

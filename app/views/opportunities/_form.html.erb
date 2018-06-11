@@ -33,7 +33,8 @@
     Otherwise, dynamically added tasks in the form won't reflect the changes.
   -->
   <h3>Tasks:</h3>
-  <ul>
+  
+  <ul class="task_forms">
     <%= form.fields_for :tasks do |tasks_form| %>
       <li class="task_fields removeable_fields">
         <div class="field">
@@ -55,6 +56,11 @@
   <p><%= link_to '+add another task', '#', class: 'new_task' %></p>
   
   <%= render 'locations/check_boxes', parent: opportunity.employer, object: opportunity %>
+  
+  <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
+  </ul>
+
+  <p><%= link_to '+add another location', '#', class: 'new_location' %></p>
   
   <%= render 'industries/check_boxes', object: opportunity %>
   

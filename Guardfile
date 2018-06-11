@@ -44,6 +44,10 @@ guard :rspec, cmd: "rspec" do
   rails = dsl.rails(view_extensions: %w(erb haml slim))
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
+  
+  watch(rails.views) do |m|
+    [rspec.spec.call("controllers/#{m[1]}_controller")]
+  end
 
   watch(rails.controllers) do |m|
     [
