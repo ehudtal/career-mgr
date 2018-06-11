@@ -27,4 +27,15 @@ RSpec.describe Course, type: :model do
   it { should validate_numericality_of(:year).is_less_than(2030) }
   it { should validate_numericality_of(:year).allow_nil }
   it { should validate_numericality_of(:year).only_integer }
+  
+  ##################
+  # Instance methods
+  ##################
+
+  describe 'label' do
+    it "should combine semester and year" do
+      course = Course.new semester: 'Fall', year: 2018
+      expect(course.label).to eq('Fall 2018')
+    end
+  end
 end

@@ -8,4 +8,8 @@ class Course < ApplicationRecord
   validates :site_id, presence: true, uniqueness: {scope: [:semester, :year]}
   validates :semester, inclusion: {in: VALID_SEMESTERS}
   validates :year, numericality: {greater_than: 2010, less_than: 2030, allow_nil: true, only_integer: true}
+  
+  def label
+    "#{semester} #{year}"
+  end
 end

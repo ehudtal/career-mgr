@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   
   resources :opportunities, only: [:index]
 
+  resources :sites, shallow: true do
+    resources :courses
+  end
+
   resources :fellow_opportunities
   resources :opportunity_stages
   resources :employment_statuses
@@ -19,8 +23,6 @@ Rails.application.routes.draw do
   resources :industries
   resources :cohort_fellows
   resources :cohorts
-  resources :courses
-  resources :sites
   resources :contacts
   resources :fellows
   
