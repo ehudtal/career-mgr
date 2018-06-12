@@ -41,4 +41,7 @@ en:
         key:
           one: "Fellow ID"
           other: "Fellow IDs"
+        gpa:
+          one: "GPA"
+          other: "GPAs"
         

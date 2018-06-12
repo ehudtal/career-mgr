@@ -5,21 +5,14 @@
 <table>
   <thead>
     <tr>
-      <th>Key</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Graduation year</th>
-      <th>Graduation semester</th>
-      <th>Graduation fiscal year</th>
-      <th>Interests description</th>
+      <th>Student Key</th>
+      <th>Name</th>
+      <th>Graduation</th>
       <th>Major</th>
-      <th>Affiliations</th>
-      <th>Gpa</th>
-      <th>Linkedin url</th>
-      <th>Staff notes</th>
+      <th>GPA</th>
       <th>Efficacy score</th>
       <th>Employment status</th>
-      <th colspan="3"></th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
 
@@ -27,22 +20,14 @@
     <% @fellows.each do |fellow| %>
       <tr>
         <td><%= fellow.key %></td>
-        <td><%= fellow.first_name %></td>
-        <td><%= fellow.last_name %></td>
-        <td><%= fellow.graduation_year %></td>
-        <td><%= fellow.graduation_semester %></td>
-        <td><%= fellow.graduation_fiscal_year %></td>
-        <td><%= fellow.interests_description %></td>
-        <td><%= fellow.major %></td>
-        <td><%= fellow.affiliations %></td>
-        <td><%= fellow.gpa %></td>
-        <td><%= fellow.linkedin_url %></td>
-        <td><%= fellow.staff_notes %></td>
-        <td><%= fellow.efficacy_score %></td>
-        <td><%= fellow.employment_status_id %></td>
-        <td><%= link_to 'Show', fellow %></td>
-        <td><%= link_to 'Edit', edit_fellow_path(fellow) %></td>
-        <td><%= link_to 'Destroy', fellow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to fellow.full_name, fellow %></td>
+        <td><%= fellow.graduation %></td>
+        <td><%= fellow.major || 'N/A' %></td>
+        <td><%= fellow.gpa || 'N/A' %></td>
+        <td><%= fellow.efficacy_score || 'N/A' %></td>
+        <td><%= fellow.employment_status.name %></td>
+        <td><%= link_to 'Edit', edit_fellow_path(fellow), class: 'edit' %></td>
+        <td><%= link_to 'Delete', fellow, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
       </tr>
     <% end %>
   </tbody>

@@ -93,4 +93,38 @@ RSpec.describe Fellow, type: :model do
       expect(fellow.cohort).to eq(second_cohort)
     end
   end
+  
+  describe '#full_name' do
+    it "combines first and last name" do
+      fellow = Fellow.new first_name: 'Bob', last_name: 'Smith'
+      expect(fellow.full_name).to eq('Bob Smith')
+    end
+    
+    it "uses only first name if last is missing" do
+      fellow = Fellow.new first_name: 'Bob'
+      expect(fellow.full_name).to eq('Bob')
+    end
+    
+    it "uses only last name if first is missing" do
+      fellow = Fellow.new last_name: 'Smith'
+      expect(fellow.full_name).to eq('Smith')
+    end
+  end
+  
+  describe '#graduation' do
+    it "combines semester and year" do
+      fellow = Fellow.new graduation_semester: 'Fall', graduation_year: 2018
+      expect(fellow.graduation).to eq('Fall 2018')
+    end
+
+    it "uses only semester if year is missing" do
+      fellow = Fellow.new graduation_semester: 'Fall'
+      expect(fellow.graduation).to eq('Fall')
+    end
+
+    it "uses only year if semester is missing" do
+      fellow = Fellow.new graduation_year: 2018
+      expect(fellow.graduation).to eq('2018')
+    end
+  end
 end

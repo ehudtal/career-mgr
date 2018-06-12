@@ -15,10 +15,12 @@ class FellowsController < ApplicationController
   # GET /fellows/new
   def new
     @fellow = Fellow.new
+    @fellow.build_contact
   end
 
   # GET /fellows/1/edit
   def edit
+    @fellow.build_contact if @fellow.contact.nil?
   end
 
   # POST /fellows
@@ -74,7 +76,8 @@ class FellowsController < ApplicationController
         :interests_description, :major, :affiliations, :gpa, :linkedin_url, :staff_notes, :efficacy_score, 
         :employment_status_id,
         industry_ids: [], 
-        interest_ids: []
+        interest_ids: [],
+        contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
       )
     end
 end

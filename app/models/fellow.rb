@@ -2,6 +2,7 @@ require 'digest/md5'
 
 class Fellow < ApplicationRecord
   has_one :contact, as: :contactable
+  accepts_nested_attributes_for :contact
   
   has_many :cohort_fellows
   has_many :cohorts, through: :cohort_fellows
@@ -24,6 +25,14 @@ class Fellow < ApplicationRecord
   
   def cohort
     cohorts.order('id desc').first
+  end
+  
+  def full_name
+    [first_name, last_name].join(' ').strip
+  end
+  
+  def graduation
+    [graduation_semester, graduation_year].join(' ').strip
   end
   
   private
