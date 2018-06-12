@@ -5,10 +5,6 @@ RSpec.describe CoursesController, type: :routing do
     let(:site_id) { '1001' }
     
     describe 'via site' do
-      it "routes to #index" do
-        expect(:get => "/sites/#{site_id}/courses").to route_to("courses#index", site_id: site_id)
-      end
-
       it "routes to #new" do
         expect(:get => "/sites/#{site_id}/courses/new").to route_to("courses#new", site_id: site_id)
       end

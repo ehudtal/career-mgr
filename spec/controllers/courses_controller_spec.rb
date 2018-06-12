@@ -44,14 +44,6 @@ RSpec.describe CoursesController, type: :controller do
   # CoursesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "returns a success response" do
-      course = Course.create! valid_attributes
-      get :index, params: {site_id: site.id}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
-
   describe "GET #show" do
     it "returns a success response" do
       course = Course.create! valid_attributes
@@ -85,7 +77,7 @@ RSpec.describe CoursesController, type: :controller do
 
       it "redirects to the created course" do
         post :create, params: {site_id: site.id, course: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Course.last)
+        expect(response).to redirect_to(site)
       end
     end
 
@@ -117,7 +109,7 @@ RSpec.describe CoursesController, type: :controller do
       it "redirects to the course" do
         course = Course.create! valid_attributes
         put :update, params: {id: course.to_param, course: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(course)
+        expect(response).to redirect_to(site)
       end
     end
 
@@ -141,7 +133,7 @@ RSpec.describe CoursesController, type: :controller do
     it "redirects to the courses list" do
       course = Course.create! valid_attributes
       delete :destroy, params: {id: course.to_param}, session: valid_session
-      expect(response).to redirect_to(site_courses_url(site.id))
+      expect(response).to redirect_to(site_url(site.id))
     end
   end
 

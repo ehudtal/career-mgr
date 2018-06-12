@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :opportunities, only: [:index]
 
   resources :sites, shallow: true do
-    resources :courses
+    resources :courses, except: [:index]
   end
 
   resources :fellow_opportunities
