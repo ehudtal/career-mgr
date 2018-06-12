@@ -61,3 +61,7 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
     employer.opportunities.create name: fruit, description: "Buying and selling #{fruit}"
   end
 end
+
+['Unemployed', 'Quality (Grad School)', 'Quality', 'Part Quality', 'Not Quality', 'Service', 'Unknown'].each do |status|
+  EmploymentStatus.create name: status
+end

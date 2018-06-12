@@ -30,6 +30,8 @@ RSpec.describe FellowsController, type: :controller do
   # Fellow. As you add validations to Fellow, be sure to
   # adjust the attributes here as well.
   let(:employment_status) { build :employment_status, id: 1001 }
+  let(:industry) { create :industry }
+  let(:interest) { create :interest }
   
   let(:valid_attributes) { attributes_for :fellow, employment_status_id: employment_status.id }
   let(:invalid_attributes) { {first_name: ''} }
@@ -112,6 +114,22 @@ RSpec.describe FellowsController, type: :controller do
         put :update, params: {id: fellow.to_param, fellow: valid_attributes}, session: valid_session
         expect(response).to redirect_to(fellow)
       end
+    end
+
+    it "associates specified industries with the fellow" do
+      fellow = Fellow.create! valid_attributes
+      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+      fellow.reload
+    
+      expect(fellow.industries).to include(industry)
+    end
+
+    it "associates specified interests with the fellow" do
+      fellow = Fellow.create! valid_attributes
+      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+      fellow.reload
+    
+      expect(fellow.interests).to include(interest)
     end
 
     context "with invalid params" do

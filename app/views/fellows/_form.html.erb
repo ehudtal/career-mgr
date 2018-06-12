@@ -12,11 +12,6 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :key %>
-    <%= form.text_field :key %>
-  </div>
-
-  <div class="field">
     <%= form.label :first_name %>
     <%= form.text_field :first_name %>
   </div>
@@ -78,8 +73,12 @@
 
   <div class="field">
     <%= form.label :employment_status_id %>
-    <%= form.number_field :employment_status_id %>
+    <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
   </div>
+  
+  <%= render 'industries/check_boxes', object: fellow %>
+  
+  <%= render 'interests/check_boxes', object: fellow %>
 
   <div class="actions">
     <%= form.submit %>
