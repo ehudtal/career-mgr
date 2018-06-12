@@ -1,3 +1,4 @@
+require'digest/md5'
 require 'rails_helper'
 
 RSpec.describe Fellow, type: :model do
@@ -47,6 +48,33 @@ RSpec.describe Fellow, type: :model do
   it { should validate_numericality_of(:efficacy_score).is_greater_than_or_equal_to(0.0) }
   it { should validate_numericality_of(:efficacy_score).is_less_than_or_equal_to(1.0) }
   it { should validate_numericality_of(:efficacy_score).allow_nil }
+  
+  ###############
+  # Normalization
+  ###############
+
+  describe 'student key' do
+    it "auto-generates upon save" do
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+      hash = Digest::MD5.hexdigest([fellow.first_name, fellow.last_name, fellow.graduation_year, 0].join('-'))[0,4]
+      
+      expect(fellow.key).to eq("BS18#{hash}".upcase)
+    end
+    
+    it "ensures the key is always unique" do
+      previous_fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+
+      hash = Digest::MD5.hexdigest([fellow.first_name, fellow.last_name, fellow.graduation_year, 1].join('-'))[0,4]
+      
+      expect(fellow.key).to eq("BS18#{hash}".upcase)
+    end
+    
+    it "doesn't generate a key if one already exists" do
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018', key: 'turtles'
+      expect(fellow.key).to eq('turtles')
+    end
+  end
   
   ##################
   # Instance methods
