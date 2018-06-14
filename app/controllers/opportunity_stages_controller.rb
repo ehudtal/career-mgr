@@ -69,6 +69,6 @@ class OpportunityStagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def opportunity_stage_params
-      params.require(:opportunity_stage).permit(:name, :probability)
+      params.require(:opportunity_stage).permit(:name, :position, :probability)
     end
 end

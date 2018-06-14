@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_13_223300) do
+ActiveRecord::Schema.define(version: 2018_06_14_160256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(version: 2018_06_13_223300) do
     t.decimal "probability", precision: 8, scale: 4
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["name"], name: "index_opportunity_stages_on_name", unique: true
   end
 

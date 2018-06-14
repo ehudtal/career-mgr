@@ -65,3 +65,13 @@ end
 ['Unemployed', 'Quality (Grad School)', 'Quality', 'Part Quality', 'Not Quality', 'Service', 'Unknown'].each do |status|
   EmploymentStatus.create name: status
 end
+
+opportunity_stages = OpportunityStage.create([
+  {position: 0, probability: 0.01, name: 'notified'},
+  {position: 1, probability: 0.05, name: 'interested'},
+  {position: 2, probability: 0.1,  name: 'applying'},
+  {position: 3, probability: 0.15, name: 'application submitted'},
+  {position: 4, probability: 0.95, name: 'accepted'},
+  {position: 5, probability: 1.0,  name: 'committed'},
+  {position: 6, probability: 0.0,  name: 'rejected'}
+])
