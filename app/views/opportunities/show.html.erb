@@ -21,6 +21,8 @@
 <%= render 'industries/list', object: @opportunity %>
 <%= render 'interests/list', object: @opportunity %>
 
+<%= link_to 'Find Candidates', opportunity_candidates_path(@opportunity), class: "button" %>
+
 <footer class="actions">
   <%= link_to 'Edit', edit_opportunity_path(@opportunity), class: 'edit' %> |
   <%= link_to 'Back', :back, class: 'back' %>

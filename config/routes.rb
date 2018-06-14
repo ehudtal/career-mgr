@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :locations
     resources :opportunities do
       resources :tasks
+      resources :candidates, only: [:index, :create]
     end
   end
   

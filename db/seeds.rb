@@ -7,10 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # remove all existing objects to start fresh!
-[Industry, Interest, Employer, Opportunity].each(&:destroy_all)
+[Industry, Interest, Employer, Opportunity, EmploymentStatus, OpportunityStage, Fellow].each(&:destroy_all)
 
 industries = [
-  '', 'Accounting', 'Advertising', 'Aerospace', 'Banking', 'Beauty / Cosmetics', 'Biotechnology', 'Business', 
+  'Accounting', 'Advertising', 'Aerospace', 'Banking', 'Beauty / Cosmetics', 'Biotechnology', 'Business', 
   'Chemical', 'Communications', 'Computer Engineering', 'Computer Hardware', 'Education', 'Electronics', 
   'Employment / Human Resources', 'Energy', 'Fashion', 'Film', 'Financial Services', 'Fine Arts', 
   'Food & Beverage', 'Health', 'Information Technology', 'Insurance', 'Journalism / News / Media', 'Law', 
@@ -20,8 +20,10 @@ industries = [
 ]
     
 industries.sort.each do |name|
-  Industry.create(name: name)
+  Industry.create!(name: name)
 end
+
+industry_accounting = Industry.find_by name: 'Accounting'
 
 interests = [
   'Accounting', 'African American Studies', 'African Studies', 'Agriculture', 'American Indian Studies', 
@@ -44,29 +46,36 @@ interests = [
 ]
     
 interests.sort.each do |name|
-  Interest.create(name: name)
+  Interest.create!(name: name)
 end
+
+interest_accounting = Interest.find_by name: 'Accounting'
+
 
 fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Strawberries']
 
 ['ABC Employer', 'DEF Employer'].each do |name|
-  employer = Employer.create(name: name)
+  employer = Employer.create!(name: name)
   
-  Industry.limit(2).each do |industry|
+  Industry.where.not(name: 'Accounting').limit(2).each do |industry|
     employer.industries << industry
   end
   
+  employer.industries << industry_accounting
+  
   3.times do
     fruit = fruits.shift
-    employer.opportunities.create name: fruit, description: "Buying and selling #{fruit}"
+    opportunity = employer.opportunities.create! name: fruit, description: "Buying and selling #{fruit}"
+    opportunity.industries << industry_accounting
+    opportunity.interests << interest_accounting
   end
 end
 
 ['Unemployed', 'Quality (Grad School)', 'Quality', 'Part Quality', 'Not Quality', 'Service', 'Unknown'].each do |status|
-  EmploymentStatus.create name: status
+  EmploymentStatus.create! name: status
 end
 
-opportunity_stages = OpportunityStage.create([
+opportunity_stages = OpportunityStage.create!([
   {position: 0, probability: 0.01, name: 'notified'},
   {position: 1, probability: 0.05, name: 'interested'},
   {position: 2, probability: 0.1,  name: 'applying'},
@@ -75,3 +84,29 @@ opportunity_stages = OpportunityStage.create([
   {position: 5, probability: 1.0,  name: 'committed'},
   {position: 6, probability: 0.0,  name: 'rejected'}
 ])
+
+employment_status = EmploymentStatus.find_by name: 'Unemployed'
+
+fellows = Fellow.create!([
+  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status},
+  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status},
+  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status},
+  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status},
+  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status},
+])
+
+# give each fellow three interests
+Interest.where.not(name: 'Accounting').limit(fellows.size * 3).each_with_index do |interest, f|
+  fellows[f % fellows.size].interests << interest
+end
+
+# give each fellow three industries
+Industry.where.not(name: 'Accounting').limit(fellows.size * 3).each_with_index do |industry, f|
+  fellows[f % fellows.size].industries << industry
+end
+
+# add all fellows to accounting industry/interest groups
+Fellow.all.each do |fellow|
+  fellow.industries << industry_accounting
+  fellow.interests << interest_accounting
+end

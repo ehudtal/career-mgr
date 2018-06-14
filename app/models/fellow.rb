@@ -4,11 +4,11 @@ class Fellow < ApplicationRecord
   has_one :contact, as: :contactable
   accepts_nested_attributes_for :contact
   
-  has_many :cohort_fellows
+  has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
   
-  has_and_belongs_to_many :interests
-  has_and_belongs_to_many :industries
+  has_and_belongs_to_many :interests, dependent: :destroy
+  has_and_belongs_to_many :industries, dependent: :destroy
   
   belongs_to :employment_status
   

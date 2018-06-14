@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= form.label :graduation_semester %>
-    <%= form.text_field :graduation_semester %>
+    <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
   </div>
 
   <div class="field">

@@ -1,0 +1,49 @@
+<h1><%= @opportunity.name %>: Candidates</h1>
+
+<table class="fellows">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Graduation</th>
+      <th>Stats</th>
+      <th>Interests</th>
+      <th>Industries</th>
+      <th>Status</th>
+      
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @candidates.each do |fellow| %>
+      <tr>
+        <td><%= link_to fellow.full_name, fellow %></td>
+        <td><%= fellow.graduation %></td>
+        <td>
+          <ul>
+            <li><b>Major:</b> <%= fellow.major.blank? ? 'N/A' : fellow.major %></li>
+            <li><b>Efficacy:</b> <%= fellow.efficacy_score || 'N/A' %></li>
+            <li><b>GPA:</b> <%= fellow.gpa || 'N/A' %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% fellow.interests.each do |interest| %>
+              <li><%= interest.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% fellow.industries.each do |industry| %>
+              <li><%= industry.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td><%= fellow.employment_status.name %></td>
+        <td><%= link_to 'Edit', edit_fellow_path(fellow), class: 'edit' %></td>
+        <td><%= link_to 'Delete', fellow, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
