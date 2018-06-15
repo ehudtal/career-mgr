@@ -9,7 +9,8 @@
         <th></th>
         <th>Name</th>
         <th>Graduation</th>
-        <th>Stats</th>
+        <th>GPA</th>
+        <th>Efficacy</th>
         <th>Interests</th>
         <th>Industries</th>
         <th>Status</th>
@@ -25,14 +26,16 @@
             <%= check_box_tag 'candidate_ids[]', fellow.id, false, id: "candidate_ids_#{fellow.id}" %>
           </td>
           <td><%= link_to fellow.full_name, fellow %></td>
-          <td><%= fellow.graduation %></td>
           <td>
             <ul>
-              <li><b>Major:</b> <%= fellow.major.blank? ? 'N/A' : fellow.major %></li>
-              <li><b>Efficacy:</b> <%= fellow.efficacy_score || 'N/A' %></li>
-              <li><b>GPA:</b> <%= fellow.gpa || 'N/A' %>
+              <% unless fellow.major.blank? %>
+                <li><%= fellow.major %></li>
+              <% end %>
+              <li><%= fellow.graduation %></li>
             </ul>
           </td>
+          <td><%= fellow.gpa || 'N/A' %></td>
+          <td><%= fellow.efficacy_score || 'N/A' %></td>
           <td>
             <ul>
               <% fellow.interests.each do |interest| %>
