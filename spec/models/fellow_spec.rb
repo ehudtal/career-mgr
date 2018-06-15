@@ -94,6 +94,37 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  describe '#distance_from' do
+    it "calculates the distance between the fellow's zip and the given zip" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      other_zip = '10002'
+      
+      allow(PostalCode).to receive(:distance).with('10001', '10002').and_return(21)
+      expect(fellow.distance_from(other_zip)).to eq(21)
+    end
+    
+    it "memoizes the result" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      other_zip = '10002'
+      
+      allow(PostalCode).to receive(:distance).with('10001', '10002').and_return(21).once
+      fellow.distance_from(other_zip)
+    end
+  end
+  
+  describe '#nearest_distance' do
+    it "finds the closest of multiple zip codes" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      near_zip = '10002'
+      far_zip = '90001'
+      
+      allow(fellow).to receive(:distance_from).with(near_zip).and_return(5)
+      allow(fellow).to receive(:distance_from).with(far_zip).and_return(15)
+      
+      expect(fellow.nearest_distance([near_zip, far_zip])).to eq(5)
+    end
+  end
+  
   describe '#full_name' do
     it "combines first and last name" do
       fellow = Fellow.new first_name: 'Bob', last_name: 'Smith'

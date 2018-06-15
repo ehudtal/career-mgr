@@ -35,6 +35,18 @@ class Fellow < ApplicationRecord
     [graduation_semester, graduation_year].join(' ').strip
   end
   
+  def nearest_distance zip_list
+    zip_list.map{|zip| distance_from(zip)}.min
+  end
+  
+  def distance_from postal_code
+    return @distance_from[postal_code] if defined?(@distance_from) && @distance_from.has_key?(postal_code)
+    return nil unless contact && contact.postal_code
+    
+    @distance_from ||= {}
+    @distance_from[postal_code] = PostalCode.distance(contact.postal_code, postal_code)
+  end
+  
   private
   
   def generate_key

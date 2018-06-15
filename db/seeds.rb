@@ -56,6 +56,11 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
 
 ['ABC Employer', 'DEF Employer'].each do |name|
   employer = Employer.create!(name: name)
+
+  location = employer.locations.create(
+    name: "#{employer.name} Headquarters",
+    contact_attributes: {postal_code: '68516'}
+  )
   
   Industry.where.not(name: 'Accounting').limit(2).each do |industry|
     employer.industries << industry
@@ -66,8 +71,10 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
   3.times do
     fruit = fruits.shift
     opportunity = employer.opportunities.create! name: fruit, description: "Buying and selling #{fruit}"
+
     opportunity.industries << industry_accounting
     opportunity.interests << interest_accounting
+    opportunity.locations << location
   end
 end
 
@@ -88,11 +95,11 @@ opportunity_stages = OpportunityStage.create!([
 employment_status = EmploymentStatus.find_by name: 'Unemployed'
 
 fellows = Fellow.create!([
-  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status},
-  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status},
-  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status},
-  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status},
-  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status},
+  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68005'}},
+  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68510'}},
+  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68521'}},
+  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68339'}},
+  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status, contact_attributes: {postal_code: '66215'}},
 ])
 
 # give each fellow three interests

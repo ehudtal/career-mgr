@@ -13,6 +13,7 @@
         <th>Efficacy</th>
         <th>Interests</th>
         <th>Industries</th>
+        <th>Distance</th>
         <th>Status</th>
       
         <th colspan="2">Actions</th>
@@ -50,6 +51,7 @@
               <% end %>
             </ul>
           </td>
+          <td><%= pluralize(fellow.nearest_distance(@opportunity.postal_codes).round, 'mile') %>
           <td><%= fellow.employment_status.name %></td>
           <td><%= link_to 'Edit', edit_fellow_path(fellow), class: 'edit' %></td>
           <td><%= link_to 'Delete', fellow, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>

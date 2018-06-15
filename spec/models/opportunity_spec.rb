@@ -104,4 +104,16 @@ RSpec.describe Opportunity, type: :model do
       expect(opportunity.fellows.first).to eq(fellow)
     end
   end
+  
+  describe '#postal codes' do
+    it "returns the postal codes of all locations" do
+      opportunity = build :opportunity
+      location1 = opportunity.locations << build(:location, contact: build(:contact, postal_code: '10001'))
+      location2 = opportunity.locations << build(:location, contact: build(:contact, postal_code: '10002'))
+      
+      expect(opportunity.postal_codes.size).to eq(2)
+      expect(opportunity.postal_codes).to include('10001')
+      expect(opportunity.postal_codes).to include('10002')
+    end
+  end
 end

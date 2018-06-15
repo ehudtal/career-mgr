@@ -47,6 +47,11 @@ Be sure to re-source this file in any open console windows to get it to work. No
     # run database migrations
     career rake db:migrate
 
+At least once, you should load the database with valid zip codes. The zip code csv is not in the repo, it's several MB. Ask a colleague, copy it to `tmp/postal-codes.csv`, then:
+
+    docker-compose exec career-mgr rake postal_codes:load
+
+This will allow the app to calculate distances between fellows and opportunities.
 
 ### Non-Docker (untested)
 

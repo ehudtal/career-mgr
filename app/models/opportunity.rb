@@ -35,4 +35,8 @@ class Opportunity < ApplicationRecord
       fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
     end
   end
+  
+  def postal_codes
+    locations.map(&:contact).map(&:postal_code)
+  end
 end
