@@ -15,6 +15,10 @@ RSpec.describe CandidatesController, type: :routing do
       end
     end
     
+    it "routes to #update" do
+      expect(:put => "/candidates/#{candidate_id}").to route_to("candidates#update", id: candidate_id)
+    end
+    
     it "routes to #destroy" do
       expect(:delete => "/candidates/#{candidate_id}").to route_to("candidates#destroy", id: candidate_id)
     end

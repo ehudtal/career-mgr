@@ -32,18 +32,21 @@
         <th>Name</th>
         <th>Stage</th>
         <th>Probability</th>
-        <th>Actions</th>
+        <th colspan="2">Actions</th>
       </tr>
     </thead>
 
     <tbody>
       <% @opportunity.fellow_opportunities.sort_by{|fo| 0-fo.opportunity_stage.probability}.each do |candidacy| %>
-        <tr>
-          <td><%= link_to candidacy.fellow.full_name, candidacy.fellow %></td>
-          <td><%= candidacy.opportunity_stage.name %></td>
-          <td class="right"><%= sprintf("%d%%", candidacy.opportunity_stage.probability * 100) %></td>
-          <td><%= link_to 'Archive', candidate_path(candidacy), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
-        </tr>
+        <%= form_for candidacy, url: candidate_path(candidacy), method: :put do |f| %>
+          <tr>
+            <td><%= link_to candidacy.fellow.full_name, candidacy.fellow %></td>
+            <td><%= f.collection_select :opportunity_stage_id, OpportunityStage.order('position asc').all, :id, :name %></td>
+            <td class="right"><%= sprintf("%d%%", candidacy.opportunity_stage.probability * 100) %></td>
+            <td><%= f.submit 'Update' %></td>
+            <td><%= link_to 'Archive', candidate_path(candidacy), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

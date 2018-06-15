@@ -25,7 +25,24 @@ RSpec.describe CandidatesController, type: :controller do
     end
   end
   
-  describe "DELETE destroy" do
+  describe "PUT #update" do
+    let(:initial_stage) { create :opportunity_stage, position: 0 }
+    let(:next_stage) { create :opportunity_stage, position: 1 }
+    
+    let(:fellow) { create :fellow }
+    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: initial_stage }
+
+    it "updates the requested fellow-opp" do
+      opportunity.save
+      
+      put :update, params: {id: fellow_opportunity.to_param, fellow_opportunity: {opportunity_stage_id: next_stage.id}}
+      fellow_opportunity.reload
+    
+      expect(fellow_opportunity.opportunity_stage).to eq(next_stage)
+    end
+  end
+  
+  describe "DELETE #destroy" do
     let(:fellow) { create :fellow }
     let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
 
