@@ -21,6 +21,34 @@
 <%= render 'industries/list', object: @opportunity %>
 <%= render 'interests/list', object: @opportunity %>
 
+<h3>Active Candidates</h3>
+
+<% if @opportunity.fellow_opportunities.empty? %>
+  <p>There are no active candidates at this time.</p>
+<% else %>
+  <table class="fellows">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Stage</th>
+        <th>Probability</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @opportunity.fellow_opportunities.sort_by{|fo| 0-fo.opportunity_stage.probability}.each do |candidacy| %>
+        <tr>
+          <td><%= link_to candidacy.fellow.full_name, candidacy.fellow %></td>
+          <td><%= candidacy.opportunity_stage.name %></td>
+          <td class="right"><%= sprintf("%d%%", candidacy.opportunity_stage.probability * 100) %></td>
+          <td><%= link_to 'Archive', candidate_path(candidacy), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <%= link_to 'Find Candidates', opportunity_candidates_path(@opportunity), class: "button" %>
 
 <footer class="actions">

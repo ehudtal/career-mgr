@@ -5,6 +5,7 @@ RSpec.describe CandidatesController, type: :controller do
   
   before do
     allow(Opportunity).to receive(:find).with(opportunity.id.to_s).and_return(opportunity)
+    allow_any_instance_of(FellowOpportunity).to receive(:opportunity).and_return(opportunity)
   end  
   
   describe "GET #index" do
@@ -21,6 +22,26 @@ RSpec.describe CandidatesController, type: :controller do
       post :create, params: {candidate_ids: ['1001'], opportunity_id: opportunity.id.to_s}
 
       expect(response).to redirect_to(opportunity_path(opportunity))
+    end
+  end
+  
+  describe "DELETE destroy" do
+    let(:fellow) { create :fellow }
+    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
+
+    before do
+      opportunity.save; fellow_opportunity
+    end
+    
+    it "soft-deletes the candidacy (fellow-opp)" do
+      expect {
+        delete :destroy, params: {id: fellow_opportunity.to_param}
+      }.to change(FellowOpportunity, :count).by(-1)
+    end
+    
+    it "redirects to the parent opportunity" do
+      delete :destroy, params: {id: fellow_opportunity.to_param}
+      expect(response).to redirect_to(opportunity_url(opportunity))
     end
   end
 end
