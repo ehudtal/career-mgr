@@ -18,12 +18,17 @@ class Opportunity < ApplicationRecord
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   
   def candidates
-    return @candidates if defined?(@@candidates)
+    return @candidates if defined?(@candidates)
     
     candidate_ids = []
     
     candidate_ids += FellowInterest.fellow_ids_for(interest_ids)
     candidate_ids += FellowIndustry.fellow_ids_for(industry_ids)
+    
+    candidate_ids.uniq!
+    
+    # remove already-activated candidates
+    candidate_ids -= fellow_opportunities.pluck(:fellow_id)
     
     @candidates = Fellow.where(id: candidate_ids)
   end
