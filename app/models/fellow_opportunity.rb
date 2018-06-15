@@ -1,4 +1,6 @@
 class FellowOpportunity < ApplicationRecord
+  acts_as_paranoid
+  
   belongs_to :fellow
   belongs_to :opportunity
   belongs_to :opportunity_stage
