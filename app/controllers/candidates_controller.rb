@@ -6,6 +6,8 @@ class CandidatesController < ApplicationController
   end
 
   def create
+    @opportunity.candidate_ids = params[:candidate_ids]
+    
     redirect_to opportunity_path(@opportunity), notice: "#{params[:candidate_ids].size} candidates have been notified."
   end
   
