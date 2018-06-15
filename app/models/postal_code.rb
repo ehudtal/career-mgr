@@ -1,4 +1,5 @@
 require 'geo_distance'
+require 'csv'
 
 class PostalCode < ApplicationRecord
   validates :code, presence: true, uniqueness: {case_sensitive: false}
@@ -11,6 +12,23 @@ class PostalCode < ApplicationRecord
       destination = find_by code: destination_zip
       
       GeoDistance.haversine(origin.coordinates, destination.coordinates)
+    end
+    
+    def load_csv filename
+      delete_all
+      
+      CSV.open(filename, headers: true) do |csv|
+        attributes = {}
+        
+        csv.each do |row|
+          zip = row['ZIPCode']
+          lat = row['Latitude'].to_f
+          lon = row['Longitude'].to_f
+          attributes[zip] = {code: zip, latitude: lat, longitude: lon} unless attributes.has_key?(zip)
+        end
+        
+        create attributes.values
+      end
     end
   end
   

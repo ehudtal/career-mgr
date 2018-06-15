@@ -39,6 +39,24 @@ RSpec.describe PostalCode, type: :model do
     end
   end
   
+  describe '::load_csv' do
+    it "loads the contents of the CSV file into the db, weeding out duplicates" do
+      PostalCode.load_csv("#{Rails.root}/spec/postal-code-sample.csv")
+      expect(PostalCode.count).to eq(2)
+
+      postal_code = PostalCode.find_by code: '00501'
+      expect(postal_code.lat).to be_within(0.00001).of(40.813078)
+      expect(postal_code.lon).to be_within(0.00001).of(-73.046388)
+    end
+    
+    it "clears table first" do
+      create :postal_code
+      PostalCode.load_csv("#{Rails.root}/spec/postal-code-sample.csv")
+
+      expect(PostalCode.count).to eq(2)
+    end
+  end
+  
   ##################
   # Instance methods
   ##################
