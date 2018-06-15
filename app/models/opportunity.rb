@@ -32,11 +32,21 @@ class Opportunity < ApplicationRecord
     initial_stage = OpportunityStage.find_by position: 0
     
     candidate_id_list.each do |candidate_id|
-      fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
+      if archived = archived_fellow_opp(candidate_id)
+        archived.restore
+      else
+        fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
+      end
     end
   end
   
   def postal_codes
     locations.map(&:contact).map(&:postal_code)
+  end
+  
+  private
+  
+  def archived_fellow_opp candidate_id
+    FellowOpportunity.with_deleted.find_by(opportunity_id: self.id, fellow_id: candidate_id)
   end
 end
