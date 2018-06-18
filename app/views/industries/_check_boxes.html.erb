@@ -1,6 +1,5 @@
 <% object_name = object.class.name.downcase %>  
-<div class="industries checklist">
-  <h3>Industries</h3>
+<div id="industry-checklist" class="industries checklist">
   <% Industry.order('name asc').each do |industry| %>
     <% tag_id = "industry_ids_#{industry.id}" %>
     

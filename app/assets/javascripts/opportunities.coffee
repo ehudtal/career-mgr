@@ -14,6 +14,13 @@ $ ->
         placeholder: "Add an Interest"
         delimiter: ";"
         validationPattern: new RegExp('^[a-zA-Z, ]+$')
+        
+    $('a#industries-full-list').click (event) ->
+      event.preventDefault()
+      
+      $('#industry-checklist').show()
+      $('#industry-tags').hide()
+      
 
   if $('#opportunity_industry_tags').length
     $.get '/industries.json', (data) ->
@@ -24,6 +31,13 @@ $ ->
         placeholder: "Add an Industry"
         delimiter: ";"
         validationPattern: new RegExp('^[a-zA-Z, ]+$')
+        
+    $('a#interests-full-list').click (event) ->
+      event.preventDefault()
+      
+      $('#interest-checklist').show()
+      $('#interest-tags').hide()
+
   
   new_task_fields = () ->
     index = $('.task_fields').length

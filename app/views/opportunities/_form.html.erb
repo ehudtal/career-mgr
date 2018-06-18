@@ -62,19 +62,23 @@
 
   <p><%= link_to '+add another location', '#', class: 'new_location' %></p>
   
-  <div class="jquery-tags">
-    <%= form.label :industry_tags, 'Industries' %>
+  <h3>Industries</h3>
+
+  <div id="industry-tags" class="jquery-tags">
     <%= form.text_area :industry_tags %>
+    <%= link_to 'see full list', '#', id: 'industries-full-list' %>
   </div>
 
-  <div class="jquery-tags">
-    <%= form.label :interest_tags, 'Interests' %>
-    <%= form.text_area :interest_tags %>
-  </div>
+  <%= render 'industries/check_boxes', object: opportunity %>
 
-  <!--%= render 'industries/check_boxes', object: opportunity %-->
+  <h3>Interests</h3>
   
-  <!--%= render 'interests/check_boxes', object: opportunity %-->
+  <div id="interest-tags" class="jquery-tags">
+    <%= form.text_area :interest_tags %>
+    <%= link_to 'see full list', '#', id: 'interests-full-list' %>
+  </div>
+
+  <%= render 'interests/check_boxes', object: opportunity %>
   
 
   <div class="actions">

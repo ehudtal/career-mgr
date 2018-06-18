@@ -127,3 +127,11 @@ tr:first-child {
 .jquery-tags textarea {
   display: none;
 }
+
+#industry-checklist, #interest-checklist {
+  display: none;
+}
+
+#jquery-tags {
+  margin-bottom: 20px;
+}
