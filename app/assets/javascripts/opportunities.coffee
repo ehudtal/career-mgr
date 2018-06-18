@@ -2,7 +2,29 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
+
 $ ->
+  if $('#opportunity_interest_tags').length
+    $.get '/interests.json', (data) ->
+      $("#opportunity_interest_tags").show();
+      
+      $("#opportunity_interest_tags").tagsInput
+        autocomplete: {source: data}
+        placeholder: "Add an Interest"
+        delimiter: ";"
+        validationPattern: new RegExp('^[a-zA-Z, ]+$')
+
+  if $('#opportunity_industry_tags').length
+    $.get '/industries.json', (data) ->
+      $("#opportunity_industry_tags").show();
+      
+      $("#opportunity_industry_tags").tagsInput
+        autocomplete: {source: data}
+        placeholder: "Add an Industry"
+        delimiter: ";"
+        validationPattern: new RegExp('^[a-zA-Z, ]+$')
+  
   new_task_fields = () ->
     index = $('.task_fields').length
     

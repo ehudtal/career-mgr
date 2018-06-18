@@ -1,1 +1,1 @@
-json.array! @interests, partial: 'interests/interest', as: :interest
+json.array! @interests.pluck(:name)

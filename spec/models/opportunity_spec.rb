@@ -105,6 +105,60 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  describe '#industry_tags' do
+    it "returns a semicolon-delimited list of associated industry names" do
+      opportunity = build :opportunity
+      industry_1 = build :industry, name: 'Industry 1'
+      industry_2 = build :industry, name: 'Industry 2'
+      
+      allow(opportunity).to receive(:industries).and_return([industry_1, industry_2])
+      
+      expect(opportunity.industry_tags).to eq("Industry 1;Industry 2")
+    end
+  end
+
+  describe '#industry_tags=' do
+    it "converts a semicolon-delimited list of industry names into associations" do
+      opportunity = create :opportunity
+      industry_1 =  create :industry, name: 'Industry 1'
+      industry_2 =  create :industry, name: 'Industry 2'
+      industry_3 =  create :industry, name: 'Industry 3'
+      
+      opportunity.industry_tags = "Industry 1;Industry 2"
+      
+      expect(opportunity.industries).to include(industry_1)
+      expect(opportunity.industries).to include(industry_2)
+      expect(opportunity.industries).to_not include(industry_3)
+    end
+  end
+  
+  describe '#interest_tags' do
+    it "returns a semicolon-delimited list of associated interest names" do
+      opportunity = build :opportunity
+      interest_1 = build :interest, name: 'Interest 1'
+      interest_2 = build :interest, name: 'Interest 2'
+      
+      allow(opportunity).to receive(:interests).and_return([interest_1, interest_2])
+      
+      expect(opportunity.interest_tags).to eq("Interest 1;Interest 2")
+    end
+  end
+
+  describe '#interest_tags=' do
+    it "converts a semicolon-delimited list of interest names into associations" do
+      opportunity = create :opportunity
+      interest_1 =  create :interest, name: 'Interest 1'
+      interest_2 =  create :interest, name: 'Interest 2'
+      interest_3 =  create :interest, name: 'Interest 3'
+      
+      opportunity.interest_tags = "Interest 1;Interest 2"
+      
+      expect(opportunity.interests).to include(interest_1)
+      expect(opportunity.interests).to include(interest_2)
+      expect(opportunity.interests).to_not include(interest_3)
+    end
+  end
+  
   describe '#postal codes' do
     it "returns the postal codes of all locations" do
       opportunity = build :opportunity

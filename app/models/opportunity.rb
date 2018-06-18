@@ -44,6 +44,22 @@ class Opportunity < ApplicationRecord
     end
   end
   
+  def industry_tags
+    industries.pluck(:name).join(';')
+  end
+  
+  def industry_tags= tag_string
+    self.industry_ids = Industry.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def interest_tags
+    interests.pluck(:name).join(';')
+  end
+  
+  def interest_tags= tag_string
+    self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
   def postal_codes
     locations.map(&:contact).map(&:postal_code)
   end

@@ -59,7 +59,7 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
 
   location = employer.locations.create(
     name: "#{employer.name} Headquarters",
-    contact_attributes: {postal_code: '68516'}
+    contact_attributes: {city: 'Lincoln', state: 'NE', postal_code: '68516'}
   )
   
   Industry.where.not(name: 'Accounting').limit(2).each do |industry|

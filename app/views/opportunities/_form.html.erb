@@ -62,9 +62,19 @@
 
   <p><%= link_to '+add another location', '#', class: 'new_location' %></p>
   
-  <%= render 'industries/check_boxes', object: opportunity %>
+  <div class="jquery-tags">
+    <%= form.label :industry_tags, 'Industries' %>
+    <%= form.text_area :industry_tags %>
+  </div>
+
+  <div class="jquery-tags">
+    <%= form.label :interest_tags, 'Interests' %>
+    <%= form.text_area :interest_tags %>
+  </div>
+
+  <!--%= render 'industries/check_boxes', object: opportunity %-->
   
-  <%= render 'interests/check_boxes', object: opportunity %>
+  <!--%= render 'interests/check_boxes', object: opportunity %-->
   
 
   <div class="actions">

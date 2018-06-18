@@ -119,3 +119,11 @@ tr:first-child {
 .red-border {
   border: 2px solid red;
 }
+
+.jquery-tags {
+  width: 400px;
+}
+
+.jquery-tags textarea {
+  display: none;
+}
