@@ -7,6 +7,8 @@ RSpec.describe Site, type: :model do
   ##############
   
   it { should have_many :courses }
+  
+  it { should have_one :location }
 
   #############
   # Validations

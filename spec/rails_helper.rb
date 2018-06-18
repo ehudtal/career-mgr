@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'capybara/rspec'
 require_relative './support/capybara.rb'
 require_relative './support/factory_bot.rb'
+require_relative './support/shared_examples.rb'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)

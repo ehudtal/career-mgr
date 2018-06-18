@@ -12,16 +12,7 @@ RSpec.describe Contact, type: :model do
   # Validations
   #############
   
-  def self.required_fields
-    [:contactable_id, :contactable_type]
-  end
+  it { should validate_inclusion_of(:state).in_array(Contact::STATES) }
   
-  required_fields.each do |attribute|
-    it { should validate_presence_of attribute }
-  end
-  
-  describe "uniqueness" do
-    subject { create :contact }
-    it { should validate_uniqueness_of(:contactable_id).scoped_to(:contactable_type) }
-  end
+  it_behaves_like "valid url", :url
 end

@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Site:</strong>
+  <%= @course.site.name %>
+</p>
+
+<p>
   <strong>Semester:</strong>
   <%= @course.semester %>
 </p>
@@ -10,12 +15,7 @@
   <%= @course.year %>
 </p>
 
-<p>
-  <strong>Site:</strong>
-  <%= @course.site_id %>
-</p>
-
 <footer class="actions">
   <%= link_to 'Edit', edit_course_path(@course), class: 'edit' %> |
-  <%= link_to 'Back', courses_path %>
+  <%= link_to 'Back', site_path(@course.site) %>
 </footer>

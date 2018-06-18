@@ -15,10 +15,12 @@ class FellowsController < ApplicationController
   # GET /fellows/new
   def new
     @fellow = Fellow.new
+    @fellow.build_contact
   end
 
   # GET /fellows/1/edit
   def edit
+    @fellow.build_contact if @fellow.contact.nil?
   end
 
   # POST /fellows
@@ -69,6 +71,13 @@ class FellowsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fellow_params
-      params.require(:fellow).permit(:key, :first_name, :last_name, :graduation_year, :graduation_semester, :graduation_fiscal_year, :interests_description, :major, :affiliations, :gpa, :linkedin_url, :staff_notes, :efficacy_score, :employment_status_id)
+      params.require(:fellow).permit(
+        :key, :first_name, :last_name, :graduation_year, :graduation_semester, :graduation_fiscal_year, 
+        :interests_description, :major, :affiliations, :gpa, :linkedin_url, :staff_notes, :efficacy_score, 
+        :employment_status_id,
+        industry_ids: [], 
+        interest_ids: [],
+        contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
+      )
     end
 end

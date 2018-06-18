@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_08_203646) do
+ActiveRecord::Schema.define(version: 2018_06_15_194522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(version: 2018_06_08_203646) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_cohorts_on_course_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -127,6 +136,8 @@ ActiveRecord::Schema.define(version: 2018_06_08_203646) do
     t.integer "opportunity_stage_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_fellow_opportunities_on_deleted_at"
     t.index ["fellow_id", "opportunity_id"], name: "index_fellow_opportunities_on_fellow_id_and_opportunity_id", unique: true
     t.index ["opportunity_stage_id"], name: "index_fellow_opportunities_on_opportunity_stage_id"
   end
@@ -150,6 +161,13 @@ ActiveRecord::Schema.define(version: 2018_06_08_203646) do
     t.datetime "updated_at", null: false
     t.index ["employment_status_id"], name: "index_fellows_on_employment_status_id"
     t.index ["key"], name: "index_fellows_on_key", unique: true
+  end
+
+  create_table "fellows_industries", id: false, force: :cascade do |t|
+    t.bigint "fellow_id", null: false
+    t.bigint "industry_id", null: false
+    t.index ["fellow_id"], name: "index_fellows_industries_on_fellow_id"
+    t.index ["industry_id"], name: "index_fellows_industries_on_industry_id"
   end
 
   create_table "fellows_interests", id: false, force: :cascade do |t|
@@ -220,7 +238,17 @@ ActiveRecord::Schema.define(version: 2018_06_08_203646) do
     t.decimal "probability", precision: 8, scale: 4
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["name"], name: "index_opportunity_stages_on_name", unique: true
+  end
+
+  create_table "postal_codes", force: :cascade do |t|
+    t.string "code"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_postal_codes_on_code"
   end
 
   create_table "sites", force: :cascade do |t|

@@ -6,10 +6,15 @@ Rails.application.routes.draw do
     resources :locations
     resources :opportunities do
       resources :tasks
+      resources :candidates, only: [:index, :create, :update, :destroy]
     end
   end
   
   resources :opportunities, only: [:index]
+
+  resources :sites, shallow: true do
+    resources :courses, except: [:index]
+  end
 
   resources :fellow_opportunities
   resources :opportunity_stages
@@ -19,8 +24,6 @@ Rails.application.routes.draw do
   resources :industries
   resources :cohort_fellows
   resources :cohorts
-  resources :courses
-  resources :sites
   resources :contacts
   resources :fellows
   

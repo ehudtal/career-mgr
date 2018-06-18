@@ -10,6 +10,8 @@ RSpec.describe Opportunity, type: :model do
   it { should belong_to :employer }
   
   it { should have_many :tasks }
+  it { should have_many :fellow_opportunities }
+  it { should have_many :fellows }
   
   it { should have_and_belong_to_many :industries }
   it { should have_and_belong_to_many :interests }
@@ -21,42 +23,97 @@ RSpec.describe Opportunity, type: :model do
 
   it { should validate_presence_of :name }
   
-  ###############
-  # Normalization
-  ###############
+  it_should_behave_like "valid url", :job_posting_url
+  
+  ##################
+  # Instance methods
+  ##################
 
-  describe 'normalizing job posting url' do
-    let(:url_without_protocol) { 'example.com' }
-    let(:url_with_protocol) { 'http://example.com' }
+  describe '#candidates' do
+    let(:opportunity) { create :opportunity }
+    let(:fellow) { create :fellow }
+    let(:interest) { create :interest }
+    let(:industry) { create :industry }
     
-    it "adds protocol if missing" do
-      opportunity = Opportunity.new job_posting_url: url_without_protocol
-      opportunity.send(:normalize_url)
+    it "includes fellow when there is a shared interest" do
+      opportunity.interests << interest
+      fellow.interests << interest
       
-      expect(opportunity.job_posting_url).to eq url_with_protocol
+      expect(opportunity.candidates).to include(fellow)
     end
     
-    it "doesn't add protocol if already included" do
-      opportunity = Opportunity.new job_posting_url: url_with_protocol
-      opportunity.send(:normalize_url)
+    it "excludes fellow when fellow does not share the interest" do
+      opportunity.interests << interest
+      fellow
       
-      expect(opportunity.job_posting_url).to eq url_with_protocol
+      expect(opportunity.candidates).to_not include(fellow)
     end
     
-    it "doesn't add protocol of url is blank" do
-      opportunity = Opportunity.new job_posting_url: ''
-      opportunity.send(:normalize_url)
+    it "excludes fellow when opp does not share the interest" do
+      opportunity
+      fellow.interests << interest
       
-      expect(opportunity.job_posting_url).to eq ''
+      expect(opportunity.candidates).to_not include(fellow)
+    end
+
+    it "includes fellow when there is a shared industry" do
+      opportunity.industries << industry
+      fellow.industries << industry
+      
+      expect(opportunity.candidates).to include(fellow)
     end
     
-    it "normalizes before save" do
-      opportunity = Opportunity.new attributes_for(:opportunity)
+    it "excludes fellow when fellow does not share the industry" do
+      opportunity.industries << industry
+      fellow
+      
+      expect(opportunity.candidates).to_not include(fellow)
+    end
+    
+    it "excludes fellow when opp does not share the industry" do
+      opportunity
+      fellow.industries << industry
+      
+      expect(opportunity.candidates).to_not include(fellow)
+    end
+    
+    it "removes duplicates" do
+      opportunity.interests << interest
+      opportunity.industries << industry
 
-      allow(opportunity).to receive(:employer).and_return(employer)
-      expect(opportunity).to receive(:normalize_url)
+      fellow.interests << interest
+      fellow.industries << industry
+      
+      expect(opportunity.candidates).to include(fellow)
+      expect(opportunity.candidates.size).to eq(1)
+    end
+  end
+  
+  describe '#candidate_ids=' do
+    it "creates fellow_opportunities" do
+      fellow = create :fellow
+      opportunity = create :opportunity
+      
+      initial_stage = create :opportunity_stage, position: 0
+      next_stage =    create :opportunity_stage, position: 1
+      
+      opportunity.candidate_ids = [fellow.id]
 
-      opportunity.save
+      expect(opportunity.fellow_opportunities.count).to eq(1)
+      expect(opportunity.fellow_opportunities.first.opportunity_stage).to eq(initial_stage)
+      expect(opportunity.fellows.first).to eq(fellow)
+    end
+  end
+  
+  describe '#postal codes' do
+    it "returns the postal codes of all locations" do
+      opportunity = build :opportunity
+      location1 = opportunity.locations << build(:location, contact: build(:contact, postal_code: '10001'))
+      location2 = opportunity.locations << build(:location, contact: build(:contact, postal_code: '10002'))
+      
+      expect(opportunity.postal_codes.size).to eq(2)
+      expect(opportunity.postal_codes).to include('10001')
+      expect(opportunity.postal_codes).to include('10002')
     end
   end
 end

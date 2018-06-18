@@ -1,3 +1,4 @@
+require'digest/md5'
 require 'rails_helper'
 
 RSpec.describe Fellow, type: :model do
@@ -13,6 +14,7 @@ RSpec.describe Fellow, type: :model do
   it { should have_many :cohorts }
   
   it { should have_and_belong_to_many :interests }
+  it { should have_and_belong_to_many :industries }
   
   it { should belong_to :employment_status }
   
@@ -48,6 +50,33 @@ RSpec.describe Fellow, type: :model do
   it { should validate_numericality_of(:efficacy_score).is_less_than_or_equal_to(1.0) }
   it { should validate_numericality_of(:efficacy_score).allow_nil }
   
+  ###############
+  # Normalization
+  ###############
+
+  describe 'student key' do
+    it "auto-generates upon save" do
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+      hash = Digest::MD5.hexdigest([fellow.first_name, fellow.last_name, fellow.graduation_year, 0].join('-'))[0,4]
+      
+      expect(fellow.key).to eq("BS18#{hash}".upcase)
+    end
+    
+    it "ensures the key is always unique" do
+      previous_fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018'
+
+      hash = Digest::MD5.hexdigest([fellow.first_name, fellow.last_name, fellow.graduation_year, 1].join('-'))[0,4]
+      
+      expect(fellow.key).to eq("BS18#{hash}".upcase)
+    end
+    
+    it "doesn't generate a key if one already exists" do
+      fellow = create :fellow, first_name: 'Bob', last_name: 'Smith', graduation_year: '2018', key: 'turtles'
+      expect(fellow.key).to eq('turtles')
+    end
+  end
+  
   ##################
   # Instance methods
   ##################
@@ -62,6 +91,71 @@ RSpec.describe Fellow, type: :model do
       second_cohort = add_cohort
       
       expect(fellow.cohort).to eq(second_cohort)
+    end
+  end
+  
+  describe '#distance_from' do
+    it "calculates the distance between the fellow's zip and the given zip" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      other_zip = '10002'
+      
+      allow(PostalCode).to receive(:distance).with('10001', '10002').and_return(21)
+      expect(fellow.distance_from(other_zip)).to eq(21)
+    end
+    
+    it "memoizes the result" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      other_zip = '10002'
+      
+      allow(PostalCode).to receive(:distance).with('10001', '10002').and_return(21).once
+      fellow.distance_from(other_zip)
+    end
+  end
+  
+  describe '#nearest_distance' do
+    it "finds the closest of multiple zip codes" do
+      fellow = build :fellow, contact: build(:contact, postal_code: '10001')
+      near_zip = '10002'
+      far_zip = '90001'
+      
+      allow(fellow).to receive(:distance_from).with(near_zip).and_return(5)
+      allow(fellow).to receive(:distance_from).with(far_zip).and_return(15)
+      
+      expect(fellow.nearest_distance([near_zip, far_zip])).to eq(5)
+    end
+  end
+  
+  describe '#full_name' do
+    it "combines first and last name" do
+      fellow = Fellow.new first_name: 'Bob', last_name: 'Smith'
+      expect(fellow.full_name).to eq('Bob Smith')
+    end
+    
+    it "uses only first name if last is missing" do
+      fellow = Fellow.new first_name: 'Bob'
+      expect(fellow.full_name).to eq('Bob')
+    end
+    
+    it "uses only last name if first is missing" do
+      fellow = Fellow.new last_name: 'Smith'
+      expect(fellow.full_name).to eq('Smith')
+    end
+  end
+  
+  describe '#graduation' do
+    it "combines semester and year" do
+      fellow = Fellow.new graduation_semester: 'Fall', graduation_year: 2018
+      expect(fellow.graduation).to eq('Fall 2018')
+    end
+
+    it "uses only semester if year is missing" do
+      fellow = Fellow.new graduation_semester: 'Fall'
+      expect(fellow.graduation).to eq('Fall')
+    end
+
+    it "uses only year if semester is missing" do
+      fellow = Fellow.new graduation_year: 2018
+      expect(fellow.graduation).to eq('2018')
     end
   end
 end

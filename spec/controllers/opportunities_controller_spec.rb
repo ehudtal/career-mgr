@@ -33,6 +33,9 @@ RSpec.describe OpportunitiesController, type: :controller do
   
   let(:industry) { create :industry }
   let(:interest) { create :interest }
+  let(:saved_employer) { create :employer }
+  let(:contact)  { create :contact}
+  let(:location) { create :location, contact: contact, locateable: saved_employer }
 
   let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id }
   let(:invalid_attributes) { { name: ''} }
@@ -104,6 +107,14 @@ RSpec.describe OpportunitiesController, type: :controller do
         opportunity.reload
       
         expect(opportunity.interests).to include(interest)
+      end
+
+      it "associates specified locations with the opportunity" do
+        opportunity = Opportunity.create! valid_attributes
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(location_ids: [location.id.to_s])}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.locations).to include(location)
       end
     end
 
