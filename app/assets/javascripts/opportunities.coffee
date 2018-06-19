@@ -5,19 +5,16 @@
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
 $ ->
-  initializeTagsInput = (element, data) ->
-    $("#opportunity_#{element}_tags").tagsInput
-      autocomplete: {source: data}
-      placeholder: "Add an #{element}"
-      delimiter: ";"
-      validationPattern: new RegExp('^[a-zA-Z, \&/]+$')
-    
   enableTagChecklistToggle = (element, listUrl) ->
     if $("#opportunity_interest_tags").length
       $.get listUrl, (data) ->
         $("#opportunity_#{element}_tags").show();
       
-        initializeTagsInput(element, data)
+        $("#opportunity_#{element}_tags").tagsInput
+          autocomplete: {source: data}
+          placeholder: "Add an #{element}"
+          delimiter: ";"
+          validationPattern: new RegExp('^[a-zA-Z, \&/]+$')
 
         $("a##{element}-full-list").click (event) ->
           event.preventDefault()

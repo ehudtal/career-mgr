@@ -1,0 +1,5 @@
+MSACode	MSAName	MSAType
+0040	Abilene,TX	MSA
+0060	Aguadilla, PR	MSA
+0080	Akron, OH	SMSA
+0120	Albany,GA	MSA
