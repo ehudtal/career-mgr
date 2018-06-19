@@ -24,6 +24,7 @@ class Opportunity < ApplicationRecord
     
     candidate_ids += FellowInterest.fellow_ids_for(interest_ids)
     candidate_ids += FellowIndustry.fellow_ids_for(industry_ids)
+    candidate_ids += FellowMetro.fellow_ids_for(metro_ids)
     
     candidate_ids.uniq!
     

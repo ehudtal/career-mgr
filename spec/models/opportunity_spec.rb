@@ -35,6 +35,7 @@ RSpec.describe Opportunity, type: :model do
     let(:fellow) { create :fellow }
     let(:interest) { create :interest }
     let(:industry) { create :industry }
+    let(:metro) { create :metro }
     
     it "includes fellow when there is a shared interest" do
       opportunity.interests << interest
@@ -78,12 +79,35 @@ RSpec.describe Opportunity, type: :model do
       expect(opportunity.candidates).to_not include(fellow)
     end
     
+    it "includes fellow when there is a shared metro" do
+      opportunity.metros << metro
+      fellow.metros << metro
+      
+      expect(opportunity.candidates).to include(fellow)
+    end
+    
+    it "excludes fellow when fellow does not share the interest" do
+      opportunity.metros << metro
+      fellow
+      
+      expect(opportunity.candidates).to_not include(fellow)
+    end
+    
+    it "excludes fellow when opp does not share the interest" do
+      opportunity
+      fellow.metros << metro
+      
+      expect(opportunity.candidates).to_not include(fellow)
+    end
+    
     it "removes duplicates" do
       opportunity.interests << interest
       opportunity.industries << industry
+      opportunity.metros << metro
 
       fellow.interests << interest
       fellow.industries << industry
+      fellow.metros << metro
       
       expect(opportunity.candidates).to include(fellow)
       expect(opportunity.candidates.size).to eq(1)

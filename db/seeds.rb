@@ -44,6 +44,13 @@ interests = [
   'Criminology', 'Archaeology', 'Cartography', 'Political Science', 'Sociology', 'Construction Trades', 
   'Culinary Arts', 'Creative Writing'
 ]
+
+metros = Metro.create(
+  {code: '4360', name: 'Lincoln, NE'},
+  {code: '5920', name: 'Omaha, NE-IA'},
+  {code: '7720', name: 'Sioux City, IA-NE'}
+)
+lincoln_ne = Metro.find_by name: 'Lincoln, NE'
     
 interests.sort.each do |name|
   Interest.create!(name: name)
@@ -75,6 +82,7 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
     opportunity.industries << industry_accounting
     opportunity.interests << interest_accounting
     opportunity.locations << location
+    opportunity.metros << lincoln_ne
   end
 end
 
@@ -111,6 +119,9 @@ end
 Industry.where.not(name: 'Accounting').limit(fellows.size * 3).each_with_index do |industry, f|
   fellows[f % fellows.size].industries << industry
 end
+
+# give each fellow one metro area (Lincoln, NE)
+fellows.each{|f| f.metros << lincoln_ne}
 
 # add all fellows to accounting industry/interest groups
 Fellow.all.each do |fellow|
