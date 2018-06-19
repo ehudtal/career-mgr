@@ -6,7 +6,7 @@
 
 $ ->
   enableTagChecklistToggle = (element, listUrl, placeholder) ->
-    if $("#opportunity_interest_tags").length
+    if $("#opportunity_#{element}_tags").length
       $.get listUrl, (data) ->
         $("#opportunity_#{element}_tags").show();
       

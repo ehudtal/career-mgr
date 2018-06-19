@@ -4,7 +4,7 @@
 
 $ ->
   enableFellowTagChecklistToggle = (element, listUrl, placeholder) ->
-    if $("#fellow_interest_tags").length
+    if $("#fellow_#{element}_tags").length
       $.get listUrl, (data) ->
         $("#fellow_#{element}_tags").show();
       
