@@ -5,51 +5,32 @@
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
 $ ->
-  if $('#opportunity_interest_tags').length
-    $.get '/interests.json', (data) ->
-      $("#opportunity_interest_tags").show();
+  enableTagChecklistToggle = (element, listUrl) ->
+    if $("#opportunity_interest_tags").length
+      $.get listUrl, (data) ->
+        $("#opportunity_#{element}_tags").show();
       
-      $("#opportunity_interest_tags").tagsInput
-        autocomplete: {source: data}
-        placeholder: "Add an Interest"
-        delimiter: ";"
-        validationPattern: new RegExp('^[a-zA-Z, ]+$')
-        
-    $('a#industries-full-list').click (event) ->
-      event.preventDefault()
-      
-      $('#industry-checklist').show()
-      $('#industry-tags').hide()
-        
-    $('a#industries-short-list').click (event) ->
-      event.preventDefault()
-      
-      $('#industry-checklist').hide()
-      $('#industry-tags').show()
-      
+        $("#opportunity_#{element}_tags").tagsInput
+          autocomplete: {source: data}
+          placeholder: "Add an #{element}"
+          delimiter: ";"
+          validationPattern: new RegExp('^[a-zA-Z, ]+$')
 
-  if $('#opportunity_industry_tags').length
-    $.get '/industries.json', (data) ->
-      $("#opportunity_industry_tags").show();
+      $("a##{element}-full-list").click (event) ->
+        event.preventDefault()
       
-      $("#opportunity_industry_tags").tagsInput
-        autocomplete: {source: data}
-        placeholder: "Add an Industry"
-        delimiter: ";"
-        validationPattern: new RegExp('^[a-zA-Z, ]+$')
-        
-    $('a#interests-full-list').click (event) ->
-      event.preventDefault()
-      
-      $('#interest-checklist').show()
-      $('#interest-tags').hide()
-        
-    $('a#interests-short-list').click (event) ->
-      event.preventDefault()
-      
-      $('#interest-checklist').hide()
-      $('#interest-tags').show()
+        $("##{element}-checklist").show()
+        $("##{element}-tags").hide()
+    
+      $("a##{element}-short-list").click (event) ->
+        event.preventDefault()
+    
+        $("##{element}-checklist").hide()
+        $("##{element}-tags").show()
 
+        
+  enableTagChecklistToggle("interest", '/interests.json')
+  enableTagChecklistToggle("industry", '/industries.json')
   
   new_task_fields = () ->
     index = $('.task_fields').length
