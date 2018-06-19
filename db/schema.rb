@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_15_194522) do
+ActiveRecord::Schema.define(version: 2018_06_19_174736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,13 @@ ActiveRecord::Schema.define(version: 2018_06_15_194522) do
     t.index ["interest_id"], name: "index_fellows_interests_on_interest_id"
   end
 
+  create_table "fellows_metros", id: false, force: :cascade do |t|
+    t.bigint "fellow_id", null: false
+    t.bigint "metro_id", null: false
+    t.index ["fellow_id"], name: "index_fellows_metros_on_fellow_id"
+    t.index ["metro_id"], name: "index_fellows_metros_on_metro_id"
+  end
+
   create_table "industries", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -221,6 +228,22 @@ ActiveRecord::Schema.define(version: 2018_06_15_194522) do
     t.bigint "opportunity_id", null: false
     t.index ["location_id"], name: "index_locations_opportunities_on_location_id"
     t.index ["opportunity_id"], name: "index_locations_opportunities_on_opportunity_id"
+  end
+
+  create_table "metros", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_metros_on_code", unique: true
+    t.index ["name"], name: "index_metros_on_name", unique: true
+  end
+
+  create_table "metros_opportunities", id: false, force: :cascade do |t|
+    t.bigint "metro_id", null: false
+    t.bigint "opportunity_id", null: false
+    t.index ["metro_id"], name: "index_metros_opportunities_on_metro_id"
+    t.index ["opportunity_id"], name: "index_metros_opportunities_on_opportunity_id"
   end
 
   create_table "opportunities", force: :cascade do |t|

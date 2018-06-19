@@ -44,6 +44,16 @@ interests = [
   'Criminology', 'Archaeology', 'Cartography', 'Political Science', 'Sociology', 'Construction Trades', 
   'Culinary Arts', 'Creative Writing'
 ]
+
+if Metro.count == 0
+  metros = Metro.create([
+    {code: '4360', name: 'Lincoln, NE'},
+    {code: '5920', name: 'Omaha, NE-IA'},
+    {code: '7720', name: 'Sioux City, IA-NE'}
+  ])
+end
+
+lincoln_ne = Metro.find_by name: 'Lincoln, NE'
     
 interests.sort.each do |name|
   Interest.create!(name: name)
@@ -59,7 +69,7 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
 
   location = employer.locations.create(
     name: "#{employer.name} Headquarters",
-    contact_attributes: {postal_code: '68516'}
+    contact_attributes: {city: 'Lincoln', state: 'NE', postal_code: '68516'}
   )
   
   Industry.where.not(name: 'Accounting').limit(2).each do |industry|
@@ -75,6 +85,7 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
     opportunity.industries << industry_accounting
     opportunity.interests << interest_accounting
     opportunity.locations << location
+    opportunity.metros << lincoln_ne
   end
 end
 
@@ -95,11 +106,11 @@ opportunity_stages = OpportunityStage.create!([
 employment_status = EmploymentStatus.find_by name: 'Unemployed'
 
 fellows = Fellow.create!([
-  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68005'}},
-  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68510'}},
-  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68521'}},
-  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68339'}},
-  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status, contact_attributes: {postal_code: '66215'}},
+  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68005'}, gpa: 3.0, efficacy_score: 0.95},
+  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68510'}, gpa: 3.2, efficacy_score: 0.9},
+  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68521'}, gpa: 3.4, efficacy_score: 0.85},
+  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68339'}, gpa: 3.6, efficacy_score: 0.8},
+  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status, contact_attributes: {postal_code: '66215'}, gpa: 3.8, efficacy_score: 0.75},
 ])
 
 # give each fellow three interests
@@ -111,6 +122,9 @@ end
 Industry.where.not(name: 'Accounting').limit(fellows.size * 3).each_with_index do |industry, f|
   fellows[f % fellows.size].industries << industry
 end
+
+# give each fellow one metro area (Lincoln, NE)
+fellows.each{|f| f.metros << lincoln_ne}
 
 # add all fellows to accounting industry/interest groups
 Fellow.all.each do |fellow|

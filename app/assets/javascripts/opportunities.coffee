@@ -2,7 +2,53 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$ ->
+# tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
+
+$(document).on "turbolinks:load",  ->
+  enableTagChecklistToggle = (element, listUrl, placeholder) ->
+    if $("#opportunity_#{element}_tags").length
+      $.get listUrl, (data) ->
+        $("#opportunity_#{element}_tags").show();
+      
+        $("#opportunity_#{element}_tags").tagsInput
+          autocomplete: {source: data}
+          placeholder: placeholder
+          delimiter: ";"
+          validationPattern: new RegExp('^[a-zA-Z, \&/-]+$')
+
+        $("a##{element}-full-list").click (event) ->
+          event.preventDefault()
+        
+          tags = $("#opportunity_#{element}_tags").val().split(";")
+
+          $(".#{element}_checkbox").each (index) ->
+            if tags.includes($(this).next('label').text())
+              $(this).prop("checked", true)
+            else
+              $(this).prop("checked", false)
+      
+          $("##{element}-checklist").show()
+          $("##{element}-tags").hide()
+    
+        $("a##{element}-short-list").click (event) ->
+          event.preventDefault()
+
+          tags = []
+        
+          $(".#{element}_checkbox").each (index) ->
+            if $(this).prop("checked")
+              tags.push($(this).next('label').text())
+        
+          $("#opportunity_#{element}_tags").importTags(tags.join(';'))
+        
+          $("##{element}-checklist").hide()
+          $("##{element}-tags").show()
+
+        
+  enableTagChecklistToggle("interest", '/interests.json', 'Add an Interest')
+  enableTagChecklistToggle("industry", '/industries.json', 'Add an Industry')
+  enableTagChecklistToggle("metro",    '/metros.json', 'Add a Metro')
+  
   new_task_fields = () ->
     index = $('.task_fields').length
     

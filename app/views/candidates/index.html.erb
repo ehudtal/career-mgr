@@ -13,6 +13,7 @@
         <th>Efficacy</th>
         <th>Interests</th>
         <th>Industries</th>
+        <th>Metro Areas</th>
         <th>Distance</th>
         <th>Status</th>
       
@@ -48,6 +49,13 @@
             <ul>
               <% fellow.industries.each do |industry| %>
                 <li><%= industry.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% fellow.metros.each do |metro| %>
+                <li><%= metro.name %></li>
               <% end %>
             </ul>
           </td>

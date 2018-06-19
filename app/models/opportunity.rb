@@ -9,11 +9,11 @@ class Opportunity < ApplicationRecord
   
   has_and_belongs_to_many :industries, dependent: :destroy
   has_and_belongs_to_many :interests, dependent: :destroy
+  has_and_belongs_to_many :metros, dependent: :destroy
 
   has_and_belongs_to_many :locations, dependent: :destroy
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
   
-
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   
@@ -21,9 +21,13 @@ class Opportunity < ApplicationRecord
     return @candidates if defined?(@candidates)
     
     candidate_ids = []
-    
+
+    # candidates match on either industry or interest overlap
     candidate_ids += FellowInterest.fellow_ids_for(interest_ids)
     candidate_ids += FellowIndustry.fellow_ids_for(industry_ids)
+
+    # candidates must match on metro, regardless of industry/interest
+    candidate_ids &= FellowMetro.fellow_ids_for(metro_ids)
     
     candidate_ids.uniq!
     
@@ -43,6 +47,30 @@ class Opportunity < ApplicationRecord
         fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
       end
     end
+  end
+  
+  def industry_tags
+    industries.pluck(:name).join(';')
+  end
+  
+  def industry_tags= tag_string
+    self.industry_ids = Industry.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def interest_tags
+    interests.pluck(:name).join(';')
+  end
+  
+  def interest_tags= tag_string
+    self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def metro_tags
+    metros.pluck(:name).join(';')
+  end
+  
+  def metro_tags= tag_string
+    self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
   end
   
   def postal_codes

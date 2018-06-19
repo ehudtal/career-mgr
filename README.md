@@ -47,12 +47,6 @@ Be sure to re-source this file in any open console windows to get it to work. No
     # run database migrations
     career rake db:migrate
 
-At least once, you should load the database with valid zip codes. The zip code csv is not in the repo, it's several MB. Ask a colleague, copy it to `tmp/postal-codes.csv`, then:
-
-    docker-compose exec career-mgr rake postal_codes:load
-
-This will allow the app to calculate distances between fellows and opportunities.
-
 ### Non-Docker (untested)
 
 First, we need to copy a couple of environment files in the app directory:
@@ -86,6 +80,18 @@ Now you should be able to run the app using the following command. We're specify
 
 Go to http://localhost:3010 in your favorite browser. If everything's working correctly, you should see the greeting, "Yay! You're on Rails!"
 
+## Post-Setup
+
+At least once, you should load the database with valid zip codes and metro areas. The import files are not in the repo, they're too large. Ask a colleague for these files:
+
+* `postal-codes.csv`
+* `msa.txt`
+
+Copy them to the `tmp`, then:
+
+    docker-compose exec career-mgr rake postal:load
+
+This will allow the app to calculate distances between fellows and opportunities, and will generate all the needed metro areas for fellow/opp matching.
 
 ## Continuing Development
 

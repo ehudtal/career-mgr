@@ -41,7 +41,7 @@ RSpec.describe PostalCode, type: :model do
   
   describe '::load_csv' do
     it "loads the contents of the CSV file into the db, weeding out duplicates" do
-      PostalCode.load_csv("#{Rails.root}/spec/postal-code-sample.csv")
+      PostalCode.load_csv("#{Rails.root}/spec/fixtures/postal-code-sample.csv")
       expect(PostalCode.count).to eq(2)
 
       postal_code = PostalCode.find_by code: '00501'
@@ -51,7 +51,7 @@ RSpec.describe PostalCode, type: :model do
     
     it "clears table first" do
       create :postal_code
-      PostalCode.load_csv("#{Rails.root}/spec/postal-code-sample.csv")
+      PostalCode.load_csv("#{Rails.root}/spec/fixtures/postal-code-sample.csv")
 
       expect(PostalCode.count).to eq(2)
     end

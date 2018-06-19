@@ -9,6 +9,7 @@ class Fellow < ApplicationRecord
   
   has_and_belongs_to_many :interests, dependent: :destroy
   has_and_belongs_to_many :industries, dependent: :destroy
+  has_and_belongs_to_many :metros, dependent: :destroy
   
   belongs_to :employment_status
   
@@ -45,6 +46,30 @@ class Fellow < ApplicationRecord
     
     @distance_from ||= {}
     @distance_from[postal_code] = PostalCode.distance(contact.postal_code, postal_code)
+  end
+  
+  def industry_tags
+    industries.pluck(:name).join(';')
+  end
+  
+  def industry_tags= tag_string
+    self.industry_ids = Industry.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def interest_tags
+    interests.pluck(:name).join(';')
+  end
+  
+  def interest_tags= tag_string
+    self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def metro_tags
+    metros.pluck(:name).join(';')
+  end
+  
+  def metro_tags= tag_string
+    self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
   end
   
   private
