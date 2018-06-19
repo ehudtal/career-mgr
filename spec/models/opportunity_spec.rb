@@ -15,6 +15,7 @@ RSpec.describe Opportunity, type: :model do
   
   it { should have_and_belong_to_many :industries }
   it { should have_and_belong_to_many :interests }
+  it { should have_and_belong_to_many :metros }
   it { should have_and_belong_to_many :locations }
   
   #############

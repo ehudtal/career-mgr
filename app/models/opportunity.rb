@@ -9,6 +9,7 @@ class Opportunity < ApplicationRecord
   
   has_and_belongs_to_many :industries, dependent: :destroy
   has_and_belongs_to_many :interests, dependent: :destroy
+  has_and_belongs_to_many :metros, dependent: :destroy
 
   has_and_belongs_to_many :locations, dependent: :destroy
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true

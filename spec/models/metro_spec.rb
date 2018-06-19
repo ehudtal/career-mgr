@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Metro, type: :model do
+  ##############
+  # Associations
+  ##############
+
+  it { should have_and_belong_to_many :opportunities }
+  
   #############
   # Validations
   #############
