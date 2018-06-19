@@ -20,6 +20,12 @@ $ ->
       
       $('#industry-checklist').show()
       $('#industry-tags').hide()
+        
+    $('a#industries-short-list').click (event) ->
+      event.preventDefault()
+      
+      $('#industry-checklist').hide()
+      $('#industry-tags').show()
       
 
   if $('#opportunity_industry_tags').length
@@ -37,6 +43,12 @@ $ ->
       
       $('#interest-checklist').show()
       $('#interest-tags').hide()
+        
+    $('a#interests-short-list').click (event) ->
+      event.preventDefault()
+      
+      $('#interest-checklist').hide()
+      $('#interest-tags').show()
 
   
   new_task_fields = () ->
