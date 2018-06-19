@@ -4,7 +4,7 @@
 
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
-$ ->
+$(document).on "turbolinks:load",  ->
   enableTagChecklistToggle = (element, listUrl, placeholder) ->
     if $("#opportunity_#{element}_tags").length
       $.get listUrl, (data) ->

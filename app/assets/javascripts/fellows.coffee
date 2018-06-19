@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$ ->
+$(document).on "turbolinks:load",  ->
   enableFellowTagChecklistToggle = (element, listUrl, placeholder) ->
     if $("#fellow_#{element}_tags").length
       $.get listUrl, (data) ->
