@@ -21,10 +21,13 @@ class Opportunity < ApplicationRecord
     return @candidates if defined?(@candidates)
     
     candidate_ids = []
-    
+
+    # candidates match on either industry or interest overlap
     candidate_ids += FellowInterest.fellow_ids_for(interest_ids)
     candidate_ids += FellowIndustry.fellow_ids_for(industry_ids)
-    candidate_ids += FellowMetro.fellow_ids_for(metro_ids)
+
+    # candidates must match on metro, regardless of industry/interest
+    candidate_ids &= FellowMetro.fellow_ids_for(metro_ids)
     
     candidate_ids.uniq!
     

@@ -37,77 +37,71 @@ RSpec.describe Opportunity, type: :model do
     let(:industry) { create :industry }
     let(:metro) { create :metro }
     
-    it "includes fellow when there is a shared interest" do
+    def matching_industry
+      opportunity.industries << industry
+      fellow.industries << industry
+    end
+      
+    def matching_interest
       opportunity.interests << interest
       fellow.interests << interest
-      
-      expect(opportunity.candidates).to include(fellow)
+    end
+     
+    def matching_metro
+      opportunity.metros << metro
+      fellow.metros << metro
     end
     
-    it "excludes fellow when fellow does not share the interest" do
-      opportunity.interests << interest
-      fellow
-      
-      expect(opportunity.candidates).to_not include(fellow)
-    end
+    describe 'with matching metro' do
+      before { matching_metro }
     
-    it "excludes fellow when opp does not share the interest" do
-      opportunity
-      fellow.interests << interest
-      
-      expect(opportunity.candidates).to_not include(fellow)
-    end
+      it "includes fellow when there is a shared interest" do
+        matching_interest
+        expect(opportunity.candidates).to include(fellow)
+      end
+    
+      it "excludes fellow when fellow does not share the interest" do
+        opportunity.interests << interest
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+    
+      it "excludes fellow when opp does not share the interest" do
+        fellow.interests << interest
+        expect(opportunity.candidates).to_not include(fellow)
+      end
 
-    it "includes fellow when there is a shared industry" do
-      opportunity.industries << industry
-      fellow.industries << industry
-      
-      expect(opportunity.candidates).to include(fellow)
+      it "includes fellow when there is a shared industry" do
+        matching_industry
+        expect(opportunity.candidates).to include(fellow)
+      end
+    
+      it "excludes fellow when fellow does not share the industry" do
+        opportunity.industries << industry
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+    
+      it "excludes fellow when opp does not share the industry" do
+        fellow.industries << industry
+        expect(opportunity.candidates).to_not include(fellow)
+      end
     end
     
-    it "excludes fellow when fellow does not share the industry" do
-      opportunity.industries << industry
-      fellow
-      
-      expect(opportunity.candidates).to_not include(fellow)
-    end
-    
-    it "excludes fellow when opp does not share the industry" do
-      opportunity
-      fellow.industries << industry
-      
-      expect(opportunity.candidates).to_not include(fellow)
-    end
-    
-    it "includes fellow when there is a shared metro" do
-      opportunity.metros << metro
-      fellow.metros << metro
-      
-      expect(opportunity.candidates).to include(fellow)
-    end
-    
-    it "excludes fellow when fellow does not share the interest" do
-      opportunity.metros << metro
-      fellow
-      
-      expect(opportunity.candidates).to_not include(fellow)
-    end
-    
-    it "excludes fellow when opp does not share the interest" do
-      opportunity
-      fellow.metros << metro
-      
-      expect(opportunity.candidates).to_not include(fellow)
+    describe 'without matching metro' do
+      it "excludes even with shared industry" do
+        matching_industry
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+
+      it "excludes even with shared interest" do
+        matching_interest
+        expect(opportunity.candidates).to_not include(fellow)
+      end
     end
     
     it "removes duplicates" do
-      opportunity.interests << interest
-      opportunity.industries << industry
-      opportunity.metros << metro
-
-      fellow.interests << interest
-      fellow.industries << industry
-      fellow.metros << metro
+      matching_metro
+      matching_industry
+      matching_interest
       
       expect(opportunity.candidates).to include(fellow)
       expect(opportunity.candidates.size).to eq(1)
