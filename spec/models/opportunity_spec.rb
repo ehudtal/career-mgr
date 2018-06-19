@@ -160,6 +160,33 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  describe '#metro_tags' do
+    it "returns a semicolon-delimited list of associated metro names" do
+      opportunity = build :opportunity
+      metro_1 = build :metro, name: 'Metro 1'
+      metro_2 = build :metro, name: 'Metro 2'
+      
+      allow(opportunity).to receive(:metros).and_return([metro_1, metro_2])
+      
+      expect(opportunity.metro_tags).to eq("Metro 1;Metro 2")
+    end
+  end
+
+  describe '#metro_tags=' do
+    it "converts a semicolon-delimited list of metro names into associations" do
+      opportunity = create :opportunity
+      metro_1 =  create :metro, name: 'Metro 1'
+      metro_2 =  create :metro, name: 'Metro 2'
+      metro_3 =  create :metro, name: 'Metro 3'
+      
+      opportunity.metro_tags = "Metro 1;Metro 2"
+      
+      expect(opportunity.metros).to include(metro_1)
+      expect(opportunity.metros).to include(metro_2)
+      expect(opportunity.metros).to_not include(metro_3)
+    end
+  end
+  
   describe '#postal codes' do
     it "returns the postal codes of all locations" do
       opportunity = build :opportunity

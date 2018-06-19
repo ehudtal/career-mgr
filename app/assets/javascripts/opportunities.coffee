@@ -5,16 +5,16 @@
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
 $ ->
-  enableTagChecklistToggle = (element, listUrl) ->
+  enableTagChecklistToggle = (element, listUrl, placeholder) ->
     if $("#opportunity_interest_tags").length
       $.get listUrl, (data) ->
         $("#opportunity_#{element}_tags").show();
       
         $("#opportunity_#{element}_tags").tagsInput
           autocomplete: {source: data}
-          placeholder: "Add an #{element}"
+          placeholder: placeholder
           delimiter: ";"
-          validationPattern: new RegExp('^[a-zA-Z, \&/]+$')
+          validationPattern: new RegExp('^[a-zA-Z, \&/-]+$')
 
         $("a##{element}-full-list").click (event) ->
           event.preventDefault()
@@ -45,8 +45,9 @@ $ ->
           $("##{element}-tags").show()
 
         
-  enableTagChecklistToggle("interest", '/interests.json')
-  enableTagChecklistToggle("industry", '/industries.json')
+  enableTagChecklistToggle("interest", '/interests.json', 'Add an Interest')
+  enableTagChecklistToggle("industry", '/industries.json', 'Add an Industry')
+  enableTagChecklistToggle("metro",    '/metros.json', 'Add a Metro')
   
   new_task_fields = () ->
     index = $('.task_fields').length

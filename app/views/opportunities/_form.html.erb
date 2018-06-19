@@ -80,7 +80,15 @@
 
   <%= render 'interests/check_boxes', object: opportunity %>
   
+  <h3>Metro Areas</h3>
+  
+  <div id="metro-tags" class="jquery-tags">
+    <%= form.text_area :metro_tags %>
+    <%= link_to 'see full list', '#', id: 'metro-full-list' %>
+  </div>
 
+  <%= render 'metros/check_boxes', object: opportunity %>
+  
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -61,6 +61,14 @@ class Opportunity < ApplicationRecord
     self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
   end
   
+  def metro_tags
+    metros.pluck(:name).join(';')
+  end
+  
+  def metro_tags= tag_string
+    self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
   def postal_codes
     locations.map(&:contact).map(&:postal_code)
   end
