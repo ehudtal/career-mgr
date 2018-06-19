@@ -1,5 +1,6 @@
 class Metro < ApplicationRecord
   has_and_belongs_to_many :opportunities
+  has_and_belongs_to_many :fellows
 
   validates :code, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: true

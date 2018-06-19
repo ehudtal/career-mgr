@@ -6,6 +6,7 @@ RSpec.describe Metro, type: :model do
   ##############
 
   it { should have_and_belong_to_many :opportunities }
+  it { should have_and_belong_to_many :fellows }
   
   #############
   # Validations
