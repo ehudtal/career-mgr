@@ -5,28 +5,47 @@
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
 $ ->
+  initializeTagsInput = (element, data) ->
+    $("#opportunity_#{element}_tags").tagsInput
+      autocomplete: {source: data}
+      placeholder: "Add an #{element}"
+      delimiter: ";"
+      validationPattern: new RegExp('^[a-zA-Z, \&/]+$')
+    
   enableTagChecklistToggle = (element, listUrl) ->
     if $("#opportunity_interest_tags").length
       $.get listUrl, (data) ->
         $("#opportunity_#{element}_tags").show();
       
-        $("#opportunity_#{element}_tags").tagsInput
-          autocomplete: {source: data}
-          placeholder: "Add an #{element}"
-          delimiter: ";"
-          validationPattern: new RegExp('^[a-zA-Z, ]+$')
+        initializeTagsInput(element, data)
 
-      $("a##{element}-full-list").click (event) ->
-        event.preventDefault()
+        $("a##{element}-full-list").click (event) ->
+          event.preventDefault()
+        
+          tags = $("#opportunity_#{element}_tags").val().split(";")
+
+          $(".#{element}_checkbox").each (index) ->
+            if tags.includes($(this).next('label').text())
+              $(this).prop("checked", true)
+            else
+              $(this).prop("checked", false)
       
-        $("##{element}-checklist").show()
-        $("##{element}-tags").hide()
+          $("##{element}-checklist").show()
+          $("##{element}-tags").hide()
     
-      $("a##{element}-short-list").click (event) ->
-        event.preventDefault()
-    
-        $("##{element}-checklist").hide()
-        $("##{element}-tags").show()
+        $("a##{element}-short-list").click (event) ->
+          event.preventDefault()
+
+          tags = []
+        
+          $(".#{element}_checkbox").each (index) ->
+            if $(this).prop("checked")
+              tags.push($(this).next('label').text())
+        
+          $("#opportunity_#{element}_tags").importTags(tags.join(';'))
+        
+          $("##{element}-checklist").hide()
+          $("##{element}-tags").show()
 
         
   enableTagChecklistToggle("interest", '/interests.json')
