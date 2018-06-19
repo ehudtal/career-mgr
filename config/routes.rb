@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :coaches
   resources :interests
   resources :industries
+  resources :metros, only: [:index], constraints: lambda { |req| req.format == :json }
   resources :cohort_fellows
   resources :cohorts
   resources :contacts
