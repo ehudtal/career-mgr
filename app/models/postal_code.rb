@@ -33,7 +33,7 @@ class PostalCode < ApplicationRecord
       if File.exists?(filename)
         CSV.open(filename, headers: true, &load_lines)
       else
-        CSV.parse($stdin.read, headers: true, &load_lines)
+        CSV.new($stdin, headers: true, &load_lines)
       end
     end
   end
