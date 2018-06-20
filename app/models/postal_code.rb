@@ -17,7 +17,7 @@ class PostalCode < ApplicationRecord
     def load_csv filename
       delete_all
       
-      CSV.open(filename, headers: true) do |csv|
+      load_lines = lambda do |csv|
         attributes = {}
         
         csv.each do |row|
@@ -28,6 +28,12 @@ class PostalCode < ApplicationRecord
         end
         
         create attributes.values
+      end
+      
+      if File.exists?(filename)
+        CSV.open(filename, headers: true, &load_lines)
+      else
+        CSV.parse($stdin.read, headers: true, &load_lines)
       end
     end
   end
