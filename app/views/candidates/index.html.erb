@@ -22,7 +22,7 @@
 <h3 style="clear: both;"><%= pluralize(@candidates.count, 'Match')%></h3>
 
 <%= form_tag opportunity_candidates_path(@opportunity), method: :post do %>
-  <table class="fellows">
+  <table id='candidate-list' class="fellows tablesorter">
     <thead>
       <tr>
         <th></th>

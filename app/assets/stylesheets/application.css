@@ -142,3 +142,7 @@ tr:first-child {
   margin-right: 10px;
   margin-bottom: 20px;
 }
+
+.tablesorter th.header {
+  padding-right: 10px;
+}
