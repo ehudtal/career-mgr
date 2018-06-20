@@ -5,49 +5,81 @@
 # tagsInput jQuery plugin: https://github.com/underovsky/jquery-tagsinput-revisited
 
 $(document).on "turbolinks:load",  ->
-  enableTagChecklistToggle = (element, listUrl, placeholder) ->
-    if $("#opportunity_#{element}_tags").length
+  enableTagChecklistToggle = (name, listUrl, placeholder) ->
+    element = $("#opportunity_#{name}_tags")
+    
+    if element.length
       $.get listUrl, (data) ->
-        $("#opportunity_#{element}_tags").show();
+        element.show();
       
-        $("#opportunity_#{element}_tags").tagsInput
+        element.tagsInput
           autocomplete: {source: data}
           placeholder: placeholder
           delimiter: ";"
           validationPattern: new RegExp('^[a-zA-Z, \&/-]+$')
+          onAddTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
+          onRemoveTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
 
-        $("a##{element}-full-list").click (event) ->
+        $("a##{name}-full-list").click (event) ->
           event.preventDefault()
         
-          tags = $("#opportunity_#{element}_tags").val().split(";")
+          tags = element.val().split(";")
 
-          $(".#{element}_checkbox").each (index) ->
+          $(".#{name}_checkbox").each (index) ->
             if tags.includes($(this).next('label').text())
               $(this).prop("checked", true)
             else
               $(this).prop("checked", false)
       
-          $("##{element}-checklist").show()
-          $("##{element}-tags").hide()
+          $("##{name}-checklist").show()
+          $("##{name}-tags").hide()
     
-        $("a##{element}-short-list").click (event) ->
+        $("a##{name}-short-list").click (event) ->
           event.preventDefault()
 
           tags = []
         
-          $(".#{element}_checkbox").each (index) ->
+          $(".#{name}_checkbox").each (index) ->
             if $(this).prop("checked")
               tags.push($(this).next('label').text())
         
-          $("#opportunity_#{element}_tags").importTags(tags.join(';'))
+          element.importTags(tags.join(';'))
         
-          $("##{element}-checklist").hide()
-          $("##{element}-tags").show()
-
+          $("##{name}-checklist").hide()
+          $("##{name}-tags").show()
+          
+  enableIndustryInterestTags = () ->
+    element = $('#opportunity_industry_interest_tags') 
+    
+    if element.length
+      $.get '/industries.json', (industries) ->
+        $.get '/interests.json', (interests) ->
+          data = $.unique(industries.concat(interests))
+          
+          element.show()
+          
+          element.tagsInput
+            autocomplete: {source: data}
+            placeholder: 'Add Industries/Interests'
+            delimiter: ';'
+            validationPattern: new RegExp('^[a-zA-Z, \&/-]+$')
+            onAddTag: (tag) ->
+              if $(tag).hasClass('auto-refresh')
+                $(tag).form().submit()
+            onRemoveTag: (tag) ->
+              if $(tag).hasClass('auto-refresh')
+                $(tag).form().submit()
+            
         
   enableTagChecklistToggle("interest", '/interests.json', 'Add an Interest')
   enableTagChecklistToggle("industry", '/industries.json', 'Add an Industry')
   enableTagChecklistToggle("metro",    '/metros.json', 'Add a Metro')
+  
+  enableIndustryInterestTags()
   
   new_task_fields = () ->
     index = $('.task_fields').length

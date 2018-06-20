@@ -17,17 +17,19 @@ class Opportunity < ApplicationRecord
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   
-  def candidates
+  def candidates search_params=nil
+    search_params ||= {}
     return @candidates if defined?(@candidates)
     
     candidate_ids = []
-
+    
     # candidates match on either industry or interest overlap
-    candidate_ids += FellowInterest.fellow_ids_for(interest_ids)
-    candidate_ids += FellowIndustry.fellow_ids_for(industry_ids)
+    # candidate_ids += fellow_ids_for_interests(search_params[:interests])
+    # candidate_ids += fellow_ids_for_industries(search_params[:industries])
+    candidate_ids += fellow_ids_for_industries_interests(search_params[:industries_interests])
 
     # candidates must match on metro, regardless of industry/interest
-    candidate_ids &= FellowMetro.fellow_ids_for(metro_ids)
+    candidate_ids &= fellow_ids_for_metros(search_params[:metros])
     
     candidate_ids.uniq!
     
@@ -35,6 +37,43 @@ class Opportunity < ApplicationRecord
     candidate_ids -= fellow_opportunities.pluck(:fellow_id)
     
     @candidates = Fellow.where(id: candidate_ids)
+  end
+  
+  def fellow_ids_for_interests names
+    selected_ids = if names
+      Interest.where(name: names.split(';')).pluck(:id)
+    else
+      interest_ids
+    end
+    
+    FellowInterest.fellow_ids_for(selected_ids)
+  end
+  
+  def fellow_ids_for_industries names
+    selected_ids = if names
+      Industry.where(name: names.split(';')).pluck(:id)
+    else
+      industry_ids
+    end
+    
+    FellowIndustry.fellow_ids_for(selected_ids)
+  end
+  
+  def fellow_ids_for_industries_interests names
+    industry_fellow_ids = fellow_ids_for_industries names
+    interest_fellow_ids = fellow_ids_for_interests names
+    
+    industry_fellow_ids | interest_fellow_ids
+  end
+  
+  def fellow_ids_for_metros names
+    selected_ids = if names
+      Metro.where(name: names.split(';')).pluck(:id)
+    else
+      metro_ids
+    end
+    
+    FellowMetro.fellow_ids_for(selected_ids)
   end
   
   def candidate_ids= candidate_id_list
@@ -63,6 +102,15 @@ class Opportunity < ApplicationRecord
   
   def interest_tags= tag_string
     self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def industry_interest_tags
+    (industries.pluck(:name) | interests.pluck(:name)).join(';')
+  end
+  
+  def industry_interest_tags= tag_string
+    self.industry_tags = tag_string
+    self.interest_tags = tag_string
   end
   
   def metro_tags

@@ -2,8 +2,32 @@
 
 <p>Select candidates to notify about this opportunity, from the list below:</p>
 
+<%= form_tag opportunity_candidates_path(@opportunity), method: :get do %>
+  <div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Industries/Interests</h3>
+    <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
+  </div>
+
+  <!--div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Industries</h3>
+    <%= text_area_tag :opportunity_industry_tags, params[:search][:industries], name: "search[industries]", class: 'auto-refresh' %>
+  </div>
+
+  <div id="interest-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Interests</h3>
+    <%= text_area_tag :opportunity_interest_tags, params[:search][:interests], name: "search[interests]", class: 'auto-refresh' %>
+  </div-->
+
+  <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Metro Areas</h3>
+    <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
+  </div>
+<% end %>
+
+<h3 style="clear: both;"><%= pluralize(@candidates.count, 'Match')%></h3>
+
 <%= form_tag opportunity_candidates_path(@opportunity), method: :post do %>
-  <table class="fellows">
+  <table id='candidate-list' class="fellows tablesorter">
     <thead>
       <tr>
         <th></th>
