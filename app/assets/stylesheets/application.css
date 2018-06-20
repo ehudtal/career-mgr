@@ -135,3 +135,10 @@ tr:first-child {
 #jquery-tags {
   margin-bottom: 20px;
 }
+
+.floating-search {
+  float: left;
+  width: 350px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}

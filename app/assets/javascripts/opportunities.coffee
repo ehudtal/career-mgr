@@ -15,6 +15,12 @@ $(document).on "turbolinks:load",  ->
           placeholder: placeholder
           delimiter: ";"
           validationPattern: new RegExp('^[a-zA-Z, \&/-]+$')
+          onAddTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
+          onRemoveTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
 
         $("a##{element}-full-list").click (event) ->
           event.preventDefault()

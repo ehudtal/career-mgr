@@ -17,7 +17,8 @@ class Opportunity < ApplicationRecord
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   
-  def candidates search_params={}
+  def candidates search_params=nil
+    search_params ||= {}
     return @candidates if defined?(@candidates)
     
     candidate_ids = []
@@ -39,7 +40,7 @@ class Opportunity < ApplicationRecord
   
   def fellow_ids_for_interests names
     selected_ids = if names
-      Interest.where(name: names).pluck(:id)
+      Interest.where(name: names.split(';')).pluck(:id)
     else
       interest_ids
     end
@@ -49,7 +50,7 @@ class Opportunity < ApplicationRecord
   
   def fellow_ids_for_industries names
     selected_ids = if names
-      Industry.where(name: names).pluck(:id)
+      Industry.where(name: names.split(';')).pluck(:id)
     else
       industry_ids
     end
@@ -59,7 +60,7 @@ class Opportunity < ApplicationRecord
   
   def fellow_ids_for_metros names
     selected_ids = if names
-      Metro.where(name: names).pluck(:id)
+      Metro.where(name: names.split(';')).pluck(:id)
     else
       metro_ids
     end

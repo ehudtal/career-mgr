@@ -3,7 +3,12 @@ class CandidatesController < ApplicationController
   before_action :set_fellow_opportunity, only: [:update, :destroy]
   
   def index
-    @candidates = @opportunity.candidates
+    @candidates = @opportunity.candidates(params[:search])
+    
+    params[:search] ||= {}
+    params[:search][:interests] ||= @opportunity.interest_tags
+    params[:search][:industries] ||= @opportunity.industry_tags
+    params[:search][:metros] ||= @opportunity.metro_tags
   end
 
   def create
