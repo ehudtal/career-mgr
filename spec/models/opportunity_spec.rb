@@ -178,6 +178,50 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  describe '#industry_interest_tags' do
+    it "returns a semicolon-delimited list of unique associated industry AND interest names" do
+      opportunity = build :opportunity
+      industry_1 = build :industry, name: 'Industry 1'
+      industry_2 = build :industry, name: 'Accounting'
+      interest_1 = build :interest, name: 'Interest 1'
+      interest_2 = build :interest, name: 'Accounting'
+      
+      allow(opportunity).to receive(:industries).and_return([industry_1, industry_2])
+      allow(opportunity).to receive(:interests).and_return([interest_1, interest_2])
+      
+      list = opportunity.industry_interest_tags.split(';')
+
+      expect(list.size).to eq(3)
+      expect(list).to include('Industry 1')
+      expect(list).to include('Interest 1')
+      expect(list).to include('Accounting')
+    end
+  end
+
+  describe '#industry_interest_tags=' do
+    it "converts a semicolon-delimited list of industry/interest names into associations" do
+      opportunity = create :opportunity
+
+      industry_1 =  create :industry, name: 'Industry 1'
+      industry_2 =  create :industry, name: 'Accounting'
+      industry_3 =  create :industry, name: 'Other'
+
+      interest_1 =  create :interest, name: 'Interest 1'
+      interest_2 =  create :interest, name: 'Accounting'
+      interest_3 =  create :interest, name: 'Other'
+      
+      opportunity.industry_interest_tags = "Industry 1;Interest 1;Accounting"
+      
+      expect(opportunity.industries).to include(industry_1)
+      expect(opportunity.industries).to include(industry_2)
+      expect(opportunity.industries).to_not include(industry_3)
+      
+      expect(opportunity.interests).to include(interest_1)
+      expect(opportunity.interests).to include(interest_2)
+      expect(opportunity.interests).to_not include(interest_3)
+    end
+  end
+  
   describe '#metro_tags' do
     it "returns a semicolon-delimited list of associated metro names" do
       opportunity = build :opportunity

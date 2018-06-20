@@ -24,8 +24,9 @@ class Opportunity < ApplicationRecord
     candidate_ids = []
     
     # candidates match on either industry or interest overlap
-    candidate_ids += fellow_ids_for_interests(search_params[:interests])
-    candidate_ids += fellow_ids_for_industries(search_params[:industries])
+    # candidate_ids += fellow_ids_for_interests(search_params[:interests])
+    # candidate_ids += fellow_ids_for_industries(search_params[:industries])
+    candidate_ids += fellow_ids_for_industries_interests(search_params[:industries_interests])
 
     # candidates must match on metro, regardless of industry/interest
     candidate_ids &= fellow_ids_for_metros(search_params[:metros])
@@ -56,6 +57,13 @@ class Opportunity < ApplicationRecord
     end
     
     FellowIndustry.fellow_ids_for(selected_ids)
+  end
+  
+  def fellow_ids_for_industries_interests names
+    industry_fellow_ids = fellow_ids_for_industries names
+    interest_fellow_ids = fellow_ids_for_interests names
+    
+    industry_fellow_ids | interest_fellow_ids
   end
   
   def fellow_ids_for_metros names
@@ -94,6 +102,15 @@ class Opportunity < ApplicationRecord
   
   def interest_tags= tag_string
     self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def industry_interest_tags
+    (industries.pluck(:name) | interests.pluck(:name)).join(';')
+  end
+  
+  def industry_interest_tags= tag_string
+    self.industry_tags = tag_string
+    self.interest_tags = tag_string
   end
   
   def metro_tags

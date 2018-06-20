@@ -4,6 +4,11 @@
 
 <%= form_tag opportunity_candidates_path(@opportunity), method: :get do %>
   <div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Industries/Interests</h3>
+    <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
+  </div>
+
+  <!--div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Industries</h3>
     <%= text_area_tag :opportunity_industry_tags, params[:search][:industries], name: "search[industries]", class: 'auto-refresh' %>
   </div>
@@ -11,7 +16,7 @@
   <div id="interest-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Interests</h3>
     <%= text_area_tag :opportunity_interest_tags, params[:search][:interests], name: "search[interests]", class: 'auto-refresh' %>
-  </div>
+  </div-->
 
   <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Metro Areas</h3>

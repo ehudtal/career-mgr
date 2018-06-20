@@ -6,9 +6,10 @@ class CandidatesController < ApplicationController
     @candidates = @opportunity.candidates(params[:search])
     
     params[:search] ||= {}
-    params[:search][:interests] ||= @opportunity.interest_tags
-    params[:search][:industries] ||= @opportunity.industry_tags
+    # params[:search][:interests] ||= @opportunity.interest_tags
+    # params[:search][:industries] ||= @opportunity.industry_tags
     params[:search][:metros] ||= @opportunity.metro_tags
+    params[:search][:industries_interests] ||= (@opportunity.industry_interest_tags)
   end
 
   def create
