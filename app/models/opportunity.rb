@@ -21,11 +21,15 @@ class Opportunity < ApplicationRecord
     search_params ||= {}
     return @candidates if defined?(@candidates)
     
-    candidate_ids = []
+    candidate_ids = Fellow.pluck(:id)
     
-    candidate_ids += fellow_ids_for_industries_interests(search_params[:industries_interests])
+    unless search_params[:industries_interests] == ''
+      candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
+    end
 
-    candidate_ids &= fellow_ids_for_metros(search_params[:metros])
+    unless search_params[:metros] == ''
+      candidate_ids &= fellow_ids_for_metros(search_params[:metros])
+    end
     
     candidate_ids.uniq!
     
