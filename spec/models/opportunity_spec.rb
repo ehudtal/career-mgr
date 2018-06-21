@@ -112,18 +112,18 @@ RSpec.describe Opportunity, type: :model do
     it "returns associated metro ids by state" do
       opportunity = build :opportunity
       
-      lincoln = create :metro, code: '1001', name: 'Lincoln, NE'
-      nebraska = create :metro, code: 'NE'
+      lincoln = create :metro, code: '1001', name: 'Lincoln, NE', state: 'NE', source: 'MSA'
+      nebraska = create :metro, code: 'NE', source: 'ST'
       fellow_ne = create :fellow
       fellow_ne.metros << nebraska
     
-      aimes = create :metro, code: '1002', name: 'Aimes, IA'
-      iowa = create :metro, code: 'IA'
+      aimes = create :metro, code: '1002', name: 'Aimes, IA', state: 'IA', source: 'MSA'
+      iowa = create :metro, code: 'IA', source: 'ST'
       fellow_ia = create :fellow
       fellow_ia.metros << iowa
 
-      lenexa = create :metro, code: '1003', name: 'Lenexa, KS'
-      kansas = create :metro, code: 'KS'
+      lenexa = create :metro, code: '1003', name: 'Lenexa, KS', state: 'KS', source: 'MSA'
+      kansas = create :metro, code: 'KS', source: 'ST'
       fellow_ks = create :fellow
       fellow_ks.metros << kansas
     
