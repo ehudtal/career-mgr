@@ -23,9 +23,10 @@ class PostalCode < ApplicationRecord
         
         csv.each do |row|
           zip = row['ZIPCode']
+          msa_code = row['MSACode']
           lat = row['Latitude'].to_f
           lon = row['Longitude'].to_f
-          attributes[zip] = {code: zip, latitude: lat, longitude: lon} unless attributes.has_key?(zip)
+          attributes[zip] = {code: zip, latitude: lat, longitude: lon, msa_code: msa_code} unless attributes.has_key?(zip)
         end
         
         create attributes.values
