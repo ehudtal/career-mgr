@@ -1,5 +1,6 @@
 require 'geo_distance'
 require 'csv'
+require 'open-uri'
 
 class PostalCode < ApplicationRecord
   validates :code, presence: true, uniqueness: {case_sensitive: false}
@@ -17,7 +18,7 @@ class PostalCode < ApplicationRecord
     def load_csv filename
       delete_all
       
-      load_lines = lambda do |csv|
+      load_lines = Proc.new do |csv|
         attributes = {}
         
         csv.each do |row|
@@ -30,11 +31,15 @@ class PostalCode < ApplicationRecord
         create attributes.values
       end
       
-      if File.exists?(filename)
+      if filename =~ /^http:/
+        CSV.open(open(filename), headers: true, &load_lines)
+      elsif File.exists?(filename)
         CSV.open(filename, headers: true, &load_lines)
       else
-        CSV.new($stdin, headers: true, &load_lines)
+        CSV.open($stdin, headers: true, &load_lines)
       end
+      
+      count
     end
   end
   
