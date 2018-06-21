@@ -29,4 +29,11 @@ class Metro < ApplicationRecord
       create attributes
     end
   end
+  
+  def states
+    city, state_list = name.split(/,\s*/)
+    return [] if state_list.nil?
+    
+    state_list.split('-')
+  end
 end

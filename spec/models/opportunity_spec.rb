@@ -108,6 +108,35 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  describe "#state_ids_for_metro_ids" do
+    it "returns associated metro ids by state" do
+      opportunity = build :opportunity
+      
+      lincoln = create :metro, code: '1001', name: 'Lincoln, NE'
+      nebraska = create :metro, code: 'NE'
+      fellow_ne = create :fellow
+      fellow_ne.metros << nebraska
+    
+      aimes = create :metro, code: '1002', name: 'Aimes, IA'
+      iowa = create :metro, code: 'IA'
+      fellow_ia = create :fellow
+      fellow_ia.metros << iowa
+
+      lenexa = create :metro, code: '1003', name: 'Lenexa, KS'
+      kansas = create :metro, code: 'KS'
+      fellow_ks = create :fellow
+      fellow_ks.metros << kansas
+    
+      state_ids = opportunity.state_ids_for_metro_ids([lincoln.id, aimes.id])
+    
+      expect(state_ids).to be_an(Array)
+      expect(state_ids.size).to eq(2)
+      expect(state_ids).to include(nebraska.id)
+      expect(state_ids).to include(iowa.id)
+      expect(state_ids).to_not include(kansas.id)
+    end
+  end
+  
   describe '#candidate_ids=' do
     it "creates fellow_opportunities" do
       fellow = create :fellow

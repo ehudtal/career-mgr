@@ -73,7 +73,14 @@ class Opportunity < ApplicationRecord
       metro_ids
     end
     
-    FellowMetro.fellow_ids_for(selected_ids)
+    state_ids = state_ids_for_metro_ids(selected_ids)
+    
+    FellowMetro.fellow_ids_for(selected_ids + state_ids)
+  end
+  
+  def state_ids_for_metro_ids metro_ids
+    state_abbrs = Metro.where(id: metro_ids).map(&:states).flatten.uniq
+    Metro.where(code: state_abbrs).pluck(:id)
   end
   
   def candidate_ids= candidate_id_list
