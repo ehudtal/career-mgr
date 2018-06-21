@@ -1,5 +1,6 @@
 require 'geo_distance'
 require 'csv'
+require 'open-uri'
 
 class PostalCode < ApplicationRecord
   validates :code, presence: true, uniqueness: {case_sensitive: false}
@@ -17,18 +18,32 @@ class PostalCode < ApplicationRecord
     def load_csv filename
       delete_all
       
-      CSV.open(filename, headers: true) do |csv|
-        attributes = {}
-        
-        csv.each do |row|
-          zip = row['ZIPCode']
-          lat = row['Latitude'].to_f
-          lon = row['Longitude'].to_f
-          attributes[zip] = {code: zip, latitude: lat, longitude: lon} unless attributes.has_key?(zip)
+      load_lines = Proc.new do |csv|
+        now = Time.now
+        previous_zips = {}
+
+        bulk_insert(:code, :msa_code, :latitude, :longitude, :created_at, :updated_at, ignore: true) do |bulk|
+          csv.each do |row|
+            row['timestamp'] = now
+            zip = row['ZIPCode']
+            
+            unless previous_zips.has_key?(zip)
+              bulk.add ['ZIPCode', 'MSACode', 'Latitude', 'Longitude', 'timestamp', 'timestamp'].map{|f| row[f]}
+              previous_zips[zip] = 1
+            end
+          end
         end
-        
-        create attributes.values
       end
+      
+      if filename =~ /^http:/
+        CSV.open(open(filename), headers: true, &load_lines)
+      elsif File.exists?(filename)
+        CSV.open(filename, headers: true, &load_lines)
+      else
+        CSV.open($stdin, headers: true, &load_lines)
+      end
+      
+      count
     end
   end
   

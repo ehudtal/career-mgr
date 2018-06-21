@@ -11,7 +11,6 @@ namespace :postal do
   
   desc "load postal codes from tmp/postal-codes.csv"
   task codes: :environment do
-    puts "Settle in, this should take about ten minutes..."
     load_postal_codes
   end
   
@@ -22,8 +21,6 @@ namespace :postal do
   
   desc "load both postal codes and metros from tmp directory"
   task load: :environment do
-    puts "Settle in, this should take about ten minutes..."
-
     load_postal_codes
     load_metros
   end
