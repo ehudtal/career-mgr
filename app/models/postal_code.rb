@@ -19,17 +19,20 @@ class PostalCode < ApplicationRecord
       delete_all
       
       load_lines = Proc.new do |csv|
-        attributes = {}
-        
-        csv.each do |row|
-          zip = row['ZIPCode']
-          msa_code = row['MSACode']
-          lat = row['Latitude'].to_f
-          lon = row['Longitude'].to_f
-          attributes[zip] = {code: zip, latitude: lat, longitude: lon, msa_code: msa_code} unless attributes.has_key?(zip)
+        now = Time.now
+        previous_zips = {}
+
+        bulk_insert(:code, :msa_code, :latitude, :longitude, :created_at, :updated_at, ignore: true) do |bulk|
+          csv.each do |row|
+            row['timestamp'] = now
+            zip = row['ZIPCode']
+            
+            unless previous_zips.has_key?(zip)
+              bulk.add ['ZIPCode', 'MSACode', 'Latitude', 'Longitude', 'timestamp', 'timestamp'].map{|f| row[f]}
+              previous_zips[zip] = 1
+            end
+          end
         end
-        
-        create attributes.values
       end
       
       if filename =~ /^http:/
