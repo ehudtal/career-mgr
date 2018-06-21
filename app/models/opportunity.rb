@@ -11,7 +11,7 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :interests, dependent: :destroy
   has_and_belongs_to_many :metros, dependent: :destroy
 
-  has_and_belongs_to_many :locations, dependent: :destroy
+  has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
   
   validates :name, presence: true
@@ -23,12 +23,8 @@ class Opportunity < ApplicationRecord
     
     candidate_ids = []
     
-    # candidates match on either industry or interest overlap
-    # candidate_ids += fellow_ids_for_interests(search_params[:interests])
-    # candidate_ids += fellow_ids_for_industries(search_params[:industries])
     candidate_ids += fellow_ids_for_industries_interests(search_params[:industries_interests])
 
-    # candidates must match on metro, regardless of industry/interest
     candidate_ids &= fellow_ids_for_metros(search_params[:metros])
     
     candidate_ids.uniq!
@@ -129,5 +125,14 @@ class Opportunity < ApplicationRecord
   
   def archived_fellow_opp candidate_id
     FellowOpportunity.with_deleted.find_by(opportunity_id: self.id, fellow_id: candidate_id)
+  end
+  
+  def attach_metro location
+    return if location.contact.nil?
+    
+    metro = location.contact.metro
+    return if metro.nil?
+    
+    metros << metro unless metros.include?(metro)
   end
 end
