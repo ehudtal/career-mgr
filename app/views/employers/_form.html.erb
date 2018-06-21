@@ -20,10 +20,7 @@
 
   <div id="industry-tags" class="jquery-tags">
     <%= form.text_area :industry_tags %>
-    <%= link_to 'see full list', '#', id: 'industry-full-list' %>
   </div>
-  
-  <%= render 'industries/check_boxes', object: @employer %>
 
   <div class="actions">
     <%= form.submit %>
