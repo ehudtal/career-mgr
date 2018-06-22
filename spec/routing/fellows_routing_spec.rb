@@ -35,5 +35,9 @@ RSpec.describe FellowsController, type: :routing do
       expect(:delete => "/fellows/1").to route_to("fellows#destroy", :id => "1")
     end
 
+    it "routes to #upload" do
+      expect(:get  => '/fellows/upload').to route_to("fellows#upload")
+      expect(:post => '/fellows/upload').to route_to("fellows#upload")
+    end
   end
 end

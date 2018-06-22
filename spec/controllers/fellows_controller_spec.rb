@@ -155,5 +155,12 @@ RSpec.describe FellowsController, type: :controller do
       expect(response).to redirect_to(fellows_url)
     end
   end
+  
+  describe "GET #upload" do
+    it "returns a success response" do
+      get :upload, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
 
 end
