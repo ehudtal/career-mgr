@@ -78,6 +78,17 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  ###############
+  # Class methods
+  ###############
+
+  describe '::import' do
+    
+  end
+  
+  describe '::update_or_create_unique(attributes)' do
+  end
+  
   ##################
   # Instance methods
   ##################
