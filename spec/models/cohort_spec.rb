@@ -91,6 +91,8 @@ RSpec.describe Cohort, type: :model do
     
     it "creates when it doesn't recognize the fellow" do
       cohort = create :cohort
+      create :employment_status_unemployed
+      
       attributes = {first_name: 'Bob', last_name: 'Smith', email: 'bob@example.com', phone: '111-222-3333'}
       
       cohort.fellows.create_or_update(attributes)

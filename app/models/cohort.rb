@@ -7,17 +7,26 @@ class Cohort < ApplicationRecord
 
   has_many :fellows, through: :cohort_fellows do
     def create_or_update attributes
+      employment_status = EmploymentStatus.order('position asc').first
+
       contact_attributes = attributes.slice(*Contact.attribute_names.map(&:to_sym))
-      fellow_attributes = attributes.slice(*(attributes.keys - contact_attributes.keys))
+      cohort_fellow_attributes = attributes.slice(*CohortFellow.attribute_names.map(&:to_sym))
+
+      fellow_attribute_keys = attributes.keys - contact_attributes.keys - cohort_fellow_attributes.keys
+      fellow_attributes = attributes.slice(*fellow_attribute_keys).merge(
+        employment_status_id: employment_status.id
+      )
       
       if fellow = unique(attributes)
         fellow.update fellow_attributes
         fellow.contact.update contact_attributes
       else
-        fellow = create fellow_attributes.merge({
+        fellow = create! fellow_attributes.merge({
           contact_attributes: contact_attributes
         })
       end
+
+      proxy_association.owner.cohort_fellows.find_or_create_by(fellow_id: fellow.id).update(cohort_fellow_attributes)
       
       fellow
     end
