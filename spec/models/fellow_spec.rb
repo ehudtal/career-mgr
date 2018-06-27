@@ -88,7 +88,7 @@ RSpec.describe Fellow, type: :model do
     before { sites; unemployed_status }
     
     def import label
-      Fellow.import(File.open("#{Rails.root}/spec/fixtures/#{label}.csv"))
+      Fellow.import(File.read("#{Rails.root}/spec/fixtures/#{label}.csv"))
     end
     
     describe 'when elements don\'t yet exist' do

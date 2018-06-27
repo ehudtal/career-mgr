@@ -26,36 +26,34 @@ class Fellow < ApplicationRecord
   before_create :generate_key
   
   class << self
-    def import io
-      CSV.open(io, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/) do |csv|
-        csv.each do |data|
-          cohort = Site.cohort_for data['Braven class']
-          
-          attributes = {
-            first_name: data['First Name'],
-            last_name: data['Last Name'],
-            phone: data['Phone'],
-            email: data['Email'],
-            graduation_year: data['Ant. Grad Year'],
-            graduation_semester: data['Ant. Grad Semester'],
-            graduation_fiscal_year: 2000 + data['Grad FY'][2..4].to_i,
-            interests_description: ensure_string(data['Post-Graduate Career Interests']),
-            major: ensure_string(data['Major']),
-            affiliations: ensure_string(data['Org Affiliations']),
-            gpa: ensure_float(data['GPA']),
-            linkedin_url: data['LinkedIn Profile URL'],
-            staff_notes: ensure_string(data['Braven Staff Notes']),
-            grade: percent_to_decimal(data['Grade']),
-            attendance: percent_to_decimal(data['Attendance']),
-            nps_response: ensure_int(data['NPS Response']),
-            feedback: ensure_string(data['LC feedback']),
-            endorsement: strength_for(data['LC Endorsement']),
-            professionalism: readiness_for(data['LC professionalism rating']),
-            teamwork: readiness_for(data['LC teamwork rating'])
-          }
-          
-          cohort.fellows.create_or_update(attributes)
-        end
+    def import contents
+      CSV.new(contents, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/).each do |data|
+        cohort = Site.cohort_for data['Braven class']
+        
+        attributes = {
+          first_name: data['First Name'],
+          last_name: data['Last Name'],
+          phone: data['Phone'],
+          email: data['Email'],
+          graduation_year: data['Ant. Grad Year'],
+          graduation_semester: data['Ant. Grad Semester'],
+          graduation_fiscal_year: 2000 + data['Grad FY'][2..4].to_i,
+          interests_description: ensure_string(data['Post-Graduate Career Interests']),
+          major: ensure_string(data['Major']),
+          affiliations: ensure_string(data['Org Affiliations']),
+          gpa: ensure_float(data['GPA']),
+          linkedin_url: data['LinkedIn Profile URL'],
+          staff_notes: ensure_string(data['Braven Staff Notes']),
+          grade: percent_to_decimal(data['Grade']),
+          attendance: percent_to_decimal(data['Attendance']),
+          nps_response: ensure_int(data['NPS Response']),
+          feedback: ensure_string(data['LC feedback']),
+          endorsement: strength_for(data['LC Endorsement']),
+          professionalism: readiness_for(data['LC professionalism rating']),
+          teamwork: readiness_for(data['LC teamwork rating'])
+        }
+        
+        cohort.fellows.create_or_update(attributes)
       end
     end
     

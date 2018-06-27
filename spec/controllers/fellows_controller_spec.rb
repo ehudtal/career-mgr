@@ -158,8 +158,20 @@ RSpec.describe FellowsController, type: :controller do
   
   describe "GET #upload" do
     it "returns a success response" do
+      expect(Fellow).to_not receive(:import)
+      
       get :upload, params: {}, session: valid_session
       expect(response).to be_successful
+    end
+  end
+  
+  describe "POST #upload" do
+    it "returns a success response" do
+      csv = fixture_file_upload("paf_master_roster.csv", "text/csv")
+      
+      get :upload, params: {csv: csv}, session: valid_session
+      expect(response).to redirect_to(fellows_path)
+      expect(flash[:notice]).to eq('Your file has been uploaded, thanks!')
     end
   end
 
