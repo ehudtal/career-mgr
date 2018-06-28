@@ -29,6 +29,7 @@ class Fellow < ApplicationRecord
     def import contents
       CSV.new(contents, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/).each do |data|
         cohort = Site.cohort_for data['Braven class']
+
         next if cohort.nil?
         
         attributes = {
@@ -53,6 +54,8 @@ class Fellow < ApplicationRecord
           professionalism: readiness_for(data['LC professionalism rating']),
           teamwork: readiness_for(data['LC teamwork rating'])
         }
+
+        next unless Course::VALID_SEMESTERS.include?(attributes[:graduation_semester])
         
         cohort.fellows.create_or_update(attributes)
       end
