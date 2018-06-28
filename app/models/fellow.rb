@@ -29,6 +29,7 @@ class Fellow < ApplicationRecord
     def import contents
       CSV.new(contents, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/).each do |data|
         cohort = Site.cohort_for data['Braven class']
+        next if cohort.nil?
         
         attributes = {
           first_name: data['First Name'],

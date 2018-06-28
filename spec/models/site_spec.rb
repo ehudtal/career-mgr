@@ -60,6 +60,10 @@ RSpec.describe Site, type: :model do
       expect(course.semester).to eq('Spring')
       expect(course.year).to eq(2018)
     end
+    
+    it "returns nil if code doesn't match expected pattern" do
+      expect(Site.cohort_for('fdsfdsfdsaf')).to be_nil
+    end
   end
   
   ##################
