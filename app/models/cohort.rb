@@ -17,16 +17,20 @@ class Cohort < ApplicationRecord
         employment_status_id: employment_status.id
       )
       
-      if fellow = unique(attributes)
-        fellow.update fellow_attributes
-        fellow.contact.update contact_attributes
-      else
-        fellow = create! fellow_attributes.merge({
-          contact_attributes: contact_attributes
-        })
-      end
+      begin
+        if fellow = unique(attributes)
+          fellow.update fellow_attributes
+          fellow.contact.update contact_attributes
+        else
+          fellow = create fellow_attributes.merge({
+            contact_attributes: contact_attributes
+          })
+        end
 
-      proxy_association.owner.cohort_fellows.find_or_create_by(fellow_id: fellow.id).update(cohort_fellow_attributes)
+        proxy_association.owner.cohort_fellows.find_or_create_by(fellow_id: fellow.id).update(cohort_fellow_attributes)
+      rescue ActiveRecord::RecordInvalid
+        return nil
+      end
       
       fellow
     end
