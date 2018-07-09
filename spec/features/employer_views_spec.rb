@@ -49,11 +49,11 @@ RSpec.feature "Employer Views", type: :feature do
     expect(employer.industries).to_not include(industry)
   end
   
-  scenario "Viewing" do
+  scenario "Viewing", js: true do
     visit_employers
     
     expect(page).to have_content("Employers")
-    expect(page).to have_content("Add New Employer")
+    expect(page).to have_content("ADD NEW EMPLOYER")
     
     click_on employer.name
     

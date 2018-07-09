@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature "HomeViews", type: :feature do
-  scenario "Viewing the homepage" do
+  scenario "Viewing the homepage", js: true do
     visit '/'
 
     expect(page.text).to include("Fellows")
