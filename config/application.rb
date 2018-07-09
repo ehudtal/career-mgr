@@ -33,5 +33,7 @@ module CareerMgr
     config.generators do |g|
       g.test_framework :rspec, view_specs: false
     end
+    
+    config.active_job.queue_adapter = :delayed_job
   end
 end
