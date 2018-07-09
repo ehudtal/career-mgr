@@ -4,7 +4,7 @@ class FellowsController < ApplicationController
   # GET /fellows
   # GET /fellows.json
   def index
-    @fellows = Fellow.all
+    @fellows = Fellow.paginate(page: params[:page])
   end
 
   # GET /fellows/1
