@@ -95,14 +95,17 @@ This will allow the app to calculate distances between fellows and opportunities
 
 ## Continuing Development
 
-Whenever you pull in changes from upstream, you should run these commands in the root directory of the app:
+If you restarted your OS, it's usually a good thing to restart the Docker app.
+
+Whenever you pull in changes from upstream, you should run the following commands in the root directory of the app: 
 
     docker-compose build career-mgr
     docker-compose stop career-mgr
     docker-compose up -d --force-recreate career-mgr
+    docker-compose up -d
     
     docker-compose exec career-mgr rake db:migrate
-    
+   
     docker-compose exec career-mgr rspec
 
 If you make updates to `Gemfile` on your own, run the first group of commands above. If you create migrations of your own, run the `rake db:migrate` command to update the database.
@@ -112,6 +115,11 @@ Periodically, run rspec to ensure that you haven't broken any existing tests wit
 If you'd like to reset the database to the original seed data (with example employers, industries, and interests), you can re-run this command at any time:
 
     docker-compose exec career-mgr rake db:seed
+
+## Troubleshooting
+
+* `HTTPError Could not fetch specs from https://rubygems.org/` - Restart docker.
+* If rspec fails with a migration error, run this: `docker-compose exec career-mgr rake db:migrate RAILS_ENV=test`
 
 ## Testing
 
