@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # remove all existing objects to start fresh!
-[Industry, Interest, Employer, Opportunity, EmploymentStatus, OpportunityStage, Fellow].each(&:destroy_all)
+[Industry, Interest, Employer, Opportunity, OpportunityStage, Fellow].each(&:destroy_all)
 
 industries = [
   'Accounting', 'Advertising', 'Aerospace', 'Banking', 'Beauty / Cosmetics', 'Biotechnology', 'Business', 
@@ -99,14 +99,14 @@ opportunity_stages = OpportunityStage.create!([
   {position: 6, probability: 0.0,  name: 'rejected'}
 ])
 
-employment_status = EmploymentStatus.find_by name: 'Unemployed'
+employment_status = EmploymentStatus.order('position asc').first
 
 fellows = Fellow.create!([
-  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68005'}, gpa: 3.0, efficacy_score: 0.95},
-  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status: employment_status, contact_attributes: {postal_code: '68510'}, gpa: 3.2, efficacy_score: 0.9},
-  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68521'}, gpa: 3.4, efficacy_score: 0.85},
-  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status: employment_status, contact_attributes: {postal_code: '68339'}, gpa: 3.6, efficacy_score: 0.8},
-  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status: employment_status, contact_attributes: {postal_code: '66215'}, gpa: 3.8, efficacy_score: 0.75},
+  {first_name: 'Andy',  last_name: 'Anderson', graduation_semester: 'Spring', graduation_year: '2018', employment_status_id: employment_status.id, contact_attributes: {postal_code: '68005'}, gpa: 3.0, efficacy_score: 0.95},
+  {first_name: 'Beth',  last_name: 'Barstow',  graduation_semester: 'Fall',   graduation_year: '2018', employment_status_id: employment_status.id, contact_attributes: {postal_code: '68510'}, gpa: 3.2, efficacy_score: 0.9},
+  {first_name: 'Cole',  last_name: 'Coleman',  graduation_semester: 'Spring', graduation_year: '2019', employment_status_id: employment_status.id, contact_attributes: {postal_code: '68521'}, gpa: 3.4, efficacy_score: 0.85},
+  {first_name: 'Debra', last_name: 'Davis',    graduation_semester: 'Fall',   graduation_year: '2019', employment_status_id: employment_status.id, contact_attributes: {postal_code: '68339'}, gpa: 3.6, efficacy_score: 0.8},
+  {first_name: 'Ethan', last_name: 'Eberly',   graduation_semester: 'Spring', graduation_year: '2020', employment_status_id: employment_status.id, contact_attributes: {postal_code: '66215'}, gpa: 3.8, efficacy_score: 0.75},
 ])
 
 # give each fellow three interests

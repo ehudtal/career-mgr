@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_26_223108) do
+ActiveRecord::Schema.define(version: 2018_07_09_220458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,18 +93,19 @@ ActiveRecord::Schema.define(version: 2018_06_26_223108) do
     t.index ["site_id"], name: "index_courses_on_site_id"
   end
 
-  create_table "deadlines", force: :cascade do |t|
-    t.string "name"
-    t.datetime "due_at"
-    t.boolean "completed"
-    t.text "notes"
-    t.integer "task_id"
-    t.string "task_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["completed"], name: "index_deadlines_on_completed"
-    t.index ["due_at"], name: "index_deadlines_on_due_at"
-    t.index ["task_id", "task_type"], name: "index_deadlines_on_task_id_and_task_type"
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "employers", force: :cascade do |t|

@@ -1,5 +1,5 @@
-['Unemployed', 'Quality (Grad School)', 'Quality', 'Part Quality', 'Not Quality', 'Service', 'Unknown'].each_with_index do |status, position|
-  EmploymentStatus.find_or_create_by name: status, position: position
+['Unknown', 'Unemployed', 'Quality (Grad School)', 'Quality', 'Part Quality', 'Not Quality', 'Service'].each_with_index do |status, position|
+  EmploymentStatus.find_or_create_by! name: status, position: position
 end
 
 nlu = Site.find_or_create_by code: 'NLU', name: 'National Louis University'
