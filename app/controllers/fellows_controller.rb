@@ -4,7 +4,7 @@ class FellowsController < ApplicationController
   # GET /fellows
   # GET /fellows.json
   def index
-    @fellows = Fellow.all
+    @fellows = Fellow.paginate(page: params[:page])
   end
 
   # GET /fellows/1
@@ -65,9 +65,9 @@ class FellowsController < ApplicationController
   
   def upload
     if params[:csv]
-      Fellow.import(csv) 
+      Fellow.delay.import(csv) 
 
-      flash[:notice] = 'Your file has been uploaded, thanks!'
+      flash[:notice] = 'Your file is being uploaded, thanks! You can refresh this page to see updates.'
       redirect_to fellows_path
     end
   end
@@ -76,10 +76,8 @@ class FellowsController < ApplicationController
   
   def csv
     if params[:csv].respond_to?(:read)
-      "RESPONDS TO READ"
       params[:csv].read
     else
-      "DOES NOT RESPOND TO READ"
       params[:csv]
     end
   end

@@ -69,7 +69,7 @@ class OpportunitiesController < ApplicationController
   
   def set_employer
     @employer = Employer.find(params[:employer_id]) if params[:employer_id]
-    @opportunities = @employer ? @employer.opportunities : Opportunity.all
+    @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
   end
   
   # Use callbacks to share common setup or constraints between actions.

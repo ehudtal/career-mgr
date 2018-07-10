@@ -66,3 +66,6 @@ gem 'jquery-ui-rails'
 gem 'valid_url', git: 'https://github.com/bellmyer/valid_url'
 gem 'paranoia'
 gem 'bulk_insert'
+
+gem 'will_paginate'
+gem 'delayed_job_active_record'
