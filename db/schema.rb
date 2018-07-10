@@ -84,20 +84,6 @@ ActiveRecord::Schema.define(version: 2018_06_08_203646) do
     t.index ["site_id"], name: "index_courses_on_site_id"
   end
 
-  create_table "deadlines", force: :cascade do |t|
-    t.string "name"
-    t.datetime "due_at"
-    t.boolean "completed"
-    t.text "notes"
-    t.integer "task_id"
-    t.string "task_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["completed"], name: "index_deadlines_on_completed"
-    t.index ["due_at"], name: "index_deadlines_on_due_at"
-    t.index ["task_id", "task_type"], name: "index_deadlines_on_task_id_and_task_type"
-  end
-
   create_table "employers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
