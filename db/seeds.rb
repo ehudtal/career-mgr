@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # remove all existing objects to start fresh!
-[Industry, Interest, Employer, Opportunity, EmploymentStatus, OpportunityStage, Fellow].each(&:destroy_all)
+[Industry, Interest, Employer, Opportunity, OpportunityStage, Fellow].each(&:destroy_all)
 
 industries = [
   'Accounting', 'Advertising', 'Aerospace', 'Banking', 'Beauty / Cosmetics', 'Biotechnology', 'Business', 

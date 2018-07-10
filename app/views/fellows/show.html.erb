@@ -1,74 +1,68 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Key:</strong>
-  <%= @fellow.key %>
-</p>
+<p>Fellow Info:</p>
+<h1><%= @fellow.first_name %> <%= @fellow.last_name %></h1>
 
-<p>
-  <strong>First name:</strong>
-  <%= @fellow.first_name %>
-</p>
-
-<p>
-  <strong>Last name:</strong>
-  <%= @fellow.last_name %>
-</p>
-
-<p>
-  <strong>Graduation year:</strong>
-  <%= @fellow.graduation_year %>
-</p>
-
-<p>
-  <strong>Graduation semester:</strong>
-  <%= @fellow.graduation_semester %>
-</p>
-
-<p>
-  <strong>Graduation fiscal year:</strong>
-  <%= @fellow.graduation_fiscal_year %>
-</p>
-
-<p>
-  <strong>Interests description:</strong>
-  <%= @fellow.interests_description %>
-</p>
-
-<p>
-  <strong>Major:</strong>
-  <%= @fellow.major %>
-</p>
-
-<p>
-  <strong>Affiliations:</strong>
-  <%= @fellow.affiliations %>
-</p>
-
-<p>
-  <strong>Gpa:</strong>
-  <%= @fellow.gpa %>
-</p>
-
-<p>
-  <strong>Linkedin url:</strong>
-  <%= @fellow.linkedin_url %>
-</p>
-
-<p>
-  <strong>Staff notes:</strong>
-  <%= @fellow.staff_notes %>
-</p>
-
-<p>
-  <strong>Efficacy score:</strong>
-  <%= @fellow.efficacy_score %>
-</p>
-
-<p>
-  <strong>Employment status:</strong>
-  <%= @fellow.employment_status_id %>
-</p>
+<table>
+  <tbody>
+    <tr class="key">
+      <th>Key:</th>
+      <td><%= @fellow.key %></td>
+    </tr>
+    <tr>
+      <th>First name:</th>
+      <td><%= @fellow.first_name %></td>
+    </tr>
+    <tr>
+      <th>Last name:</th>
+      <td><%= @fellow.last_name %></td>
+    </tr>
+    <tr class="new-section">
+      <th>Graduation year:</th>
+      <td><%= @fellow.graduation_year %></td>
+    </tr>
+    <tr>
+      <th>Graduation semester:</th>
+      <td><%= @fellow.graduation_semester %></td>
+    </tr>
+    <tr>
+      <th>Graduation fiscal year:</th>
+      <td><%= @fellow.graduation_fiscal_year %></td>
+    </tr>
+    <tr class="new-section">
+      <th>Interests description:</th>
+      <td><%= @fellow.interests_description %></td>
+    </tr>
+    <tr>
+      <th>Major:</th>
+      <td><%= @fellow.major %></td>
+    </tr>
+    <tr>
+      <th>Affiliations:</th>
+      <td><%= @fellow.affiliations %></td>
+    </tr>
+    <tr>
+      <th>Gpa:</th>
+      <td><%= @fellow.gpa %></td>
+    </tr>
+    <tr>
+      <th>Linkedin url:</th>
+      <td><%= @fellow.linkedin_url %></td>
+    </tr>
+    <tr>
+      <th>Staff notes:</th>
+      <td><%= @fellow.staff_notes %></td>
+    </tr>
+    <tr>
+      <th>Efficacy score:</th>
+      <td><%= @fellow.efficacy_score %></td>
+    </tr>
+    <tr>
+      <th>Employment status:</th>
+      <td><%= @fellow.employment_status_id %></td>
+    </tr>
+  </tbody>
+</table>
 
 <%= link_to 'Edit', edit_fellow_path(@fellow) %> |
 <%= link_to 'Back', fellows_path %>

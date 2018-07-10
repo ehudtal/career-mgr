@@ -116,6 +116,10 @@ If you'd like to reset the database to the original seed data (with example empl
 
     docker-compose exec career-mgr rake db:seed
 
+...or go all out with this one:
+
+    docker-compose exec career-mgr rake db:drop db:create db:schema:load db:init db:seed
+
 ## Troubleshooting
 
 * `HTTPError Could not fetch specs from https://rubygems.org/` - Restart docker.
