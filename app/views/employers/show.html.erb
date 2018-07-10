@@ -6,12 +6,14 @@
 <%= render 'industries/list', object: @employer %>
 
 <h2>Opportunities</h2>
-<%= render "opportunities/list", opportunities: @employer.opportunities, employer: @employer %>
+<%= render "opportunities/list", opportunities: @employer.opportunities %>
 <br />
 <%= link_to 'Add Opportunity', new_employer_opportunity_path(@employer), class: 'button' %>
 
 <h2>Locations</h2>
-<%= link_to "Locations (#{@employer.locations.count})", employer_locations_path(@employer) %><br>
+<%= render "locations/list", locations: @employer.locations %>
+<br />
+<%= link_to 'Add Location', new_employer_location_path(@employer), class: 'button' %>
 
 <footer class="actions">
   <%= link_to 'Edit', edit_employer_path(@employer), class: 'edit' %> |

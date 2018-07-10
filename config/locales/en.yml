@@ -37,4 +37,11 @@ en:
         job_posting_url: 
           one: "Job Posting URL"
           other: "Job Posting URLs"
+      fellow:
+        key:
+          one: "Fellow ID"
+          other: "Fellow IDs"
+        gpa:
+          one: "GPA"
+          other: "GPAs"
         

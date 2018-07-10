@@ -6,10 +6,22 @@ Rails.application.routes.draw do
     resources :locations
     resources :opportunities do
       resources :tasks
+      resources :candidates, only: [:index, :create, :update, :destroy]
     end
   end
   
   resources :opportunities, only: [:index]
+
+  resources :sites, shallow: true do
+    resources :courses, except: [:index]
+  end
+
+  resources :fellows do
+    collection do
+      get :upload
+      post :upload
+    end
+  end
 
   resources :fellow_opportunities
   resources :opportunity_stages
@@ -17,12 +29,10 @@ Rails.application.routes.draw do
   resources :coaches
   resources :interests
   resources :industries
+  resources :metros, only: [:index], constraints: lambda { |req| req.format == :json }
   resources :cohort_fellows
   resources :cohorts
-  resources :courses
-  resources :sites
   resources :contacts
-  resources :fellows
   
   root to: "home#welcome"
   

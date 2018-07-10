@@ -15,6 +15,7 @@ class SitesController < ApplicationController
   # GET /sites/new
   def new
     @site = Site.new
+    @site.build_location contact: Contact.new
   end
 
   # GET /sites/1/edit
@@ -69,6 +70,13 @@ class SitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def site_params
-      params.require(:site).permit(:name)
+      params.require(:site).permit(
+        :code, :name,
+        location_attributes: [
+          :id,
+          :name,
+          contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
+        ]
+      )
     end
 end

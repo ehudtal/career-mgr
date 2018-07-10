@@ -16,7 +16,11 @@
     <%= form.text_field :name %>
   </div>
   
-  <%= render 'industries/check_boxes', object: @employer %>
+  <h3>Industries</h3>
+
+  <div id="industry-tags" class="jquery-tags">
+    <%= form.text_area :industry_tags %>
+  </div>
 
   <div class="actions">
     <%= form.submit %>

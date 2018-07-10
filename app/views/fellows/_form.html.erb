@@ -12,11 +12,6 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :key %>
-    <%= form.text_field :key %>
-  </div>
-
-  <div class="field">
     <%= form.label :first_name %>
     <%= form.text_field :first_name %>
   </div>
@@ -33,7 +28,7 @@
 
   <div class="field">
     <%= form.label :graduation_semester %>
-    <%= form.text_field :graduation_semester %>
+    <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
   </div>
 
   <div class="field">
@@ -78,7 +73,30 @@
 
   <div class="field">
     <%= form.label :employment_status_id %>
-    <%= form.number_field :employment_status_id %>
+    <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
+  </div>
+  
+  <hr>
+
+  <%= render 'contacts/nested_form', form: form %>
+  
+  
+  <h3>Industries</h3>
+
+  <div id="industry-tags" class="jquery-tags">
+    <%= form.text_area :industry_tags %>
+  </div>
+
+  <h3>Interests</h3>
+  
+  <div id="interest-tags" class="jquery-tags">
+    <%= form.text_area :interest_tags %>
+  </div>
+  
+  <h3>Metro Areas</h3>
+  
+  <div id="metro-tags" class="jquery-tags">
+    <%= form.text_area :metro_tags %>
   </div>
 
   <div class="actions">

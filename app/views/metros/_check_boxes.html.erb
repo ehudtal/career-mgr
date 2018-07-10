@@ -1,0 +1,11 @@
+<% object_name = object.class.name.downcase %>  
+<div id="metro-checklist" class="metros checklist">
+  <% Metro.order('name asc').each do |metro| %>
+    <% tag_id = "metro_ids_#{metro.id}" %>
+    
+    <%= check_box_tag("#{object_name}[metro_ids][]", metro.id, object.metros.include?(metro), id: tag_id, class: "metro_checkbox") %>
+    <%= label_tag(tag_id, metro.name, style: 'display: inline;') %><br>
+  <% end %>
+
+  <%= link_to 'see shorter list', '#', id: 'metro-short-list' %>
+</div>

@@ -29,6 +29,7 @@ RSpec.describe SitesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Site. As you add validations to Site, be sure to
   # adjust the attributes here as well.
+  let(:location) { build :location, contact: build(:contact) }
 
   let(:valid_attributes) { attributes_for(:site) }
   let(:invalid_attributes){ {name: ''} }
@@ -40,7 +41,7 @@ RSpec.describe SitesController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      site = Site.create! valid_attributes
+      site = Site.create! valid_attributes.merge(location_attributes: {name: 'Name', contact_attributes: {address_1: '123 Way Street'}})
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
@@ -95,6 +96,7 @@ RSpec.describe SitesController, type: :controller do
     context "with valid params" do
       let(:new_name) { valid_attributes[:name] + ' 2'}
       let(:new_attributes) { {name: new_name} }
+      let(:attributes_with_location) { valid_attributes.merge(location_attributes: {name: 'name', contact_attributes: {address_1: '123 Way Street'}}) }
 
       it "updates the requested site" do
         site = Site.create! valid_attributes
@@ -108,6 +110,22 @@ RSpec.describe SitesController, type: :controller do
         site = Site.create! valid_attributes
         put :update, params: {id: site.to_param, site: valid_attributes}, session: valid_session
         expect(response).to redirect_to(site)
+      end
+
+      it "allows location update" do
+        site = Site.create! attributes_with_location
+        put :update, params: {id: site.to_param, site: {location_attributes: {id: site.location.id, name: 'new name'}}}, session: valid_session
+
+        site.reload
+        expect(site.location.name).to eq('new name')
+      end
+
+      it "allows contact update" do
+        site = Site.create! attributes_with_location
+        put :update, params: {id: site.to_param, site: {location_attributes: {id: site.location.id, contact_attributes: {id: site.location.contact.id, address_1: 'new address'}}}}, session: valid_session
+
+        site.reload
+        expect(site.location.contact.address_1).to eq('new address')
       end
     end
 

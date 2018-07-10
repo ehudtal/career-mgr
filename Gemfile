@@ -44,6 +44,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'capybara', '~> 2.18'
   gem 'selenium-webdriver', '~> 3.7'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -62,3 +63,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'valid_url', git: 'https://github.com/bellmyer/valid_url'
+gem 'paranoia'
+gem 'bulk_insert'

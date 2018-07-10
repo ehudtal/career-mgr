@@ -80,9 +80,16 @@ class OpportunitiesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def opportunity_params
     params.require(:opportunity).permit(
-      :name, :description, :employer_id, :job_posting_url, 
+      :name, :description, :employer_id, :job_posting_url, :industry_tags, :interest_tags, :metro_tags,
       industry_ids: [], 
-      interest_ids: [], 
-      tasks_attributes: [:id, :name, :due_at, :_destroy])
+      interest_ids: [],
+      metro_ids: [],
+      location_ids: [],
+      tasks_attributes: [:id, :name, :due_at, :_destroy],
+      locations_attributes: [
+        :id, :name, :locateable_id, :locateable_type,
+        contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
+      ]
+    )
   end
 end

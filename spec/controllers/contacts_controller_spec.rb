@@ -32,7 +32,7 @@ RSpec.describe ContactsController, type: :controller do
   let(:contactable) { build :location, id: 1001 }
   
   let(:valid_attributes) { attributes_for :contact, contactable_id: contactable.id, contactable_type: contactable.class.name }
-  let(:invalid_attributes) { {contactable_id: ''} }
+  let(:invalid_attributes) { {state: 'ZZ'} }
   
   before { allow_any_instance_of(Contact).to receive(:contactable).and_return(contactable) }
 

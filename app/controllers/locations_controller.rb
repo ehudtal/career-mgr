@@ -15,6 +15,7 @@ class LocationsController < ApplicationController
   # GET /locations/new
   def new
     @location = @locations.build
+    @location.build_contact
   end
 
   # GET /locations/1/edit
@@ -36,7 +37,7 @@ class LocationsController < ApplicationController
       end
     end
   end
-
+  
   # PATCH/PUT /locations/1
   # PATCH/PUT /locations/1.json
   def update
@@ -77,6 +78,9 @@ class LocationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def location_params
-    params.require(:location).permit(:name)
+    params.require(:location).permit(
+      :name, 
+      contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
+    )
   end
 end

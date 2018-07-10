@@ -30,6 +30,8 @@ RSpec.describe FellowsController, type: :controller do
   # Fellow. As you add validations to Fellow, be sure to
   # adjust the attributes here as well.
   let(:employment_status) { build :employment_status, id: 1001 }
+  let(:industry) { create :industry }
+  let(:interest) { create :interest }
   
   let(:valid_attributes) { attributes_for :fellow, employment_status_id: employment_status.id }
   let(:invalid_attributes) { {first_name: ''} }
@@ -114,6 +116,22 @@ RSpec.describe FellowsController, type: :controller do
       end
     end
 
+    it "associates specified industries with the fellow" do
+      fellow = Fellow.create! valid_attributes
+      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+      fellow.reload
+    
+      expect(fellow.industries).to include(industry)
+    end
+
+    it "associates specified interests with the fellow" do
+      fellow = Fellow.create! valid_attributes
+      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+      fellow.reload
+    
+      expect(fellow.interests).to include(interest)
+    end
+
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
         fellow = Fellow.create! valid_attributes
@@ -135,6 +153,25 @@ RSpec.describe FellowsController, type: :controller do
       fellow = Fellow.create! valid_attributes
       delete :destroy, params: {id: fellow.to_param}, session: valid_session
       expect(response).to redirect_to(fellows_url)
+    end
+  end
+  
+  describe "GET #upload" do
+    it "returns a success response" do
+      expect(Fellow).to_not receive(:import)
+      
+      get :upload, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+  
+  describe "POST #upload" do
+    it "returns a success response" do
+      csv = fixture_file_upload("paf_master_roster.csv", "text/csv")
+      
+      get :upload, params: {csv: csv}, session: valid_session
+      expect(response).to redirect_to(fellows_path)
+      expect(flash[:notice]).to eq('Your file has been uploaded, thanks!')
     end
   end
 

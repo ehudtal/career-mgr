@@ -13,10 +13,16 @@ RSpec.describe OpportunityStage, type: :model do
   #############
 
   it { should validate_presence_of :name }
+  it { should validate_presence_of :position }
+  it { should validate_presence_of :probability }
+  
+  it { should validate_numericality_of(:position).only_integer.is_greater_than_or_equal_to(0) }
   
   describe 'validating uniqueness' do
     subject { create :opportunity_stage }
+    
     it { should validate_uniqueness_of :name }
+    it { should validate_uniqueness_of :position }
   end
 
   it { should validate_numericality_of(:probability).is_greater_than_or_equal_to(0.0) }
