@@ -4,6 +4,9 @@ class Metro < ApplicationRecord
 
   validates :code, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: true
+  
+  scope :city, ->{ where.not(source: 'ST') }
+  scope :state, ->{ where(source: 'ST') }
 
   class << self
     def load_txt filename
@@ -22,11 +25,20 @@ class Metro < ApplicationRecord
         
         code = fields[0].strip
         name = fields[1].strip.gsub(/,\s*/, ', ')
+        source = fields[2].strip
+        state = name.split(', ')[1]
         
-        attributes << {code: code, name: name}
+        attributes << {code: code, name: name, source: source, state: state}
       end
         
       create attributes
     end
+  end
+  
+  def states
+    city, state_list = name.split(/,\s*/)
+    return [] if state_list.nil?
+    
+    state_list.split('-')
   end
 end

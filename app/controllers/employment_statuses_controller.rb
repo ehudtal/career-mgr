@@ -69,6 +69,6 @@ class EmploymentStatusesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employment_status_params
-      params.require(:employment_status).permit(:name)
+      params.require(:employment_status).permit(:name, :position)
     end
 end

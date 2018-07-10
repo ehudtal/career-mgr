@@ -82,10 +82,10 @@ Go to http://localhost:3010 in your favorite browser. If everything's working co
 
 ## Post-Setup
 
-At least once, you should load the database with valid zip codes and metro areas. The import files are not in the repo, they're too large. Ask a colleague for these files:
+At least once, you should load the database with valid zip codes and metro areas. The import files are not in the repo, they're too large. They're located in Google Drive:
 
-* `postal-codes.csv`
-* `msa.txt`
+* `postal-codes.csv`: https://drive.google.com/open?id=1vfwSF3bwX2GnM7fLq3iktgR7CDIhaPsI
+* `msa.txt`: https://drive.google.com/open?id=16oM_ZJXogOBtz9U6MDEaZXzW6fn4AMog
 
 Copy them to the `tmp`, then:
 

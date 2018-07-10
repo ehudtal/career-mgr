@@ -85,28 +85,19 @@
 
   <div id="industry-tags" class="jquery-tags">
     <%= form.text_area :industry_tags %>
-    <%= link_to 'see full list', '#', id: 'industry-full-list' %>
   </div>
-
-  <%= render 'industries/check_boxes', object: fellow %>
 
   <h3>Interests</h3>
   
   <div id="interest-tags" class="jquery-tags">
     <%= form.text_area :interest_tags %>
-    <%= link_to 'see full list', '#', id: 'interest-full-list' %>
   </div>
-
-  <%= render 'interests/check_boxes', object: fellow %>
   
   <h3>Metro Areas</h3>
   
   <div id="metro-tags" class="jquery-tags">
     <%= form.text_area :metro_tags %>
-    <%= link_to 'see full list', '#', id: 'metro-full-list' %>
   </div>
-
-  <%= render 'metros/check_boxes', object: fellow %>
 
   <div class="actions">
     <%= form.submit %>

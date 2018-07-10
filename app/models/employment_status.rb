@@ -1,3 +1,3 @@
 class EmploymentStatus < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
+  validates :name, :position, presence: true, uniqueness: true
 end

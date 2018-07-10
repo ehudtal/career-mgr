@@ -16,5 +16,5 @@ Capybara.register_driver :headless_chrome_in_container do |app|
     )
 end
 
-Capybara.javascript_driver = :headless_chrome_in_container
-Capybara.app_host = 'http://career-mgr:3010'
+Capybara.javascript_driver = :chrome_in_container
+Capybara.app_host = 'http://career-spec:3011'

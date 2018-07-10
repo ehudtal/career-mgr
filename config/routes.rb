@@ -16,6 +16,13 @@ Rails.application.routes.draw do
     resources :courses, except: [:index]
   end
 
+  resources :fellows do
+    collection do
+      get :upload
+      post :upload
+    end
+  end
+
   resources :fellow_opportunities
   resources :opportunity_stages
   resources :employment_statuses
@@ -26,7 +33,6 @@ Rails.application.routes.draw do
   resources :cohort_fellows
   resources :cohorts
   resources :contacts
-  resources :fellows
   
   root to: "home#welcome"
   

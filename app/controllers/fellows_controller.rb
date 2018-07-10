@@ -62,8 +62,28 @@ class FellowsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def upload
+    if params[:csv]
+      Fellow.import(csv) 
+
+      flash[:notice] = 'Your file has been uploaded, thanks!'
+      redirect_to fellows_path
+    end
+  end
 
   private
+  
+  def csv
+    if params[:csv].respond_to?(:read)
+      "RESPONDS TO READ"
+      params[:csv].read
+    else
+      "DOES NOT RESPOND TO READ"
+      params[:csv]
+    end
+  end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_fellow
       @fellow = Fellow.find(params[:id])
