@@ -37,6 +37,7 @@ class Fellow < ApplicationRecord
           last_name: data['Last Name'],
           phone: data['Phone'],
           email: data['Email'],
+          postal_code: cohort.course.site.location.contact.postal_code,
           graduation_year: data['Ant. Grad Year'],
           graduation_semester: data['Ant. Grad Semester'],
           graduation_fiscal_year: 2000 + data['Grad FY'][2..4].to_i,
@@ -107,7 +108,11 @@ class Fellow < ApplicationRecord
     return nil unless contact && contact.postal_code
     
     @distance_from ||= {}
-    @distance_from[postal_code] = PostalCode.distance(contact.postal_code, postal_code)
+    @distance_from[postal_code] = PostalCode.distance(assumed_postal_code, postal_code)
+  end
+  
+  def assumed_postal_code
+    contact.postal_code || cohort.course.site.location.contact.postal_code
   end
   
   def industry_tags
