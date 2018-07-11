@@ -25,6 +25,10 @@ require 'rails_helper'
 
 RSpec.describe EmployersController, type: :controller do
   render_views
+  
+  let(:user) { create :user }
+  
+  before { sign_in user }
 
   # This should return the minimal set of attributes required to create a valid
   # Employer. As you add validations to Employer, be sure to

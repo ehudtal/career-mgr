@@ -1,4 +1,7 @@
 require 'selenium/webdriver'
+require 'warden'
+
+include Warden::Test::Helpers
 
 Capybara.register_driver :chrome_in_container do |app|
   Capybara::Selenium::Driver.new app, 

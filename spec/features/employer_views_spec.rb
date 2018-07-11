@@ -1,11 +1,14 @@
 require 'rails_helper'
 
 RSpec.feature "Employer Views", type: :feature do
+  let(:user) { create :user }
   let(:employer) { create :employer }
   let(:industry) { create :industry }
   let(:industry_other) { create :industry }
 
   background do
+    # login_as user, scope: :user
+    
     employer.industries << industry
     industry_other
 
