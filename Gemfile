@@ -45,6 +45,7 @@ group :development, :test do
   gem 'capybara', '~> 2.18'
   gem 'selenium-webdriver', '~> 3.7'
   gem 'database_cleaner'
+  gem 'dotenv'
 end
 
 group :development do

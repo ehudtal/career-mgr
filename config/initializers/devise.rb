@@ -8,7 +8,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'd7d9151e6ba533e484e5e9e5ec794131b01ef6f14cc567fd45ca1a78966ec6cc5bd1d7ee0b645f1a01ae041dcc8d2274604b6335df9a46f6dcc6b7b31dadb6ec'
+  # config.secret_key = Rails.application.secrets.devise_secret_key
   
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -18,13 +18,20 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = '"Braven" <' + Rails.application.secrets.mailer_from_email + '>'
 
   # Configure the class responsible to send e-mails.
-  # config.mailer = 'Devise::Mailer'
+  config.mailer = 'Devise::Mailer'
 
   # Configure the parent class responsible to send e-mails.
-  # config.parent_mailer = 'ActionMailer::Base'
+  config.parent_mailer = 'ActionMailer::Base'
+  
+  # ==> CAS configuration
+  config.cas_base_url = Rails.application.secrets.sso_url
+  config.cas_create_user = false
+  config.cas_enable_single_sign_out = true
+
+  config.cas_username_column = 'email'
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
@@ -114,7 +121,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'fa9ae20ab6f1e017fddbb9944d3075fb24585259ab984c38d6a106e5bb42e6aae29697d5a98c720a7157c14c706d22cb219d4ac53937852f1531102ffb509220'
+  config.pepper = Rails.application.secrets.devise_pepper
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -163,7 +170,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 6..128
+  config.password_length = 4..128
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
@@ -173,7 +180,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  # config.timeout_in = 30.minutes
+  config.timeout_in = 24.hours
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
