@@ -12,6 +12,7 @@
   <body>
     <header id="masthead">
       <h1><%= link_to 'My Career Manager Admin', root_path %></h1>
+      <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete %>
     </header>
     <main>
       <p id="notice"><%= notice %></p>
