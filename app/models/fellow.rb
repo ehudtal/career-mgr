@@ -2,7 +2,7 @@ require 'digest/md5'
 require 'csv'
 
 class Fellow < ApplicationRecord
-  has_one :contact, as: :contactable
+  has_one :contact, as: :contactable, dependent: :destroy
   accepts_nested_attributes_for :contact
   
   has_many :cohort_fellows, dependent: :destroy
@@ -31,7 +31,7 @@ class Fellow < ApplicationRecord
         cohort = Site.cohort_for data['Braven class']
 
         next if cohort.nil?
-        
+
         attributes = {
           first_name: data['First Name'],
           last_name: data['Last Name'],
@@ -137,6 +137,18 @@ class Fellow < ApplicationRecord
   
   def metro_tags= tag_string
     self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def default_metro
+    return @default_metro if defined?(@default_metro)
+    
+    postal_code = PostalCode.find_by code: contact.postal_code
+
+    @default_metro = if postal_code.nil?
+      nil
+    else
+      Metro.find_by(code: postal_code.msa_code)
+    end
   end
   
   private
