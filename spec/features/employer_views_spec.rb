@@ -1,29 +1,26 @@
 require 'rails_helper'
+require 'login_helper'
 
 RSpec.feature "Employer Views", type: :feature do
   let(:user) { create :user }
   let(:employer) { create :employer }
   let(:industry) { create :industry }
   let(:industry_other) { create :industry }
-
+  
   background do
-    # login_as user, scope: :user
-    
     employer.industries << industry
     industry_other
 
     expect(Employer.count).to eq(1)
     expect(Industry.count).to eq(2)
     expect(Employer.last.industries).to include(industry)
+    
+    login
   end
   
   def visit_employers
-    visit '/'
-    save_page 'home.html'
-    
     expect(page).to have_content("Employers")
     click_on "Employers"
-    save_page 'employers.html'
   end
   
   def remove_tag model, attribute, label
