@@ -78,7 +78,7 @@ RSpec.describe InterestsController, type: :controller do
 
       it "redirects to the created interest" do
         post :create, params: {interest: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Interest.last)
+        expect(response).to redirect_to(interests_path)
       end
     end
 
@@ -106,7 +106,7 @@ RSpec.describe InterestsController, type: :controller do
       it "redirects to the interest" do
         interest = Interest.create! valid_attributes
         put :update, params: {id: interest.to_param, interest: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(interest)
+        expect(response).to redirect_to(interests_path)
       end
     end
 
