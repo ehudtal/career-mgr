@@ -4,9 +4,9 @@
   <table>
     <thead>
       <tr>
-        <th><%= Site %></th>
+        <th>Site</th>
         <th>Course</th>
-        <th colspan="3">Actions</th>
+        <th colspan="2">Actions</th>
       </tr>
     </thead>
 
@@ -14,8 +14,7 @@
       <% courses.order('year, semester desc').each do |course| %>
         <tr>
           <td><%= course.site.name %>
-          <td><%= course.label %></td>
-          <td><%= link_to 'Show', course_path(course), class: 'show' %></td>
+          <td><%= link_to course.label, course_path(course), class: 'show' %></td>
           <td><%= link_to 'Edit', edit_course_path(course), class: 'edit' %></td>
           <td><%= link_to 'Delete', course_path(course), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
         </tr>

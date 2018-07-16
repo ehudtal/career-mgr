@@ -26,6 +26,10 @@ require 'rails_helper'
 RSpec.describe SitesController, type: :controller do
   render_views
 
+  let(:user) { create :user }
+  
+  before { sign_in user }
+
   # This should return the minimal set of attributes required to create a valid
   # Site. As you add validations to Site, be sure to
   # adjust the attributes here as well.
@@ -80,7 +84,7 @@ RSpec.describe SitesController, type: :controller do
 
       it "redirects to the created site" do
         post :create, params: {site: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Site.last)
+        expect(response).to redirect_to(sites_path)
       end
     end
 
@@ -109,7 +113,7 @@ RSpec.describe SitesController, type: :controller do
       it "redirects to the site" do
         site = Site.create! valid_attributes
         put :update, params: {id: site.to_param, site: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(site)
+        expect(response).to redirect_to(sites_path)
       end
 
       it "allows location update" do

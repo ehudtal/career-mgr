@@ -74,6 +74,6 @@ RSpec.feature "IndustryViews", type: :feature do
     
     expect(page).to have_current_path(industries_path)
     expect(page).to have_content("Industry #{industry.name} was successfully deleted.")
-    expect(Employer.count).to eq(0)
+    expect(Industry.count).to eq(0)
   end
 end

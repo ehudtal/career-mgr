@@ -74,6 +74,6 @@ RSpec.feature "InterestViews", type: :feature do
     
     expect(page).to have_current_path(interests_path)
     expect(page).to have_content("Interest #{interest.name} was successfully deleted.")
-    expect(Employer.count).to eq(0)
+    expect(Interest.count).to eq(0)
   end
 end
