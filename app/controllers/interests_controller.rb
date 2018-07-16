@@ -1,4 +1,5 @@
 class InterestsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_interest, only: [:show, :edit, :update, :destroy]
 
   # GET /interests
