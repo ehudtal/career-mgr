@@ -11,3 +11,4 @@ def login
     click_on 'Log in'
   end
 end
+

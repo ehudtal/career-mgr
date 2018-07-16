@@ -1,4 +1,5 @@
 class IndustriesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_industry, only: [:show, :edit, :update, :destroy]
 
   # GET /industries
@@ -28,7 +29,7 @@ class IndustriesController < ApplicationController
 
     respond_to do |format|
       if @industry.save
-        format.html { redirect_to @industry, notice: 'Industry was successfully created.' }
+        format.html { redirect_to industries_path, notice: 'Industry was successfully created.' }
         format.json { render :show, status: :created, location: @industry }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class IndustriesController < ApplicationController
   def update
     respond_to do |format|
       if @industry.update(industry_params)
-        format.html { redirect_to @industry, notice: 'Industry was successfully updated.' }
+        format.html { redirect_to industries_path, notice: 'Industry was successfully updated.' }
         format.json { render :show, status: :ok, location: @industry }
       else
         format.html { render :edit }
@@ -54,9 +55,11 @@ class IndustriesController < ApplicationController
   # DELETE /industries/1
   # DELETE /industries/1.json
   def destroy
+    industry_name = @industry.name
+    
     @industry.destroy
     respond_to do |format|
-      format.html { redirect_to industries_url, notice: 'Industry was successfully destroyed.' }
+      format.html { redirect_to industries_url, notice: "Industry #{industry_name} was successfully deleted." }
       format.json { head :no_content }
     end
   end

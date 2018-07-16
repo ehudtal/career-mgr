@@ -25,6 +25,10 @@ require 'rails_helper'
 
 RSpec.describe IndustriesController, type: :controller do
   render_views
+  
+  let(:user) { create :user }
+  
+  before { sign_in user }
 
   # This should return the minimal set of attributes required to create a valid
   # Industry. As you add validations to Industry, be sure to
@@ -76,9 +80,9 @@ RSpec.describe IndustriesController, type: :controller do
         }.to change(Industry, :count).by(1)
       end
 
-      it "redirects to the created industry" do
+      it "redirects to the industries list" do
         post :create, params: {industry: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Industry.last)
+        expect(response).to redirect_to(industries_path)
       end
     end
 
@@ -103,10 +107,10 @@ RSpec.describe IndustriesController, type: :controller do
         expect(industry.name).to eq(new_name)
       end
 
-      it "redirects to the industry" do
+      it "redirects to the industries list" do
         industry = Industry.create! valid_attributes
         put :update, params: {id: industry.to_param, industry: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(industry)
+        expect(response).to redirect_to(industries_path)
       end
     end
 
