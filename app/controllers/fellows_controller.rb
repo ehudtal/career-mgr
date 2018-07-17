@@ -1,4 +1,5 @@
 class FellowsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_fellow, only: [:show, :edit, :update, :destroy]
 
   # GET /fellows
@@ -30,7 +31,7 @@ class FellowsController < ApplicationController
 
     respond_to do |format|
       if @fellow.save
-        format.html { redirect_to @fellow, notice: 'Fellow was successfully created.' }
+        format.html { redirect_to fellows_path, notice: 'Fellow was successfully created.' }
         format.json { render :show, status: :created, location: @fellow }
       else
         format.html { render :new }
@@ -44,7 +45,7 @@ class FellowsController < ApplicationController
   def update
     respond_to do |format|
       if @fellow.update(fellow_params)
-        format.html { redirect_to @fellow, notice: 'Fellow was successfully updated.' }
+        format.html { redirect_to fellows_path, notice: 'Fellow was successfully updated.' }
         format.json { render :show, status: :ok, location: @fellow }
       else
         format.html { render :edit }
@@ -58,7 +59,7 @@ class FellowsController < ApplicationController
   def destroy
     @fellow.destroy
     respond_to do |format|
-      format.html { redirect_to fellows_url, notice: 'Fellow was successfully destroyed.' }
+      format.html { redirect_to fellows_url, notice: 'Fellow was successfully deleted.' }
       format.json { head :no_content }
     end
   end

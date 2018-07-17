@@ -25,6 +25,10 @@ require 'rails_helper'
 
 RSpec.describe FellowsController, type: :controller do
   render_views
+  
+  let(:user) { create :user }
+  
+  before { sign_in user }
 
   # This should return the minimal set of attributes required to create a valid
   # Fellow. As you add validations to Fellow, be sure to
@@ -84,7 +88,7 @@ RSpec.describe FellowsController, type: :controller do
 
       it "redirects to the created fellow" do
         post :create, params: {fellow: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Fellow.last)
+        expect(response).to redirect_to(fellows_path)
       end
     end
 
@@ -112,7 +116,7 @@ RSpec.describe FellowsController, type: :controller do
       it "redirects to the fellow" do
         fellow = Fellow.create! valid_attributes
         put :update, params: {id: fellow.to_param, fellow: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(fellow)
+        expect(response).to redirect_to(fellows_path)
       end
     end
 

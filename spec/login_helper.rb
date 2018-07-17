@@ -12,3 +12,11 @@ def login
   end
 end
 
+def remove_tag model, attribute, label
+  find("##{attribute}-tags span.tag span", text: label).sibling('a').click
+end
+
+def add_tag model, attribute, label
+  find("input##{model}_#{attribute}_tags_tag").send_keys(label)
+  find('li.ui-menu-item .ui-menu-item-wrapper', text: label).click
+end

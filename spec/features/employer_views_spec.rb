@@ -23,15 +23,6 @@ RSpec.feature "Employer Views", type: :feature do
     click_on "Employers"
   end
   
-  def remove_tag model, attribute, label
-    find("##{attribute}-tags span.tag span", text: label).sibling('a').click
-  end
-  
-  def add_tag model, attribute, label
-    find("input##{model}_#{attribute}_tags_tag").send_keys(label)
-    find('li.ui-menu-item .ui-menu-item-wrapper', text: label).click
-  end
-  
   scenario "Creating", js: true do
     visit_employers
     click_on 'Add New Employer'
