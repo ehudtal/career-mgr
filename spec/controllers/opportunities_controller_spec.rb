@@ -26,6 +26,10 @@ require 'rails_helper'
 RSpec.describe OpportunitiesController, type: :controller do
   render_views
   
+  let(:user) { create :user }
+  
+  before { sign_in user }
+  
   # This should return the minimal set of attributes required to create a valid
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
