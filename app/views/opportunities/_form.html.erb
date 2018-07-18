@@ -34,6 +34,8 @@
   <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
   
   <h3>Industries</h3>
+  
+  <%= link_to 'full industries list', list_industries_path, target: '_blank' %>
 
   <div id="industry-tags" class="jquery-tags">
     <%= form.text_area :industry_tags %>
@@ -43,12 +45,16 @@
   <!--%= render 'industries/check_boxes', object: opportunity %-->
 
   <h3>Interests</h3>
+
+  <%= link_to 'full interests list', list_interests_path, target: '_blank' %>
   
   <div id="interest-tags" class="jquery-tags">
     <%= form.text_area :interest_tags %>
   </div>
   
   <h3>Metro Areas</h3>
+
+  <%= link_to 'full metro areas list', list_metros_path, target: '_blank' %>
   
   <div id="metro-tags" class="jquery-tags">
     <%= form.text_area :metro_tags %>

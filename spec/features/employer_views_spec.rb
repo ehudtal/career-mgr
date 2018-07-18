@@ -30,6 +30,8 @@ RSpec.feature "Employer Views", type: :feature do
     expect(page).to have_content('New Employer')
     
     fill_in 'Name', with: 'New Name'
+
+    expect_list_link_for :industries
     add_tag :employer, :industry, industry_other.name
     
     click_on 'Create Employer'
@@ -67,6 +69,8 @@ RSpec.feature "Employer Views", type: :feature do
     expect(page).to have_content(industry.name)
     
     fill_in 'Name', with: 'New Name'
+
+    expect_list_link_for :industries
     remove_tag(:employer, :industry, industry.name)
     add_tag(:employer, :industry, industry_other.name)
 

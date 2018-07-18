@@ -91,10 +91,10 @@ RSpec.describe OpportunitiesController, type: :controller do
         expect(opportunity.name).to eq(new_name)
       end
 
-      it "redirects to the opportunity" do
+      it "redirects to the opportunities path" do
         opportunity = Opportunity.create! valid_attributes
         put :update, params: {id: opportunity.to_param, opportunity: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(opportunity_path(opportunity))
+        expect(response).to redirect_to(employer_opportunities_path(opportunity.employer))
       end
 
       it "associates specified industries with the opportunity" do
@@ -170,9 +170,9 @@ RSpec.describe OpportunitiesController, type: :controller do
           }.to change(Opportunity, :count).by(1)
         end
 
-        it "redirects to the created opportunity" do
+        it "redirects to the opportunities path" do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
-          expect(response).to redirect_to(opportunity_path(Opportunity.last))
+          expect(response).to redirect_to(employer_opportunities_path(Opportunity.last.employer))
         end
 
         it "associates specified industries with the opportunity" do

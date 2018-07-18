@@ -31,7 +31,7 @@ class OpportunitiesController < ApplicationController
 
     respond_to do |format|
       if @opportunity.save
-        format.html { redirect_to @opportunity, notice: 'Opportunity was successfully created.' }
+        format.html { redirect_to employer_opportunities_path(@opportunity.employer), notice: 'Opportunity was successfully created.' }
         format.json { render :show, status: :created, location: @opportunity }
       else
         format.html { render :new }
@@ -45,7 +45,7 @@ class OpportunitiesController < ApplicationController
   def update
     respond_to do |format|
       if @opportunity.update(opportunity_params)
-        format.html { redirect_to @opportunity, notice: 'Opportunity was successfully updated.' }
+        format.html { redirect_to employer_opportunities_path(@opportunity.employer), notice: 'Opportunity was successfully updated.' }
         format.json { render :show, status: :ok, location: @opportunity }
       else
         format.html { render :edit }
@@ -61,7 +61,7 @@ class OpportunitiesController < ApplicationController
     @opportunity.destroy
 
     respond_to do |format|
-      format.html { redirect_to employer_opportunities_url(employer), notice: 'Opportunity was successfully destroyed.' }
+      format.html { redirect_to employer_opportunities_url(employer), notice: 'Opportunity was successfully deleted.' }
       format.json { head :no_content }
     end
   end

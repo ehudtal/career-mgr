@@ -1,4 +1,4 @@
-require 'factory_helpers'
+require "#{Rails.root}/spec/factory_helpers"
 
 FactoryBot.define do
   factory :industry do

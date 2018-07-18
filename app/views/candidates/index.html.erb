@@ -5,21 +5,14 @@
 <%= form_tag opportunity_candidates_path(@opportunity), method: :get do %>
   <div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Industries/Interests</h3>
+    view full <%= link_to 'industry', list_industries_path, target: '_blank' %> or 
+    <%= link_to 'interest', list_interests_path, target: '_blank' %> lists
     <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
   </div>
 
-  <!--div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
-    <h3>Industries</h3>
-    <%= text_area_tag :opportunity_industry_tags, params[:search][:industries], name: "search[industries]", class: 'auto-refresh' %>
-  </div>
-
-  <div id="interest-tags" class="floating-search jquery-tags" style="float: left;">
-    <h3>Interests</h3>
-    <%= text_area_tag :opportunity_interest_tags, params[:search][:interests], name: "search[interests]", class: 'auto-refresh' %>
-  </div-->
-
   <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Locations</h3>
+    <%= link_to 'full metro areas list', list_metros_path, target: '_blank' %>
     <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
   </div>
 <% end %>
