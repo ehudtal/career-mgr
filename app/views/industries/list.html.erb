@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Career Manager</title>
+  </head>
+
+  <body>
+    <main>
+      <h1>Industries</h1>
+      
+      <ul>
+        <% @industries.each do |industry| %>
+          <li><%= industry.name %></li>
+        <% end %>
+      </ul>
+    </main>
+  </body>
+</html>

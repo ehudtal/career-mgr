@@ -49,6 +49,14 @@ RSpec.describe InterestsController, type: :controller do
     end
   end
 
+  describe "GET #index" do
+    it "returns a success response" do
+      interest = Interest.create! valid_attributes
+      get :list, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+
   describe "GET #show" do
     it "returns a success response" do
       interest = Interest.create! valid_attributes

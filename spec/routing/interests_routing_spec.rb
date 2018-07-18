@@ -7,6 +7,10 @@ RSpec.describe InterestsController, type: :routing do
       expect(:get => "/interests").to route_to("interests#index")
     end
 
+    it "routes to #list" do
+      expect(:get => "/interests/list").to route_to("interests#list")
+    end
+
     it "routes to #new" do
       expect(:get => "/interests/new").to route_to("interests#new")
     end

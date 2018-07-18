@@ -47,4 +47,12 @@ RSpec.describe MetrosController, type: :controller do
       expect(json).to include(metro.name)
     end
   end
+
+  describe "GET #list" do
+    it "returns a success response" do
+      metro = Metro.create! valid_attributes
+      get :list, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
 end

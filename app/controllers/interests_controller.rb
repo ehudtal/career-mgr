@@ -8,6 +8,11 @@ class InterestsController < ApplicationController
     @interests = Interest.order('name asc').all
   end
 
+  def list
+    @interests = Interest.order('name asc').all
+    render layout: false
+  end
+
   # GET /interests/1
   # GET /interests/1.json
   def show

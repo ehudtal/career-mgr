@@ -49,6 +49,13 @@ RSpec.describe IndustriesController, type: :controller do
     end
   end
 
+  describe 'GET #list' do
+    it "returns successfully" do
+      get :list, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+
   describe "GET #show" do
     it "returns a success response" do
       industry = Industry.create! valid_attributes
@@ -137,5 +144,4 @@ RSpec.describe IndustriesController, type: :controller do
       expect(response).to redirect_to(industries_url)
     end
   end
-
 end

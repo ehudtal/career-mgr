@@ -7,6 +7,11 @@ class IndustriesController < ApplicationController
   def index
     @industries = Industry.order('name asc').all
   end
+  
+  def list
+    @industries = Industry.order('name asc').all
+    render layout: false
+  end
 
   # GET /industries/1
   # GET /industries/1.json

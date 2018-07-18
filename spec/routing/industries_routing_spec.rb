@@ -35,5 +35,8 @@ RSpec.describe IndustriesController, type: :routing do
       expect(:delete => "/industries/1").to route_to("industries#destroy", :id => "1")
     end
 
+    it "routes to #list" do
+      expect(:get => '/industries/list').to route_to("industries#list")
+    end
   end
 end

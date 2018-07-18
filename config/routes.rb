@@ -29,9 +29,24 @@ Rails.application.routes.draw do
   resources :opportunity_stages
   resources :employment_statuses
   resources :coaches
-  resources :interests
-  resources :industries
-  resources :metros, only: [:index], constraints: lambda { |req| req.format == :json }
+
+  resources :interests do
+    collection do
+      get :list
+    end
+  end
+
+  resources :industries do
+    collection do
+      get :list
+    end
+  end
+
+  resources :metros, only: [:index] do
+    collection do
+      get :list
+    end
+  end
   resources :cohort_fellows
   resources :cohorts
   resources :contacts
