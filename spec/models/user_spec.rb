@@ -49,4 +49,31 @@ RSpec.describe User, type: :model do
     end
   end
 
+  ##################
+  # Instance methods
+  ##################
+
+  describe '#role' do
+    subject { user.role }
+    
+    describe 'when admin and fellow' do
+      let(:user) { build :user, is_admin: true, is_fellow: true }
+      it { expect(subject).to eq(:admin) }
+    end
+    
+    describe 'when admin and not fellow' do
+      let(:user) { build :user, is_admin: true, is_fellow: false }
+      it { expect(subject).to eq(:admin) }
+    end
+    
+    describe 'when not admin and fellow' do
+      let(:user) { build :user, is_admin: false, is_fellow: true }
+      it { expect(subject).to eq(:fellow) }
+    end
+    
+    describe 'when not admin and not fellow' do
+      let(:user) { build :user, is_admin: false, is_fellow: false }
+      it { expect(subject).to eq(:fellow) }
+    end
+  end
 end

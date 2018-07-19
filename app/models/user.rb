@@ -7,18 +7,22 @@ class User < ApplicationRecord
   has_one :fellow
   
   after_save :attempt_fellow_match, if: :missing_fellow?
-         
-  def password_required?
-    false
+  
+  def role
+    is_admin? ? :admin : :fellow
   end
   
   private
-  
-  def missing_fellow?
-    fellow.nil?
-  end
 
   def attempt_fellow_match
     FellowUserMatcher.match(email)
+  end
+
+  def missing_fellow?
+    fellow.nil?
+  end
+  
+  def password_required?
+    false
   end
 end

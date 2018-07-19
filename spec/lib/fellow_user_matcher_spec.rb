@@ -4,8 +4,8 @@ require 'fellow_user_matcher'
 RSpec.describe FellowUserMatcher do
   let(:email) { 'matching@example.com' }
   
-  let(:user_match) { create :fellow_user, email: email }
-  let(:user_nomatch) { create :fellow_user }
+  let(:user_match) { create :user, is_fellow: false, email: email }
+  let(:user_nomatch) { create :user, is_fellow: false }
   
   let(:fellow_match) { create :fellow }
   let(:contact) { create :contact, contactable: fellow_match, email: email }
@@ -24,6 +24,10 @@ RSpec.describe FellowUserMatcher do
     
     it "associates a fellow to a matching user" do
       expect(user_match.reload.fellow).to eq(fellow_match)
+    end
+    
+    it "assigns user to the fellow role" do
+      expect(user_match.reload.is_fellow?).to be(true)
     end
     
     it "associates a user to a matching fellow" do

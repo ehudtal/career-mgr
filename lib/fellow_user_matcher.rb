@@ -6,6 +6,7 @@ class FellowUserMatcher
 
       if user && fellow
         user.fellow = fellow
+        user.update is_fellow: true
       end
     end
   end
