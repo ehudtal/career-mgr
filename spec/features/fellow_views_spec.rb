@@ -14,7 +14,7 @@ RSpec.feature "FellowViews", type: :feature do
   let(:metro_excluded)    { create :metro }
   
   background do
-    fellow; contact
+    fellow; contact; fellow.reload
 
     expect(Fellow.count).to eq(1)
     
@@ -98,7 +98,7 @@ RSpec.feature "FellowViews", type: :feature do
 
   scenario "Updating", js: true do
     create_taggables
-    
+
     visit_fellows
 
     click_on 'Edit'

@@ -4,13 +4,13 @@ FactoryBot.define do
     password 'password'
     
     factory :admin_user do
-      admin true
-      fellow false
+      is_admin true
+      is_fellow false
     end
     
     factory :fellow_user do
-      admin false
-      fellow true
+      is_admin false
+      is_fellow true
     end
   end
 end
