@@ -12,6 +12,6 @@ RSpec.feature "HomeViews", type: :feature do
     expect(page.text).to include("Interests")
     expect(page.text).to include("Sites")
 
-    expect(page).to have_css('a.button[href="/home/new_opportunity"]')
+    expect(page).to have_css('a.button[href="/admin/home/new_opportunity"]')
   end
 end

@@ -2,9 +2,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'
-  get 'home/new_opportunity', as: 'new_opportunity'
 
   namespace :admin do
+    get 'home/welcome'
+    get 'home/new_opportunity', as: 'new_opportunity'
+
     resources :employers, shallow: true do
       resources :locations
       resources :opportunities do

@@ -1,5 +1,5 @@
 def login
-  create :user, email: 'admin@beyondz.org' unless User.find_by(email: 'admin@beyondz.org')
+  create :admin_user, email: 'admin@beyondz.org' unless User.find_by(email: 'admin@beyondz.org')
   visit root_path
   
   begin

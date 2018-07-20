@@ -3,21 +3,18 @@ require 'rails_helper'
 RSpec.describe HomeController, type: :controller do
   render_views
   
-  let(:user) { create :user }
+  let(:user) { create :"#{role}_user" }
   
   before { sign_in user }
 
   describe "GET #welcome" do
-    it "returns http success" do
-      get :welcome
-      expect(response.status).to eq(200) #have_http_status(:success)
-    end
-  end
+    describe 'when user is admin' do
+      let(:role) { :admin }
 
-  describe "GET #new_opportunity" do
-    it "returns http success" do
-      get :new_opportunity
-      expect(response.status).to eq(200) #have_http_status(:success)
+      it "routes to admin welcome page" do
+        get :welcome
+        expect(response).to redirect_to(admin_home_welcome_path)
+      end
     end
   end
 end
