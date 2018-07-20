@@ -1,9 +1,9 @@
 <%= link_to 'Add New Opportunity', new_opportunity_path, class: "button" %>
 <ul>
-  <li><%= link_to "Employers", employers_path %> (<%= Employer.count %>)</li>
-  <li><%= link_to "Opportunities", opportunities_path %> (<%= Opportunity.count %>)</li>
-  <li><%= link_to "Industries", industries_path %> (<%= Industry.count %>)</li>
-  <li><%= link_to "Interests", interests_path %> (<%= Interest.count %>)</li>
-  <li><%= link_to "Sites", sites_path %> (<%= Site.count %>)</li>
-  <li><%= link_to "Fellows", fellows_path %> (<%= Fellow.count %>)</li>
+  <li><%= link_to "Employers", admin_employers_path %> (<%= Employer.count %>)</li>
+  <li><%= link_to "Opportunities", admin_opportunities_path %> (<%= Opportunity.count %>)</li>
+  <li><%= link_to "Industries", admin_industries_path %> (<%= Industry.count %>)</li>
+  <li><%= link_to "Interests", admin_interests_path %> (<%= Interest.count %>)</li>
+  <li><%= link_to "Sites", admin_sites_path %> (<%= Site.count %>)</li>
+  <li><%= link_to "Fellows", admin_fellows_path %> (<%= Fellow.count %>)</li>
 </ul>

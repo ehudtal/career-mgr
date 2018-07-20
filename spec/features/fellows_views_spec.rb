@@ -81,7 +81,7 @@ RSpec.feature "FellowViews", type: :feature do
     expect(fellow.metros).to      include(metro_included)
     expect(fellow.metros).to_not  include(metro_excluded)
 
-    expect(page).to have_current_path(fellows_path)
+    expect(page).to have_current_path(admin_fellows_path)
     expect(page).to have_content('successfully created')
   end
 
@@ -121,7 +121,7 @@ RSpec.feature "FellowViews", type: :feature do
     expect(fellow.last_name).to eq(updated_last)
     expect(fellow.contact.city).to eq(updated_city)
 
-    expect(page).to have_current_path(fellows_path)
+    expect(page).to have_current_path(admin_fellows_path)
     expect(page).to have_content('successfully updated')
   end
 
@@ -131,7 +131,7 @@ RSpec.feature "FellowViews", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
 
-    expect(page).to have_current_path(fellows_path)
+    expect(page).to have_current_path(admin_fellows_path)
     expect(page).to have_content("successfully deleted.")
     expect(Fellow.count).to eq(0)
   end

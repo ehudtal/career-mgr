@@ -32,7 +32,7 @@ RSpec.feature "InterestViews", type: :feature do
     expect(interest.name).to eq('New Name')
     expect(interest.description).to eq('New Description')
 
-    expect(page).to have_current_path(interests_path)
+    expect(page).to have_current_path(admin_interests_path)
     expect(page).to have_content('successfully created')
   end
 
@@ -62,7 +62,7 @@ RSpec.feature "InterestViews", type: :feature do
     expect(interest.name).to eq('Updated Name')
     expect(interest.description).to eq('Updated Description')
 
-    expect(page).to have_current_path(interests_path)
+    expect(page).to have_current_path(admin_interests_path)
     expect(page).to have_content('successfully updated')
   end
   
@@ -72,7 +72,7 @@ RSpec.feature "InterestViews", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
     
-    expect(page).to have_current_path(interests_path)
+    expect(page).to have_current_path(admin_interests_path)
     expect(page).to have_content("Interest #{interest.name} was successfully deleted.")
     expect(Interest.count).to eq(0)
   end

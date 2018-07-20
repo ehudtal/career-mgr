@@ -64,7 +64,7 @@ RSpec.feature "Employer Views", type: :feature do
     visit_employers
 
     click_on 'Edit'
-    
+
     expect(page).to have_content('Editing Employer')
     expect(page).to have_content(industry.name)
     
@@ -81,7 +81,7 @@ RSpec.feature "Employer Views", type: :feature do
     expect(employer.industries).to_not include(industry)
     expect(employer.industries).to include(industry_other)
 
-    expect(page).to have_current_path(employer_path(employer.id))
+    expect(page).to have_current_path(admin_employer_path(employer.id))
   end
   
   scenario "Deleting", js: true do
@@ -90,7 +90,7 @@ RSpec.feature "Employer Views", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
     
-    expect(page).to have_current_path(employers_path)
+    expect(page).to have_current_path(admin_employers_path)
     expect(page).to have_content("Employer #{employer.name} was successfully deleted.")
     expect(Employer.count).to eq(0)
   end

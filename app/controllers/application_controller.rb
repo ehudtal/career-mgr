@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     
     case requested_redirect
     when 'new_opportunity'
-      new_employer_opportunity_path(@employer)
+      new_admin_employer_opportunity_path(@employer)
     else
       nil
     end

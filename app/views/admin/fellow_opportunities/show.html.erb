@@ -1,0 +1,29 @@
+<p>
+  <strong>Secured on:</strong>
+  <%= @fellow_opportunity.secured_on %>
+</p>
+
+<p>
+  <strong>Staff notes:</strong>
+  <%= @fellow_opportunity.staff_notes %>
+</p>
+
+<p>
+  <strong>Fellow:</strong>
+  <%= @fellow_opportunity.fellow_id %>
+</p>
+
+<p>
+  <strong>Opportunity:</strong>
+  <%= @fellow_opportunity.opportunity_id %>
+</p>
+
+<p>
+  <strong>Opportunity stage:</strong>
+  <%= @fellow_opportunity.opportunity_stage_id %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_fellow_opportunity_path(@fellow_opportunity), class: 'edit' %> |
+  <%= link_to 'Back', admin_fellow_opportunities_path, class: 'back' %>
+</footer>

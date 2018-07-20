@@ -56,8 +56,8 @@ $(document).on "turbolinks:load",  ->
     element = $('#opportunity_industry_interest_tags') 
     
     if element.length
-      $.get '/industries.json', (industries) ->
-        $.get '/interests.json', (interests) ->
+      $.get '/admin/industries.json', (industries) ->
+        $.get '/admin/interests.json', (interests) ->
           data = $.unique(industries.concat(interests))
           
           element.show()
@@ -75,9 +75,9 @@ $(document).on "turbolinks:load",  ->
                 $(tag).form().submit()
             
         
-  enableTagChecklistToggle("interest", '/interests.json', 'Add an Interest')
-  enableTagChecklistToggle("industry", '/industries.json', 'Add an Industry')
-  enableTagChecklistToggle("metro",    '/metros.json', 'Add a Metro')
+  enableTagChecklistToggle("interest", '/admin/interests.json', 'Add an Interest')
+  enableTagChecklistToggle("industry", '/admin/industries.json', 'Add an Industry')
+  enableTagChecklistToggle("metro",    '/admin/metros.json', 'Add a Metro')
   
   enableIndustryInterestTags()
   

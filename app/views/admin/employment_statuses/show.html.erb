@@ -1,0 +1,9 @@
+<p>
+  <strong>Name:</strong>
+  <%= @employment_status.name %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_employment_status_path(@employment_status), class: 'edit' %> |
+  <%= link_to 'Back', admin_employment_statuses_path, class: 'back' %>
+</footer>

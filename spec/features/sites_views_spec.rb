@@ -51,7 +51,7 @@ RSpec.feature "SiteViews", type: :feature do
     expect(site.location.contact.email).to eq('test@example.com')
     expect(site.location.contact.url).to eq('http://example.com')
 
-    expect(page).to have_current_path(sites_path)
+    expect(page).to have_current_path(admin_sites_path)
     expect(page).to have_content('successfully created')
   end
 
@@ -86,7 +86,7 @@ RSpec.feature "SiteViews", type: :feature do
     expect(site.location.name).to eq('Updated Location Name')
     expect(site.location.contact.address_1).to eq('234 Way Street')
 
-    expect(page).to have_current_path(sites_path)
+    expect(page).to have_current_path(admin_sites_path)
     expect(page).to have_content('successfully updated')
   end
 
@@ -96,7 +96,7 @@ RSpec.feature "SiteViews", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
 
-    expect(page).to have_current_path(sites_path)
+    expect(page).to have_current_path(admin_sites_path)
     expect(page).to have_content("successfully deleted.")
     expect(Site.count).to eq(0)
   end

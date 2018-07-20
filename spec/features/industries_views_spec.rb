@@ -32,7 +32,7 @@ RSpec.feature "IndustryViews", type: :feature do
     expect(industry.name).to eq('New Name')
     expect(industry.description).to eq('New Description')
 
-    expect(page).to have_current_path(industries_path)
+    expect(page).to have_current_path(admin_industries_path)
     expect(page).to have_content('successfully created')
   end
 
@@ -62,7 +62,7 @@ RSpec.feature "IndustryViews", type: :feature do
     expect(industry.name).to eq('Updated Name')
     expect(industry.description).to eq('Updated Description')
 
-    expect(page).to have_current_path(industries_path)
+    expect(page).to have_current_path(admin_industries_path)
     expect(page).to have_content('successfully updated')
   end
   
@@ -72,7 +72,7 @@ RSpec.feature "IndustryViews", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
     
-    expect(page).to have_current_path(industries_path)
+    expect(page).to have_current_path(admin_industries_path)
     expect(page).to have_content("Industry #{industry.name} was successfully deleted.")
     expect(Industry.count).to eq(0)
   end

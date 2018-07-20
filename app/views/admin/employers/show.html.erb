@@ -1,0 +1,19 @@
+<h1><%= @employer.name %></h1>
+
+<h2>Industries</h2>
+<%= render 'admin/industries/list', object: @employer %>
+
+<h2>Opportunities</h2>
+<%= render "admin/opportunities/list", opportunities: @employer.opportunities %>
+<br />
+<%= link_to 'Add Opportunity', new_admin_employer_opportunity_path(@employer), class: 'button' %>
+
+<h2>Locations</h2>
+<%= render "admin/locations/list", locations: @employer.locations %>
+<br />
+<%= link_to 'Add Location', new_admin_employer_location_path(@employer), class: 'button' %>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_employer_path(@employer), class: 'edit' %> |
+  <%= link_to 'Back to All Employers', admin_employers_path, class: 'back' %>
+</footer>

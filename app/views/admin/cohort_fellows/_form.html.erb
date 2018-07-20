@@ -1,0 +1,62 @@
+<%= form_with(model: [:admin, cohort_fellow], local: true) do |form| %>
+  <% if cohort_fellow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cohort_fellow.errors.count, "error") %> prohibited this cohort_fellow from being saved:</h2>
+
+      <ul>
+      <% cohort_fellow.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :grade %>
+    <%= form.text_field :grade %>
+  </div>
+
+  <div class="field">
+    <%= form.label :attendance %>
+    <%= form.text_field :attendance %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nps_response %>
+    <%= form.number_field :nps_response %>
+  </div>
+
+  <div class="field">
+    <%= form.label :endorsement %>
+    <%= form.number_field :endorsement %>
+  </div>
+
+  <div class="field">
+    <%= form.label :professionalism %>
+    <%= form.number_field :professionalism %>
+  </div>
+
+  <div class="field">
+    <%= form.label :teamwork %>
+    <%= form.number_field :teamwork %>
+  </div>
+
+  <div class="field">
+    <%= form.label :feedback %>
+    <%= form.text_area :feedback %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fellow_id %>
+    <%= form.number_field :fellow_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cohort_id %>
+    <%= form.number_field :cohort_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

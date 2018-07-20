@@ -31,6 +31,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     visit_page :opportunities
 
     click_on 'New Opportunity'
+    sleep 10
     click_on opportunity.employer.name
 
     expect(page).to have_content('New Opportunity')
@@ -83,7 +84,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     expect(opportunity.metros).to      include(metro_included)
     expect(opportunity.metros).to_not  include(metro_excluded)
 
-    expect(page).to have_current_path(employer_opportunities_path(opportunity.employer))
+    expect(page).to have_current_path(admin_employer_opportunities_path(opportunity.employer))
     expect(page).to have_content('successfully created')
   end
 
@@ -145,7 +146,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     expect(opportunity.metros).to include(metro_excluded)
     expect(opportunity.metros).to_not include(metro_included)
 
-    expect(page).to have_current_path(employer_opportunities_path(opportunity.employer))
+    expect(page).to have_current_path(admin_employer_opportunities_path(opportunity.employer))
     expect(page).to have_content('successfully updated')
   end
 
@@ -155,7 +156,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
 
-    expect(page).to have_current_path(employer_opportunities_path(opportunity.employer))
+    expect(page).to have_current_path(admin_employer_opportunities_path(opportunity.employer))
     expect(page).to have_content("successfully deleted.")
     expect(Opportunity.count).to eq(0)
   end

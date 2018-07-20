@@ -1,38 +1,38 @@
 require "rails_helper"
 
-RSpec.describe ContactsController, type: :routing do
+RSpec.describe Admin::ContactsController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/contacts").to route_to("contacts#index")
+      expect(:get => "/admin/contacts").to route_to("admin/contacts#index")
     end
 
     it "routes to #new" do
-      expect(:get => "/contacts/new").to route_to("contacts#new")
+      expect(:get => "/admin/contacts/new").to route_to("admin/contacts#new")
     end
 
     it "routes to #show" do
-      expect(:get => "/contacts/1").to route_to("contacts#show", :id => "1")
+      expect(:get => "/admin/contacts/1").to route_to("admin/contacts#show", :id => "1")
     end
 
     it "routes to #edit" do
-      expect(:get => "/contacts/1/edit").to route_to("contacts#edit", :id => "1")
+      expect(:get => "/admin/contacts/1/edit").to route_to("admin/contacts#edit", :id => "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/contacts").to route_to("contacts#create")
+      expect(:post => "/admin/contacts").to route_to("admin/contacts#create")
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/contacts/1").to route_to("contacts#update", :id => "1")
+      expect(:put => "/admin/contacts/1").to route_to("admin/contacts#update", :id => "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/contacts/1").to route_to("contacts#update", :id => "1")
+      expect(:patch => "/admin/contacts/1").to route_to("admin/contacts#update", :id => "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/contacts/1").to route_to("contacts#destroy", :id => "1")
+      expect(:delete => "/admin/contacts/1").to route_to("admin/contacts#destroy", :id => "1")
     end
 
   end

@@ -1,0 +1,14 @@
+<p>
+  <strong>Name:</strong>
+  <%= @cohort.name %>
+</p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @cohort.course_id %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_cohort_path(@cohort), class: 'edit' %> |
+  <%= link_to 'Back', admin_cohorts_path %>
+</footer>
