@@ -1,4 +1,6 @@
 class Admin::CoursesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_site
   before_action :set_course, only: [:show, :edit, :update, :destroy]
 

@@ -25,6 +25,8 @@ require 'rails_helper'
 
 RSpec.describe Admin::CohortFellowsController, type: :controller do
   render_views
+  
+  let(:user) { create :admin_user }
 
   # This should return the minimal set of attributes required to create a valid
   # CohortFellow. As you add validations to CohortFellow, be sure to
@@ -36,6 +38,8 @@ RSpec.describe Admin::CohortFellowsController, type: :controller do
   let(:invalid_attributes) { {cohort_id: ''} }
   
   before do
+    sign_in user
+
     allow_any_instance_of(CohortFellow).to receive(:cohort).and_return(cohort)
     allow_any_instance_of(CohortFellow).to receive(:fellow).and_return(fellow)
   end
@@ -44,6 +48,45 @@ RSpec.describe Admin::CohortFellowsController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # CohortFellowsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  describe 'when signed-in user is not admin' do
+    let(:user) { create :fellow_user }
+
+    it "redirects GET #index to home" do
+      get :index, params: {}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects GET #show to home" do
+      get :show, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects GET #new to home" do
+      get :new, params: {}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects GET #edit to home" do
+      get :edit, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects POST #create to home" do
+      post :create, params: {cohort_fellow: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects PUT #update to home" do
+      put :update, params: {id: '1001', cohort_fellow: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects DELETE #destroy to home" do
+      delete :destroy, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+  end
 
   describe "GET #index" do
     it "returns a success response" do

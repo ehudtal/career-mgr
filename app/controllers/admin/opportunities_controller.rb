@@ -1,5 +1,6 @@
 class Admin::OpportunitiesController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_employer
   before_action :set_opportunity, only: [:show, :edit, :update, :destroy]
 

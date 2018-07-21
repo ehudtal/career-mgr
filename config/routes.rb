@@ -10,7 +10,6 @@ Rails.application.routes.draw do
     resources :employers, shallow: true do
       resources :locations
       resources :opportunities do
-        resources :tasks
         resources :candidates, only: [:index, :create, :update, :destroy]
       end
     end
@@ -52,7 +51,6 @@ Rails.application.routes.draw do
     end
     resources :cohort_fellows
     resources :cohorts
-    resources :contacts
   end
   
   root to: "home#welcome"

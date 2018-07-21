@@ -25,6 +25,8 @@ require 'rails_helper'
 
 RSpec.describe Admin::CoursesController, type: :controller do
   render_views
+  
+  let(:user) { create :admin_user }
 
   # This should return the minimal set of attributes required to create a valid
   # Course. As you add validations to Course, be sure to
@@ -35,6 +37,8 @@ RSpec.describe Admin::CoursesController, type: :controller do
   let(:invalid_attributes) { {site_id: ''} }
   
   before do
+    sign_in user
+
     allow(Site).to receive(:find).with(site.id.to_s).and_return(site)
     allow_any_instance_of(Course).to receive(:site).and_return(site)
   end
@@ -43,6 +47,40 @@ RSpec.describe Admin::CoursesController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # CoursesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  describe 'when signed-in user is not admin' do
+    let(:user) { create :fellow_user }
+    
+    it "redirects GET #show to home" do
+      get :show, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects GET #new to home" do
+      get :new, params: {site_id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects GET #edit to home" do
+      get :edit, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects POST #create to home" do
+      post :create, params: {site_id: '1001', course: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects PUT #update to home" do
+      put :update, params: {id: '1001', course: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects DELETE #destroy to home" do
+      delete :destroy, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+  end
 
   describe "GET #show" do
     it "returns a success response" do

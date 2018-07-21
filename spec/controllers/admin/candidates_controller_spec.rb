@@ -1,13 +1,40 @@
 require 'rails_helper'
 
 RSpec.describe Admin::CandidatesController, type: :controller do
+  let(:user) { create :admin_user }
   let(:opportunity) { build :opportunity, id: '1001' }
   
   before do
+    sign_in user
+
     allow(Opportunity).to receive(:find).with(opportunity.id.to_s).and_return(opportunity)
     allow_any_instance_of(FellowOpportunity).to receive(:opportunity).and_return(opportunity)
   end  
   
+  describe 'when signed-in user is not admin' do
+    let(:user) { create :fellow_user }
+
+    it "redirects GET #index to home" do
+      get :index, params: {opportunity_id: '1001'}, session: {}
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects POST #create to home" do
+      post :create, params: {candidate_ids: ['1001'], opportunity_id: '1001'}
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects PUT #update to home" do
+      put :update, params: {id: '1001', fellow_opportunity: {opportunity_stage_id: '1001'}}
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects DELETE #destroy to home" do
+      delete :destroy, params: {id: '1001'}
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
   describe "GET #index" do
     it "returns http success" do
       get :index, params: {opportunity_id: opportunity.id}

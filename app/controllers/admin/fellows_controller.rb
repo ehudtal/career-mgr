@@ -1,5 +1,6 @@
 class Admin::FellowsController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_fellow, only: [:show, :edit, :update, :destroy]
 
   # GET /fellows

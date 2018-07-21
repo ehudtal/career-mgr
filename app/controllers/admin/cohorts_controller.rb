@@ -1,4 +1,6 @@
 class Admin::CohortsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_cohort, only: [:show, :edit, :update, :destroy]
 
   # GET /cohorts

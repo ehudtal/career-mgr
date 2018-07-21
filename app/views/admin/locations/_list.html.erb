@@ -18,7 +18,7 @@
           <td><%= link_to location.name, admin_location_path(location) %></td>
           <td><%= location.label %></td>
           <td><%= link_to 'Edit', edit_admin_location_path(location), class: 'edit' %></td>
-          <td><%= link_to 'Delete', admiin_location_path(location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          <td><%= link_to 'Delete', admin_location_path(location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
         </tr>
       <% end %>
     </tbody>

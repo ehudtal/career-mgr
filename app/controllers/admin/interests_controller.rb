@@ -1,5 +1,6 @@
 class Admin::InterestsController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_admin!, except: [:list]
   before_action :set_interest, only: [:show, :edit, :update, :destroy]
 
   # GET /interests

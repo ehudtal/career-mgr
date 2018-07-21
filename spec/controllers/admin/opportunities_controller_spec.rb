@@ -26,9 +26,7 @@ require 'rails_helper'
 RSpec.describe Admin::OpportunitiesController, type: :controller do
   render_views
   
-  let(:user) { create :user }
-  
-  before { sign_in user }
+  let(:user) { create :admin_user }
   
   # This should return the minimal set of attributes required to create a valid
   # Opportunity. As you add validations to Opportunity, be sure to
@@ -50,8 +48,49 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   let(:valid_session) { {} }
 
   before do
+    sign_in user
+
     allow(Employer).to receive(:find).with(employer.id.to_s).and_return(employer)
     allow_any_instance_of(Opportunity).to receive(:employer).and_return(employer)
+  end
+
+  describe 'when signed-in user is not admin' do
+    let(:user) { create :fellow_user }
+
+    it "redirects GET #index to home" do
+      get :index, params: {}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects GET #show to home" do
+      get :show, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects GET #new to home" do
+      get :new, params: {employer_id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects GET #edit to home" do
+      get :edit, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects POST #create to home" do
+      post :create, params: {employer_id: '1001', opportunity: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects PUT #update to home" do
+      put :update, params: {id: '1001', opportunity: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+    
+    it "redirects DELETE #destroy to home" do
+      delete :destroy, params: {id: '1001'}, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
   end
 
   describe "GET #index" do

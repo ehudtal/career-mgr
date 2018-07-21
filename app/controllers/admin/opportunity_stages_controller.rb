@@ -1,4 +1,6 @@
 class Admin::OpportunityStagesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_opportunity_stage, only: [:show, :edit, :update, :destroy]
 
   # GET /opportunity_stages

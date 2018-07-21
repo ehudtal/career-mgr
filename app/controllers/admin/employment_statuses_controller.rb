@@ -1,4 +1,6 @@
 class Admin::EmploymentStatusesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_employment_status, only: [:show, :edit, :update, :destroy]
 
   # GET /employment_statuses

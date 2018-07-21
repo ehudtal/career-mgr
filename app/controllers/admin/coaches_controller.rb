@@ -1,4 +1,6 @@
 class Admin::CoachesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_coach, only: [:show, :edit, :update, :destroy]
 
   # GET /coaches

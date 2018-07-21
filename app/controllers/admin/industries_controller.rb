@@ -1,5 +1,6 @@
 class Admin::IndustriesController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_admin!, except: [:list]
   before_action :set_industry, only: [:show, :edit, :update, :destroy]
 
   # GET /industries

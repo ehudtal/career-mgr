@@ -1,4 +1,6 @@
 class Admin::CohortFellowsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin!
   before_action :set_cohort_fellow, only: [:show, :edit, :update, :destroy]
 
   # GET /cohort_fellows
