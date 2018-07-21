@@ -21,10 +21,35 @@ RSpec.describe User, type: :model do
   end
   
   ###########
+  # Constants
+  ###########
+  
+  describe '::ADMIN_DOMAIN_WHITELIST' do
+    subject { User::ADMIN_DOMAIN_WHITELIST }
+    
+    it { should be_an(Array) }
+    it { should include('bebraven.org') }
+  end
+  
+  ###########
   # Callbacks
   ###########
+  
+  describe 'identifying admin users on create' do
+    let(:admin_domain) { User::ADMIN_DOMAIN_WHITELIST.first }
+    
+    it "sets the user as admin if the e-mail domain is in the whitelist" do
+      user = create :user, email: "test@#{admin_domain}"
+      expect(user.reload.is_admin?).to be(true)
+    end
+    
+    it "leaves the user as not admin if the e-mail domain is not in the whitelist" do
+      user = create :user, email: "test@not.#{admin_domain}"
+      expect(user.reload.is_admin?).to be(false)
+    end
+  end
 
-  describe 'fellow/user matching attempt' do
+  describe 'fellow/user matching attempt after save' do
     it "executes upon create" do
       new_user = build :user
       expect(FellowUserMatcher).to receive(:match).with(new_user.email).once
@@ -39,7 +64,7 @@ RSpec.describe User, type: :model do
       user.save
     end
     
-    it 'does not execut when fellow is already associated' do
+    it 'does not execute when fellow is already associated' do
       create :fellow, user_id: user.id
       user.reload
       
@@ -73,7 +98,7 @@ RSpec.describe User, type: :model do
     
     describe 'when not admin and not fellow' do
       let(:user) { build :user, is_admin: false, is_fellow: false }
-      it { expect(subject).to eq(:fellow) }
+      it { expect(subject).to eq(nil) }
     end
   end
 end
