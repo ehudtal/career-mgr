@@ -1,6 +1,6 @@
-class Admin::HomeController < ApplicationController
+class Fellow::HomeController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_admin!
+  before_action :ensure_fellow!
   
   def welcome
   end

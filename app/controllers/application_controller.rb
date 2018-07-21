@@ -23,4 +23,8 @@ class ApplicationController < ActionController::Base
   def ensure_admin!
     redirect_to(root_path) unless current_user.is_admin?
   end
+  
+  def ensure_fellow!
+    redirect_to(root_path) unless current_user.is_fellow?
+  end
 end

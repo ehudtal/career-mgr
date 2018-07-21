@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'
+  
+  namespace :fellow do
+    get 'home/welcome'
+  end
 
   namespace :admin do
     get 'home/welcome'
