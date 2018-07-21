@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "Employer Views", type: :feature do
+  include FeatureHelper
+
   let(:user) { create :user }
   let(:employer) { create :employer }
   let(:industry) { create :industry }

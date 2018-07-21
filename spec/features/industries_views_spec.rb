@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "IndustryViews", type: :feature do
+  include FeatureHelper
+
   let(:industry) { create :industry }
   
   background do

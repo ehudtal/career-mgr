@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "InterestViews", type: :feature do
+  include FeatureHelper
+
   let(:interest) { create :interest }
   
   background do

@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "OpportunityViews", type: :feature do
+  include FeatureHelper
+
   let(:opportunity) { create :opportunity }
   
   let(:industry_included) { create :industry }

@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "SiteViews", type: :feature do
+  include FeatureHelper
+
   let(:site) { create :site }
   let(:location) { create :location, locateable: site, contact: contact }
   let(:contact) { create :contact }

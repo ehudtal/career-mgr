@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "HomeViews", type: :feature do
+  include FeatureHelper
+
   describe 'logged in as admin' do
     background do
       login :admin

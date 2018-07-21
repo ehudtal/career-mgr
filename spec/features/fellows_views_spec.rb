@@ -1,7 +1,9 @@
 require 'rails_helper'
-require 'login_helper'
+require 'feature_helper'
 
 RSpec.feature "FellowViews", type: :feature do
+  include FeatureHelper
+
   let(:fellow) { create :fellow, employment_status: employment_status }
   let(:contact) { create :contact, contactable: fellow }
   let(:employment_status) { create :employment_status, name: 'Unknown' }
