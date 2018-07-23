@@ -20,6 +20,12 @@ module FeatureHelper
   def add_tag model, attribute, label
     find("input##{model}_#{attribute}_tags_tag").send_keys(label)
     find('li.ui-menu-item .ui-menu-item-wrapper', text: label).click
+    
+    expect_tag model, attribute, label
+  end
+  
+  def expect_tag model, attribute, label
+    expect(page).to have_css("##{attribute}-tags span.tag span", text: label)
   end
 
   def visit_page label

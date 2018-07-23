@@ -36,7 +36,7 @@
 
     <tbody>
       <% @opportunity.fellow_opportunities.sort_by{|fo| 0-fo.opportunity_stage.probability}.each do |candidacy| %>
-        <%= form_for [:admin, candidacy], url: candidate_path(candidacy), method: :put do |f| %>
+        <%= form_for [:admin, candidacy], url: admin_candidate_path(candidacy), method: :put do |f| %>
           <tr>
             <td><%= link_to candidacy.fellow.full_name, admin_fellow_path(candidacy.fellow) %></td>
             <td><%= f.collection_select :opportunity_stage_id, OpportunityStage.order('position asc').all, :id, :name %></td>

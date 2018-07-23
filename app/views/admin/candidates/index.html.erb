@@ -3,23 +3,23 @@
 <p>Select candidates to notify about this opportunity, from the list below:</p>
 
 <%= form_tag admin_opportunity_candidates_path(@opportunity), method: :get do %>
-  <div id="industry-tags" class="floating-search jquery-tags" style="float: left;">
+  <div id="industry_interest-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Industries/Interests</h3>
-    view full <%= link_to 'industry', list_industries_path, target: '_blank' %> or 
-    <%= link_to 'interest', list_interests_path, target: '_blank' %> lists
+    view full <%= link_to 'industry', list_admin_industries_path, target: '_blank' %> or 
+    <%= link_to 'interest', list_admin_interests_path, target: '_blank' %> lists
     <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
   </div>
 
   <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Locations</h3>
-    <%= link_to 'full metro areas list', list_metros_path, target: '_blank' %>
+    <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank' %>
     <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
   </div>
 <% end %>
 
 <h3 style="clear: both;"><%= pluralize(@candidates.count, 'Match')%></h3>
 
-<%= form_tag opportunity_candidates_path(@opportunity), method: :post do %>
+<%= form_tag admin_opportunity_candidates_path(@opportunity), method: :post do %>
   <table id='candidate-list' class="fellows tablesorter">
     <thead>
       <tr>
@@ -44,7 +44,7 @@
           <td>
             <%= check_box_tag 'candidate_ids[]', fellow.id, false, id: "candidate_ids_#{fellow.id}" %>
           </td>
-          <td><%= link_to fellow.full_name, fellow %></td>
+          <td><%= link_to fellow.full_name, admin_fellow_path(fellow) %></td>
           <td>
             <ul>
               <% unless fellow.major.blank? %>
@@ -78,8 +78,8 @@
           </td>
           <td><%= pluralize(fellow.nearest_distance(@opportunity.postal_codes).round, 'mile') %>
           <td><%= fellow.employment_status.name %></td>
-          <td><%= link_to 'Edit', edit_fellow_path(fellow), class: 'edit' %></td>
-          <td><%= link_to 'Delete', fellow, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          <td><%= link_to 'Edit', edit_admin_fellow_path(fellow), class: 'edit' %></td>
+          <td><%= link_to 'Delete', admin_fellow_path(fellow), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
         </tr>
       <% end %>
     </tbody>

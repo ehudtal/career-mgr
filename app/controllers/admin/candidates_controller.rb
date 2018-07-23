@@ -6,7 +6,7 @@ class Admin::CandidatesController < ApplicationController
   
   def index
     @candidates = @opportunity.candidates(params[:search])
-    
+
     params[:search] ||= {}
     # params[:search][:interests] ||= @opportunity.interest_tags
     # params[:search][:industries] ||= @opportunity.industry_tags
