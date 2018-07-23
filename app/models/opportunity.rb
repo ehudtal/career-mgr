@@ -11,7 +11,7 @@ class Opportunity < ApplicationRecord
   has_many :fellow_opportunities
   has_many :fellows, through: :fellow_opportunities
   
-  taggable :industries, :interests, :metros
+  taggable :industries, :interests, :industry_interests, :metros
 
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
@@ -101,14 +101,6 @@ class Opportunity < ApplicationRecord
         fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
       end
     end
-  end
-  def industry_interest_tags
-    (industries.pluck(:name) | interests.pluck(:name)).join(';')
-  end
-  
-  def industry_interest_tags= tag_string
-    self.industry_tags = tag_string
-    self.interest_tags = tag_string
   end
   
   def postal_codes

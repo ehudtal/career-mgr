@@ -47,6 +47,8 @@ RSpec.describe Fellow, type: :model do
   it_behaves_like 'taggable', :fellow, :interest
   it_behaves_like 'taggable', :fellow, :metro
   
+  it_behaves_like 'taggable_combined', :fellow, :industry, :interest
+  
   #############
   # Validations
   #############

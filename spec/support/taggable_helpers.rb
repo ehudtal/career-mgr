@@ -28,3 +28,56 @@ RSpec.shared_examples "taggable" do |object_type, taggable_type|
     end
   end
 end
+
+RSpec.shared_examples "taggable_combined" do |object_type, taggable_type_a, taggable_type_b|
+  describe "##{taggable_type_a}_#{taggable_type_b}_tags" do
+    it "returns a semicolon-delimited list of unique associated #{taggable_type_a} AND #{taggable_type_b} names" do
+      object = build object_type
+      
+      taggable_a_1 = build taggable_type_a, name: 'Taggable A 1'
+      taggable_a_2 = build taggable_type_a, name: 'Taggable Shared'
+      taggable_b_1 = build taggable_type_b, name: 'Taggable B 1'
+      taggable_b_2 = build taggable_type_b, name: 'Taggable Shared'
+      
+      taggables_a = taggable_type_a.to_s.pluralize.to_sym
+      taggables_b = taggable_type_b.to_s.pluralize.to_sym
+
+      allow(object).to receive(taggables_a).and_return([taggable_a_1, taggable_a_2])
+      allow(object).to receive(taggables_b).and_return([taggable_b_1, taggable_b_2])
+      
+      list = object.send(:"#{taggable_type_a}_#{taggable_type_b}_tags").split(';')
+
+      expect(list.size).to eq(3)
+      expect(list).to include('Taggable A 1')
+      expect(list).to include('Taggable B 1')
+      expect(list).to include('Taggable Shared')
+    end
+  end
+
+  describe "##{taggable_type_a}_#{taggable_type_b}_tags=" do
+    it "converts a semicolon-delimited list of #{taggable_type_a}/#{taggable_type_b} names into associations" do
+      object = create object_type
+
+      taggable_a_1 =  create taggable_type_a, name: 'Taggable A 1'
+      taggable_a_2 =  create taggable_type_a, name: 'Taggable Shared'
+      taggable_a_3 =  create taggable_type_a, name: 'Other'
+
+      taggable_b_1 =  create taggable_type_b, name: 'Taggable B 1'
+      taggable_b_2 =  create taggable_type_b, name: 'Taggable Shared'
+      taggable_b_3 =  create taggable_type_b, name: 'Other'
+      
+      object.send(:"#{taggable_type_a}_#{taggable_type_b}_tags=", "Taggable A 1;Taggable B 1;Taggable Shared")
+      
+      taggables_a = object.send(taggable_type_a.to_s.pluralize.to_sym)
+      taggables_b = object.send(taggable_type_b.to_s.pluralize.to_sym)
+      
+      expect(taggables_a).to include(taggable_a_1)
+      expect(taggables_a).to include(taggable_a_2)
+      expect(taggables_a).to_not include(taggable_a_3)
+      
+      expect(taggables_b).to include(taggable_b_1)
+      expect(taggables_b).to include(taggable_b_2)
+      expect(taggables_b).to_not include(taggable_b_3)
+    end
+  end
+end

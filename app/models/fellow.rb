@@ -12,7 +12,7 @@ class Fellow < ApplicationRecord
   has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
 
-  taggable :industries, :interests, :metros
+  taggable :industries, :interests, :industry_interests, :metros
   
   belongs_to :employment_status
   belongs_to :user, optional: true

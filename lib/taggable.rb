@@ -15,6 +15,10 @@ module Taggable
         include InterestMethods
       end
       
+      if taggables.include?(:industry_interests)
+        include IndustryInterestMethods
+      end
+      
       if taggables.include?(:metros)
         has_and_belongs_to_many :metros, dependent: :destroy
         include MetroMethods
@@ -39,6 +43,17 @@ module Taggable
   
     def interest_tags= tag_string
       self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
+    end
+  end
+  
+  module IndustryInterestMethods
+    def industry_interest_tags
+      (industries.pluck(:name) | interests.pluck(:name)).join(';')
+    end
+  
+    def industry_interest_tags= tag_string
+      self.industry_tags = tag_string
+      self.interest_tags = tag_string
     end
   end
   
