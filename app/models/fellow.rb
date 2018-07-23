@@ -1,17 +1,18 @@
 require 'digest/md5'
 require 'csv'
 require 'fellow_user_matcher'
+require 'taggable'
 
 class Fellow < ApplicationRecord
+  include Taggable
+
   has_one :contact, as: :contactable, dependent: :destroy
   accepts_nested_attributes_for :contact
   
   has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
-  
-  has_and_belongs_to_many :interests, dependent: :destroy
-  has_and_belongs_to_many :industries, dependent: :destroy
-  has_and_belongs_to_many :metros, dependent: :destroy
+
+  taggable :industries, :interests, :metros
   
   belongs_to :employment_status
   belongs_to :user, optional: true
@@ -116,30 +117,6 @@ class Fellow < ApplicationRecord
   
   def assumed_postal_code
     contact.postal_code || cohort.course.site.location.contact.postal_code
-  end
-  
-  def industry_tags
-    industries.pluck(:name).join(';')
-  end
-  
-  def industry_tags= tag_string
-    self.industry_ids = Industry.where(name: tag_string.split(';')).pluck(:id)
-  end
-  
-  def interest_tags
-    interests.pluck(:name).join(';')
-  end
-  
-  def interest_tags= tag_string
-    self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
-  end
-  
-  def metro_tags
-    metros.pluck(:name).join(';')
-  end
-  
-  def metro_tags= tag_string
-    self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
   end
   
   def default_metro

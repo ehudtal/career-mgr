@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/taggable_helpers'
 
 RSpec.describe Employer, type: :model do
   
@@ -11,6 +12,8 @@ RSpec.describe Employer, type: :model do
 
   it { should have_and_belong_to_many :coaches }
   it { should have_and_belong_to_many :industries }
+  
+  it_behaves_like 'taggable', :employer, :industry
   
   #############
   # Validations

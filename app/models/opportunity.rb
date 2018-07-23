@@ -1,4 +1,8 @@
+require 'taggable'
+
 class Opportunity < ApplicationRecord
+  include Taggable
+  
   belongs_to :employer
   
   has_many :tasks, as: :taskable, dependent: :destroy
@@ -7,9 +11,7 @@ class Opportunity < ApplicationRecord
   has_many :fellow_opportunities
   has_many :fellows, through: :fellow_opportunities
   
-  has_and_belongs_to_many :industries, dependent: :destroy
-  has_and_belongs_to_many :interests, dependent: :destroy
-  has_and_belongs_to_many :metros, dependent: :destroy
+  taggable :industries, :interests, :metros
 
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
@@ -100,23 +102,6 @@ class Opportunity < ApplicationRecord
       end
     end
   end
-  
-  def industry_tags
-    industries.pluck(:name).join(';')
-  end
-  
-  def industry_tags= tag_string
-    self.industry_ids = Industry.where(name: tag_string.split(';')).pluck(:id)
-  end
-  
-  def interest_tags
-    interests.pluck(:name).join(';')
-  end
-  
-  def interest_tags= tag_string
-    self.interest_ids = Interest.where(name: tag_string.split(';')).pluck(:id)
-  end
-  
   def industry_interest_tags
     (industries.pluck(:name) | interests.pluck(:name)).join(';')
   end
@@ -124,14 +109,6 @@ class Opportunity < ApplicationRecord
   def industry_interest_tags= tag_string
     self.industry_tags = tag_string
     self.interest_tags = tag_string
-  end
-  
-  def metro_tags
-    metros.pluck(:name).join(';')
-  end
-  
-  def metro_tags= tag_string
-    self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
   end
   
   def postal_codes

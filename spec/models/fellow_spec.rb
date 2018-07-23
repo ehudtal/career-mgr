@@ -1,5 +1,6 @@
 require'digest/md5'
 require 'rails_helper'
+require 'support/taggable_helpers'
 
 RSpec.describe Fellow, type: :model do
   let(:email) { 'email@example.com' }
@@ -41,6 +42,10 @@ RSpec.describe Fellow, type: :model do
   
   it { should belong_to :employment_status }
   it { should belong_to :user }
+  
+  it_behaves_like 'taggable', :fellow, :industry
+  it_behaves_like 'taggable', :fellow, :interest
+  it_behaves_like 'taggable', :fellow, :metro
   
   #############
   # Validations
@@ -303,87 +308,6 @@ RSpec.describe Fellow, type: :model do
     it "uses only year if semester is missing" do
       fellow = Fellow.new graduation_year: 2018
       expect(fellow.graduation).to eq('2018')
-    end
-  end
-  
-  describe '#industry_tags' do
-    it "returns a semicolon-delimited list of associated industry names" do
-      fellow = build :fellow
-      industry_1 = build :industry, name: 'Industry 1'
-      industry_2 = build :industry, name: 'Industry 2'
-      
-      allow(fellow).to receive(:industries).and_return([industry_1, industry_2])
-      
-      expect(fellow.industry_tags).to eq("Industry 1;Industry 2")
-    end
-  end
-
-  describe '#industry_tags=' do
-    it "converts a semicolon-delimited list of industry names into associations" do
-      fellow = create :fellow
-      industry_1 =  create :industry, name: 'Industry 1'
-      industry_2 =  create :industry, name: 'Industry 2'
-      industry_3 =  create :industry, name: 'Industry 3'
-      
-      fellow.industry_tags = "Industry 1;Industry 2"
-      
-      expect(fellow.industries).to include(industry_1)
-      expect(fellow.industries).to include(industry_2)
-      expect(fellow.industries).to_not include(industry_3)
-    end
-  end
-  
-  describe '#interest_tags' do
-    it "returns a semicolon-delimited list of associated interest names" do
-      fellow = build :fellow
-      interest_1 = build :interest, name: 'Interest 1'
-      interest_2 = build :interest, name: 'Interest 2'
-      
-      allow(fellow).to receive(:interests).and_return([interest_1, interest_2])
-      
-      expect(fellow.interest_tags).to eq("Interest 1;Interest 2")
-    end
-  end
-
-  describe '#interest_tags=' do
-    it "converts a semicolon-delimited list of interest names into associations" do
-      fellow = create :fellow
-      interest_1 =  create :interest, name: 'Interest 1'
-      interest_2 =  create :interest, name: 'Interest 2'
-      interest_3 =  create :interest, name: 'Interest 3'
-      
-      fellow.interest_tags = "Interest 1;Interest 2"
-      
-      expect(fellow.interests).to include(interest_1)
-      expect(fellow.interests).to include(interest_2)
-      expect(fellow.interests).to_not include(interest_3)
-    end
-  end
-  
-  describe '#metro_tags' do
-    it "returns a semicolon-delimited list of associated metro names" do
-      fellow = build :fellow
-      metro_1 = build :metro, name: 'Metro 1'
-      metro_2 = build :metro, name: 'Metro 2'
-      
-      allow(fellow).to receive(:metros).and_return([metro_1, metro_2])
-      
-      expect(fellow.metro_tags).to eq("Metro 1;Metro 2")
-    end
-  end
-
-  describe '#metro_tags=' do
-    it "converts a semicolon-delimited list of metro names into associations" do
-      fellow = create :fellow
-      metro_1 =  create :metro, name: 'Metro 1'
-      metro_2 =  create :metro, name: 'Metro 2'
-      metro_3 =  create :metro, name: 'Metro 3'
-      
-      fellow.metro_tags = "Metro 1;Metro 2"
-      
-      expect(fellow.metros).to include(metro_1)
-      expect(fellow.metros).to include(metro_2)
-      expect(fellow.metros).to_not include(metro_3)
     end
   end
   
