@@ -171,7 +171,7 @@ RSpec.describe FellowsController, type: :controller do
       
       get :upload, params: {csv: csv}, session: valid_session
       expect(response).to redirect_to(fellows_path)
-      expect(flash[:notice]).to eq('Your file has been uploaded, thanks!')
+      expect(flash[:notice]).to include('Your file is being uploaded, thanks!')
     end
   end
 

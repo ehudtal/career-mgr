@@ -2,7 +2,7 @@ require 'digest/md5'
 require 'csv'
 
 class Fellow < ApplicationRecord
-  has_one :contact, as: :contactable
+  has_one :contact, as: :contactable, dependent: :destroy
   accepts_nested_attributes_for :contact
   
   has_many :cohort_fellows, dependent: :destroy
@@ -31,12 +31,13 @@ class Fellow < ApplicationRecord
         cohort = Site.cohort_for data['Braven class']
 
         next if cohort.nil?
-        
+
         attributes = {
           first_name: data['First Name'],
           last_name: data['Last Name'],
           phone: data['Phone'],
           email: data['Email'],
+          postal_code: cohort.course.site.location.contact.postal_code,
           graduation_year: data['Ant. Grad Year'],
           graduation_semester: data['Ant. Grad Semester'],
           graduation_fiscal_year: 2000 + data['Grad FY'][2..4].to_i,
@@ -107,7 +108,11 @@ class Fellow < ApplicationRecord
     return nil unless contact && contact.postal_code
     
     @distance_from ||= {}
-    @distance_from[postal_code] = PostalCode.distance(contact.postal_code, postal_code)
+    @distance_from[postal_code] = PostalCode.distance(assumed_postal_code, postal_code)
+  end
+  
+  def assumed_postal_code
+    contact.postal_code || cohort.course.site.location.contact.postal_code
   end
   
   def industry_tags
@@ -132,6 +137,18 @@ class Fellow < ApplicationRecord
   
   def metro_tags= tag_string
     self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
+  end
+  
+  def default_metro
+    return @default_metro if defined?(@default_metro)
+    
+    postal_code = PostalCode.find_by code: contact.postal_code
+
+    @default_metro = if postal_code.nil?
+      nil
+    else
+      Metro.find_by(code: postal_code.msa_code)
+    end
   end
   
   private

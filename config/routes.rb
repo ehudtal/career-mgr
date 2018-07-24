@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'home/welcome'
   get 'home/new_opportunity', as: 'new_opportunity'
   

@@ -3,8 +3,27 @@ require 'rails_helper'
 
 RSpec.describe Fellow, type: :model do
   let(:fellow) { create :fellow }
-  let(:sites) { [:sjsu, :run, :nlu].map{|c| create :"site_#{c}"} }
   let(:unemployed_status) { create :employment_status_unemployed }
+  
+  def create_site label
+    site = create :"site_#{label}"
+
+    metro = create :metro, name: "#{label.upcase} Metro Area"
+    postal_code = create :postal_code, msa_code: metro.code
+    
+    location = create(:location, locateable: site)
+    location.contact = create(:contact, postal_code: postal_code.code)
+    
+    site
+  end
+  
+  let(:site_sjsu) { create_site :sjsu }
+  let(:site_run) { create_site :run }
+  let(:site_nlu) { create_site :nlu }
+
+  let(:sites) { [site_sjsu, site_run, site_nlu] }
+  
+  let(:metro_sjsu) { Metro.find_by name: 'SJSU Metro Area' }
   
   ##############
   # Associations
@@ -122,6 +141,7 @@ RSpec.describe Fellow, type: :model do
         it { expect(fellow.gpa).to be_within(0.01).of(2.95) }
         it { expect(fellow.linkedin_url).to eq('https://www.linkedin.com/in/antoinette-marie-martin-bb993a108') }
         it { expect(fellow.staff_notes).to eq('Shows promise') }
+        it { expect(fellow.metros).to include(metro_sjsu) }
       end
       
       describe "creating the fellow contact" do
@@ -129,6 +149,7 @@ RSpec.describe Fellow, type: :model do
         
         it { expect(contact.email).to eq('antoinette.martin@sjsu.edu') }
         it { expect(contact.phone).to eq('8315399699') }
+        it { expect(contact.postal_code).to eq(site_sjsu.location.contact.postal_code) }
       end
     
       describe "creating the cohort-fellow relationship" do
@@ -345,6 +366,39 @@ RSpec.describe Fellow, type: :model do
       expect(fellow.metros).to include(metro_1)
       expect(fellow.metros).to include(metro_2)
       expect(fellow.metros).to_not include(metro_3)
+    end
+  end
+  
+  describe '#default_metro' do
+    let(:metro) { create :metro, code: 'LNK' }
+    let(:postal_code) { create :postal_code, msa_code: metro.code }
+    let(:contact) { create :contact, postal_code: postal_code.code }
+    let(:fellow) { create :fellow }
+    
+    before { metro; postal_code; fellow }
+    
+    it "picks the metro based on fellow's postal code" do
+      fellow.contact = contact
+      expect(fellow.default_metro).to eq(metro)
+    end
+    
+    it "returns nil if fellow's postal code doesn't have a metro match" do
+      fellow.contact = create(:contact)
+      expect(fellow.default_metro).to be_nil
+    end
+    
+    it "memoizes the result when metro found" do
+      fellow.contact = contact
+      
+      expect(PostalCode).to receive(:find_by).with(code: fellow.contact.postal_code).once.and_return(postal_code)
+      2.times { fellow.default_metro }
+    end
+
+    it "memoizes the result when metro not found" do
+      fellow.contact = create :contact
+      
+      expect(PostalCode).to receive(:find_by).with(code: fellow.contact.postal_code).once.and_return(postal_code)
+      2.times { fellow.default_metro }
     end
   end
 end

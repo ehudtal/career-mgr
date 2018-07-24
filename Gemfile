@@ -45,6 +45,7 @@ group :development, :test do
   gem 'capybara', '~> 2.18'
   gem 'selenium-webdriver', '~> 3.7'
   gem 'database_cleaner'
+  gem 'dotenv'
 end
 
 group :development do
@@ -69,3 +70,6 @@ gem 'bulk_insert'
 
 gem 'will_paginate'
 gem 'delayed_job_active_record'
+
+gem 'devise'
+gem 'devise_cas_authenticatable'
