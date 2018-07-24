@@ -128,12 +128,22 @@ RSpec.describe AccessToken, type: :model do
   ##################
 
   describe 'route_for(label)' do
-    let(:route) { {'label' => 'tester', 'method' => 'GET', 'path' => '/test/this'} }
-    let(:access_token) { AccessToken.create routes: [route] }
+    let(:route_one) { {'label' => 'one', 'method' => 'GET', 'path' => '/test/one'} }
+    let(:route_two) { {'label' => 'two', 'method' => 'POST', 'path' => '/test/two'} }
     
-    subject { access_token.route_for('tester') }
+    let(:access_token) { AccessToken.create routes: [route_one, route_two] }
+    
+    it "provides the requested route by label" do
+      expect(access_token.route_for('two')).to eq(route_two)
+    end
+    
+    it "provides first route by default" do
+      expect(access_token.route_for()).to eq(route_one)
+    end
 
-    it { should eq(route) }
+    it "provides first route when nil is specified" do
+      expect(access_token.route_for(nil)).to eq(route_one)
+    end
   end
   
   describe 'match?(request)' do

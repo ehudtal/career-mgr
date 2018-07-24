@@ -22,7 +22,8 @@ class AccessToken < ApplicationRecord
     end
   end
   
-  def route_for label
+  def route_for label=nil
+    return routes.first if label.nil?
     routes.detect{|route| route['label'] == label}
   end
   
