@@ -173,4 +173,19 @@ RSpec.describe AccessToken, type: :model do
       expect(subject.match?(request)).to be(false)
     end
   end
+  
+  describe 'path_with_token(label)' do
+    let(:access_token) { AccessToken.create code: code, routes: [route_one, route_two] }
+    let(:code) { '0000000000000000' }
+    let(:route_one) { {'label' => 'one', 'method' => 'GET', 'path' => '/test/one'} }
+    let(:route_two) { {'label' => 'two', 'method' => 'POST', 'path' => '/test/two'} }
+    
+    it "returns the path WITH token param" do
+      expect(access_token.path_with_token('two')).to eq("/test/two?token=#{code}")
+    end
+    
+    it "returns the default path with token param" do
+      expect(access_token.path_with_token).to eq("/test/one?token=#{code}")
+    end
+  end
 end

@@ -35,6 +35,17 @@ class AccessToken < ApplicationRecord
     end
   end
   
+  def path_with_token label=nil
+    route = route_for(label)
+    
+    uri = URI.parse(route['path'])
+    
+    new_query = URI.decode_www_form(uri.query || '') << ['token', code]
+    uri.query = URI.encode_www_form(new_query)
+    
+    uri.to_s
+  end
+
   private
 
   def generate_token

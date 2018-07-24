@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'
+  get 'token/:id', to: 'token#show', as: 'token'
   
   namespace :fellow do
     get 'home/welcome'
