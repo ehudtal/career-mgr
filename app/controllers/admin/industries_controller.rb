@@ -1,6 +1,6 @@
 class Admin::IndustriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_admin!, except: [:list]
+  before_action :ensure_admin!, except: [:list, :combined]
   before_action :set_industry, only: [:show, :edit, :update, :destroy]
 
   # GET /industries
@@ -11,6 +11,11 @@ class Admin::IndustriesController < ApplicationController
   
   def list
     @industries = Industry.order('name asc').all
+    render layout: false
+  end
+  
+  def combined
+    @names = (Industry.pluck(:name) | Interest.pluck(:name)).sort
     render layout: false
   end
 
