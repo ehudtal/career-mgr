@@ -133,12 +133,13 @@ $(document).on "turbolinks:load",  ->
 
   reset_datepicker = () ->
     $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
-
-  $('a.remove').click (event) ->
-    event.preventDefault()
     
-    $(this).closest('.removeable_fields').find('.remove_hidden').attr('value', '1')
-    $(this).closest('.removeable_fields').hide()
+  reset_removeable = () ->
+    $('a.remove').click (event) ->
+      event.preventDefault()
+    
+      $(this).closest('.removeable_fields').find('.remove_hidden').attr('value', '1')
+      $(this).closest('.removeable_fields').remove()
 
   $('a.new_task').click (event) ->
     event.preventDefault()
@@ -153,5 +154,7 @@ $(document).on "turbolinks:load",  ->
     $('.location_forms').append(new_location_fields())
     
     reset_datepicker()
+    reset_removeable()
 
   reset_datepicker()
+  reset_removeable()

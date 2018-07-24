@@ -29,6 +29,63 @@
   <%= render 'admin/locations/check_boxes', parent: opportunity.employer, object: opportunity %>
   
   <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
+    <%= form.fields_for :locations do |location_form| %>
+      <% next unless location_form.object.new_record? %>
+      
+      <li class="location_fields removeable_fields">
+        <%= location_form.hidden_field :locateable_id, opportunity.employer.id %>
+        <%= location_form.hidden_field :locateable_type, 'Employer' %>
+        
+        <div class="field">
+          <%= location_form.label :name %>
+          <%= location_form.text_field :name %>
+          <%= location_form.hidden_field :_destroy, class: 'remove_hidden' %>
+          <%= link_to 'remove', '#', class: 'remove' %>
+        </div>
+
+        <%= location_form.fields_for :contact do |contact_form| %>
+          <div class="field">
+            <%= contact_form.label :address_1 %>
+            <%= contact_form.text_field :address_1 %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :address_2 %>
+            <%= contact_form.text_field :address_2 %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :city %>
+            <%= contact_form.text_field :city %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :state %>
+            <%= contact_form.select :state, Contact::STATES %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :postal_code %>
+            <%= contact_form.text_field :postal_code %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :phone %>
+            <%= contact_form.text_field :phone %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :email %>
+            <%= contact_form.text_field :email %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :url %>
+            <%= contact_form.text_field :url %>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
   </ul>
 
   <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
