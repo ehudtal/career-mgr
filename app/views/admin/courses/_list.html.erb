@@ -1,0 +1,24 @@
+<% if courses.empty? %>
+  <p class="empty-list">There are no courses for this site yet.</p>
+<% else %>
+  <table>
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Course</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% courses.order('year, semester desc').each do |course| %>
+        <tr>
+          <td><%= course.site.name %>
+          <td><%= link_to course.label, admin_course_path(course), class: 'show' %></td>
+          <td><%= link_to 'Edit', edit_admin_course_path(course), class: 'edit' %></td>
+          <td><%= link_to 'Delete', admin_course_path(course), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

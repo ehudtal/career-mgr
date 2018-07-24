@@ -1,0 +1,33 @@
+<h1>Fellow Opportunities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Secured on</th>
+      <th>Staff notes</th>
+      <th>Fellow</th>
+      <th>Opportunity</th>
+      <th>Opportunity stage</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fellow_opportunities.each do |fellow_opportunity| %>
+      <tr>
+        <td><%= fellow_opportunity.secured_on %></td>
+        <td><%= fellow_opportunity.staff_notes %></td>
+        <td><%= fellow_opportunity.fellow_id %></td>
+        <td><%= fellow_opportunity.opportunity_id %></td>
+        <td><%= fellow_opportunity.opportunity_stage_id %></td>
+        <td><%= link_to 'Show', admin_fellow_opportunity_path(fellow_opportunity) %></td>
+        <td><%= link_to 'Edit', edit_admin_fellow_opportunity_path(fellow_opportunity) %></td>
+        <td><%= link_to 'Destroy', admin_fellow_opportunity_path(fellow_opportunity), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Fellow Opportunity', new_admin_fellow_opportunity_path %>

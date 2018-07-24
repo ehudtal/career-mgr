@@ -1,0 +1,92 @@
+<%= form_with(model: [:admin, employer, opportunity], local: true) do |form| %>
+  <% if opportunity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(opportunity.errors.count, "error") %> prohibited this opportunity from being saved:</h2>
+
+      <ul>
+      <% opportunity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, 'Opportunity Name or Job Title' %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_posting_url %>
+    <%= form.text_field :job_posting_url %>
+  </div>
+  
+  <%= render 'admin/locations/check_boxes', parent: opportunity.employer, object: opportunity %>
+  
+  <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
+  </ul>
+
+  <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
+  
+  <h3>Industries</h3>
+  
+  <%= link_to 'full industries list', list_admin_industries_path, target: '_blank' %>
+
+  <div id="industry-tags" class="jquery-tags">
+    <%= form.text_area :industry_tags %>
+  </div>
+
+  <h3>Interests</h3>
+
+  <%= link_to 'full interests list', list_admin_interests_path, target: '_blank' %>
+  
+  <div id="interest-tags" class="jquery-tags">
+    <%= form.text_area :interest_tags %>
+  </div>
+  
+  <h3>Metro Areas</h3>
+
+  <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank' %>
+  
+  <div id="metro-tags" class="jquery-tags">
+    <%= form.text_area :metro_tags %>
+  </div>
+  
+  <!-- 
+    Caution! If you edit the task sub-form below, you NEED to update
+    the corresponding new_task_fields method in opportunities.coffee file.
+    
+    Otherwise, dynamically added tasks in the form won't reflect the changes.
+  -->
+  <h3>Deadlines:</h3>
+  
+  <ul class="task_forms">
+    <%= form.fields_for :tasks do |tasks_form| %>
+      <li class="task_fields removeable_fields">
+        <div class="field">
+          <%= tasks_form.label :name %>
+          <%= tasks_form.text_field :name %>
+        </div>
+        
+        <div class="field">
+          <%= tasks_form.label :due_at %>
+          <%= tasks_form.text_field :due_at, class: "datetime" %><br>
+
+          <%= tasks_form.hidden_field :_destroy, class: "remove_hidden" %>
+          <%= link_to 'remove', '#', class: 'remove' %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  
+  <p><%= link_to '+add another task', '#', class: 'new_task' %></p>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

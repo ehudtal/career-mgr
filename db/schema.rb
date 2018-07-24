@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_10_221727) do
+ActiveRecord::Schema.define(version: 2018_07_20_225032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,8 +162,10 @@ ActiveRecord::Schema.define(version: 2018_07_10_221727) do
     t.integer "employment_status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["employment_status_id"], name: "index_fellows_on_employment_status_id"
     t.index ["key"], name: "index_fellows_on_key", unique: true
+    t.index ["user_id"], name: "index_fellows_on_user_id"
   end
 
   create_table "fellows_industries", id: false, force: :cascade do |t|
@@ -326,8 +328,12 @@ ActiveRecord::Schema.define(version: 2018_07_10_221727) do
     t.boolean "is_administrator"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_admin", default: false
+    t.boolean "is_fellow", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["is_admin"], name: "index_users_on_is_admin"
+    t.index ["is_fellow"], name: "index_users_on_is_fellow"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

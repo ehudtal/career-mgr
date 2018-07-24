@@ -1,5 +1,6 @@
 require 'digest/md5'
 require 'csv'
+require 'fellow_user_matcher'
 
 class Fellow < ApplicationRecord
   has_one :contact, as: :contactable, dependent: :destroy
@@ -13,6 +14,7 @@ class Fellow < ApplicationRecord
   has_and_belongs_to_many :metros, dependent: :destroy
   
   belongs_to :employment_status
+  belongs_to :user, optional: true
   
   validates :first_name, :last_name, :employment_status_id, presence: true
   
@@ -24,6 +26,7 @@ class Fellow < ApplicationRecord
   validates :efficacy_score, numericality: {greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0, allow_nil: true}
   
   before_create :generate_key
+  after_save :attempt_fellow_match, if: :missing_user?
   
   class << self
     def import contents
@@ -159,5 +162,14 @@ class Fellow < ApplicationRecord
     
     hash = Digest::MD5.hexdigest([first_name, last_name, graduation_year, unique_count].join('-'))[0,4]
     self.key = [first_name[0].upcase, last_name[0].upcase, ((graduation_year || 0) % 100), hash].join('').upcase
+  end
+  
+  def missing_user?
+    user_id.nil?
+  end
+  
+  def attempt_fellow_match
+    return if contact.nil?
+    FellowUserMatcher.match(contact.email)
   end
 end

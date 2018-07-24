@@ -7,7 +7,7 @@ FactoryBot.define do
     postal_code "12345"
     phone "555-555-5555"
     email "contact@example.com"
-    url "example.com"
+    url "http://example.com"
     
     association :contactable, factory: :fellow
   end

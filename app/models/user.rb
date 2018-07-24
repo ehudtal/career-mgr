@@ -1,41 +1,44 @@
-# Monkey-patch the CAS gem so we can use it without losing the database
-# features we use for SSO - we still manage the users here, including
-# their passwords in this database, but we want to use the CAS server
-# for typical user login so it is seamless with Canvas.
-#
-# As a result, we do want database_authenticatable, and it is nice to keep
-# its routes as a fallback. We just ALSO want cas_authenticatable and would
-# prefer to use its routes in the views when we can.
-#
-# Without this, database_authenticatable and cas_authenticatable are incompatible
-# because they both try to define user_sign_in_path, etc.
+require 'fellow_user_matcher'
 
-ActionDispatch::Routing::Mapper.class_eval do
-  # This code is copy/pasted from the devise_cas_authenticatable gem's source code,
-  # then modified to fit our interoperability requirements and rubocop's whining.
-
-  # The main change is the path names are suffixed with '_sso' now.
-
-  protected
-
-  def devise_cas_authenticatable(mapping, controllers)
-    sign_out_via = (Devise.respond_to?(:sign_out_via) && Devise.sign_out_via) || [:get, :post]
-
-    # service endpoint for CAS server
-    get 'service', :to => "#{controllers[:cas_sessions]}#service", :as => 'service'
-    post 'service', :to => "#{controllers[:cas_sessions]}#single_sign_out", :as => 'single_sign_out'
-
-    resource :session, :only => [], :controller => controllers[:cas_sessions], :path => '' do
-      get :new, :path => mapping.path_names[:sign_in_sso], :as => 'new_sso'
-      get :unregistered
-      post :create, :path => mapping.path_names[:sign_in_sso]
-      match :destroy, :path => mapping.path_names[:sign_out_sso], :as => 'destroy_sso', :via => sign_out_via
+class User < ApplicationRecord
+  ADMIN_DOMAIN_WHITELIST = ['bebraven.org']
+  
+  devise :database_authenticatable, :cas_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+         
+  has_one :fellow
+  
+  before_create :attempt_admin_set, unless: :is_admin?
+  after_save :attempt_fellow_match, if: :missing_fellow?
+  
+  def role
+    if is_admin?
+      :admin
+    elsif is_fellow?
+      :fellow
+    else
+      nil
     end
   end
-end
+  
+  private
 
-# With that fixed, we can now define the regular User class.
-class User < ApplicationRecord
-  devise :database_authenticatable, :cas_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  def attempt_admin_set
+    return if email.nil?
+    
+    domain = email.split('@').last
+    self.is_admin = ADMIN_DOMAIN_WHITELIST.include?(domain)
+  end
+  
+  def attempt_fellow_match
+    FellowUserMatcher.match(email)
+  end
+
+  def missing_fellow?
+    fellow.nil?
+  end
+  
+  def password_required?
+    false
+  end
 end

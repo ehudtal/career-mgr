@@ -1,8 +1,12 @@
 class HomeController < ApplicationController
-  def welcome
-  end
+  before_action :authenticate_user!
   
-  def new_opportunity
-    @employers = Employer.all
+  def welcome
+    case current_user.role
+    when :admin
+      redirect_to admin_home_welcome_path
+    when :fellow
+      redirect_to fellow_home_welcome_path
+    end
   end
 end

@@ -28,7 +28,7 @@ Devise.setup do |config|
   
   # ==> CAS configuration
   config.cas_base_url = Rails.application.secrets.sso_url
-  config.cas_create_user = false
+  config.cas_create_user = true
   config.cas_enable_single_sign_out = true
 
   config.cas_username_column = 'email'

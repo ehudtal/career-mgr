@@ -1,0 +1,42 @@
+<%= form_with(model: [:admin, fellow_opportunity], local: true) do |form| %>
+  <% if fellow_opportunity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(fellow_opportunity.errors.count, "error") %> prohibited this fellow_opportunity from being saved:</h2>
+
+      <ul>
+      <% fellow_opportunity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :secured_on %>
+    <%= form.date_select :secured_on %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff_notes %>
+    <%= form.text_area :staff_notes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fellow_id %>
+    <%= form.number_field :fellow_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :opportunity_id %>
+    <%= form.number_field :opportunity_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :opportunity_stage_id %>
+    <%= form.number_field :opportunity_stage_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

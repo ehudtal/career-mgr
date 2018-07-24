@@ -1,0 +1,14 @@
+<p>
+  <strong>Name:</strong>
+  <%= @opportunity_stage.name %>
+</p>
+
+<p>
+  <strong>Probability:</strong>
+  <%= @opportunity_stage.probability %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_opportunity_stage_path(@opportunity_stage), class: 'edit' %> |
+  <%= link_to 'Back', admin_opportunity_stages_path, class: 'back' %>
+</footer>

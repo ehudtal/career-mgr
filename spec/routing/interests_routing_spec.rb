@@ -1,38 +1,42 @@
 require "rails_helper"
 
-RSpec.describe InterestsController, type: :routing do
+RSpec.describe Admin::InterestsController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/interests").to route_to("interests#index")
+      expect(:get => "/admin/interests").to route_to("admin/interests#index")
+    end
+
+    it "routes to #list" do
+      expect(:get => "/admin/interests/list").to route_to("admin/interests#list")
     end
 
     it "routes to #new" do
-      expect(:get => "/interests/new").to route_to("interests#new")
+      expect(:get => "/admin/interests/new").to route_to("admin/interests#new")
     end
 
     it "routes to #show" do
-      expect(:get => "/interests/1").to route_to("interests#show", :id => "1")
+      expect(:get => "/admin/interests/1").to route_to("admin/interests#show", :id => "1")
     end
 
     it "routes to #edit" do
-      expect(:get => "/interests/1/edit").to route_to("interests#edit", :id => "1")
+      expect(:get => "/admin/interests/1/edit").to route_to("admin/interests#edit", :id => "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/interests").to route_to("interests#create")
+      expect(:post => "/admin/interests").to route_to("admin/interests#create")
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/interests/1").to route_to("interests#update", :id => "1")
+      expect(:put => "/admin/interests/1").to route_to("admin/interests#update", :id => "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/interests/1").to route_to("interests#update", :id => "1")
+      expect(:patch => "/admin/interests/1").to route_to("admin/interests#update", :id => "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/interests/1").to route_to("interests#destroy", :id => "1")
+      expect(:delete => "/admin/interests/1").to route_to("admin/interests#destroy", :id => "1")
     end
 
   end

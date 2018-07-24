@@ -1,0 +1,6 @@
+<h1>Editing Opportunity</h1>
+
+<%= render 'form', employer: @employer, opportunity: @opportunity %>
+
+<%= link_to 'Show', admin_opportunity_path(@opportunity) %> |
+<%= link_to 'Back', admin_employer_opportunities_path(@opportunity.employer) %>

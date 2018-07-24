@@ -44,4 +44,8 @@ en:
         gpa:
           one: "GPA"
           other: "GPAs"
+      site:
+        code:
+          one: 'Abbreviation'
+          other: 'Abbreviations'
         

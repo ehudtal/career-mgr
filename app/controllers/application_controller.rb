@@ -14,9 +14,17 @@ class ApplicationController < ActionController::Base
     
     case requested_redirect
     when 'new_opportunity'
-      new_employer_opportunity_path(@employer)
+      new_admin_employer_opportunity_path(@employer)
     else
       nil
     end
+  end
+  
+  def ensure_admin!
+    redirect_to(root_path) unless current_user.is_admin?
+  end
+  
+  def ensure_fellow!
+    redirect_to(root_path) unless current_user.is_fellow?
   end
 end

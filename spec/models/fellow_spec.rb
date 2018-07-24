@@ -2,7 +2,8 @@ require'digest/md5'
 require 'rails_helper'
 
 RSpec.describe Fellow, type: :model do
-  let(:fellow) { create :fellow }
+  let(:email) { 'email@example.com' }
+  let(:fellow) { create :fellow, contact_attributes: {email: email} }
   let(:unemployed_status) { create :employment_status_unemployed }
   
   def create_site label
@@ -39,6 +40,7 @@ RSpec.describe Fellow, type: :model do
   it { should have_and_belong_to_many :metros }
   
   it { should belong_to :employment_status }
+  it { should belong_to :user }
   
   #############
   # Validations
@@ -71,6 +73,36 @@ RSpec.describe Fellow, type: :model do
   it { should validate_numericality_of(:efficacy_score).is_greater_than_or_equal_to(0.0) }
   it { should validate_numericality_of(:efficacy_score).is_less_than_or_equal_to(1.0) }
   it { should validate_numericality_of(:efficacy_score).allow_nil }
+  
+  ###########
+  # Callbacks
+  ###########
+
+  describe 'fellow/user matching attempt' do
+    it "executes upon create" do
+      new_fellow = build :fellow, contact_attributes: {email: email}
+      
+      expect(FellowUserMatcher).to receive(:match).with(email).once
+
+      new_fellow.save
+    end
+
+    it "executes upon save, if no user already associated" do
+      fellow
+      expect(FellowUserMatcher).to receive(:match).with(email).once
+
+      fellow.save
+    end
+
+    it 'does not execute when user is already associated' do
+      user = create :user
+      fellow = create :fellow, user_id: user.id, contact_attributes: {email: email}
+
+      expect(FellowUserMatcher).to receive(:match).with(email).never
+
+      fellow.save
+    end
+  end
   
   ###############
   # Normalization
@@ -113,55 +145,45 @@ RSpec.describe Fellow, type: :model do
     describe 'when elements don\'t yet exist' do
       before { import :paf_master_roster }
 
-      describe "creating the cohort" do
-        let(:cohort) { Cohort.last }
-        
-        it { expect(cohort.name).to eq("San Jose State University, Spring 2016") }
-        it { expect(cohort.course).to eq(Course.last) }
-      end
-    
-      describe "creating the course" do
-        let(:course) { Course.last }
-      
-        it { expect(course.semester).to eq('Spring') }
-        it { expect(course.year).to eq(2016) }
-      end
-    
       describe "creating the fellow" do
+        let(:cohort) { Cohort.last }
+        let(:course) { Course.last }
         let(:fellow) { Fellow.last }
-      
-        it { expect(fellow.first_name).to eq('Antoinette') }
-        it { expect(fellow.last_name).to eq('Martin') }
-        it { expect(fellow.graduation_year).to eq(2019) }
-        it { expect(fellow.graduation_semester).to eq('Spring') }
-        it { expect(fellow.graduation_fiscal_year).to eq(2019) }
-        it { expect(fellow.interests_description).to eq('Project Manager') }
-        it { expect(fellow.major).to eq('Undeclared') }
-        it { expect(fellow.affiliations).to eq('***Did not list***') }
-        it { expect(fellow.gpa).to be_within(0.01).of(2.95) }
-        it { expect(fellow.linkedin_url).to eq('https://www.linkedin.com/in/antoinette-marie-martin-bb993a108') }
-        it { expect(fellow.staff_notes).to eq('Shows promise') }
-        it { expect(fellow.metros).to include(metro_sjsu) }
-      end
-      
-      describe "creating the fellow contact" do
-        let(:contact) { Fellow.last.contact }
-        
-        it { expect(contact.email).to eq('antoinette.martin@sjsu.edu') }
-        it { expect(contact.phone).to eq('8315399699') }
-        it { expect(contact.postal_code).to eq(site_sjsu.location.contact.postal_code) }
-      end
-    
-      describe "creating the cohort-fellow relationship" do
+        let(:contact) { fellow.contact }
         let(:cohort_fellow) { CohortFellow.last }
+      
+        it "sets everything correctly" do
+          expect(cohort.name).to eq("San Jose State University, Spring 2016")
+          expect(cohort.course).to eq(Course.last)
+          
+          expect(course.semester).to eq('Spring')
+          expect(course.year).to eq(2016)
 
-        it { expect(cohort_fellow.grade).to be_within(0.01).of(0.83) }
-        it { expect(cohort_fellow.attendance).to be_within(0.01).of(0.82) }
-        it { expect(cohort_fellow.nps_response).to eq(10) }
-        it { expect(cohort_fellow.feedback).to eq("needs improvement") }
-        it { expect(cohort_fellow.endorsement).to eq(4) }
-        it { expect(cohort_fellow.professionalism).to eq(4) }
-        it { expect(cohort_fellow.teamwork).to eq(3) }
+          expect(fellow.first_name).to eq('Antoinette')
+          expect(fellow.last_name).to eq('Martin')
+          expect(fellow.graduation_year).to eq(2019)
+          expect(fellow.graduation_semester).to eq('Spring')
+          expect(fellow.graduation_fiscal_year).to eq(2019)
+          expect(fellow.interests_description).to eq('Project Manager')
+          expect(fellow.major).to eq('Undeclared')
+          expect(fellow.affiliations).to eq('***Did not list***')
+          expect(fellow.gpa).to be_within(0.01).of(2.95)
+          expect(fellow.linkedin_url).to eq('https://www.linkedin.com/in/antoinette-marie-martin-bb993a108')
+          expect(fellow.staff_notes).to eq('Shows promise')
+          expect(fellow.metros).to include(metro_sjsu)
+
+          expect(contact.email).to eq('antoinette.martin@sjsu.edu')
+          expect(contact.phone).to eq('8315399699')
+          expect(contact.postal_code).to eq(site_sjsu.location.contact.postal_code)
+
+          expect(cohort_fellow.grade).to be_within(0.01).of(0.83)
+          expect(cohort_fellow.attendance).to be_within(0.01).of(0.82)
+          expect(cohort_fellow.nps_response).to eq(10)
+          expect(cohort_fellow.feedback).to eq("needs improvement")
+          expect(cohort_fellow.endorsement).to eq(4)
+          expect(cohort_fellow.professionalism).to eq(4)
+          expect(cohort_fellow.teamwork).to eq(3)
+        end
       end
     end
     
@@ -173,35 +195,31 @@ RSpec.describe Fellow, type: :model do
     
       describe "updating the fellow" do
         let(:fellow) { Fellow.last }
-      
-        it { expect(fellow.graduation_year).to eq(2020) }
-        it { expect(fellow.graduation_semester).to eq('Fall') }
-        it { expect(fellow.graduation_fiscal_year).to eq(2020) }
-        it { expect(fellow.interests_description).to eq('Product Manager') }
-        it { expect(fellow.major).to eq('Computer Science') }
-        it { expect(fellow.affiliations).to eq('Professional Amateurs') }
-        it { expect(fellow.gpa).to be_within(0.01).of(3.85) }
-        it { expect(fellow.linkedin_url).to eq('https://www.linkedin.com/in/tester') }
-        it { expect(fellow.staff_notes).to eq('Shows promises') }
-      end
-      
-      describe 'updating the fellow contact' do
-        let(:contact) { Fellow.last.contact }
-      
-        it { expect(contact.email).to eq('antoinette.martin2@sjsu.edu') }
-        it { expect(contact.phone).to eq('8315399690') }
-      end
-    
-      describe "updating the cohort-fellow relationship" do
+        let(:contact) { fellow.contact }
         let(:cohort_fellow) { CohortFellow.last }
 
-        it { expect(cohort_fellow.grade).to be_within(0.01).of(0.73) }
-        it { expect(cohort_fellow.attendance).to be_within(0.01).of(0.72) }
-        it { expect(cohort_fellow.nps_response).to eq(8) }
-        it { expect(cohort_fellow.feedback).to eq("needs improvements") }
-        it { expect(cohort_fellow.endorsement).to eq(3) }
-        it { expect(cohort_fellow.professionalism).to eq(3) }
-        it { expect(cohort_fellow.teamwork).to eq(2) }
+        it "updates the fellow attributes" do
+          expect(fellow.graduation_year).to eq(2020)
+          expect(fellow.graduation_semester).to eq('Fall')
+          expect(fellow.graduation_fiscal_year).to eq(2020)
+          expect(fellow.interests_description).to eq('Product Manager')
+          expect(fellow.major).to eq('Computer Science')
+          expect(fellow.affiliations).to eq('Professional Amateurs')
+          expect(fellow.gpa).to be_within(0.01).of(3.85)
+          expect(fellow.linkedin_url).to eq('https://www.linkedin.com/in/tester')
+          expect(fellow.staff_notes).to eq('Shows promises')
+
+          expect(contact.email).to eq('antoinette.martin2@sjsu.edu')
+          expect(contact.phone).to eq('8315399690')
+
+          expect(cohort_fellow.grade).to be_within(0.01).of(0.73)
+          expect(cohort_fellow.attendance).to be_within(0.01).of(0.72)
+          expect(cohort_fellow.nps_response).to eq(8)
+          expect(cohort_fellow.feedback).to eq("needs improvements")
+          expect(cohort_fellow.endorsement).to eq(3)
+          expect(cohort_fellow.professionalism).to eq(3)
+          expect(cohort_fellow.teamwork).to eq(2)
+        end
       end
     end
   end

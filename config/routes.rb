@@ -1,39 +1,61 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
+
   get 'home/welcome'
-  get 'home/new_opportunity', as: 'new_opportunity'
   
-  resources :employers, shallow: true do
-    resources :locations
-    resources :opportunities do
-      resources :tasks
-      resources :candidates, only: [:index, :create, :update, :destroy]
-    end
+  namespace :fellow do
+    get 'home/welcome'
   end
+
+  namespace :admin do
+    get 'home/welcome'
+    get 'home/new_opportunity', as: 'new_opportunity'
+
+    resources :employers, shallow: true do
+      resources :locations
+      resources :opportunities do
+        resources :candidates, only: [:index, :create, :update, :destroy]
+      end
+    end
   
-  resources :opportunities, only: [:index]
+    resources :opportunities, only: [:index]
 
-  resources :sites, shallow: true do
-    resources :courses, except: [:index]
-  end
-
-  resources :fellows do
-    collection do
-      get :upload
-      post :upload
+    resources :sites, shallow: true do
+      resources :courses, except: [:index]
     end
-  end
 
-  resources :fellow_opportunities
-  resources :opportunity_stages
-  resources :employment_statuses
-  resources :coaches
-  resources :interests
-  resources :industries
-  resources :metros, only: [:index], constraints: lambda { |req| req.format == :json }
-  resources :cohort_fellows
-  resources :cohorts
-  resources :contacts
+    resources :fellows do
+      collection do
+        get :upload
+        post :upload
+      end
+    end
+
+    resources :fellow_opportunities
+    resources :opportunity_stages
+    resources :employment_statuses
+    resources :coaches
+
+    resources :interests do
+      collection do
+        get :list
+      end
+    end
+
+    resources :industries do
+      collection do
+        get :list
+      end
+    end
+
+    resources :metros, only: [:index] do
+      collection do
+        get :list
+      end
+    end
+    resources :cohort_fellows
+    resources :cohorts
+  end
   
   root to: "home#welcome"
   

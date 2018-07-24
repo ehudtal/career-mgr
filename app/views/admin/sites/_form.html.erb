@@ -1,0 +1,78 @@
+<%= form_with(model: [:admin, site], local: true) do |form| %>
+  <% if site.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(site.errors.count, "error") %> prohibited this site from being saved:</h2>
+
+      <ul>
+      <% site.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+    
+  <div class="field">
+    <%= form.label :code %>
+    <%= form.text_field :code %>
+  </div>
+  
+  <h3>Location</h3>
+  
+  <%= form.fields_for :location do |lf| %>
+    <div class="field">
+      <%= lf.label :name %>
+      <%= lf.text_field :name %>
+    </div>
+  
+    <%= lf.fields_for :contact do |contact_form| %>
+      <div class="field">
+        <%= contact_form.label :address_1 %>
+        <%= contact_form.text_field :address_1 %>
+      </div>
+
+      <div class="field">
+        <%= contact_form.label :address_2 %>
+        <%= contact_form.text_field :address_2 %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :city %>
+        <%= contact_form.text_field :city %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :state %>
+        <%= contact_form.select :state, Contact::STATES %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :postal_code %>
+        <%= contact_form.text_field :postal_code %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :phone %>
+        <%= contact_form.text_field :phone %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :email %>
+        <%= contact_form.text_field :email %>
+      </div>
+    
+      <div class="field">
+        <%= contact_form.label :url %>
+        <%= contact_form.text_field :url %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
