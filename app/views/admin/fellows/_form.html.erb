@@ -80,21 +80,18 @@
 
   <%= render 'admin/contacts/nested_form', form: form %>
   
-  
-  <h3>Industries</h3>
+  <h3>Industries/Interests</h3>
 
-  <div id="industry-tags" class="jquery-tags">
-    <%= form.text_area :industry_tags %>
-  </div>
+  <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank' %>
 
-  <h3>Interests</h3>
-  
-  <div id="interest-tags" class="jquery-tags">
-    <%= form.text_area :interest_tags %>
+  <div id="industry-interest-tags" class="jquery-tags">
+    <%= form.text_area :industry_interest_tags %>
   </div>
   
   <h3>Metro Areas</h3>
   
+  <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank' %>
+
   <div id="metro-tags" class="jquery-tags">
     <%= form.text_area :metro_tags %>
   </div>

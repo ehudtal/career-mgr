@@ -14,7 +14,8 @@ module FeatureHelper
   end
 
   def remove_tag model, attribute, label
-    find("##{attribute}-tags span.tag span", text: label).sibling('a').click
+    attribute_label = attribute.to_s.gsub('_', '-')
+    find("##{attribute_label}-tags span.tag span", text: label).sibling('a').click
   end
 
   def add_tag model, attribute, label
@@ -25,7 +26,8 @@ module FeatureHelper
   end
   
   def expect_tag model, attribute, label
-    expect(page).to have_css("##{attribute}-tags span.tag span", text: label)
+    attribute_label = attribute.to_s.gsub('_', '-')
+    expect(page).to have_css("##{attribute_label}-tags span.tag span", text: label)
   end
 
   def visit_page label

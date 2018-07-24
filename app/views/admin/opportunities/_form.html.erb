@@ -33,20 +33,12 @@
 
   <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
   
-  <h3>Industries</h3>
+  <h3>Industries/Interests</h3>
+
+  <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank' %>
   
-  <%= link_to 'full industries list', list_admin_industries_path, target: '_blank' %>
-
-  <div id="industry-tags" class="jquery-tags">
-    <%= form.text_area :industry_tags %>
-  </div>
-
-  <h3>Interests</h3>
-
-  <%= link_to 'full interests list', list_admin_interests_path, target: '_blank' %>
-  
-  <div id="interest-tags" class="jquery-tags">
-    <%= form.text_area :interest_tags %>
+  <div id="industry-interest-tags" class="jquery-tags">
+    <%= form.text_area :industry_interest_tags %>
   </div>
   
   <h3>Metro Areas</h3>

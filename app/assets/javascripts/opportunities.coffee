@@ -53,7 +53,7 @@ $(document).on "turbolinks:load",  ->
           $("##{name}-tags").show()
           
   enableIndustryInterestTags = () ->
-    element = $('#opportunity_industry_interest_tags') 
+    element = $('#industry-interest-tags textarea') 
     
     if element.length
       $.get '/admin/industries.json', (industries) ->

@@ -55,12 +55,11 @@ RSpec.feature "OpportunityViews", type: :feature do
     fill_in 'Email', with: contact_attributes[:email]
     fill_in 'Url', with: contact_attributes[:url]
     
-    expect_list_link_for :industries
-    expect_list_link_for :interests
+    expect_list_link_for 'industries/interests'
     expect_list_link_for :metro_areas
 
-    add_tag :opportunity, :industry, industry_included.name
-    add_tag :opportunity, :interest, interest_included.name
+    add_tag :opportunity, :industry_interest, industry_included.name
+    add_tag :opportunity, :industry_interest, interest_included.name
     add_tag :opportunity, :metro, metro_included.name
 
     click_on 'Create Opportunity'
@@ -120,15 +119,14 @@ RSpec.feature "OpportunityViews", type: :feature do
     updated_desc = opportunity.description + 'x'
     fill_in 'Description', with: updated_desc
     
-    expect_list_link_for :industries
-    expect_list_link_for :interests
+    expect_list_link_for 'industries/interests'
     expect_list_link_for :metro_areas
 
-    remove_tag :opportunity, :industry, industry_included.name
-    add_tag    :opportunity, :industry, industry_excluded.name
+    remove_tag :opportunity, :industry_interest, industry_included.name
+    add_tag    :opportunity, :industry_interest, industry_excluded.name
 
-    remove_tag :opportunity, :interest, interest_included.name
-    add_tag    :opportunity, :interest, interest_excluded.name
+    remove_tag :opportunity, :industry_interest, interest_included.name
+    add_tag    :opportunity, :industry_interest, interest_excluded.name
 
     remove_tag :opportunity, :metro, metro_included.name
     add_tag    :opportunity, :metro, metro_excluded.name

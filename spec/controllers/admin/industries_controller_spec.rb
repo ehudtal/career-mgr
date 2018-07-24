@@ -55,6 +55,13 @@ RSpec.describe Admin::IndustriesController, type: :controller do
         expect(response).to be_successful
       end
     end
+
+    describe 'GET #combined' do
+      it "returns successfully" do
+        get :combined, params: {}, session: valid_session
+        expect(response).to be_successful
+      end
+    end
     
     it "redirects GET #show to home" do
       get :show, params: {id: '1001'}, session: valid_session
@@ -98,6 +105,13 @@ RSpec.describe Admin::IndustriesController, type: :controller do
   describe 'GET #list' do
     it "returns successfully" do
       get :list, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+
+  describe 'GET #combined' do
+    it "returns successfully" do
+      get :combined, params: {}, session: valid_session
       expect(response).to be_successful
     end
   end

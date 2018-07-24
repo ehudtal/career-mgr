@@ -38,5 +38,9 @@ RSpec.describe Admin::IndustriesController, type: :routing do
     it "routes to #list" do
       expect(:get => '/admin/industries/list').to route_to("admin/industries#list")
     end
+
+    it "routes to #combined" do
+      expect(:get => '/admin/industries/combined').to route_to("admin/industries#combined")
+    end
   end
 end
