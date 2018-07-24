@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CandidatesController, type: :controller do
-  let(:opportunity_stage) { create :opportunity_stage, name: 'Interested' }
+  let(:opportunity_stage) { create :opportunity_stage, name: 'interested' }
   
   let(:access_token) { create :access_token, code: code, routes: route_list }
   let(:code) { 'aaaabbbbccccdddd' }
@@ -48,7 +48,7 @@ RSpec.describe CandidatesController, type: :controller do
     
     it "updates the fellow_opportunity stage" do
       get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested', token: access_token.code}
-      expect(fellow_opportunity.reload.stage).to eq('Interested')
+      expect(fellow_opportunity.reload.stage).to eq('interested')
     end
   end
 end

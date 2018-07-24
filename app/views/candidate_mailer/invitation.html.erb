@@ -9,9 +9,5 @@
 
 <p>Please let us know if you're interested in this opportunity:</p>
 
-<table style="width: 100%">
-  <tr>
-    <td style="width: 50%"><%= link_to_access_token(@token, 'Interested') %></td>
-    <td style="width: 50%"><%= link_to_access_token(@token, 'Not Interested') %></td>
-  </tr>
-</table>
+<%= link_to_access_token(@token, 'Interested', class: 'button') %>
+<%= link_to_access_token(@token, 'Not Interested', class: 'button') %>
