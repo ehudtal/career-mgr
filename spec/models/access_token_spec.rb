@@ -135,4 +135,32 @@ RSpec.describe AccessToken, type: :model do
 
     it { should eq(route) }
   end
+  
+  describe 'match?(request)' do
+    let(:code) { 'aaaabbbbccccdddd' }
+    let(:route_first) { {'label' => 'first', 'method' => 'GET', 'path' => 'http://localhost:3011/first'} }
+    let(:route_second) { {'label' => 'second', 'method' => 'POST', 'path' => 'http://localhost:3011/second'} }
+    
+    subject { build :access_token, code: code, routes: [route_first, route_second] }
+    
+    it "returns true if any route matches method AND path, minus token parameter" do
+      request = double('request', original_url: "http://localhost:3011/second?token=#{code}", request_method: 'POST')
+      expect(subject.match?(request)).to be(true)
+    end
+    
+    it "returns false if the token doesn't match" do
+      request = double('request', original_url: "http://localhost:3011/second?token=#{code}x", request_method: 'POST')
+      expect(subject.match?(request)).to be(false)
+    end
+    
+    it "returns false if request method doesn't match" do
+      request = double('request', original_url: "http://localhost:3011/second?token=#{code}", request_method: 'GET')
+      expect(subject.match?(request)).to be(false)
+    end
+    
+    it "returns false if original url (minus token) doesn't match" do
+      request = double('request', original_url: "http://localhoster:3011/second?token=#{code}", request_method: 'POST')
+      expect(subject.match?(request)).to be(false)
+    end
+  end
 end

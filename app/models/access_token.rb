@@ -1,4 +1,6 @@
 require 'digest/md5'
+require 'uri'
+require 'cgi'
 
 class AccessToken < ApplicationRecord
   serialize :routes, JSON
@@ -22,6 +24,14 @@ class AccessToken < ApplicationRecord
   
   def route_for label
     routes.detect{|route| route['label'] == label}
+  end
+  
+  def match? request
+    routes.any? do |route|
+      route['method'].to_s.downcase == request.request_method.downcase &&
+      route['path'] == url_without_token(request.original_url) &&
+      code == token_for(request.original_url)
+    end
   end
   
   private
@@ -54,5 +64,27 @@ class AccessToken < ApplicationRecord
   
   def invalid_routes_message
     "should be an array of hashes with keys 'method' and 'path'"
+  end
+  
+  def url_without_token url
+    uri = URI.parse(url)
+    
+    new_query = URI.decode_www_form(uri.query)
+    new_query.reject!{|key, val| key == 'token'}
+    
+    uri.query = URI.encode_www_form(new_query)
+    
+    new_url = uri.to_s
+    new_url.chop! if new_url =~ /\?$/
+    
+    new_url
+  end
+  
+  def token_for url
+    uri = URI.parse(url)
+    token_param = CGI.parse(uri.query)['token']
+    
+    return nil if token_param.nil?
+    token_param.first
   end
 end
