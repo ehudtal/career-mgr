@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  default_url_options Rails.application.config.action_mailer.default_url_options
+
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'

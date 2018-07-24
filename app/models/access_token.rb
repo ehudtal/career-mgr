@@ -11,7 +11,7 @@ class AccessToken < ApplicationRecord
   class << self
     def fellow_dashboard_view fellow
       create routes: [
-        {label: 'view', method: 'GET', path: routes.admin_fellow_path(fellow)}
+        {label: 'view', method: 'GET', path: routes.admin_fellow_url(fellow)}
       ]
     end
     

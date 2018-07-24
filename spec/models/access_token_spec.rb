@@ -119,7 +119,7 @@ RSpec.describe AccessToken, type: :model do
     
     it "generates access token with dashboard view only" do
       expect(subject).to be_an(AccessToken)
-      expect(subject.routes).to eq([{'label' => 'view', 'method' => 'GET', 'path' => "/admin/fellows/#{fellow.id}"}])
+      expect(subject.routes).to eq([{'label' => 'view', 'method' => 'GET', 'path' => "http://localhost:3011/admin/fellows/#{fellow.id}"}])
     end
   end
   
