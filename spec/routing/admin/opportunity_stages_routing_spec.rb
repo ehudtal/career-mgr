@@ -1,4 +1,4 @@
-require "rails_helper"
+require_relative "../../rails_helper"
 
 RSpec.describe Admin::OpportunityStagesController, type: :routing do
   describe "routing" do

@@ -39,7 +39,15 @@ class ApplicationController < ActionController::Base
     
     access_token = AccessToken.find_by code: params[:token]
     return false if access_token.nil?
-
     access_token.match?(request)
+  end
+  
+  def authorize_by_token!
+    fail_token_authorize! unless authorized_by_token?
+  end
+  
+  def fail_token_authorize!
+    flash[:notice] = 'The link you requested is unavailable.'
+    redirect_to root_path
   end
 end

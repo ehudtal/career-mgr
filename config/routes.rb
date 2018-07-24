@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get 'home/welcome'
   get 'token/:id', to: 'token#show', as: 'token'
+
+  get 'candidates/:fellow_opportunity_id/status', to: 'candidates#status', as: 'candidate_status'
   
   namespace :fellow do
     get 'home/welcome'

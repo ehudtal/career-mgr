@@ -117,9 +117,28 @@ RSpec.describe AccessToken, type: :model do
     let(:fellow) { create :fellow }
     subject { AccessToken.fellow_dashboard_view(fellow) }
     
+    it { should be_an(AccessToken) }
+    
     it "generates access token with dashboard view only" do
-      expect(subject).to be_an(AccessToken)
       expect(subject.routes).to eq([{'label' => 'view', 'method' => 'GET', 'path' => "http://localhost:3011/admin/fellows/#{fellow.id}"}])
+    end
+  end
+  
+  describe '::opportunity_invitation(fellow_opportunity)' do
+    let(:fellow) { create :fellow }
+    let(:opportunity) { create :opportunity }
+    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
+    
+    subject { AccessToken.opportunity_invitation(fellow_opportunity) }
+    
+    it { should be_an(AccessToken) }
+    
+    it "generates access token with 'Interested' route" do
+      expect(subject.routes).to include({'label' => 'Interested', 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Interested"})
+    end
+
+    it "generates access token with 'Not Interested' route" do
+      expect(subject.routes).to include({'label' => 'Not Interested', 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Not+Interested"})
     end
   end
   

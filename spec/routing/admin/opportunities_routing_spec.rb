@@ -1,9 +1,7 @@
-require "rails_helper"
+require_relative "../../rails_helper"
 
 RSpec.describe Admin::OpportunitiesController, type: :routing do
   describe "routing" do
-    require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-    
     it "routes to #index" do
       expect(:get => "/admin/opportunities").to route_to("admin/opportunities#index")
     end

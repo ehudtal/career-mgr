@@ -17,6 +17,13 @@ class AccessToken < ApplicationRecord
       ]
     end
     
+    def opportunity_invitation fellow_opportunity
+      create routes: [
+        {label: 'Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Interested')},
+        {label: 'Not Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Not Interested')}
+      ]
+    end
+    
     def routes
       Rails.application.routes.url_helpers
     end

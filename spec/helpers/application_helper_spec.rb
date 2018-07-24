@@ -20,12 +20,12 @@ RSpec.describe ApplicationHelper, type: :helper do
     subject { link_to_access_token(access_token, label) }
     describe "when there are no other parameters" do
       let(:label) { 'view' }
-      it { should eq(link_to 'view', "/fellow/home/welcome?token=#{code}", method: 'GET') }
+      it { should eq(link_to 'view', "/fellow/home/welcome?token=#{code}".html_safe, method: 'GET') }
     end
     
     describe "when there are other parameters" do
       let(:label) { 'other' }
-      it { should eq(link_to 'other', "/other?test=true&token=#{code}", method: 'POST') }
+      it { should eq(link_to('other', "/other?test=true&token=#{code}".html_safe, method: 'POST')) }
     end
   end
 end

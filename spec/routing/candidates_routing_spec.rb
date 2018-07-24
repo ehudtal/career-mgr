@@ -1,26 +1,15 @@
 require "rails_helper"
 
-RSpec.describe Admin::CandidatesController, type: :routing do
+RSpec.describe CandidatesController, type: :routing do
   describe "routing" do
-    let(:opportunity_id) { '1001' }
-    let(:candidate_id) { '1002' }
+    let(:fellow_opportunity_id) { '1001' }
     
-    describe 'via opportunity' do
-      it "routes to #index" do
-        expect(:get => "/admin/opportunities/#{opportunity_id}/candidates").to route_to("admin/candidates#index", opportunity_id: opportunity_id)
-      end
-
-      it "routes to #create" do
-        expect(:post => "/admin/opportunities/#{opportunity_id}/candidates").to route_to("admin/candidates#create", opportunity_id: opportunity_id)
-      end
+    it "routes to #status" do
+      expect(:get => "/candidates/#{fellow_opportunity_id}/status?update=Interested").to route_to("candidates#status", fellow_opportunity_id: fellow_opportunity_id, update: 'Interested')
     end
     
-    it "routes to #update" do
-      expect(:put => "/admin/candidates/#{candidate_id}").to route_to("admin/candidates#update", id: candidate_id)
-    end
-    
-    it "routes to #destroy" do
-      expect(:delete => "/admin/candidates/#{candidate_id}").to route_to("admin/candidates#destroy", id: candidate_id)
+    it "routes to #status with token" do
+      expect(:get => "/candidates/#{fellow_opportunity_id}/status?update=Interested&token=123").to route_to("candidates#status", fellow_opportunity_id: fellow_opportunity_id, update: 'Interested', token: '123')
     end
   end
 end
