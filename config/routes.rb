@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   namespace :fellow do
     get 'home/welcome'
+    
+    resource :profile, only: [:show, :edit, :update]
   end
 
   namespace :admin do

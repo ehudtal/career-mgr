@@ -48,7 +48,7 @@ module Taggable
   
   module IndustryInterestMethods
     def industry_interest_tags
-      (industries.pluck(:name) | interests.pluck(:name)).join(';')
+      (industries.pluck(:name) | interests.pluck(:name)).sort.join(';')
     end
   
     def industry_interest_tags= tag_string
