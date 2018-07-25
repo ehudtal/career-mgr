@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # remove all existing objects to start fresh!
-[Employer, Opportunity, OpportunityStage, Fellow].each(&:destroy_all)
+[Employer, Opportunity, Fellow].each(&:destroy_all)
 
 industry_accounting = Industry.find_by name: 'Accounting'
 interest_accounting = Interest.find_by name: 'Accounting'
@@ -48,16 +48,6 @@ fruits = ['Apples', 'Bananas', 'Carrots', 'Figs', 'Oranges', 'Raspberries', 'Str
     opportunity.metros << lincoln_ne
   end
 end
-
-opportunity_stages = OpportunityStage.create!([
-  {position: 0, probability: 0.01, name: 'notified'},
-  {position: 1, probability: 0.05, name: 'interested'},
-  {position: 2, probability: 0.1,  name: 'applying'},
-  {position: 3, probability: 0.15, name: 'application submitted'},
-  {position: 4, probability: 0.95, name: 'accepted'},
-  {position: 5, probability: 1.0,  name: 'committed'},
-  {position: 6, probability: 0.0,  name: 'rejected'}
-])
 
 employment_status = EmploymentStatus.order('position asc').first
 

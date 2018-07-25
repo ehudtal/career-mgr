@@ -42,6 +42,6 @@ $(document).on "turbolinks:load",  ->
           $("##{element}-checklist").hide()
           $("##{element}-tags").show()
         
-  enableFellowTagChecklistToggle("interest", '/admin/interests.json', 'Add an Interest')
-  enableFellowTagChecklistToggle("industry", '/admin/industries.json', 'Add an Industry')
-  enableFellowTagChecklistToggle("metro",    '/admin/metros.json', 'Add a Metro')
+  enableFellowTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
+  enableFellowTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
+  enableFellowTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Metro')

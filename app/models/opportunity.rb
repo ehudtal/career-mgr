@@ -94,12 +94,21 @@ class Opportunity < ApplicationRecord
   def candidate_ids= candidate_id_list
     initial_stage = OpportunityStage.find_by position: 0
     
-    candidate_id_list.each do |candidate_id|
+    fellow_opps = candidate_id_list.map do |candidate_id|
       if archived = archived_fellow_opp(candidate_id)
         archived.restore
       else
         fellow_opportunities.create! fellow_id: candidate_id, opportunity_stage: initial_stage
       end
+    end
+    
+    notify_candidates(fellow_opps)
+  end
+  
+  def notify_candidates fellow_opportunities_list
+    fellow_opportunities_list.each do |fellow_opp|
+      access_token = AccessToken.opportunity_invitation(fellow_opp)
+      CandidateMailer.with(fellow_opportunity: fellow_opp, access_token: access_token).invitation.deliver_later
     end
   end
   

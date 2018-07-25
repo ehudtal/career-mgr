@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
+  default_url_options Rails.application.config.action_mailer.default_url_options
+
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'
+  get 'token/:id', to: 'token#show', as: 'token'
+
+  get 'candidates/:fellow_opportunity_id/status', to: 'candidates#status', as: 'candidate_status'
   
+  resources :fellows, only: [:edit, :update]
+
   namespace :fellow do
     get 'home/welcome'
+    
+    resource :profile, only: [:show, :edit, :update]
   end
 
   namespace :admin do

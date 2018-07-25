@@ -40,6 +40,20 @@ end
   EmploymentStatus.find_or_create_by! name: status, position: position
 end
 
+OpportunityStage.create!([
+  {position: 0, probability: 0.01, name: 'notified'},
+  {position: 1, probability: 0.05, name: 'interested'},
+  {position: 2, probability: 0.0,  name: 'not interested'},
+  {position: 3, probability: 0.1,  name: 'applying'},
+  {position: 4, probability: 0.15, name: 'application submitted'},
+  {position: 5, probability: 0.35, name: 'interview scheduled'},
+  {position: 6, probability: 0.55, name: 'interview completed'},
+  {position: 7, probability: 0.9,  name: 'offered'},
+  {position: 8, probability: 0.95, name: 'accepted'},
+  {position: 9, probability: 1.0,  name: 'committed'},
+  {position: 10, probability: 0.0,  name: 'rejected'}
+])
+
 nlu = Site.find_or_create_by code: 'NLU', name: 'National Louis University'
 nlu.update(
   location_attributes: {

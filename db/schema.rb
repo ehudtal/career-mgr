@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_20_225032) do
+ActiveRecord::Schema.define(version: 2018_07_24_154954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.string "code"
+    t.text "routes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_access_tokens_on_code", unique: true
+  end
 
   create_table "coaches", force: :cascade do |t|
     t.string "name"
