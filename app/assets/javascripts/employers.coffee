@@ -43,4 +43,4 @@ $(document).on "turbolinks:load",  ->
           $("##{element}-tags").show()
 
         
-  enableEmployerTagChecklistToggle("industry", '/admin/industries.json', 'Add an Industry')
+  enableEmployerTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')

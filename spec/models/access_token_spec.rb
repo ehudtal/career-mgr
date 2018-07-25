@@ -142,6 +142,22 @@ RSpec.describe AccessToken, type: :model do
     end
   end
   
+  describe '::update_profile(fellow)' do
+    let(:fellow) { create :fellow }
+    
+    subject { AccessToken.update_profile(fellow) }
+    
+    it { should be_an(AccessToken) }
+    
+    it "generates token with edit route" do
+      expect(subject.routes).to include({'label' => 'Edit Your Profile', 'method' => 'GET', 'path' => "http://localhost:3011/fellows/#{fellow.id}/edit"})
+    end
+    
+    it "generates token with update route" do
+      expect(subject.routes).to include({'label' => 'Update Your Profile', 'method' => 'PATCH', 'path' => "http://localhost:3011/fellows/#{fellow.id}"})
+    end
+  end
+  
   ##################
   # Instance methods
   ##################
@@ -173,22 +189,22 @@ RSpec.describe AccessToken, type: :model do
     subject { build :access_token, code: code, routes: [route_first, route_second] }
     
     it "returns true if any route matches method AND path, minus token parameter" do
-      request = double('request', original_url: "http://localhost:3011/second?token=#{code}", request_method: 'POST')
+      request = double('request', params: {token: code}, original_url: "http://localhost:3011/second?token=#{code}", request_method: 'POST')
       expect(subject.match?(request)).to be(true)
     end
     
     it "returns false if the token doesn't match" do
-      request = double('request', original_url: "http://localhost:3011/second?token=#{code}x", request_method: 'POST')
+      request = double('request', params: {token: code+'x'}, original_url: "http://localhost:3011/second?token=#{code}x", request_method: 'POST')
       expect(subject.match?(request)).to be(false)
     end
     
     it "returns false if request method doesn't match" do
-      request = double('request', original_url: "http://localhost:3011/second?token=#{code}", request_method: 'GET')
+      request = double('request', params: {token: code}, original_url: "http://localhost:3011/second?token=#{code}", request_method: 'GET')
       expect(subject.match?(request)).to be(false)
     end
     
     it "returns false if original url (minus token) doesn't match" do
-      request = double('request', original_url: "http://localhoster:3011/second?token=#{code}", request_method: 'POST')
+      request = double('request', params: {token: code}, original_url: "http://localhoster:3011/second?token=#{code}", request_method: 'POST')
       expect(subject.match?(request)).to be(false)
     end
   end

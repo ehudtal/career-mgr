@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get 'candidates/:fellow_opportunity_id/status', to: 'candidates#status', as: 'candidate_status'
   
+  resources :fellows, only: [:edit, :update]
+
   namespace :fellow do
     get 'home/welcome'
   end

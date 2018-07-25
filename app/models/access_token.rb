@@ -24,6 +24,13 @@ class AccessToken < ApplicationRecord
       ]
     end
     
+    def update_profile fellow
+      create routes: [
+        {label: 'Edit Your Profile', method: 'GET', path: routes.edit_fellow_url(fellow)},
+        {label: 'Update Your Profile', method: 'PATCH', path: routes.fellow_url(fellow)}
+      ]
+    end
+    
     def routes
       Rails.application.routes.url_helpers
     end
@@ -38,7 +45,7 @@ class AccessToken < ApplicationRecord
     routes.any? do |route|
       route['method'].to_s.downcase == request.request_method.downcase &&
       route['path'] == url_without_token(request.original_url) &&
-      code == token_for(request.original_url)
+      code == token_for(request)
     end
   end
   
@@ -88,7 +95,7 @@ class AccessToken < ApplicationRecord
   def url_without_token url
     uri = URI.parse(url)
     
-    new_query = URI.decode_www_form(uri.query)
+    new_query = URI.decode_www_form(uri.query || '')
     new_query.reject!{|key, val| key == 'token'}
     
     uri.query = URI.encode_www_form(new_query)
@@ -99,11 +106,7 @@ class AccessToken < ApplicationRecord
     new_url
   end
   
-  def token_for url
-    uri = URI.parse(url)
-    token_param = CGI.parse(uri.query)['token']
-    
-    return nil if token_param.nil?
-    token_param.first
+  def token_for request
+    request.params[:token]
   end
 end

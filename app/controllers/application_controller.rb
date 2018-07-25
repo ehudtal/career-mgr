@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
     
     access_token = AccessToken.find_by code: params[:token]
     return false if access_token.nil?
+
     access_token.match?(request)
   end
   
