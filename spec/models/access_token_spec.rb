@@ -101,6 +101,22 @@ RSpec.describe AccessToken, type: :model do
     end
   end
   
+  describe 'setting expiration datetime' do
+    let(:access_token) { build :access_token }
+    
+    it "sets expires_at to 30 days from now upon create" do
+      access_token.save
+      expect(access_token.expires_at).to be_within(0.1).of(30.days.from_now)
+    end
+    
+    it "skips setting if expiration has already been set" do
+      access_token.expires_at = 1.day.from_now
+      access_token.save
+
+      expect(access_token.expires_at).to be_within(0.1).of(1.day.from_now)
+    end
+  end
+  
   ###############
   # Serialization
   ###############
@@ -193,6 +209,24 @@ RSpec.describe AccessToken, type: :model do
       it "returns an error" do
         expect{subject}.to raise_error("no token routes are defined for this object type.")
       end
+    end
+  end
+  
+  describe '::expire_tokens' do
+    let(:token_old) { create :access_token, expires_at: 1.day.ago }
+    let(:token_new) { create :access_token, expires_at: 1.day.from_now }
+    
+    before do
+      token_old; token_new
+      AccessToken.expire_tokens
+    end
+    
+    it "removes tokens that are past their expiration date" do
+      expect(AccessToken.find_by(id: token_old.id)).to be_nil
+    end
+    
+    it "leaves tokens that haven't expired yet" do
+      expect(AccessToken.find_by(id: token_new.id)).to eq(token_new)
     end
   end
   

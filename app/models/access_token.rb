@@ -8,11 +8,16 @@ class AccessToken < ApplicationRecord
   serialize :routes, JSON
   
   before_validation :generate_token
+  before_create :set_expiration
 
   validates :code, presence: true, uniqueness: true
   validate :valid_routes_structure
   
   class << self
+    def expire_tokens
+      where("expires_at < ?", Time.now).destroy_all
+    end
+    
     def for owner
       raise "no token routes are defined for this object type." unless valid_token_owner?(owner)
       find_by(owner: owner) || create(owner: owner, routes: routes_for(owner))
@@ -104,6 +109,10 @@ class AccessToken < ApplicationRecord
       temp_token = random_token
       self.code = temp_token unless self.class.where(code: temp_token).count > 0
     end
+  end
+  
+  def set_expiration
+    self.expires_at = 30.days.from_now if expires_at.nil?
   end
   
   def random_token

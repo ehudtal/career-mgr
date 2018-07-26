@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_225739) do
+ActiveRecord::Schema.define(version: 2018_07_26_231221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2018_07_26_225739) do
     t.datetime "updated_at", null: false
     t.integer "owner_id"
     t.string "owner_type"
+    t.datetime "expires_at"
     t.index ["code"], name: "index_access_tokens_on_code", unique: true
     t.index ["owner_id", "owner_type"], name: "index_access_tokens_on_owner_id_and_owner_type"
   end
