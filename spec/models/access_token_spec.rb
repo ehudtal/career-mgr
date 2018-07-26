@@ -162,15 +162,19 @@ RSpec.describe AccessToken, type: :model do
     
       it "has an array of routes" do
         expect(subject.routes).to be_an(Array)
-        expect(subject.routes.size).to eq(2)
-      end
-    
-      it "generates access token with 'Interested' route" do
-        expect(subject.routes).to include({'label' => 'Interested', 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=Interested"})
+        expect(subject.routes.size).to eq(10)
       end
 
-      it "generates access token with 'Not Interested' route" do
-        expect(subject.routes).to include({'label' => 'Not Interested', 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=Not+Interested"})
+      allowed_statuses = [
+       'Interested', 'Not Interested', 'Applying', 'Application Submitted', 
+       'Interview Scheduled', 'Interview Completed', 
+       'Offered', 'Accepted', 'Committed', 'Rejected' 
+      ]
+
+      allowed_statuses.each do |status_update|
+        it "generates access token with '#{status_update}' route" do
+          expect(subject.routes).to include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
+        end
       end
     end
     

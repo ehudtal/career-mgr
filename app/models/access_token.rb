@@ -39,10 +39,15 @@ class AccessToken < ApplicationRecord
     end
     
     def routes_for_fellow_opportunity fellow_opportunity
-      [
-        {label: 'Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Interested')},
-        {label: 'Not Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Not Interested')}
+      allowed_statuses = [
+       'Interested', 'Not Interested', 'Applying', 'Application Submitted', 
+       'Interview Scheduled', 'Interview Completed', 
+       'Offered', 'Accepted', 'Committed', 'Rejected' 
       ]
+      
+      allowed_statuses.map do |allowed_status|
+        {label: allowed_status, method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: allowed_status)}
+      end
     end
     
     def routes
