@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_154954) do
+ActiveRecord::Schema.define(version: 2018_07_25_211603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,10 @@ ActiveRecord::Schema.define(version: 2018_07_24_154954) do
     t.text "routes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "owner_id"
+    t.string "owner_type"
     t.index ["code"], name: "index_access_tokens_on_code", unique: true
+    t.index ["owner_id", "owner_type"], name: "index_access_tokens_on_owner_id_and_owner_type"
   end
 
   create_table "coaches", force: :cascade do |t|

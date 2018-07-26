@@ -3,7 +3,7 @@ class FellowMailer < ApplicationMailer
 
   def profile
     @token = params[:access_token]
-    @fellow = params[:fellow]
+    @fellow = @token.owner
     
     mail(to: @fellow.contact.email, subject: "Please Update Your Profile")
   end

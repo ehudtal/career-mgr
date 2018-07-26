@@ -107,8 +107,8 @@ class Opportunity < ApplicationRecord
   
   def notify_candidates fellow_opportunities_list
     fellow_opportunities_list.each do |fellow_opp|
-      access_token = AccessToken.opportunity_invitation(fellow_opp)
-      CandidateMailer.with(fellow_opportunity: fellow_opp, access_token: access_token).invitation.deliver_later
+      access_token = AccessToken.for(fellow_opp)
+      CandidateMailer.with(access_token: access_token).invitation.deliver_later
     end
   end
   

@@ -10,6 +10,8 @@ RSpec.describe FellowOpportunity, type: :model do
   it { should belong_to :opportunity }
   it { should belong_to :opportunity_stage }
   
+  it { should have_one :access_token }
+  
   it { should have_many :comments }
   
   #############

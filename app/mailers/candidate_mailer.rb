@@ -3,7 +3,7 @@ class CandidateMailer < ApplicationMailer
 
   def invitation
     @token = params[:access_token]
-    @fellow_opp = params[:fellow_opportunity]
+    @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
     @opp = @fellow_opp.opportunity
     

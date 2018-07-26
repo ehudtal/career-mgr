@@ -32,6 +32,7 @@ RSpec.describe Fellow, type: :model do
   ##############
   
   it { should have_one :contact }
+  it { should have_one :access_token }
   
   it { should have_many :cohort_fellows }
   it { should have_many :cohorts }

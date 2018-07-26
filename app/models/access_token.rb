@@ -3,6 +3,8 @@ require 'uri'
 require 'cgi'
 
 class AccessToken < ApplicationRecord
+  belongs_to :owner, polymorphic: true
+
   serialize :routes, JSON
   
   before_validation :generate_token
@@ -11,23 +13,35 @@ class AccessToken < ApplicationRecord
   validate :valid_routes_structure
   
   class << self
-    def fellow_dashboard_view fellow
-      create routes: [
-        {label: 'view', method: 'GET', path: routes.admin_fellow_url(fellow)}
+    def for owner
+      raise "no token routes are defined for this object type." unless valid_token_owner?(owner)
+      find_by(owner: owner) || create(owner: owner, routes: routes_for(owner))
+    end
+    
+    def valid_token_owner? owner
+      self.respond_to?(route_method_name(owner))
+    end
+    
+    def route_method_name owner
+      :"routes_for_#{owner.class.name.underscore}"
+    end
+    
+    def routes_for owner
+      send(route_method_name(owner), owner)
+    end
+    
+    def routes_for_fellow fellow
+      [
+        {label: 'view', method: 'GET', path: routes.admin_fellow_url(fellow)},
+        {label: 'Edit Your Profile', method: 'GET', path: routes.edit_fellow_url(fellow)},
+        {label: 'Update Your Profile', method: 'PUT', path: routes.fellow_url(fellow)}
       ]
     end
     
-    def opportunity_invitation fellow_opportunity
-      create routes: [
+    def routes_for_fellow_opportunity fellow_opportunity
+      [
         {label: 'Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Interested')},
         {label: 'Not Interested', method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: 'Not Interested')}
-      ]
-    end
-    
-    def update_profile fellow
-      create routes: [
-        {label: 'Edit Your Profile', method: 'GET', path: routes.edit_fellow_url(fellow)},
-        {label: 'Update Your Profile', method: 'PATCH', path: routes.fellow_url(fellow)}
       ]
     end
     
@@ -43,9 +57,27 @@ class AccessToken < ApplicationRecord
   
   def match? request
     routes.any? do |route|
-      route['method'].to_s.downcase == request.request_method.downcase &&
+      method_match?(route, request) &&
       route['path'] == url_without_token(request.original_url) &&
       code == token_for(request)
+    end
+  end
+  
+  def method_match? route, request
+    route_method = normalize_request_method(route['method'])
+    request_method = normalize_request_method(request.request_method)
+
+    route_method == request_method
+  end
+  
+  def normalize_request_method request_method
+    request_method = request_method.to_s.downcase
+    
+    case request_method
+    when 'patch'
+      'put'
+    else
+      request_method
     end
   end
   

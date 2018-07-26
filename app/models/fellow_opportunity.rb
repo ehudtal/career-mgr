@@ -5,6 +5,8 @@ class FellowOpportunity < ApplicationRecord
   belongs_to :opportunity
   belongs_to :opportunity_stage
   
+  has_one :access_token, as: :owner
+  
   has_many :comments, as: :commentable
   
   validates :fellow_id, presence: true, uniqueness: {scope: :opportunity_id}
