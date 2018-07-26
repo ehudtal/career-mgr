@@ -43,4 +43,20 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect(body).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Not+Interested&token=#{access_token.code}")
     end
   end
+
+  describe 'application submitted' do
+    let(:view) { :application_submitted }
+  
+    it { expect(mail.subject).to eq("Have You Submitted Your Application for New Opportunity?") }
+    it { expect(mail.to).to include(email) }
+    it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
+
+    it "renders the body with links" do
+      body = mail.body.encoded
+    
+      expect(body).to include(opportunity.name)
+      expect(body).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Application+Submitted&token=#{access_token.code}")
+      expect(body).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Not+Interested&token=#{access_token.code}")
+    end
+  end
 end

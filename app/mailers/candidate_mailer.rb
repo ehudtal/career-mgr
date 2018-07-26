@@ -10,6 +10,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "Are You Currently Applying for #{@opp.name}?")
   end
+
+  def application_submitted
+    set_objects
+    mail(to: @fellow.contact.email, subject: "Have You Submitted Your Application for #{@opp.name}?")
+  end
   
   private
   
