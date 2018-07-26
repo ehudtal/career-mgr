@@ -81,24 +81,6 @@ $(document).on "turbolinks:load",  ->
   
   enableIndustryInterestTags()
   
-  new_task_fields = () ->
-    index = $('.task_fields').length
-    
-    "<li class=\"task_fields removeable_fields\">
-        <div class=\"field\">
-          <label for=\"opportunity_tasks_attributes_#{index}_name\">Name</label>
-          <input type=\"text\" name=\"opportunity[tasks_attributes][#{index}][name]\" id=\"opportunity_tasks_attributes_#{index}_name\" />
-        </div>
-    
-        <div class=\"field\">
-          <label for=\"opportunity_tasks_attributes_#{index}_due_at\">Due at</label>
-          <input class=\"datetime\" type=\"text\" name=\"opportunity[tasks_attributes][#{index}][due_at]\" id=\"opportunity_tasks_attributes_#{index}_due_at\" /><br>
-
-          <input class=\"remove_hidden\" type=\"hidden\" value=\"false\" name=\"opportunity[tasks_attributes][#{index}][_destroy]\" id=\"opportunity_tasks_attributes_#{index}__destroy\" />
-          <a class=\"remove\" href=\"#\">remove</a>
-        </div>
-      </li>"
-      
   new_location_fields = () ->
     index = $('.location_fields').length
     employerId = $('.location_forms').data('employer-id')
@@ -140,13 +122,6 @@ $(document).on "turbolinks:load",  ->
     
       $(this).closest('.removeable_fields').find('.remove_hidden').attr('value', '1')
       $(this).closest('.removeable_fields').remove()
-
-  $('a.new_task').click (event) ->
-    event.preventDefault()
-
-    $('.task_forms').append(new_task_fields())
-    
-    reset_datepicker()
 
   $('a.new_location').click (event) ->
     event.preventDefault()

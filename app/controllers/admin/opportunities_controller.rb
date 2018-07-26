@@ -89,7 +89,6 @@ class Admin::OpportunitiesController < ApplicationController
       interest_ids: [],
       metro_ids: [],
       location_ids: [],
-      tasks_attributes: [:id, :name, :due_at, :_destroy],
       locations_attributes: [
         :_destroy, :id, :name, :locateable_id, :locateable_type,
         contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
