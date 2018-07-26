@@ -26,6 +26,11 @@
     <%= form.text_field :job_posting_url %>
   </div>
   
+  <div class="field">
+    <%= form.label :application_deadline %>
+    <%= form.text_field :application_deadline, class: 'datetime' %>
+  </div>
+  
   <%= render 'admin/locations/check_boxes', parent: opportunity.employer, object: opportunity %>
   
   <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
