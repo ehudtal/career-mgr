@@ -10,6 +10,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "#{@opp.name}: Research This Employer")
   end
+
+  def connected_with_employees
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Connect with Current Employees")
+  end
   
   private
   

@@ -8,7 +8,11 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).researched_employer
   end
   
-  def step_03_application_submitted
+  def step_03_connected_with_employees
+    CandidateMailer.with(access_token: access_token).connected_with_employees
+  end
+  
+  def step_10_application_submitted
     CandidateMailer.with(access_token: access_token).application_submitted
   end
   

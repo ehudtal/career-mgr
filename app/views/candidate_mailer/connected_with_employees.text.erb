@@ -1,0 +1,18 @@
+Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?
+
+* Use your LinkedIn and Facebook connections to reach out to people who work(ed) at the company you're aiming for.
+* Introduce yourself, attach a resume, and ask them: "What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?"
+* If it sounds like you're a good fit, ask for a referral: "Would you be willing to refer me internally?"
+* PRO TIP: Keep taking feedback and revise your application materials accordingly.
+
+Yes:
+<%= @token.path_with_token('connected with employees') %>
+
+Not Yet:
+<%= @token.path_with_token('no change') %>
+
+Does Not Apply:
+<%= @token.path_with_token('skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('not interested') %>

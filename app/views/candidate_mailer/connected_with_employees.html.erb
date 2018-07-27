@@ -1,0 +1,17 @@
+<h1>Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Use your LinkedIn and Facebook connections to reach out to people who work(ed) at the company you're aiming for.</li>
+  <li>Introduce yourself, attach a resume, and ask them: "What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?"</li>
+  <li>If it sounds like you're a good fit, ask for a referral: "Would you be willing to refer me internally?"</li>
+  <li>PRO TIP: Keep taking feedback and revise your application materials accordingly.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'connected with employees', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>
