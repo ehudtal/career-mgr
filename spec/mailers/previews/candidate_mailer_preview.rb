@@ -24,8 +24,8 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).followed_up_after_application_submission
   end
   
-  def step_07
-    
+  def step_07_scheduled_an_interview
+    CandidateMailer.with(access_token: access_token).scheduled_an_interview
   end
   
   private

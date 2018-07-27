@@ -100,4 +100,16 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'skip'
     expect_status_link 'not interested'
   end
+
+  describe 'scheduled an interview' do
+    let(:view) { :scheduled_an_interview }
+    
+    expect_headers "New Opportunity: Schedule an Interview"
+    expect_content "Have you scheduled"
+
+    expect_status_link 'scheduled an interview'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
 end
