@@ -2,5 +2,5 @@
 
 to = ARGV[0]
 
-`cp app/views/candidate_mailer/invitation.html.erb app/views/candidate_mailer/#{to}.html.erb`
-`cp app/views/candidate_mailer/invitation.text.erb app/views/candidate_mailer/#{to}.text.erb`
+`cp app/views/candidate_mailer/researched_employer.html.erb app/views/candidate_mailer/#{to}.html.erb`
+`cp app/views/candidate_mailer/researched_employer.text.erb app/views/candidate_mailer/#{to}.text.erb`
