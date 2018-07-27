@@ -1,0 +1,17 @@
+<h1>Have you researched the interview process at <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Look through the job posting and anything else you've gotten from this employer so far for info on how the interview process works.</li>
+  <li>Use online search, social media (including LinkedIn) and your network: What is the life story of the hiring manager(s) / interviewer(s)? Where did they go to school and what did they study? Do they have a blog or published work online or in print? If so, what are their interests and opinions? Were they mentioned in news stories? Are they active on online forums?</li>
+  <li>Brainstorm what questions they might ask based on what you've learned about them.</li>
+  <li>PRO TIP: Research what people wear on the actual job so you can dress appropriately for your interview.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'researched interview process', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>

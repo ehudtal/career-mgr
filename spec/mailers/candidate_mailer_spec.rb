@@ -112,4 +112,16 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'skip'
     expect_status_link 'not interested'
   end
+
+  describe 'researched interview process' do
+    let(:view) { :researched_interview_process }
+    
+    expect_headers "New Opportunity: Research the Interview Process"
+    expect_content "Have you researched"
+
+    expect_status_link 'researched interview process'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
 end
