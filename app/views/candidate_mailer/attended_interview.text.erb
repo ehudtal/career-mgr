@@ -1,0 +1,18 @@
+Have you attended your interview with <%= @opp.employer.name %> yet?
+
+* Make a great first impression: dress to impress (match the employer's dress code), arrive 10 minutes early, and be kind and courteous (e.g. turn off your phone).
+* If it's a phone or virtual interview: find a quiet place with a good signal and be ready 10 minutes ahead of time.
+* Reserve some free time after the interview in case it starts late or goes longer than expected.
+* PRO TIP: Bring copies of your resume and some business cards.
+
+Yes:
+<%= @token.path_with_token('attended interview') %>
+
+Not Yet:
+<%= @token.path_with_token('no change') %>
+
+Does Not Apply:
+<%= @token.path_with_token('skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('not interested') %>
