@@ -28,4 +28,32 @@ RSpec.describe OpportunityStage, type: :model do
   it { should validate_numericality_of(:probability).is_greater_than_or_equal_to(0.0) }
   it { should validate_numericality_of(:probability).is_less_than_or_equal_to(1.0) }
   it { should validate_numericality_of(:probability).allow_nil }
+  
+  ########
+  # Scopes
+  ########
+  
+  describe '::togglable' do
+    it "filters to togglable opp stages" do
+      show_2 = create :opportunity_stage, name: 'show 2', togglable: true, position: 2
+      hide_1 = create :opportunity_stage, name: 'hide 1', togglable: false, position: 1
+      show_1 = create :opportunity_stage, name: 'show 1', togglable: true, position: 0
+      
+      expect(OpportunityStage.togglable).to eq([show_1, show_2])
+    end
+  end
+  
+  ###############
+  # Class methods
+  ###############
+
+  describe '::togglable_names' do
+    it "shows the names of togglable opp stages" do
+      show_2 = create :opportunity_stage, name: 'show 2', togglable: true, position: 2
+      hide_1 = create :opportunity_stage, name: 'hide 1', togglable: false, position: 1
+      show_1 = create :opportunity_stage, name: 'show 1', togglable: true, position: 0
+    
+      expect(OpportunityStage.togglable_names).to eq([show_1.name, show_2.name])
+    end
+  end
 end

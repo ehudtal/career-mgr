@@ -98,7 +98,7 @@
   <h3>Required Steps</h3>
   
   <p>
-    <% OpportunityStage.order('position asc').pluck(:name).each do |stage_name| %>
+    <% OpportunityStage.togglable_names.each do |stage_name| %>
       <% tag_id = "steps_#{stage_name.underscore}" %>
 
       <%= check_box_tag("opportunity[steps][]", stage_name, true, id: tag_id) %>

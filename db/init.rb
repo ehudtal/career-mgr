@@ -41,17 +41,23 @@ end
 end
 
 OpportunityStage.create!([
-  {position: 0, probability: 0.01, name: 'notified'},
-  {position: 1, probability: 0.05, name: 'interested'},
-  {position: 2, probability: 0.0,  name: 'not interested'},
-  {position: 3, probability: 0.1,  name: 'applying'},
-  {position: 4, probability: 0.15, name: 'application submitted'},
-  {position: 5, probability: 0.35, name: 'interview scheduled'},
-  {position: 6, probability: 0.55, name: 'interview completed'},
-  {position: 7, probability: 0.9,  name: 'offered'},
-  {position: 8, probability: 0.95, name: 'accepted'},
-  {position: 9, probability: 1.0,  name: 'committed'},
-  {position: 10, probability: 0.0,  name: 'rejected'}
+  {position: 0,  probability: 0.01, togglable: false, name: 'notified'},
+  {position: 1,  probability: 0.05, togglable: false, name: 'interested'},
+  {position: 2,  probability: 0.0,  togglable: false, name: 'not interested'},
+  {position: 3,  probability: 0.1,  togglable: true,  name: 'researched employer'},
+
+  {position: 4,  probability: 0.1,  togglable: true,  name: 'connected with employees'},
+  {position: 5,  probability: 0.1,  togglable: true,  name: 'customized application materials'},
+  {position: 6,  probability: 0.1,  togglable: true,  name: 'submitted application'},
+  {position: 7,  probability: 0.1,  togglable: true,  name: 'followed up after application submission'},
+
+  {position: 8,  probability: 0.1,  togglable: true,  name: 'scheduled an interview'},
+  {position: 9,  probability: 0.1,  togglable: true,  name: 'researched interview process'},
+  {position: 10, probability: 0.1,  togglable: true,  name: 'practiced for interview'},
+  {position: 11, probability: 0.1,  togglable: true,  name: 'attended interview'},
+  {position: 12, probability: 0.1,  togglable: true,  name: 'followed up after interview'},
+
+  {position: 13, probability: 0.0,  togglable: false, name: 'rejected'}
 ])
 
 nlu = Site.find_or_create_by code: 'NLU', name: 'National Louis University'
