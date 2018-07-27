@@ -1,0 +1,26 @@
+<h1>Have you customized your:</h1>
+
+<ul>
+  <li>Resume?</li>
+  <li>Cover Letter?</li>
+  <li>Other materials for this opportunity (eg, portfolio)</li>
+</ul>
+
+<h3>More Info:</h3>
+
+<ul class="tips">
+  <li>Highlight the skills and experiences you have that best match the jobs and companies you're interested in.</li>
+  <li>Keep revising based on feedback from your campus career center, Braven Fellows and your Coach, and anyone else who could help.</li>
+  <li>Search for yourself online as an employer might do, and adapt all your profiles to look professional and relevant.</li>
+  <li>Follow key companies and people in the industry, and join relevant groups and meetups.</li>
+  <li>PRO TIP: Catch all the typos! Professional polish shows that you care about doing your job well.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'customized application materials', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>
