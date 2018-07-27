@@ -63,7 +63,6 @@ RSpec.feature "OpportunityViews", type: :feature do
     add_tag :opportunity, :metro, metro_included.name
 
     click_on 'Create Opportunity'
-
     opportunity = Opportunity.last
 
     [:name, :description].each do |attr|
