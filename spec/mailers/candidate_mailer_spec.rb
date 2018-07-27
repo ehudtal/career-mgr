@@ -83,5 +83,23 @@ RSpec.describe CandidateMailer, type: :mailer do
         expect_status_link body, 'not interested'
       end
     end
+  
+    describe 'submitted application' do
+      let(:view) { :submitted_application }
+    
+      it { expect(mail.subject).to eq("New Opportunity: Submit Your Application") }
+      it { expect(mail.to).to include(email) }
+      it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
+
+      it "renders the body with links" do
+        body = mail.body.encoded
+      
+        expect(body).to include('Have you submitted')
+        expect_status_link body, 'submitted application'
+        expect_status_link body, 'no change'
+        expect_status_link body, 'skip'
+        expect_status_link body, 'not interested'
+      end
+    end
   end
 end

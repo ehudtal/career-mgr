@@ -20,6 +20,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "#{@opp.name}: Customized Your Application Materials")
   end
+
+  def submitted_application
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Submit Your Application")
+  end
   
   private
   

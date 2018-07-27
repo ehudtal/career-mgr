@@ -1,0 +1,15 @@
+<h1>Have you submitted your application to <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else). </li>
+  <li>If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'submitted application', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>

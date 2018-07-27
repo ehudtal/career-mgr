@@ -16,8 +16,8 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).customized_application_materials
   end
   
-  def step_10_application_submitted
-    CandidateMailer.with(access_token: access_token).application_submitted
+  def step_05_submitted_application
+    CandidateMailer.with(access_token: access_token).submitted_application
   end
   
   private
