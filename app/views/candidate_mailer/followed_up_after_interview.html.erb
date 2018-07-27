@@ -1,0 +1,14 @@
+<h1>Have you followed up after your interview with <%= @opp.employer.name %>?</h1>
+
+<p class="tips">
+  Send a quick follow up to express your continued excitement for the opportunity and to follow-up on anything from the interview.
+</p>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'followed up after interview', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>
