@@ -4,10 +4,6 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).invitation
   end
   
-  def step_02_applying
-    CandidateMailer.with(access_token: access_token).applying
-  end
-  
   def step_03_application_submitted
     CandidateMailer.with(access_token: access_token).application_submitted
   end
