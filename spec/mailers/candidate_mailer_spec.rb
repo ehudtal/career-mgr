@@ -88,4 +88,16 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'skip'
     expect_status_link 'not interested'
   end
+
+  describe 'followed up after application submission' do
+    let(:view) { :followed_up_after_application_submission }
+    
+    expect_headers "New Opportunity: Follow Up on Your Application"
+    expect_content "Have you followed"
+
+    expect_status_link 'followed up after application submission'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
 end

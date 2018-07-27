@@ -20,6 +20,14 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).submitted_application
   end
   
+  def step_06_followed_up_after_application_submission
+    CandidateMailer.with(access_token: access_token).followed_up_after_application_submission
+  end
+  
+  def step_07
+    
+  end
+  
   private
   
   def access_token

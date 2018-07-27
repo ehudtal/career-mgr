@@ -25,6 +25,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "#{@opp.name}: Submit Your Application")
   end
+
+  def followed_up_after_application_submission
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Follow Up on Your Application")
+  end
   
   private
   
