@@ -16,6 +16,8 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
   
+  serialize :steps, Array
+  
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   

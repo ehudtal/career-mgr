@@ -87,6 +87,7 @@ class Admin::OpportunitiesController < ApplicationController
       :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
       industry_ids: [], 
       interest_ids: [],
+      steps: [],
       metro_ids: [],
       location_ids: [],
       locations_attributes: [

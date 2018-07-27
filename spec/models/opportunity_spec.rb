@@ -33,6 +33,14 @@ RSpec.describe Opportunity, type: :model do
   
   it_should_behave_like "valid url", :job_posting_url
   
+  ###############
+  # Serialization
+  ###############
+
+  it "serializes steps to an array" do
+    expect(Opportunity.new.steps).to be_an(Array)
+  end
+  
   ##################
   # Instance methods
   ##################

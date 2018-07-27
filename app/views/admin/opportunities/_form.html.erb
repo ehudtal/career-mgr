@@ -95,6 +95,17 @@
 
   <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
   
+  <h3>Required Steps</h3>
+  
+  <p>
+    <% OpportunityStage.order('position asc').pluck(:name).each do |stage_name| %>
+      <% tag_id = "steps_#{stage_name.underscore}" %>
+
+      <%= check_box_tag("opportunity[steps][]", stage_name, true, id: tag_id) %>
+      <%= label_tag(tag_id, stage_name, style: 'display: inline;') %><br>
+    <% end %>
+  </p>
+  
   <h3>Industries/Interests</h3>
 
   <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank' %>
