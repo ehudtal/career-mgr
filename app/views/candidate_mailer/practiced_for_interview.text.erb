@@ -1,0 +1,18 @@
+Have you practiced for your interview with <%= @opp.employer.name %>?
+
+Brainstorm possible questions they may ask and write out your answers (can be in bullet points).
+Prepare some stories you can use: have several stories using the PAR and SYRCL frameworks.
+Prepare 3-5 questions you can ask your interviewer.
+Practice with people you know in the field, your campus career center, other Fellows, your Coach, or even friends and family.
+
+Yes:
+<%= @token.path_with_token('practiced for interview') %>
+
+Not Yet:
+<%= @token.path_with_token('no change') %>
+
+Does Not Apply:
+<%= @token.path_with_token('skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('not interested') %>

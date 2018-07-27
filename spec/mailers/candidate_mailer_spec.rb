@@ -124,4 +124,16 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'skip'
     expect_status_link 'not interested'
   end
+
+  describe 'practiced for interview' do
+    let(:view) { :practiced_for_interview }
+    
+    expect_headers "New Opportunity: Practice for Your Interview"
+    expect_content "Have you practiced"
+
+    expect_status_link 'practiced for interview'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
 end

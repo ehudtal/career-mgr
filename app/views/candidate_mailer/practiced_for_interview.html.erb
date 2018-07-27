@@ -1,0 +1,17 @@
+<h1>Have you practiced for your interview with <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Brainstorm possible questions they may ask and write out your answers (can be in bullet points).</li>
+  <li>Prepare some stories you can use: have several stories using the PAR and SYRCL frameworks.</li>
+  <li>Prepare 3-5 questions you can ask your interviewer.</li>
+  <li>Practice with people you know in the field, your campus career center, other Fellows, your Coach, or even friends and family.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'practiced for interview', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>

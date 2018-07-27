@@ -32,6 +32,10 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).researched_interview_process
   end
   
+  def step_09_practiced_for_interview
+    CandidateMailer.with(access_token: access_token).practiced_for_interview
+  end
+  
   private
   
   def access_token
