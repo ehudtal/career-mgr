@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_231221) do
+ActiveRecord::Schema.define(version: 2018_07_27_003835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(version: 2018_07_26_231221) do
     t.datetime "expires_at"
     t.index ["code"], name: "index_access_tokens_on_code", unique: true
     t.index ["owner_id", "owner_type"], name: "index_access_tokens_on_owner_id_and_owner_type"
+  end
+
+  create_table "candidate_logs", force: :cascade do |t|
+    t.integer "candidate_id"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_candidate_logs_on_candidate_id"
   end
 
   create_table "coaches", force: :cascade do |t|

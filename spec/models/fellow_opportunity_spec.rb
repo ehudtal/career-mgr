@@ -13,6 +13,7 @@ RSpec.describe FellowOpportunity, type: :model do
   it { should have_one :access_token }
   
   it { should have_many :comments }
+  it { should have_many :logs }
   
   #############
   # Validations
@@ -46,6 +47,21 @@ RSpec.describe FellowOpportunity, type: :model do
     it "sets the opportunity_stage based on name" do
       fellow_opportunity.stage = stage_name
       expect(fellow_opportunity.reload.opportunity_stage).to eq(opportunity_stage)
+    end
+    
+    it "creates a log record when stage is set" do
+      fellow_opportunity.stage = stage_name
+      expect(fellow_opportunity.logs.last.status).to eq(stage_name)
+    end
+  end
+  
+  describe '#log(status)' do
+    it "creates a candidate_log record with the given status" do
+      fellow_opportunity = create :fellow_opportunity
+      status_message = 'this is a status message'
+      
+      fellow_opportunity.log status_message
+      expect(fellow_opportunity.logs.last.status).to eq(status_message)
     end
   end
 end
