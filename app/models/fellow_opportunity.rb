@@ -23,7 +23,25 @@ class FellowOpportunity < ApplicationRecord
   end
   
   def stage= stage_name
-    self.update opportunity_stage: OpportunityStage.find_by(name: stage_name)
-    log stage_name
+    stage_name = 'rejected' if stage_name == 'declined'
+    
+    case stage_name
+    when 'no change'
+      log 'no change'
+    when 'skip'
+      next_stage = next_opportunity_stage
+
+      self.update opportunity_stage: next_stage
+      log "skipped: #{next_stage.name}"
+    else
+      self.update opportunity_stage: OpportunityStage.find_by(name: stage_name)
+      log stage_name
+    end
+  end
+  
+  private
+  
+  def next_opportunity_stage
+    OpportunityStage.find_by(position: opportunity_stage.position + 1)
   end
 end

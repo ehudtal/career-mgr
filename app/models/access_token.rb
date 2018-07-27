@@ -45,9 +45,10 @@ class AccessToken < ApplicationRecord
     
     def routes_for_fellow_opportunity fellow_opportunity
       allowed_statuses = [
-       'Interested', 'Not Interested', 'Applying', 'Application Submitted', 
-       'Interview Scheduled', 'Interview Completed', 
-       'Offered', 'Accepted', 'Committed', 'Rejected' 
+        'no change', 'skip', 'interested', 'not interested',
+        'researched employer', 'connected with employees', 'customized application materials', 'submitted application', 'followed up after application submission',
+        'scheduled an interview', 'researched interview process', 'practiced for interview', 'attended interview', 'followed up after interview', 
+        'received offer', 'submitted counter-offer', 'accepted offer', 'declined'
       ]
       
       allowed_statuses.map do |allowed_status|

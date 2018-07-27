@@ -178,18 +178,27 @@ RSpec.describe AccessToken, type: :model do
     
       it "has an array of routes" do
         expect(subject.routes).to be_an(Array)
-        expect(subject.routes.size).to eq(10)
+        expect(subject.routes.size).to eq(18)
       end
 
       allowed_statuses = [
-       'Interested', 'Not Interested', 'Applying', 'Application Submitted', 
-       'Interview Scheduled', 'Interview Completed', 
-       'Offered', 'Accepted', 'Committed', 'Rejected' 
+        'no change', 'skip', 'interested', 'not interested',
+        'researched employer', 'connected with employees', 'customized application materials', 'submitted application', 'followed up after application submission',
+        'scheduled an interview', 'researched interview process', 'practiced for interview', 'attended interview', 'followed up after interview', 
+        'received offer', 'submitted counter-offer', 'accepted offer', 'declined'
       ]
 
       allowed_statuses.each do |status_update|
         it "generates access token with '#{status_update}' route" do
           expect(subject.routes).to include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
+        end
+      end
+      
+      disallowed_statuses = ['notified', 'rejected']
+      
+      disallowed_statuses.each do |status_update|
+        it "generates access token with '#{status_update}' route" do
+          expect(subject.routes).to_not include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
         end
       end
     end

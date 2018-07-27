@@ -1,0 +1,20 @@
+<h1>Have you researched this employer online?</h1>
+
+<p>Look up the employer on websites such as:</p>
+
+<ul>
+  <li>GlassDoor</li>
+  <li>LinkedIn</li>
+  <li>Better Business Bureau</li>
+  <li>Idealist.org (for mission-driven organizations)</li>
+</ul>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'researched employer', title: 'Yes', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li>
+    <%= link_to_access_token(@token, 'skip', title: 'Does Not Apply', class: 'button') %>
+    - I already know this employer very well
+  </li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>
