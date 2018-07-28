@@ -96,6 +96,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_content "Have you followed"
 
     expect_status_link 'followed up after application submission'
+    expect_status_link 'declined'
     expect_status_link 'no change'
     expect_status_link 'skip'
     expect_status_link 'not interested'
@@ -108,6 +109,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_content "Have you scheduled"
 
     expect_status_link 'scheduled an interview'
+    expect_status_link 'declined'
     expect_status_link 'no change'
     expect_status_link 'skip'
     expect_status_link 'not interested'
@@ -156,6 +158,20 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_content "Have you followed"
 
     expect_status_link 'followed up after interview'
+    expect_status_link 'declined'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
+
+  describe 'received offer' do
+    let(:view) { :received_offer }
+    
+    expect_headers "New Opportunity: Look for an Offer!"
+    expect_content "Have you received"
+
+    expect_status_link 'received offer'
+    expect_status_link 'declined'
     expect_status_link 'no change'
     expect_status_link 'skip'
     expect_status_link 'not interested'

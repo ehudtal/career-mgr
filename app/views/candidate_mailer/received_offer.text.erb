@@ -1,7 +1,7 @@
-Have you scheduled an interview?
+Have you received an offer from <%= @opp.employer.name %> yet?
 
 Yes:
-<%= @token.path_with_token('scheduled an interview') %>
+<%= @token.path_with_token('received offer') %>
 
 Employer Declined:
 <%= @token.path_with_token('declined') %>

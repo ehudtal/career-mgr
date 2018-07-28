@@ -55,6 +55,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "#{@opp.name}: Follow Up After Your Interview")
   end
+
+  def received_offer
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Look for an Offer!")
+  end
   
   private
   

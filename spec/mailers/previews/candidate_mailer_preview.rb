@@ -44,6 +44,10 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).followed_up_after_interview
   end
   
+  def step_12_received_offer
+    CandidateMailer.with(access_token: access_token).received_offer
+  end
+  
   private
   
   def access_token
