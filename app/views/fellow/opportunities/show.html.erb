@@ -1,0 +1,29 @@
+<p>
+  <strong>Secured on:</strong>
+  <%= @candidate.secured_on %>
+</p>
+
+<p>
+  <strong>Staff notes:</strong>
+  <%= @candidate.staff_notes %>
+</p>
+
+<p>
+  <strong>Fellow:</strong>
+  <%= @candidate.fellow_id %>
+</p>
+
+<p>
+  <strong>Opportunity:</strong>
+  <%= @candidate.opportunity_id %>
+</p>
+
+<p>
+  <strong>Opportunity stage:</strong>
+  <%= @candidate.opportunity_stage_id %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_fellow_opportunity_path(@candidate), class: 'edit' %> |
+  <%= link_to 'Back', admin_fellow_opportunities_path, class: 'back' %>
+</footer>

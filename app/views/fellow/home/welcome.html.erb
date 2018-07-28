@@ -1,3 +1,15 @@
 <h1>Fellow Dashboard</h1>
 
 <%= link_to 'Your Profile', fellow_profile_path %>
+
+<h3>Your Opportunities</h3>
+
+<% if @fellow.fellow_opportunities.empty? %>
+  <p>None at this time.</p>
+<% else %>
+  <ul class="fellow-opportunities">
+    <% @fellow.fellow_opportunities.each do |candidate| %>
+      <li><%= link_to candidate.opportunity.formatted_name, fellow_opportunity_path(candidate) %></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get 'home/welcome'
     
     resource :profile, only: [:show, :edit, :update]
+    resources :opportunities, only: [:show, :update]
   end
 
   namespace :admin do

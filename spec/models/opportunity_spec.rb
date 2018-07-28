@@ -123,6 +123,15 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  describe '#formatted_name' do
+    let(:employer) { build :employer, name: 'ABC Employer' }
+    let(:opportunity) { build :opportunity, name: 'Internship', employer: employer } 
+    
+    it "combines employer and opportunity name" do
+      expect(opportunity.formatted_name).to eq("ABC Employer - Internship")
+    end
+  end
+  
   describe "#state_ids_for_metro_ids" do
     it "returns associated metro ids by state" do
       opportunity = build :opportunity

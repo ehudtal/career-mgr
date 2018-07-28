@@ -43,6 +43,10 @@ class Opportunity < ApplicationRecord
     @candidates = Fellow.where(id: candidate_ids)
   end
   
+  def formatted_name
+    [employer.name, name].join(' - ')
+  end
+  
   def fellow_ids_for_interests names
     selected_ids = if names
       Interest.where(name: names.split(';')).pluck(:id)
