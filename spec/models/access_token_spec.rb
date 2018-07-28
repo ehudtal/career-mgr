@@ -182,10 +182,11 @@ RSpec.describe AccessToken, type: :model do
       end
 
       allowed_statuses = [
-        'no change', 'skip', 'interested', 'not interested',
-        'researched employer', 'connected with employees', 'customized application materials', 'submitted application', 'followed up after application submission',
-        'scheduled an interview', 'researched interview process', 'practiced for interview', 'attended interview', 'followed up after interview', 
-        'received offer', 'submitted counter-offer', 'accepted offer', 'declined'
+        'no change', 'skip',
+        'research employer', 'connect with employees', 'customize application materials', 'submit application', 'follow up after application',
+        'schedule interview', 'research interview process', 'practice for interview', 'attend interview', 'follow up after interview',
+        'receive offer', 'submit counter-offer', 'accept offer',
+        'fellow accepted', 'fellow declined', 'employer declined'
       ]
 
       allowed_statuses.each do |status_update|
@@ -194,7 +195,7 @@ RSpec.describe AccessToken, type: :model do
         end
       end
       
-      disallowed_statuses = ['notified', 'rejected']
+      disallowed_statuses = ['respond to invitation']
       
       disallowed_statuses.each do |status_update|
         it "forbids route '#{status_update}'" do
