@@ -1,0 +1,17 @@
+<h1>Have you submitted a counter offer to <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Give yourself a pat on the back and celebrate! You've made it this far, regardless of whether you'll end up agreeing on the terms.</li>
+  <li>Get advice on negotiating your salary and benefits package: Consult mentors and other people in your network, as well as sites like glassdoor.com and the Bureau of Labor Statistics to assess the offer you received.</li>
+  <li>PRO TIP: The offer you get won't always be a fair one. If it's too low (based on your research), propose a counter-offer that's a little better than you'd expect to end up with and let them counter it.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_access_token(@token, 'submitted counter-offer', title: 'Submitted Counter-Offer', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'accepted offer', title: 'Accepted Offer', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'skip', title: 'No Need', class: 'button') %></li>
+  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+<ul>

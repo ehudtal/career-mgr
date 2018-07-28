@@ -60,6 +60,11 @@ class CandidateMailer < ApplicationMailer
     set_objects
     mail(to: @fellow.contact.email, subject: "#{@opp.name}: Look for an Offer!")
   end
+
+  def submitted_counter_offer
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Consider a Counter Offer")
+  end
   
   private
   

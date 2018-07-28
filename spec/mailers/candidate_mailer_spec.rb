@@ -20,7 +20,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     
     def expect_content content
       it "renders the body with content \"#{content}\"" do
-        expect(mail.body.encoded).to include(content)
+        expect(mail.body.encoded).to match(content)
       end
     end
   
@@ -172,6 +172,19 @@ RSpec.describe CandidateMailer, type: :mailer do
 
     expect_status_link 'received offer'
     expect_status_link 'declined'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
+
+  describe 'submitted counter-offer' do
+    let(:view) { :submitted_counter_offer }
+    
+    expect_headers "New Opportunity: Consider a Counter Offer"
+    expect_content "Have you submitted"
+
+    expect_status_link 'submitted counter-offer'
+    expect_status_link 'accepted offer'
     expect_status_link 'no change'
     expect_status_link 'skip'
     expect_status_link 'not interested'
