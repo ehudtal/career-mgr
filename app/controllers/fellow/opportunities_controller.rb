@@ -18,6 +18,11 @@ class Fellow::OpportunitiesController < ApplicationController
   private
   
   def set_fellow
+    if @access_token
+      @fellow = @access_token.owner.fellow
+      return
+    end
+    
     unless current_user.fellow
       current_user.create_fellow(
         first_name: 'unknown',

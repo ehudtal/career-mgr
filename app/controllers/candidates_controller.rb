@@ -4,6 +4,7 @@ class CandidatesController < ApplicationController
   def status
     if @fellow_opportunity = FellowOpportunity.find_by(id: params[:fellow_opportunity_id])
       @fellow_opportunity.stage = params[:update].downcase
+      redirect_to fellow_opportunity_path(@fellow_opportunity)
     else
       fail_token_authorize!
     end

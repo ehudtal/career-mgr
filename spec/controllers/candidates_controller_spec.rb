@@ -43,7 +43,7 @@ RSpec.describe CandidatesController, type: :controller do
     
     it "returns http success" do
       get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested', token: access_token.code}
-      expect(response).to be_successful
+      expect(response).to redirect_to(fellow_opportunity_path(fellow_opportunity))
     end
     
     it "updates the fellow_opportunity stage" do

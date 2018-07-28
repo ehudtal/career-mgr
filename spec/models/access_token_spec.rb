@@ -178,7 +178,7 @@ RSpec.describe AccessToken, type: :model do
     
       it "has an array of routes" do
         expect(subject.routes).to be_an(Array)
-        expect(subject.routes.size).to eq(18)
+        expect(subject.routes.size).to eq(20)
       end
 
       allowed_statuses = [
@@ -189,7 +189,7 @@ RSpec.describe AccessToken, type: :model do
       ]
 
       allowed_statuses.each do |status_update|
-        it "generates access token with '#{status_update}' route" do
+        it "allows route '#{status_update}'" do
           expect(subject.routes).to include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
         end
       end
@@ -197,9 +197,17 @@ RSpec.describe AccessToken, type: :model do
       disallowed_statuses = ['notified', 'rejected']
       
       disallowed_statuses.each do |status_update|
-        it "generates access token with '#{status_update}' route" do
+        it "forbids route '#{status_update}'" do
           expect(subject.routes).to_not include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
         end
+      end
+      
+      it "allows route for viewing fellow opportunity" do
+        expect(subject.routes).to include({'label' => 'view', 'method' => 'GET', 'path' => "http://localhost:3011/fellow/opportunities/#{owner.id}"})
+      end
+      
+      it "allows route for updating fellow opportunity" do
+        expect(subject.routes).to include({'label' => 'update', 'method' => 'PUT', 'path' => "http://localhost:3011/fellow/opportunities/#{owner.id}"})
       end
     end
     

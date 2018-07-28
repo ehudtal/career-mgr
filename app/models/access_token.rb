@@ -44,6 +44,8 @@ class AccessToken < ApplicationRecord
     end
     
     def routes_for_fellow_opportunity fellow_opportunity
+      allowed_routes = []
+      
       allowed_statuses = [
         'no change', 'skip', 'interested', 'not interested',
         'researched employer', 'connected with employees', 'customized application materials', 'submitted application', 'followed up after application submission',
@@ -51,9 +53,14 @@ class AccessToken < ApplicationRecord
         'received offer', 'submitted counter-offer', 'accepted offer', 'declined'
       ]
       
-      allowed_statuses.map do |allowed_status|
-        {label: allowed_status, method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: allowed_status)}
+      allowed_statuses.each do |allowed_status|
+        allowed_routes << {label: allowed_status, method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: allowed_status)}
       end
+      
+      allowed_routes << {label: 'view', method: 'GET', path: routes.fellow_opportunity_url(fellow_opportunity.id)}
+      allowed_routes << {label: 'update', method: 'PUT', path: routes.fellow_opportunity_url(fellow_opportunity.id)}
+      
+      allowed_routes
     end
     
     def routes
@@ -69,8 +76,8 @@ class AccessToken < ApplicationRecord
   def match? request
     routes.any? do |route|
       method_match?(route, request) &&
-      route['path'] == url_without_token(request.original_url) &&
-      code == token_for(request)
+      route_match?(route, request) &&
+      token_match?(request)
     end
   end
   
@@ -79,6 +86,14 @@ class AccessToken < ApplicationRecord
     request_method = normalize_request_method(request.request_method)
 
     route_method == request_method
+  end
+  
+  def route_match? route, request
+    route['path'] == url_without_token(request.original_url)
+  end
+  
+  def token_match? request
+    code == token_for(request)
   end
   
   def normalize_request_method request_method
@@ -154,6 +169,6 @@ class AccessToken < ApplicationRecord
   end
   
   def token_for request
-    request.params[:token]
+    request.params[:token] || request.session[:token]
   end
 end
