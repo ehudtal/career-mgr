@@ -189,4 +189,16 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'skip'
     expect_status_link 'not interested'
   end
+
+  describe 'accepted offer' do
+    let(:view) { :accepted_offer }
+    
+    expect_headers "New Opportunity: Accept Your Offer!"
+    expect_content "Have you accepted"
+
+    expect_status_link 'accepted offer'
+    expect_status_link 'no change'
+    expect_status_link 'skip'
+    expect_status_link 'not interested'
+  end
 end

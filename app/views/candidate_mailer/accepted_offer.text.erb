@@ -1,0 +1,13 @@
+Have you accepted your offer with <%= @opp.employer.name %>?
+
+Yes:
+<%= @token.path_with_token('accepted offer') %>
+
+Not Yet:
+<%= @token.path_with_token('no change') %>
+
+Does Not Apply:
+<%= @token.path_with_token('skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('not interested') %>

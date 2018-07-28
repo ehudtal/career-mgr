@@ -7,66 +7,63 @@ class CandidateMailer < ApplicationMailer
   end
 
   def researched_employer
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Research This Employer")
+    nag("Research This Employer")
   end
 
   def connected_with_employees
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Connect with Current Employees")
+    nag("Connect with Current Employees")
   end
 
   def customized_application_materials
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Customized Your Application Materials")
+    nag("Customized Your Application Materials")
   end
 
   def submitted_application
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Submit Your Application")
+    nag("Submit Your Application")
   end
 
   def followed_up_after_application_submission
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Follow Up on Your Application")
+    nag("Follow Up on Your Application")
   end
 
   def scheduled_an_interview
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Schedule an Interview")
+    nag("Schedule an Interview")
   end
 
   def researched_interview_process
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Research the Interview Process")
+    nag("Research the Interview Process")
   end
 
   def practiced_for_interview
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Practice for Your Interview")
+    nag("Practice for Your Interview")
   end
 
   def attended_interview
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Ace Your Interview!")
+    nag("Ace Your Interview!")
   end
 
   def followed_up_after_interview
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Follow Up After Your Interview")
+    nag("Follow Up After Your Interview")
   end
 
   def received_offer
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Look for an Offer!")
+    nag("Look for an Offer!")
   end
 
   def submitted_counter_offer
-    set_objects
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: Consider a Counter Offer")
+    nag("Consider a Counter Offer")
+  end
+
+  def accepted_offer
+    nag("Accept Your Offer!")
   end
   
   private
+  
+  def nag subject
+    set_objects
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: #{subject}")
+  end
   
   def set_objects
     @token = params[:access_token]
