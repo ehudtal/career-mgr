@@ -22,7 +22,7 @@ class CandidateMailer < ApplicationMailer
     nag("Submit Your Application")
   end
 
-  def followed_up_after_application_submission
+  def follow_up_after_application
     nag("Follow Up on Your Application")
   end
 
