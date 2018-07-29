@@ -1,0 +1,15 @@
+<h1>Have you submitted your application to <%= @opp.employer.name %>?</h1>
+
+<ul class="tips">
+  <li>Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else). </li>
+  <li>If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply.</li>
+</ul>
+
+<hr>
+
+<ul class="response-links">
+  <li><%= link_to_status_update 'submit application', 'next', 'Yes' %></li>
+  <li><%= link_to_status_update 'submit application', 'no change', 'Not Yet' %></li>
+  <li><%= link_to_status_update 'submit application', 'skip', 'Does Not Apply' %></li>
+  <li><%= link_to_status_update 'submit application', 'fellow declined', 'No Longer Interested' %></li>
+<ul>

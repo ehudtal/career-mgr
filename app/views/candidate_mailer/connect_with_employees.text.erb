@@ -6,12 +6,12 @@ Have you networked and talked to people who work(ed) for <%= @opp.employer.name 
 * PRO TIP: Keep taking feedback and revise your application materials accordingly.
 
 Yes:
-<%= @token.path_with_token('status', from: 'connect with employees', update: 'customize application materials') %>
+<%= @token.path_with_token('status', from: 'connect with employees', update: 'next') %>
 
 Not Yet:
 <%= @token.path_with_token('status', from: 'connect with employees', update: 'no change') %>
 
-Does Not Apply - I already know this employer well:
+Does Not Apply
 <%= @token.path_with_token('status', from: 'connect with employees', update: 'skip') %>
 
 No Longer Interested:

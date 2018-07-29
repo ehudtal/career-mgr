@@ -88,6 +88,18 @@ RSpec.describe FellowOpportunity, type: :model do
         end
       end
     
+      describe 'with special status "next"' do
+        let(:name_new) { 'next' }
+        
+        it "moves to next stage" do
+          expect_stage(stage_new)
+        end
+        
+        it "creates a log record of skipped stage" do
+          expect_log(name_new)
+        end
+      end
+    
       describe 'with special status "skip"' do
         let(:name_new) { 'skip' }
         
@@ -96,7 +108,7 @@ RSpec.describe FellowOpportunity, type: :model do
         end
         
         it "creates a log record of skipped stage" do
-          expect_log("skipped: #{name_new}")
+          expect_log("skipped to: #{name_new}")
         end
       end
     

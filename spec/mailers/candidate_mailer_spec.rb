@@ -47,7 +47,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_headers "New Opportunity: Research This Employer"
     expect_content 'Have you researched'
 
-    expect_status_link 'research employer', 'connect with employees'
+    expect_status_link 'research employer', 'next'
     expect_status_link 'research employer', 'no change'
     expect_status_link 'research employer', 'skip'
     expect_status_link 'research employer', 'fellow declined'
@@ -59,7 +59,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_headers "New Opportunity: Connect with Current Employees"
     expect_content "Have you networked"
 
-    expect_status_link 'connect with employees', 'customize application materials'
+    expect_status_link 'connect with employees', 'next'
     expect_status_link 'connect with employees', 'no change'
     expect_status_link 'connect with employees', 'skip'
     expect_status_link 'connect with employees', 'fellow declined'
@@ -71,24 +71,24 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_headers "New Opportunity: Customize Your Application Materials"
     expect_content "Have you customized"
 
-    expect_status_link 'customize application materials', 'submit application'
+    expect_status_link 'customize application materials', 'next'
     expect_status_link 'customize application materials', 'no change'
     expect_status_link 'customize application materials', 'skip'
     expect_status_link 'customize application materials', 'fellow declined'
   end
-  #
-  # describe 'submitted application' do
-  #   let(:view) { :submitted_application }
-  #
-  #   expect_headers "New Opportunity: Submit Your Application"
-  #   expect_content "Have you submitted"
-  #
-  #   expect_status_link 'submitted application'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+
+  describe 'submit application' do
+    let(:view) { :submit_application }
+
+    expect_headers "New Opportunity: Submit Your Application"
+    expect_content "Have you submitted"
+
+    expect_status_link 'submit application', 'next'
+    expect_status_link 'submit application', 'no change'
+    expect_status_link 'submit application', 'skip'
+    expect_status_link 'submit application', 'fellow declined'
+  end
+
   # describe 'followed up after application submission' do
   #   let(:view) { :followed_up_after_application_submission }
   #

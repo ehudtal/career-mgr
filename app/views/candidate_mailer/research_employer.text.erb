@@ -8,12 +8,12 @@ Look up the employer on websites such as:
 * Idealist.org (for mission-driven organizations)
 
 Yes:
-<%= @token.path_with_token('status', from: 'research employer', update: 'connect with employees') %>
+<%= @token.path_with_token('status', from: 'research employer', update: 'next') %>
 
 Not Yet:
 <%= @token.path_with_token('status', from: 'research employer', update: 'no change') %>
 
-Does Not Apply - I already know this employer well:
+Does Not Apply:
 <%= @token.path_with_token('status', from: 'research employer', update: 'skip') %>
 
 No Longer Interested:

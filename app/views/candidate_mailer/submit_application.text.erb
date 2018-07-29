@@ -1,0 +1,16 @@
+Have you submitted your application to <%= @opp.employer.name %>?
+
+* Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else).
+* If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply.
+
+Yes:
+<%= @token.path_with_token('status', from: 'submit application', update: 'next') %>
+
+Not Yet:
+<%= @token.path_with_token('status', from: 'submit application', update: 'no change') %>
+
+Does Not Apply
+<%= @token.path_with_token('status', from: 'submit application', update: 'skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('status', from: 'submit application', update: 'fellow declined') %>

@@ -18,7 +18,7 @@ class CandidateMailer < ApplicationMailer
     nag("Customize Your Application Materials")
   end
 
-  def submitted_application
+  def submit_application
     nag("Submit Your Application")
   end
 

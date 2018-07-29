@@ -47,7 +47,7 @@ class AccessToken < ApplicationRecord
       allowed_routes = []
       
       allowed_statuses = [
-        'no change', 'skip',
+        'no change', 'skip', 'next',
         'research employer', 'connect with employees', 'customize application materials', 'submit application', 'follow up after application',
         'schedule interview', 'research interview process', 'practice for interview', 'attend interview', 'follow up after interview',
         'receive offer', 'submit counter-offer', 'accept offer',

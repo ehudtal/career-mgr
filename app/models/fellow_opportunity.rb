@@ -28,11 +28,19 @@ class FellowOpportunity < ApplicationRecord
     case stage_name
     when 'no change'
       log 'no change'
+
+    when 'next'
+      next_stage = next_opportunity_stage
+
+      self.update opportunity_stage: next_stage
+      log stage_name
+
     when 'skip'
       next_stage = next_opportunity_stage
 
       self.update opportunity_stage: next_stage
-      log "skipped: #{next_stage.name}"
+      log "skipped to: #{next_stage.name}"
+
     else
       self.update opportunity_stage: OpportunityStage.find_by(name: stage_name)
       log stage_name
