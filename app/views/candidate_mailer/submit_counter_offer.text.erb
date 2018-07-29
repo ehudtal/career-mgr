@@ -5,16 +5,13 @@ Have you submitted a counter offer to <%= @opp.employer.name %>?
 * PRO TIP: The offer you get won't always be a fair one. If it's too low (based on your research), propose a counter-offer that's a little better than you'd expect to end up with and let them counter it.
 
 Submitted Counter-Offer:
-<%= @token.path_with_token('submitted counter-offer') %>
-
-Accepted Offer:
-<%= @token.path_with_token('accepted offer') %>
+<%= @token.path_with_token('status', from: 'submit counter-offer', update: 'receive offer') %>
 
 Not Yet:
-<%= @token.path_with_token('no change') %>
+<%= @token.path_with_token('status', from: 'submit counter-offer', update: 'no change') %>
 
-No Need:
-<%= @token.path_with_token('skip') %>
+Accepted Offer:
+<%= @token.path_with_token('status', from: 'submit counter-offer', update: 'fellow accepted') %>
 
 No Longer Interested:
-<%= @token.path_with_token('not interested') %>
+<%= @token.path_with_token('status', from: 'submit counter-offer', update: 'fellow declined') %>

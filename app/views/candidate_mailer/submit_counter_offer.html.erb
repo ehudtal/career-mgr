@@ -9,9 +9,8 @@
 <hr>
 
 <ul class="response-links">
-  <li><%= link_to_access_token(@token, 'submitted counter-offer', title: 'Submitted Counter-Offer', class: 'button') %></li>
-  <li><%= link_to_access_token(@token, 'accepted offer', title: 'Accepted Offer', class: 'button') %></li>
-  <li><%= link_to_access_token(@token, 'no change', title: 'Not Yet', class: 'button') %></li>
-  <li><%= link_to_access_token(@token, 'skip', title: 'No Need', class: 'button') %></li>
-  <li><%= link_to_access_token(@token, 'not interested', title: 'No Longer Interested', class: 'button') %></li>
+  <li><%= link_to_status_update 'submit counter-offer', 'receive offer', 'Submitted Counter Offer' %></li>
+  <li><%= link_to_status_update 'submit counter-offer', 'no change', 'Not Yet' %></li>
+  <li><%= link_to_status_update 'submit counter-offer', 'fellow accepted', 'Accepted Offer' %></li>
+  <li><%= link_to_status_update 'submit counter-offer', 'fellow declined', 'No Longer Interested' %></li>
 <ul>

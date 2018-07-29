@@ -50,7 +50,7 @@ class CandidateMailer < ApplicationMailer
     nag("Look for an Offer!")
   end
 
-  def submitted_counter_offer
+  def submit_counter_offer
     nag("Consider a Counter Offer")
   end
 
