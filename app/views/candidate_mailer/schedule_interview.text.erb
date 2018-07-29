@@ -1,0 +1,16 @@
+Have you scheduled an interview?
+
+Yes:
+<%= @token.path_with_token('status', from: 'schedule interview', update: 'next') %>
+
+Not Yet:
+<%= @token.path_with_token('status', from: 'schedule interview', update: 'no change') %>
+
+Does Not Apply:
+<%= @token.path_with_token('status', from: 'schedule interview', update: 'skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('status', from: 'schedule interview', update: 'fellow declined') %>
+
+Employer Declined:
+<%= @token.path_with_token('status', from: 'schedule interview', update: 'employer declined') %>

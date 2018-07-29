@@ -102,19 +102,19 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'follow up after application', 'employer declined'
   end
 
-  # describe 'scheduled an interview' do
-  #   let(:view) { :scheduled_an_interview }
-  #
-  #   expect_headers "New Opportunity: Schedule an Interview"
-  #   expect_content "Have you scheduled"
-  #
-  #   expect_status_link 'scheduled an interview'
-  #   expect_status_link 'declined'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+  describe 'schedule interview' do
+    let(:view) { :schedule_interview }
+
+    expect_headers "New Opportunity: Schedule an Interview"
+    expect_content "Have you scheduled"
+
+    expect_status_link 'schedule interview', 'next'
+    expect_status_link 'schedule interview', 'no change'
+    expect_status_link 'schedule interview', 'skip'
+    expect_status_link 'schedule interview', 'fellow declined'
+    expect_status_link 'schedule interview', 'employer declined'
+  end
+
   # describe 'researched interview process' do
   #   let(:view) { :researched_interview_process }
   #

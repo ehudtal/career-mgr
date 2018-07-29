@@ -26,7 +26,7 @@ class CandidateMailer < ApplicationMailer
     nag("Follow Up on Your Application")
   end
 
-  def scheduled_an_interview
+  def schedule_interview
     nag("Schedule an Interview")
   end
 
