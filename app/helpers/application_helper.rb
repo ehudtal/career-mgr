@@ -1,4 +1,5 @@
 require 'uri'
+require 'erb'
 
 module ApplicationHelper
   def link_to_access_token access_token, label, options={}
@@ -12,5 +13,9 @@ module ApplicationHelper
   
   def link_to_status_update from, update, title
     link_to_access_token(@token, 'status', title: title, params: {from: from, update: update}, class: 'button')
+  end
+  
+  def interpolate string
+    ERB.new(string).result(binding)
   end
 end

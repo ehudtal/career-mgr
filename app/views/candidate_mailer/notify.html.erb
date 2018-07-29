@@ -1,0 +1,35 @@
+<h1><%= interpolate(@content['question']) %></h1>
+
+<% if @content['materials'] %>
+  <ul class="materials">
+    <% @content['materials'].each do |material| %>
+      <li><%= interpolate(material) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @content['tips'] %>
+  <div class="tips">
+    <% if @content['tips']['header'] %>
+      <p><%= interpolate(@content['tips']['header']) %></p>
+    <% end %>
+  
+    <% if @content['tips']['list'] %>
+      <ul>
+        <% @content['tips']['list'].each do |tip| %>
+          <li><%= interpolate(tip) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @content['links'] %>
+  <hr>
+
+  <ul class="response-links">
+    <% @content['links'].each do |update, label| %>
+      <li><%= link_to_status_update @opportunity_stage.name, update, label %></li>
+    <% end %>
+  </ul>
+<% end %>

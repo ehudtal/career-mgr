@@ -1,0 +1,125 @@
+default links: &default_links
+  next: "Yes"
+  no change: "Not Yet"
+  skip: "Does Not Apply"
+  fellow declined: "No Longer Interested"
+    
+default links with employer: &default_links_with_employer
+  <<: *default_links
+  employer declined: "Employer Declined"
+
+research employer:
+  question: "Have you researched <%= @opp.employer.name %> online?"
+  tips:
+    header: "Look up the employer on websites such as:"
+    list:
+      - "GlassDoor"
+      - "LinkedIn"
+      - "Better Business Bureau"
+      - "Idealist.org (for mission-driven organizations)"
+  links: *default_links
+
+connect with employees:
+  question: "Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?"
+  tips:
+    list:
+      - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at the company you're aiming for."
+      - "Introduce yourself, attach a resume, and ask them: \"What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?\""
+      - "If it sounds like you're a good fit, ask for a referral: \"Would you be willing to refer me internally?\""
+      - "PRO TIP: Keep taking feedback and revise your application materials accordingly."
+  links: *default_links
+
+customize application materials:
+  question: "Have you customized your:"
+  materials:
+    - "Resume?"
+    - "Cover Letter?"
+    - "Other materials for this opportunity (eg, portfolio)"
+  tips:
+    header: "More Info:"
+    list:
+      - "Highlight the skills and experiences you have that best match the jobs and companies you're interested in."
+      - "Keep revising based on feedback from your campus career center, Braven Fellows and your Coach, and anyone else who could help."
+      - "Search for yourself online as an employer might do, and adapt all your profiles to look professional and relevant."
+      - "Follow key companies and people in the industry, and join relevant groups and meetups."
+      - "PRO TIP: Catch all the typos! Professional polish shows that you care about doing your job well."
+  links: *default_links
+    
+submit application:
+  question: "Have you submitted your application to <%= @opp.employer.name %>?"
+  tips:
+    list:
+      - "Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else)."
+      - "If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply."
+  links: *default_links
+      
+follow up after application:
+  question: "Have you followed up to see your application through?"
+  tips:
+    header: "Follow up with any contacts you have who might have some influence at the company (e.g. current and past employees, partners, clients) by sending them a copy of the resume and cover letter and asking \"Would you be willing to put in a word for me to make sure my application is considered?\""
+  links: *default_links_with_employer
+
+schedule interview:
+  question: "Have you scheduled an interview?"
+  links: *default_links_with_employer
+  
+research interview process:
+  question: "Have you researched the interview process at <%= @opp.employer.name %>?"
+  tips:
+    list:
+      - "Look through the job posting and anything else you've gotten from this employer so far for info on how the interview process works."
+      - "Use online search, social media (including LinkedIn) and your network: What is the life story of the hiring manager(s) / interviewer(s)? Where did they go to school and what did they study? Do they have a blog or published work online or in print? If so, what are their interests and opinions? Were they mentioned in news stories? Are they active on online forums?"
+      - "Brainstorm what questions they might ask based on what you've learned about them."
+      - "PRO TIP: Research what people wear on the actual job so you can dress appropriately for your interview."
+  links: *default_links
+
+practice for interview:
+  question: "Have you practiced for your interview with <%= @opp.employer.name %>?"
+  tips:
+    list:
+      - "Brainstorm possible questions they may ask and write out your answers (can be in bullet points)."
+      - "Prepare some stories you can use: have several stories using the PAR and SYRCL frameworks."
+      - "Prepare 3-5 questions you can ask your interviewer."
+      - "Practice with people you know in the field, your campus career center, other Fellows, your Coach, or even friends and family."
+  links: *default_links
+
+attend interview:
+  question: "Have you attended your interview with <%= @opp.employer.name %> yet?"
+  tips:
+    list:
+      - "Make a great first impression: dress to impress (match the employer's dress code), arrive 10 minutes early, and be kind and courteous (e.g. turn off your phone)."
+      - "If it's a phone or virtual interview: find a quiet place with a good signal and be ready 10 minutes ahead of time."
+      - "Reserve some free time after the interview in case it starts late or goes longer than expected."
+      - "PRO TIP: Bring copies of your resume and some business cards."
+  links: *default_links
+
+follow up after interview:
+  question: "Have you followed up after your interview with <%= @opp.employer.name %>?"
+  tips:
+    header: "Send a quick follow up to express your continued excitement for the opportunity and to follow-up on anything from the interview."
+  links: *default_links_with_employer
+  
+receive offer:
+  question: "Have you received an offer from <%= @opp.employer.name %> yet?"
+  links:
+    next: "Yes"
+    no change: "Not Yet"
+    fellow declined: "No Longer Interested"
+    employer declined: "Employer Declined"
+
+submit counter-offer:
+  question: "Have you submitted a counter offer to <%= @opp.employer.name %>?"
+  tips:
+    list:
+      - "Give yourself a pat on the back and celebrate! You've made it this far, regardless of whether you'll end up agreeing on the terms."
+      - "Get advice on negotiating your salary and benefits package: Consult mentors and other people in your network, as well as sites like glassdoor.com and the Bureau of Labor Statistics to assess the offer you received."
+      - "PRO TIP: The offer you get won't always be a fair one. If it's too low (based on your research), propose a counter-offer that's a little better than you'd expect to end up with and let them counter it."
+  links:
+    receive offer: "Submitted Counter-Offer"
+    no change: "Not Yet"
+    fellow accepted: "Accepted Offer"
+    fellow declined: "No Longer Interested"
+
+accept offer:
+  question: "Have you accepted your offer with <%= @opp.employer.name %>?"
+  links: *default_links

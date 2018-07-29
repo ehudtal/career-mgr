@@ -56,4 +56,25 @@ RSpec.describe OpportunityStage, type: :model do
       expect(OpportunityStage.togglable_names).to eq([show_1.name, show_2.name])
     end
   end
+  
+  ##################
+  # Instance methods
+  ##################
+
+  describe '#content' do
+    let(:opportunity_stage) { build :opportunity_stage, name: 'research employer' }
+    subject { opportunity_stage.content }
+    
+    it "loads content from config yaml" do
+      expect(subject).to be_a(Hash)
+      expect(subject).to have_key('question')
+      expect(subject).to have_key('tips')
+      expect(subject).to have_key('links')
+    end
+    
+    it "memoizes the result" do
+      expect(YAML).to receive(:load).once.and_return({})
+      2.times { opportunity_stage.content }
+    end
+  end
 end

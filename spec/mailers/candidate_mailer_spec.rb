@@ -4,10 +4,12 @@ require 'nokogiri'
 RSpec.describe CandidateMailer, type: :mailer do
   let(:access_token) { AccessToken.for(fellow_opportunity) }
 
-  let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
+  let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage }
   let(:fellow) { create :fellow, contact: create(:contact, email: email) }
   let(:email) { 'test@example.com' }
   let(:opportunity) { create :opportunity, name: "New Opportunity" }
+  let(:opportunity_stage) { create :opportunity_stage, name: stage_name }
+  let(:stage_name) { view.to_s.gsub('_', ' ') }
 
   let(:mail) { CandidateMailer.with(access_token: access_token).send(view) }
   
@@ -172,13 +174,13 @@ RSpec.describe CandidateMailer, type: :mailer do
 
     expect_status_link 'receive offer', 'next'
     expect_status_link 'receive offer', 'no change'
-    expect_status_link 'receive offer', 'skip'
     expect_status_link 'receive offer', 'fellow declined'
     expect_status_link 'receive offer', 'employer declined'
   end
 
   describe 'submit counter-offer' do
     let(:view) { :submit_counter_offer }
+    let(:stage_name) { 'submit counter-offer' }
 
     expect_headers "New Opportunity: Consider a Counter Offer"
     expect_content "Have you submitted"

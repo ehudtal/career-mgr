@@ -1,0 +1,27 @@
+<%= interpolate(@content['question']) %>
+
+<% if @content['materials'] -%>
+  <% @content['materials'].each do |material| -%>
+* <%= interpolate(material) %>
+  <% end -%>
+<% end -%>
+
+<% if @content['tips'] -%>
+  <% if @content['tips']['header'] -%>
+<%= interpolate(@content['tips']['header']) %>
+  <% end -%>
+
+  <% if @content['tips']['list'] -%>
+    <% @content['tips']['list'].each do |tip| -%>
+* <%= interpolate(tip) %>
+    <% end -%>
+  <% end -%>
+<% end -%>
+
+<% if @content['links'] -%>
+  <% @content['links'].each do |update, label| -%>
+<%= label %>:
+<%= @token.path_with_token('status', from: @opportunity_stage.name, update: update) %>
+
+  <% end -%>
+<% end -%>

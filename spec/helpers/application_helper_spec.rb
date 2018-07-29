@@ -29,4 +29,13 @@ RSpec.describe ApplicationHelper, type: :helper do
       it { should eq(link_to('other', "http://localhost:3011/admin/employers?test=true&token=#{code}".html_safe, method: 'POST')) }
     end
   end
+  
+  describe 'interpolate' do
+    it "uses ERB interpolation" do
+      @answer = 'three'
+      string = "one plus two is <%= @answer %>"
+      
+      expect(interpolate(string)).to eq('one plus two is three'.html_safe)
+    end
+  end
 end

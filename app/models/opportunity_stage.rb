@@ -12,4 +12,9 @@ class OpportunityStage < ApplicationRecord
       togglable.pluck(:name)
     end
   end
+  
+  def content
+    return @content if defined?(@content)
+    @content = YAML.load(File.read("#{Rails.root}/config/opportunity_stage_content.yml"))[name]
+  end
 end
