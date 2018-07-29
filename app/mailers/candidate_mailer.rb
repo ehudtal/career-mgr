@@ -34,7 +34,7 @@ class CandidateMailer < ApplicationMailer
     nag("Research the Interview Process")
   end
 
-  def practiced_for_interview
+  def practice_for_interview
     nag("Practice for Your Interview")
   end
 

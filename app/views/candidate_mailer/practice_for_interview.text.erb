@@ -6,13 +6,13 @@ Prepare 3-5 questions you can ask your interviewer.
 Practice with people you know in the field, your campus career center, other Fellows, your Coach, or even friends and family.
 
 Yes:
-<%= @token.path_with_token('practiced for interview') %>
+<%= @token.path_with_token('status', from: 'practice for interview', update: 'next') %>
 
 Not Yet:
-<%= @token.path_with_token('no change') %>
+<%= @token.path_with_token('status', from: 'practice for interview', update: 'no change') %>
 
 Does Not Apply:
-<%= @token.path_with_token('skip') %>
+<%= @token.path_with_token('status', from: 'practice for interview', update: 'skip') %>
 
 No Longer Interested:
-<%= @token.path_with_token('not interested') %>
+<%= @token.path_with_token('status', from: 'practice for interview', update: 'fellow declined') %>
