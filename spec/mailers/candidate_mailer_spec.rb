@@ -151,19 +151,19 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'attend interview', 'fellow declined'
   end
 
-  # describe 'followed up after interview' do
-  #   let(:view) { :followed_up_after_interview }
-  #
-  #   expect_headers "New Opportunity: Follow Up After Your Interview"
-  #   expect_content "Have you followed"
-  #
-  #   expect_status_link 'followed up after interview'
-  #   expect_status_link 'declined'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+  describe 'follow up after interview' do
+    let(:view) { :follow_up_after_interview }
+
+    expect_headers "New Opportunity: Follow Up After Your Interview"
+    expect_content "Have you followed"
+
+    expect_status_link 'follow up after interview', 'next'
+    expect_status_link 'follow up after interview', 'no change'
+    expect_status_link 'follow up after interview', 'skip'
+    expect_status_link 'follow up after interview', 'fellow declined'
+    expect_status_link 'follow up after interview', 'employer declined'
+  end
+
   # describe 'received offer' do
   #   let(:view) { :received_offer }
   #

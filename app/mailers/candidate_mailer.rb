@@ -42,7 +42,7 @@ class CandidateMailer < ApplicationMailer
     nag("Ace Your Interview!")
   end
 
-  def followed_up_after_interview
+  def follow_up_after_interview
     nag("Follow Up After Your Interview")
   end
 
