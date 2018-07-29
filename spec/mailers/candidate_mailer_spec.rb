@@ -53,18 +53,18 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'research employer', 'fellow declined'
   end
 
-  # describe 'connected with employees' do
-  #   let(:view) { :connected_with_employees }
-  #
-  #   expect_headers "New Opportunity: Connect with Current Employees"
-  #   expect_content "Have you networked"
-  #
-  #   expect_status_link 'connected with employees'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+  describe 'connect with employees' do
+    let(:view) { :connect_with_employees }
+
+    expect_headers "New Opportunity: Connect with Current Employees"
+    expect_content "Have you networked"
+
+    expect_status_link 'connect with employees', 'customize application materials'
+    expect_status_link 'connect with employees', 'no change'
+    expect_status_link 'connect with employees', 'skip'
+    expect_status_link 'connect with employees', 'fellow declined'
+  end
+
   # describe 'customized application materials' do
   #   let(:view) { :customized_application_materials }
   #

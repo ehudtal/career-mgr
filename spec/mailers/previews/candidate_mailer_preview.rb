@@ -4,12 +4,12 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).respond_to_invitation
   end
   
-  def step_02_researched_employer
-    CandidateMailer.with(access_token: access_token).researched_employer
+  def step_02_research_employer
+    CandidateMailer.with(access_token: access_token).research_employer
   end
   
-  def step_03_connected_with_employees
-    CandidateMailer.with(access_token: access_token).connected_with_employees
+  def step_03_connect_with_employees
+    CandidateMailer.with(access_token: access_token).connect_with_employees
   end
   
   def step_04_customized_application_materials

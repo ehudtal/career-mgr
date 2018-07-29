@@ -10,7 +10,7 @@ class CandidateMailer < ApplicationMailer
     nag("Research This Employer")
   end
 
-  def connected_with_employees
+  def connect_with_employees
     nag("Connect with Current Employees")
   end
 
