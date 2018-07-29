@@ -38,7 +38,7 @@ class CandidateMailer < ApplicationMailer
     nag("Practice for Your Interview")
   end
 
-  def attended_interview
+  def attend_interview
     nag("Ace Your Interview!")
   end
 

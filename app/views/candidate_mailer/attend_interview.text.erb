@@ -6,13 +6,13 @@ Have you attended your interview with <%= @opp.employer.name %> yet?
 * PRO TIP: Bring copies of your resume and some business cards.
 
 Yes:
-<%= @token.path_with_token('attended interview') %>
+<%= @token.path_with_token('status', from: 'attend interview', update: 'next') %>
 
 Not Yet:
-<%= @token.path_with_token('no change') %>
+<%= @token.path_with_token('status', from: 'attend interview', update: 'no change') %>
 
 Does Not Apply:
-<%= @token.path_with_token('skip') %>
+<%= @token.path_with_token('status', from: 'attend interview', update: 'skip') %>
 
 No Longer Interested:
-<%= @token.path_with_token('not interested') %>
+<%= @token.path_with_token('status', from: 'attend interview', update: 'fellow declined') %>
