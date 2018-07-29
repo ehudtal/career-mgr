@@ -14,8 +14,8 @@ class CandidateMailer < ApplicationMailer
     nag("Connect with Current Employees")
   end
 
-  def customized_application_materials
-    nag("Customized Your Application Materials")
+  def customize_application_materials
+    nag("Customize Your Application Materials")
   end
 
   def submitted_application

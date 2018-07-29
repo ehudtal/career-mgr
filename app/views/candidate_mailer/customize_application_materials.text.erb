@@ -13,13 +13,13 @@ More Info:
 * PRO TIP: Catch all the typos! Professional polish shows that you care about doing your job well.
 
 Yes:
-<%= @token.path_with_token('customized application materials') %>
+<%= @token.path_with_token('status', from: 'customize application materials', update: 'submit application') %>
 
 Not Yet:
-<%= @token.path_with_token('no change') %>
+<%= @token.path_with_token('status', from: 'customize application materials', update: 'no change') %>
 
-Does Not Apply:
-<%= @token.path_with_token('skip') %>
+Does Not Apply - I already know this employer well:
+<%= @token.path_with_token('status', from: 'customize application materials', update: 'skip') %>
 
 No Longer Interested:
-<%= @token.path_with_token('not interested') %>
+<%= @token.path_with_token('status', from: 'customize application materials', update: 'fellow declined') %>

@@ -65,17 +65,17 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'connect with employees', 'fellow declined'
   end
 
-  # describe 'customized application materials' do
-  #   let(:view) { :customized_application_materials }
-  #
-  #   expect_headers "New Opportunity: Customized Your Application Materials"
-  #   expect_content "Have you customized"
-  #
-  #   expect_status_link 'customized application materials'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
+  describe 'customize application materials' do
+    let(:view) { :customize_application_materials }
+
+    expect_headers "New Opportunity: Customize Your Application Materials"
+    expect_content "Have you customized"
+
+    expect_status_link 'customize application materials', 'submit application'
+    expect_status_link 'customize application materials', 'no change'
+    expect_status_link 'customize application materials', 'skip'
+    expect_status_link 'customize application materials', 'fellow declined'
+  end
   #
   # describe 'submitted application' do
   #   let(:view) { :submitted_application }
