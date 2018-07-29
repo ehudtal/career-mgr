@@ -1,0 +1,10 @@
+Have you accepted your offer with <%= @opp.employer.name %>?
+
+Accepted Offer:
+<%= @token.path_with_token('status', from: 'accept offer', update: 'next') %>
+
+Not Yet:
+<%= @token.path_with_token('status', from: 'accept offer', update: 'no change') %>
+
+No Longer Interested:
+<%= @token.path_with_token('status', from: 'accept offer', update: 'fellow declined') %>

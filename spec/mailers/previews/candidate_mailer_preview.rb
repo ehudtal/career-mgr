@@ -52,8 +52,8 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).submit_counter_offer
   end
   
-  def step_14_accepted_offer
-    CandidateMailer.with(access_token: access_token).accepted_offer
+  def step_14_accept_offer
+    CandidateMailer.with(access_token: access_token).accept_offer
   end
   
   private
