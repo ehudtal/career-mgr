@@ -46,7 +46,7 @@ class CandidateMailer < ApplicationMailer
     nag("Follow Up After Your Interview")
   end
 
-  def received_offer
+  def receive_offer
     nag("Look for an Offer!")
   end
 

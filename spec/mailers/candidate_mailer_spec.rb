@@ -164,19 +164,19 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'follow up after interview', 'employer declined'
   end
 
-  # describe 'received offer' do
-  #   let(:view) { :received_offer }
-  #
-  #   expect_headers "New Opportunity: Look for an Offer!"
-  #   expect_content "Have you received"
-  #
-  #   expect_status_link 'received offer'
-  #   expect_status_link 'declined'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+  describe 'receive offer' do
+    let(:view) { :receive_offer }
+
+    expect_headers "New Opportunity: Look for an Offer!"
+    expect_content "Have you received"
+
+    expect_status_link 'receive offer', 'next'
+    expect_status_link 'receive offer', 'no change'
+    expect_status_link 'receive offer', 'skip'
+    expect_status_link 'receive offer', 'fellow declined'
+    expect_status_link 'receive offer', 'employer declined'
+  end
+
   # describe 'submitted counter-offer' do
   #   let(:view) { :submitted_counter_offer }
   #
