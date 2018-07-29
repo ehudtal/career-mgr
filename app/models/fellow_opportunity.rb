@@ -51,12 +51,11 @@ class FellowOpportunity < ApplicationRecord
       log stage_name
     end
     
-    # set active flag properly
-    if ['fellow accepted', 'fellow declined', 'employer declined'].include?(stage)
-      self.archive!
-    else
-      self.activate!
-    end
+    update_active_status
+  end
+  
+  def update_active_status
+    self.update active: self.opportunity_stage.active_status
   end
   
   def activate!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_29_071348) do
+ActiveRecord::Schema.define(version: 2018_07_29_174435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -296,6 +296,8 @@ ActiveRecord::Schema.define(version: 2018_07_29_071348) do
     t.datetime "updated_at", null: false
     t.integer "position"
     t.boolean "togglable"
+    t.boolean "auto_notify", default: true
+    t.boolean "active_status", default: true
     t.index ["name"], name: "index_opportunity_stages_on_name", unique: true
     t.index ["togglable"], name: "index_opportunity_stages_on_togglable"
   end

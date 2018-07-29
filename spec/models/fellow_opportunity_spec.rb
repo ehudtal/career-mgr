@@ -64,9 +64,9 @@ RSpec.describe FellowOpportunity, type: :model do
     let(:name_second) { 'second' }
     let(:name_third) { 'third' }
     
-    let(:stage_first) { create :opportunity_stage, name: name_first, position: 0 }
-    let(:stage_second) { create :opportunity_stage, name: name_second, position: 1 }
-    let(:stage_third) { create :opportunity_stage, name: name_third, position: 2 }
+    let(:stage_first) { create :opportunity_stage, name: name_first, position: 0, active_status: true }
+    let(:stage_second) { create :opportunity_stage, name: name_second, position: 1, active_status: true }
+    let(:stage_third) { create :opportunity_stage, name: name_third, position: 2, active_status: false }
 
     let(:fellow_opportunity) { create :fellow_opportunity, opportunity_stage: stage_first }
     
@@ -178,6 +178,14 @@ RSpec.describe FellowOpportunity, type: :model do
         
         it "creates a log record of skipped stage" do
           expect_log("skipped to: #{name_third}")
+        end
+      end
+      
+      describe 'when new opp stage has a different active status' do
+        let(:name_update) { name_third }
+        
+        it "updates the fellow_status active flag to match" do
+          expect(fellow_opportunity.reload.active).to eq(stage_third.active_status)
         end
       end
     end
