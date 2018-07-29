@@ -40,19 +40,19 @@ RSpec.describe CandidateMailer, type: :mailer do
     expect_status_link 'respond to invitation', 'research employer'
     expect_status_link 'respond to invitation', 'fellow decline'
   end
-  #
-  # describe 'researched employer' do
-  #   let(:view) { :researched_employer }
-  #
-  #   expect_headers "New Opportunity: Research This Employer"
-  #   expect_content 'Have you researched'
-  #
-  #   expect_status_link 'researched employer'
-  #   expect_status_link 'no change'
-  #   expect_status_link 'skip'
-  #   expect_status_link 'not interested'
-  # end
-  #
+
+  describe 'research employer' do
+    let(:view) { :research_employer }
+
+    expect_headers "New Opportunity: Research This Employer"
+    expect_content 'Have you researched'
+
+    expect_status_link 'research employer', 'connect with employees'
+    expect_status_link 'research employer', 'no change'
+    expect_status_link 'research employer', 'skip'
+    expect_status_link 'research employer', 'fellow declined'
+  end
+
   # describe 'connected with employees' do
   #   let(:view) { :connected_with_employees }
   #

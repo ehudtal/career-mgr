@@ -9,4 +9,8 @@ module ApplicationHelper
     
     link_to(title, token_url, options.merge(method: route['method'])).html_safe
   end
+  
+  def link_to_status_update from, update, title
+    link_to_access_token(@token, 'status', title: title, params: {from: from, update: update}, class: 'button')
+  end
 end

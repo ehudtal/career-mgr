@@ -8,7 +8,7 @@ other details here.
 Please let us know if you're interested in this opportunity:
 
 Interested:
-<%= @token.path_with_token('status', update: 'research employer') %>
+<%= @token.path_with_token('status', from: 'respond to invitation', update: 'research employer') %>
 
 Not Interested:
-<%= @token.path_with_token('status', update: 'fellow declined') %>
+<%= @token.path_with_token('status', from: 'respond to invitation', update: 'fellow declined') %>

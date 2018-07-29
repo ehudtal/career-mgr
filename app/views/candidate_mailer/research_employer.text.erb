@@ -1,0 +1,20 @@
+Have you researched this employer online?
+
+Look up the employer on websites such as:
+
+* GlassDoor
+* LinkedIn
+* Better Business Bureau
+* Idealist.org (for mission-driven organizations)
+
+Yes:
+<%= @token.path_with_token('status', from: 'research employer', update: 'connect with employees') %>
+
+Not Yet:
+<%= @token.path_with_token('status', from: 'research employer', update: 'no change') %>
+
+Does Not Apply - I already know this employer well:
+<%= @token.path_with_token('status', from: 'research employer', update: 'skip') %>
+
+No Longer Interested:
+<%= @token.path_with_token('status', from: 'research employer', update: 'fellow declined') %>

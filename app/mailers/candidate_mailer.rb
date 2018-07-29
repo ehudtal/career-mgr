@@ -6,7 +6,7 @@ class CandidateMailer < ApplicationMailer
     mail(to: @fellow.contact.email, subject: "You've been invited to apply for #{@opp.name}")
   end
 
-  def researched_employer
+  def research_employer
     nag("Research This Employer")
   end
 
