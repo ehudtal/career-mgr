@@ -13,19 +13,20 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper, type: :helper do
   describe 'link_to_access_token(access_token, label)' do
     let(:code) { 'aaaaaaaaaaaaaaaa' }
-    let(:view_route) { {'label' => 'view', 'method' => 'GET', 'path' => '/fellow/home/welcome'} }
-    let(:other_route) { {'label' => 'other', 'method' => 'POST', 'path' => '/other?test=true'} }
+    let(:view_route) { {'label' => 'view', 'method' => 'GET', 'params' => {'controller' => 'fellow/home', 'action' => 'welcome'}} }
+    let(:other_route) { {'label' => 'other', 'method' => 'POST', 'params' => {'controller' => 'admin/employers', 'action' => 'index', 'test' => 'true'}} }
     let(:access_token) { build :access_token, code: code, routes: [view_route, other_route] }
     
     subject { link_to_access_token(access_token, label) }
+
     describe "when there are no other parameters" do
       let(:label) { 'view' }
-      it { should eq(link_to 'view', "/fellow/home/welcome?token=#{code}".html_safe, method: 'GET') }
+      it { should eq(link_to 'view', "http://localhost:3011/fellow/home/welcome?token=#{code}".html_safe, method: 'GET') }
     end
     
     describe "when there are other parameters" do
       let(:label) { 'other' }
-      it { should eq(link_to('other', "/other?test=true&token=#{code}".html_safe, method: 'POST')) }
+      it { should eq(link_to('other', "http://localhost:3011/admin/employers?test=true&token=#{code}".html_safe, method: 'POST')) }
     end
   end
 end

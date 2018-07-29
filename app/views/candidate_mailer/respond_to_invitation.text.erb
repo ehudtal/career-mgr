@@ -7,6 +7,8 @@ other details here.
 
 Please let us know if you're interested in this opportunity:
 
-<%= @token.path_with_token('interested') %>
+Interested:
+<%= @token.path_with_token('status', update: 'research employer') %>
 
-<%= @token.path_with_token('not interested') %>
+Not Interested:
+<%= @token.path_with_token('status', update: 'fellow declined') %>

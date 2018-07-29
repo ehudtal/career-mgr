@@ -1,15 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe CandidatesController, type: :controller do
-  let(:opportunity_stage) { create :opportunity_stage, name: 'interested' }
+  let(:opportunity_stage) { create :opportunity_stage, name: 'accepted' }
   
   let(:access_token) { create :access_token, code: code, routes: route_list }
   let(:code) { 'aaaabbbbccccdddd' }
-  let(:route_list) { [route_interested, route_not_interested, route_bad_id] }
-  let(:route_interested) { {'label' => 'Interested', 'method' => 'GET', 'path' => candidate_status_url(fellow_opportunity.id, update: 'Interested')} }
-  let(:route_not_interested) { {'label' => 'Not Interested', 'method' => 'GET', 'path' => candidate_status_url(fellow_opportunity.id, update: 'Not Interested')} }
-  let(:route_bad_id) { {'label' => 'Interested', 'method' => 'GET', 'path' => candidate_status_url(fellow_opportunity.id, update: 'Interested')} }
-  
+  let(:route_list) { [{'label' => 'status', 'method' => 'GET', 'params' => {'controller' => 'candidates', 'action' => 'status', 'fellow_opportunity_id' => fellow_opportunity.id.to_s, 'update' => /^(submitted|accepted|declined)$/}}] }
   
   let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
   let(:fellow) { create :fellow }
@@ -21,34 +17,34 @@ RSpec.describe CandidatesController, type: :controller do
   
   describe "GET #status" do
     it "redirects without token" do
-      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested'}
+      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted'}
 
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to include('The link you requested is unavailable')
     end
     
     it "redirects with bad token" do
-      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested', token: 'badtoken'}
+      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: 'badtoken'}
 
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to include('The link you requested is unavailable')
     end
     
     it "redirects with bad fellow_opp id" do
-      get :status, params: {fellow_opportunity_id: '1001', update: 'Interested', token: access_token.code}
+      get :status, params: {fellow_opportunity_id: '1001', update: 'accepted', token: access_token.code}
       
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to include('The link you requested is unavailable')
     end
     
     it "returns http success" do
-      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested', token: access_token.code}
+      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: access_token.code}
       expect(response).to redirect_to(fellow_opportunity_path(fellow_opportunity))
     end
     
     it "updates the fellow_opportunity stage" do
-      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'Interested', token: access_token.code}
-      expect(fellow_opportunity.reload.stage).to eq('interested')
+      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: access_token.code}
+      expect(fellow_opportunity.reload.stage).to eq('accepted')
     end
   end
 end

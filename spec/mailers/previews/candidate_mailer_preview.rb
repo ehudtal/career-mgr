@@ -1,7 +1,7 @@
 # Preview all emails at http://localhost:3000/rails/mailers/candidate_mailer
 class CandidateMailerPreview < ActionMailer::Preview
-  def step_01_invitation
-    CandidateMailer.with(access_token: access_token).invitation
+  def step_01_respond_to_invitation
+    CandidateMailer.with(access_token: access_token).respond_to_invitation
   end
   
   def step_02_researched_employer

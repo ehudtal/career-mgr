@@ -9,8 +9,8 @@ RSpec.describe FellowsController, type: :controller do
   let(:access_token) { create :access_token, code: code, routes: route_list }
   let(:code) { 'aaaabbbbccccdddd' }
   let(:route_list) { [route_edit, route_update] }
-  let(:route_edit) { {'label' => 'Edit Your Profile', 'method' => 'GET', 'path' => edit_fellow_url(fellow.id)} }
-  let(:route_update) { {'label' => 'Update Your Profile', 'method' => 'PUT', 'path' => fellow_url(fellow.id)} }
+  let(:route_edit) { {'label' => 'Edit Your Profile', 'method' => 'GET', 'params' => {'controller' => 'fellows', 'action' => 'edit', 'id' => fellow.id.to_s}} }
+  let(:route_update) { {'label' => 'Update Your Profile', 'method' => 'PUT', 'params' => {'controller' => 'fellows', 'action' => 'update', 'id' => fellow.id.to_s}} }
 
   let(:employment_status) { build :employment_status, id: 1001 }
   let(:industry) { create :industry }

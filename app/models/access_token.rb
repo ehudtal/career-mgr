@@ -54,7 +54,7 @@ class AccessToken < ApplicationRecord
         'fellow accepted', 'fellow declined', 'employer declined'
       ].join('|')
       
-      allowed_routes << {label: 'status', method: 'GET', params: {controller: 'candidates', action: 'status', update: /^(#{allowed_statuses})$/}}
+      allowed_routes << {label: 'status', method: 'GET', params: {controller: 'candidates', action: 'status', fellow_opportunity_id: fellow_opportunity.id.to_s, update: /^(#{allowed_statuses})$/}}
       allowed_routes << {label: 'view', method: 'GET', params: {controller: 'fellow/opportunities', action: 'show', id: fellow_opportunity.id.to_s}}
       allowed_routes << {label: 'update', method: 'PUT', params: {controller: 'fellow/opportunities', action: 'update', id: fellow_opportunity.id.to_s}}
       
@@ -64,7 +64,7 @@ class AccessToken < ApplicationRecord
   
   def route_for label=nil
     return routes.first if label.nil?
-    routes.detect{|route| route['label'] == label}
+    routes.detect{|route| route['label'] == label} || raise("Access Token Route \"#{label}\" does not exist")
   end
   
   def match? request
@@ -122,8 +122,12 @@ class AccessToken < ApplicationRecord
     end
   end
   
-  def path_with_token label=nil
-    url_for(route_for(label)['params'].merge(token: code))
+  def path_with_token label=nil, additional_params={}
+    params = route_for(label)['params']
+    params.merge!(additional_params) unless additional_params.empty?
+    params.merge!(token: code)
+    
+    url_for(params)
   end
 
   private
@@ -167,6 +171,7 @@ class AccessToken < ApplicationRecord
   end
   
   def url_for params
-    Rails.application.routes.url_helpers.url_for params
+    pattern_keys = params.keys.select{|k| params[k].is_a?(Regexp)}
+    Rails.application.routes.url_helpers.url_for params.except(*pattern_keys)
   end
 end

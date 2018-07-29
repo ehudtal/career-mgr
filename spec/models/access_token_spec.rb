@@ -205,7 +205,7 @@ RSpec.describe AccessToken, type: :model do
         route_request 'GET', "http://localhost:3011/candidates/#{id}/status?update=#{update.gsub(' ', '+')}", {
           controller: 'candidates',
           action: 'status',
-          id: id,
+          fellow_opportunity_id: id,
           update: update,
         }
       end
@@ -351,6 +351,11 @@ RSpec.describe AccessToken, type: :model do
 
     it "returns true if request uses PATCH instead of PUT" do
       request = route_request('PATCH', 'http://localhost:3011/users/1001', {'controller' => 'users', 'action' => 'update', 'id' => '1001'})
+      expect(subject.match?(request)).to be(true)
+    end
+    
+    it "returns true with extra parameters" do
+      request = route_request('POST', 'http://localhost:3011/users?turtles=cool', {'controller' => 'users', 'action' => 'create', 'turtles' => 'cool'})
       expect(subject.match?(request)).to be(true)
     end
   end

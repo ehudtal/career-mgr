@@ -9,5 +9,5 @@
 
 <p>Please let us know if you're interested in this opportunity:</p>
 
-<%= link_to_access_token(@token, 'interested', class: 'button') %>
-<%= link_to_access_token(@token, 'not interested', class: 'button') %>
+<%= link_to_access_token(@token, 'status', params: {from: 'respond to invitation', update: 'research employer'}, class: 'button') %>
+<%= link_to_access_token(@token, 'status', params: {from: 'respond to invitation', update: 'fellow declined'}, class: 'button') %>
