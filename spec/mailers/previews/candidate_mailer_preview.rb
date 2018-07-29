@@ -28,8 +28,8 @@ class CandidateMailerPreview < ActionMailer::Preview
     CandidateMailer.with(access_token: access_token).schedule_interview
   end
   
-  def step_08_researched_interview_process
-    CandidateMailer.with(access_token: access_token).researched_interview_process
+  def step_08_research_interview_process
+    CandidateMailer.with(access_token: access_token).research_interview_process
   end
   
   def step_09_practiced_for_interview

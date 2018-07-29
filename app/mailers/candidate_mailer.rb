@@ -30,7 +30,7 @@ class CandidateMailer < ApplicationMailer
     nag("Schedule an Interview")
   end
 
-  def researched_interview_process
+  def research_interview_process
     nag("Research the Interview Process")
   end
 

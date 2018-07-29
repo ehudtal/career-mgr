@@ -6,13 +6,13 @@ Have you researched the interview process at <%= @opp.employer.name %>?
 * PRO TIP: Research what people wear on the actual job so you can dress appropriately for your interview.
 
 Yes:
-<%= @token.path_with_token('researched interview process') %>
+<%= @token.path_with_token('status', from: 'research interview process', update: 'next') %>
 
 Not Yet:
-<%= @token.path_with_token('no change') %>
+<%= @token.path_with_token('status', from: 'research interview process', update: 'no change') %>
 
 Does Not Apply:
-<%= @token.path_with_token('skip') %>
+<%= @token.path_with_token('status', from: 'research interview process', update: 'skip') %>
 
 No Longer Interested:
-<%= @token.path_with_token('not interested') %>
+<%= @token.path_with_token('status', from: 'research interview process', update: 'fellow declined') %>
