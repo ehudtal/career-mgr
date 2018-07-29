@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe AccessToken, type: :model do
+  def route_request request_method, path, original_params
+    params = HashWithIndifferentAccess.new.merge(token: subject.code).merge(original_params)
+    
+    params.each do |key, val|
+      params[key] = val.to_s
+    end
+    
+    double('request',
+      request_method: request_method,
+      original_url: path,
+      params: params
+    )
+  end
+
   ##############
   # Associations
   ##############
@@ -35,8 +49,8 @@ RSpec.describe AccessToken, type: :model do
     
     subject { access_token.errors[:routes] }
     
-    describe "when an array of hashes, with keys 'method' and 'path'" do
-      let(:routes) { [{'method' => 'GET', 'path' => '/this/path'}] }
+    describe "when an array of hashes, with keys 'method' and 'params'" do
+      let(:routes) { [{'method' => 'GET', 'params' => {}}] }
       it { should be_empty }
     end
     
@@ -56,12 +70,12 @@ RSpec.describe AccessToken, type: :model do
     end
     
     describe 'when not all hashes have method key' do
-      let(:routes) { [{'method' => 'GET', 'path' => '/test/this'}, {'path' => '/get/another'}] }
+      let(:routes) { [{'method' => 'GET', 'params' => {}}, {'params' => {}}] }
       it { should include(error_message) }
     end
     
-    describe 'when not all hashes have path key' do
-      let(:routes) { [{'method' => 'GET', 'path' => '/test/this'}, {'method' => 'POST'}] }
+    describe 'when not all hashes have params key' do
+      let(:routes) { [{'method' => 'GET', 'params' => {}}, {'method' => 'POST'}] }
       it { should include(error_message) }
     end
   end
@@ -123,11 +137,11 @@ RSpec.describe AccessToken, type: :model do
 
   describe 'routes' do
     it "is stored as JSON" do
-      access_token = create :access_token, routes: [{method: 'GET', path: '/test/this'}]
+      access_token = create :access_token, routes: [{method: 'GET', params: {this: 'that'}}]
       access_token.reload
       
       expect(access_token.routes.first['method']).to eq('GET')
-      expect(access_token.routes.first['path']).to eq('/test/this')
+      expect(access_token.routes.first['params']).to eq({'this' => 'that'})
     end
   end
   
@@ -154,20 +168,55 @@ RSpec.describe AccessToken, type: :model do
       end
     
       it "generates access token with dashboard view only" do
-        expect(subject.routes).to include({'label' => 'view', 'method' => 'GET', 'path' => "http://localhost:3011/admin/fellows/#{owner.id}"})
+        request = route_request 'GET', "http://localhost:3011/admin/fellows/#{owner.id}", {
+          controller: 'admin/fellows',
+          action: 'show',
+          id: owner.id
+        }
+        
+        expect(subject.match?(request)).to be(true)
       end
-    
+
       it "generates token with edit route" do
-        expect(subject.routes).to include({'label' => 'Edit Your Profile', 'method' => 'GET', 'path' => "http://localhost:3011/fellows/#{owner.id}/edit"})
+        request = route_request 'GET', "http://localhost:3011/fellows/#{owner.id}/edit", {
+          controller: 'fellows',
+          action: 'edit',
+          id: owner.id
+        }
+        
+        expect(subject.match?(request)).to be(true)
       end
-    
+
       it "generates token with update route" do
-        expect(subject.routes).to include({'label' => 'Update Your Profile', 'method' => 'PUT', 'path' => "http://localhost:3011/fellows/#{owner.id}"})
+        request = route_request 'PUT', "http://localhost:3011/fellows/#{owner.id}", {
+          controller: 'fellows',
+          action: 'update',
+          id: owner.id
+        }
+        
+        expect(subject.match?(request)).to be(true)
       end
     end
     
     describe 'when owner is a fellow_opportunity' do
       let(:owner) { create :fellow_opportunity }
+      
+      def candidate_request id, update
+        route_request 'GET', "http://localhost:3011/candidates/#{id}/status?update=#{update.gsub(' ', '+')}", {
+          controller: 'candidates',
+          action: 'status',
+          id: id,
+          update: update,
+        }
+      end
+      
+      def opportunity_request request_method, action, id
+        route_request request_method, "http://localhost:3011/fellow/opportunities/#{id}", {
+          controller: 'fellow/opportunities',
+          action: action,
+          id: id,
+        }
+      end
       
       it { should be_an(AccessToken) }
       it { should be_valid }
@@ -178,7 +227,7 @@ RSpec.describe AccessToken, type: :model do
     
       it "has an array of routes" do
         expect(subject.routes).to be_an(Array)
-        expect(subject.routes.size).to eq(20)
+        expect(subject.routes.size).to eq(3)
       end
 
       allowed_statuses = [
@@ -191,7 +240,7 @@ RSpec.describe AccessToken, type: :model do
 
       allowed_statuses.each do |status_update|
         it "allows route '#{status_update}'" do
-          expect(subject.routes).to include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
+          expect(subject.match?(candidate_request(owner.id, status_update))).to eq(true)
         end
       end
       
@@ -199,16 +248,17 @@ RSpec.describe AccessToken, type: :model do
       
       disallowed_statuses.each do |status_update|
         it "forbids route '#{status_update}'" do
-          expect(subject.routes).to_not include({'label' => status_update, 'method' => 'GET', 'path' => "http://localhost:3011/candidates/#{owner.id}/status?update=#{status_update.gsub(' ', '+')}"})
+          expect(subject.match?(candidate_request(owner.id, status_update))).to eq(false)
         end
       end
       
       it "allows route for viewing fellow opportunity" do
-        expect(subject.routes).to include({'label' => 'view', 'method' => 'GET', 'path' => "http://localhost:3011/fellow/opportunities/#{owner.id}"})
+        expect(subject.match?(opportunity_request('GET', 'show', owner.id))).to eq(true)
       end
-      
+
       it "allows route for updating fellow opportunity" do
-        expect(subject.routes).to include({'label' => 'update', 'method' => 'PUT', 'path' => "http://localhost:3011/fellow/opportunities/#{owner.id}"})
+        expect(subject.match?(opportunity_request('PUT', 'update', owner.id))).to eq(true)
+        expect(subject.match?(opportunity_request('PATCH', 'update', owner.id))).to eq(true)
       end
     end
     
@@ -273,34 +323,34 @@ RSpec.describe AccessToken, type: :model do
   
   describe 'match?(request)' do
     let(:code) { 'aaaabbbbccccdddd' }
-    let(:route_get) { {'label' => 'get', 'method' => 'GET', 'path' => 'http://localhost:3011/get'} }
-    let(:route_post) { {'label' => 'post', 'method' => 'POST', 'path' => 'http://localhost:3011/post'} }
-    let(:route_put) { {'label' => 'put', 'method' => 'PUT', 'path' => 'http://localhost:3011/put'} }
+    let(:route_get) { {'label' => 'get', 'method' => 'GET', 'params' => {'controller' => 'users', 'action' => 'index'}} }
+    let(:route_post) { {'label' => 'post', 'method' => 'POST', 'params' => {'controller' => 'users', 'action' => 'create'}} }
+    let(:route_put) { {'label' => 'put', 'method' => 'PUT', 'params' => {'controller' => 'users', 'action' => 'update', 'id' => '1001'}} }
     
     subject { build :access_token, code: code, routes: [route_get, route_post, route_put] }
     
-    it "returns true if any route matches method AND path, minus token parameter" do
-      request = double('request', params: {token: code}, original_url: "#{route_post['path']}?token=#{code}", request_method: 'POST')
+    it "returns true if any route matches method AND params" do
+      request = route_request('POST', 'http://localhost:3011/users', {'controller' => 'users', 'action' => 'create'})
       expect(subject.match?(request)).to be(true)
     end
     
     it "returns false if the token doesn't match" do
-      request = double('request', params: {token: code+'x'}, original_url: "#{route_post['path']}?token=#{code}x", request_method: 'POST')
+      request = route_request('POST', 'http://localhost:3011/users', {'controller' => 'users', 'action' => 'create', 'token' => '123'})
       expect(subject.match?(request)).to be(false)
     end
     
     it "returns false if request method doesn't match" do
-      request = double('request', params: {token: code}, original_url: "#{route_post['path']}?token=#{code}", request_method: 'GET')
+      request = route_request('GET', 'http://localhost:3011/users', {'controller' => 'users', 'action' => 'create'})
       expect(subject.match?(request)).to be(false)
     end
-    
-    it "returns false if original url (minus token) doesn't match" do
-      request = double('request', params: {token: code}, original_url: "#{route_post['path']}x?token=#{code}", request_method: 'POST')
+
+    it "returns false if params don't match" do
+      request = route_request('POST', 'http://localhost:3011/users', {'controller' => 'users', 'action' => 'turtles'})
       expect(subject.match?(request)).to be(false)
     end
-    
+
     it "returns true if request uses PATCH instead of PUT" do
-      request = double('request', params: {token: code}, original_url: "#{route_put['path']}?token=#{code}", request_method: 'PATCH')
+      request = route_request('PATCH', 'http://localhost:3011/users/1001', {'controller' => 'users', 'action' => 'update', 'id' => '1001'})
       expect(subject.match?(request)).to be(true)
     end
   end
@@ -308,15 +358,15 @@ RSpec.describe AccessToken, type: :model do
   describe 'path_with_token(label)' do
     let(:access_token) { AccessToken.create code: code, routes: [route_one, route_two] }
     let(:code) { '0000000000000000' }
-    let(:route_one) { {'label' => 'one', 'method' => 'GET', 'path' => '/test/one'} }
-    let(:route_two) { {'label' => 'two', 'method' => 'POST', 'path' => '/test/two'} }
+    let(:route_one) { {'label' => 'one', 'method' => 'GET', 'params' => {'controller' => 'admin/employers', 'action' => 'index'}} }
+    let(:route_two) { {'label' => 'two', 'method' => 'POST', 'params' => {'controller' => 'admin/employers', 'action' => 'create'}} }
     
     it "returns the path WITH token param" do
-      expect(access_token.path_with_token('two')).to eq("/test/two?token=#{code}")
+      expect(access_token.path_with_token('two')).to eq("http://localhost:3011/admin/employers?token=#{code}")
     end
     
     it "returns the default path with token param" do
-      expect(access_token.path_with_token).to eq("/test/one?token=#{code}")
+      expect(access_token.path_with_token).to eq("http://localhost:3011/admin/employers?token=#{code}")
     end
   end
 end

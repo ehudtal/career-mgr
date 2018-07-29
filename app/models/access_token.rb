@@ -37,9 +37,9 @@ class AccessToken < ApplicationRecord
     
     def routes_for_fellow fellow
       [
-        {label: 'view', method: 'GET', path: routes.admin_fellow_url(fellow)},
-        {label: 'Edit Your Profile', method: 'GET', path: routes.edit_fellow_url(fellow)},
-        {label: 'Update Your Profile', method: 'PUT', path: routes.fellow_url(fellow)}
+        {label: 'view', method: 'GET', params: {controller: 'admin/fellows', action: 'show', id: fellow.id.to_s}},
+        {label: 'Edit Your Profile', method: 'GET', params: {controller: 'fellows', action: 'edit', id: fellow.id.to_s}},
+        {label: 'Update Your Profile', method: 'PUT', params: {controller: 'fellows', action: 'update', id: fellow.id.to_s}}
       ]
     end
     
@@ -52,20 +52,13 @@ class AccessToken < ApplicationRecord
         'schedule interview', 'research interview process', 'practice for interview', 'attend interview', 'follow up after interview',
         'receive offer', 'submit counter-offer', 'accept offer',
         'fellow accepted', 'fellow declined', 'employer declined'
-      ]
+      ].join('|')
       
-      allowed_statuses.each do |allowed_status|
-        allowed_routes << {label: allowed_status, method: 'GET', path: routes.candidate_status_url(fellow_opportunity.id, update: allowed_status)}
-      end
-      
-      allowed_routes << {label: 'view', method: 'GET', path: routes.fellow_opportunity_url(fellow_opportunity.id)}
-      allowed_routes << {label: 'update', method: 'PUT', path: routes.fellow_opportunity_url(fellow_opportunity.id)}
+      allowed_routes << {label: 'status', method: 'GET', params: {controller: 'candidates', action: 'status', update: /^(#{allowed_statuses})$/}}
+      allowed_routes << {label: 'view', method: 'GET', params: {controller: 'fellow/opportunities', action: 'show', id: fellow_opportunity.id.to_s}}
+      allowed_routes << {label: 'update', method: 'PUT', params: {controller: 'fellow/opportunities', action: 'update', id: fellow_opportunity.id.to_s}}
       
       allowed_routes
-    end
-    
-    def routes
-      Rails.application.routes.url_helpers
     end
   end
   
@@ -76,10 +69,24 @@ class AccessToken < ApplicationRecord
   
   def match? request
     routes.any? do |route|
+      debug(route, request) if false
+      
       method_match?(route, request) &&
-      route_match?(route, request) &&
+      params_match?(route, request) &&
       token_match?(request)
     end
+  end
+  
+  def debug route, request
+    puts "DEBUG: " + 
+      [
+        normalize_request_method(route['method']),
+        normalize_request_method(request.request_method),
+        route['params'],
+        request.params,
+        code,
+        token_for(request)
+      ].map(&:inspect).join(', ')
   end
   
   def method_match? route, request
@@ -89,8 +96,15 @@ class AccessToken < ApplicationRecord
     route_method == request_method
   end
   
-  def route_match? route, request
-    route['path'] == url_without_token(request.original_url)
+  def params_match? route, request
+    route['params'].all? do |param, pattern|
+      begin
+        request.params[param].match?(pattern)
+      rescue
+        puts "REQUEST PARAMS: #{request.params.inspect}, #{param.inspect}"
+        raise "failed"
+      end
+    end
   end
   
   def token_match? request
@@ -109,14 +123,7 @@ class AccessToken < ApplicationRecord
   end
   
   def path_with_token label=nil
-    route = route_for(label)
-    
-    uri = URI.parse(route['path'])
-    
-    new_query = URI.decode_www_form(uri.query || '') << ['token', code]
-    uri.query = URI.encode_www_form(new_query)
-    
-    uri.to_s
+    url_for(route_for(label)['params'].merge(token: code))
   end
 
   private
@@ -143,7 +150,7 @@ class AccessToken < ApplicationRecord
     routes.each do |route|
       return set_invalid_routes_message unless route.is_a?(Hash)
       return set_invalid_routes_message unless route.has_key?('method')
-      return set_invalid_routes_message unless route.has_key?('path')
+      return set_invalid_routes_message unless route.has_key?('params')
     end
   end
   
@@ -152,24 +159,14 @@ class AccessToken < ApplicationRecord
   end
   
   def invalid_routes_message
-    "should be an array of hashes with keys 'method' and 'path'"
-  end
-  
-  def url_without_token url
-    uri = URI.parse(url)
-    
-    new_query = URI.decode_www_form(uri.query || '')
-    new_query.reject!{|key, val| key == 'token'}
-    
-    uri.query = URI.encode_www_form(new_query)
-    
-    new_url = uri.to_s
-    new_url.chop! if new_url =~ /\?$/
-    
-    new_url
+    "should be an array of hashes with keys 'method' and 'params'"
   end
   
   def token_for request
     request.params[:token] || request.session[:token]
+  end
+  
+  def url_for params
+    Rails.application.routes.url_helpers.url_for params
   end
 end
