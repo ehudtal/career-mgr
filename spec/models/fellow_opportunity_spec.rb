@@ -33,19 +33,19 @@ RSpec.describe FellowOpportunity, type: :model do
   ##################
 
   describe '#stage accessors' do
-    let(:name_original) { 'original stage name' }
-    let(:name_new) { 'new stage name' }
-    let(:name_rejected) { 'rejected' }
+    let(:name_first) { 'first' }
+    let(:name_second) { 'second' }
+    let(:name_third) { 'third' }
     
-    let(:stage_original) { create :opportunity_stage, name: name_original, position: 0 }
-    let(:stage_new) { create :opportunity_stage, name: name_new, position: 1 }
-    let(:stage_rejected) { create :opportunity_stage, name: name_rejected, position: 2 }
+    let(:stage_first) { create :opportunity_stage, name: name_first, position: 0 }
+    let(:stage_second) { create :opportunity_stage, name: name_second, position: 1 }
+    let(:stage_third) { create :opportunity_stage, name: name_third, position: 2 }
 
-    let(:fellow_opportunity) { create :fellow_opportunity, opportunity_stage: stage_original }
+    let(:fellow_opportunity) { create :fellow_opportunity, opportunity_stage: stage_first }
     
     before do
-      fellow_opportunity; stage_new; stage_rejected
-      fellow_opportunity.update opportunity_stage_id: stage_original.id
+      fellow_opportunity; stage_second; stage_third
+      fellow_opportunity.update opportunity_stage_id: stage_first.id
     end
     
     def expect_stage opp_stage
@@ -58,69 +58,86 @@ RSpec.describe FellowOpportunity, type: :model do
 
     describe '#stage' do
       it "returns the name of the opportunity stage" do
-        expect_stage(stage_original)
+        expect_stage(stage_first)
       end
     end
 
-    describe '#stage=(stage_name)' do
+    describe '#update_stage(stage_name, options={})' do
+      let(:name_update) { name_second }
+      let(:options) { {} }
+      
       before do
-        fellow_opportunity.stage = name_new
+        fellow_opportunity.update_stage(name_update, options)
         fellow_opportunity.reload
       end
       
       it "sets the opportunity_stage based on name" do
-        expect_stage(stage_new)
+        expect_stage(stage_second)
       end
     
       it "creates a log record when stage is set" do
-        expect_log(name_new)
+        expect_log(name_second)
       end
     
       describe 'with special status "no change"' do
-        let(:name_new) { 'no change' }
+        let(:name_update) { 'no change' }
         
         it "stays as current stage" do
-          expect_stage(stage_original)
+          expect_stage(stage_first)
         end
         
-        it "creates a log record of 'no change'" do
-          expect_log('no change')
+        it "creates a log record of same record" do
+          expect_log(name_first)
         end
       end
     
       describe 'with special status "next"' do
-        let(:name_new) { 'next' }
+        let(:name_update) { 'next' }
         
         it "moves to next stage" do
-          expect_stage(stage_new)
+          expect_stage(stage_second)
         end
         
-        it "creates a log record of skipped stage" do
-          expect_log(name_new)
+        it "creates a log record of changed stage" do
+          expect_log(name_second)
+        end
+      end
+      
+      describe 'with special status "next", and "from" option' do
+        let(:options) { {from: name_second} }
+        let(:name_update) { 'next' }
+        
+        it "moves to the next stage after 'from' stage" do
+          expect_stage(stage_third)
+        end
+        
+        it "creates a log record of changed stage" do
+          expect_log(name_third)
         end
       end
     
       describe 'with special status "skip"' do
-        let(:name_new) { 'skip' }
+        let(:name_update) { 'skip' }
         
         it "moves to next stage" do
-          expect_stage(stage_new)
+          expect_stage(stage_second)
         end
         
         it "creates a log record of skipped stage" do
-          expect_log("skipped to: #{name_new}")
+          expect_log("skipped to: #{name_second}")
         end
       end
     
-      describe 'with special status "declined"' do
-        let(:name_new) { 'declined' }
+      describe 'with special status "skip", and "from" option' do
+        let(:options) { {from: name_second} }
+        let(:name_update) { 'skip' }
         
-        it "sets stage to 'rejected'" do
-          expect_stage(stage_rejected)
+        it "moves to next stage" do
+          expect_stage(stage_third)
         end
         
-        it "creates a log record of 'rejected'" do
-          expect_log(name_rejected)
+        it "creates a log record of skipped stage" do
+          expect_log("skipped to: #{name_third}")
         end
       end
     end

@@ -22,21 +22,19 @@ class FellowOpportunity < ApplicationRecord
     opportunity_stage.name
   end
   
-  def stage= stage_name
-    stage_name = 'rejected' if stage_name == 'declined'
-    
+  def update_stage stage_name, options={}
     case stage_name
     when 'no change'
-      log 'no change'
+      log stage
 
     when 'next'
-      next_stage = next_opportunity_stage
+      next_stage = next_opportunity_stage(options[:from])
 
       self.update opportunity_stage: next_stage
-      log stage_name
+      log next_stage.name
 
     when 'skip'
-      next_stage = next_opportunity_stage
+      next_stage = next_opportunity_stage(options[:from])
 
       self.update opportunity_stage: next_stage
       log "skipped to: #{next_stage.name}"
@@ -49,7 +47,13 @@ class FellowOpportunity < ApplicationRecord
   
   private
   
-  def next_opportunity_stage
-    OpportunityStage.find_by(position: opportunity_stage.position + 1)
+  def next_opportunity_stage from=nil
+    position = if from
+      OpportunityStage.find_by(name: from).position
+    else
+      opportunity_stage.position
+    end
+    
+    OpportunityStage.find_by(position: position + 1)
   end
 end
