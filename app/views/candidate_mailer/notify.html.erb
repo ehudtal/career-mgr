@@ -29,7 +29,7 @@
 
   <ul class="response-links">
     <% @content['links'].each do |update, label| %>
-      <li><%= link_to_status_update @opportunity_stage.name, update, label %></li>
+      <li><%= button_to_status_update @opportunity_stage.name, update, label %></li>
     <% end %>
   </ul>
 <% end %>

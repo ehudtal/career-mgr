@@ -8,80 +8,76 @@ class CandidateMailer < ApplicationMailer
 
   def research_employer
     set_stage 'research employer'
-    nag("Research This Employer")
+    nag
   end
 
   def connect_with_employees
     set_stage 'connect with employees'
-    nag("Connect with Current Employees")
+    nag
   end
 
   def customize_application_materials
     set_stage 'customize application materials'
-    nag("Customize Your Application Materials")
+    nag
   end
 
   def submit_application
     set_stage 'submit application'
-    nag("Submit Your Application")
+    nag
   end
 
   def follow_up_after_application
     set_stage 'follow up after application'
-    nag("Follow Up on Your Application")
+    nag
   end
 
   def schedule_interview
     set_stage 'schedule interview'
-    nag("Schedule an Interview")
+    nag
   end
 
   def research_interview_process
     set_stage 'research interview process'
-    nag("Research the Interview Process")
+    nag
   end
 
   def practice_for_interview
     set_stage 'practice for interview'
-    nag("Practice for Your Interview")
+    nag
   end
 
   def attend_interview
     set_stage 'attend interview'
-    nag("Ace Your Interview!")
+    nag
   end
 
   def follow_up_after_interview
     set_stage 'follow up after interview'
-    nag("Follow Up After Your Interview")
+    nag
   end
 
   def receive_offer
     set_stage 'receive offer'
-    nag("Look for an Offer!")
+    nag
   end
 
   def submit_counter_offer
     set_stage 'submit counter-offer'
-    nag("Consider a Counter Offer")
+    nag
   end
 
   def accept_offer
     set_stage 'accept offer'
-    nag("Accept Your Offer!")
+    nag
   end
   
   private
   
-  def nag subject
+  def nag
     set_objects
     @content = @opportunity_stage.content
 
-    if @content
-      mail(to: @fellow.contact.email, subject: "#{@opp.name}: #{subject}", template_name: 'notify')
-    else
-      mail(to: @fellow.contact.email, subject: "#{@opp.name}: #{subject}")
-    end
+    mail(to: @fellow.contact.email, subject: "#{@opp.name}: #{@content['title']}", template_name: 'notify')
   end
   
   def set_stage stage_name

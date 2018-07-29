@@ -46,7 +46,7 @@ RSpec.describe CandidateMailer, type: :mailer do
   describe 'research employer' do
     let(:view) { :research_employer }
 
-    expect_headers "New Opportunity: Research This Employer"
+    expect_headers "New Opportunity: Research this Employer"
     expect_content 'Have you researched'
 
     expect_status_link 'research employer', 'next'

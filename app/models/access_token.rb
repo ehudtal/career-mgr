@@ -130,6 +130,13 @@ class AccessToken < ApplicationRecord
     url_for(params)
   end
 
+  def path_without_token label=nil, additional_params={}
+    params = route_for(label)['params']
+    params.merge!(additional_params) unless additional_params.empty?
+    
+    url_for(params)
+  end
+
   private
 
   def generate_token

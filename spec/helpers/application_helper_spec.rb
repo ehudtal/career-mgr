@@ -37,5 +37,9 @@ RSpec.describe ApplicationHelper, type: :helper do
       
       expect(interpolate(string)).to eq('one plus two is three'.html_safe)
     end
+    
+    it "returns a blank string if nil string is sent" do
+      expect(interpolate(nil)).to eq('')
+    end
   end
 end

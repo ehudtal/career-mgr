@@ -5,6 +5,14 @@ class Fellow::OpportunitiesController < ApplicationController
   before_action :set_candidate
 
   def show
+    @content = YAML.load(File.read("#{Rails.root}/config/opportunity_stage_content.yml"))
+
+    @fellow_opp = @candidate
+    @fellow = @fellow_opp.fellow
+    @opp = @fellow_opp.opportunity
+    
+    @token = AccessToken.for(@fellow_opp)
+    @opportunity_stage = @fellow_opp.opportunity_stage
   end
 
   def update

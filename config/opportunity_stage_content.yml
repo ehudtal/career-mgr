@@ -9,6 +9,9 @@ default links with employer: &default_links_with_employer
   employer declined: "Employer Declined"
 
 research employer:
+  phase: "Apply"
+  title: "Research this Employer"
+  phase_position: 1
   question: "Have you researched <%= @opp.employer.name %> online?"
   tips:
     header: "Look up the employer on websites such as:"
@@ -20,6 +23,9 @@ research employer:
   links: *default_links
 
 connect with employees:
+  phase: "Apply"
+  title: "Connect with Current Employees"
+  phase_position: 2
   question: "Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?"
   tips:
     list:
@@ -30,6 +36,9 @@ connect with employees:
   links: *default_links
 
 customize application materials:
+  phase: "Apply"
+  title: "Customize Your Application Materials"
+  phase_position: 3
   question: "Have you customized your:"
   materials:
     - "Resume?"
@@ -46,6 +55,9 @@ customize application materials:
   links: *default_links
     
 submit application:
+  phase: "Apply"
+  title: "Submit Your Application"
+  phase_position: 4
   question: "Have you submitted your application to <%= @opp.employer.name %>?"
   tips:
     list:
@@ -54,16 +66,25 @@ submit application:
   links: *default_links
       
 follow up after application:
+  phase: "Apply"
+  title: "Follow Up on Your Application"
+  phase_position: 5
   question: "Have you followed up to see your application through?"
   tips:
     header: "Follow up with any contacts you have who might have some influence at the company (e.g. current and past employees, partners, clients) by sending them a copy of the resume and cover letter and asking \"Would you be willing to put in a word for me to make sure my application is considered?\""
   links: *default_links_with_employer
 
 schedule interview:
+  phase: "Interview"
+  title: "Schedule an Interview"
+  phase_position: 1
   question: "Have you scheduled an interview?"
   links: *default_links_with_employer
   
 research interview process:
+  phase: "Interview"
+  title: "Research the Interview Process"
+  phase_position: 2
   question: "Have you researched the interview process at <%= @opp.employer.name %>?"
   tips:
     list:
@@ -74,6 +95,9 @@ research interview process:
   links: *default_links
 
 practice for interview:
+  phase: "Interview"
+  title: "Practice for Your Interview"
+  phase_position: 3
   question: "Have you practiced for your interview with <%= @opp.employer.name %>?"
   tips:
     list:
@@ -84,6 +108,9 @@ practice for interview:
   links: *default_links
 
 attend interview:
+  phase: "Interview"
+  title: "Ace Your Interview!"
+  phase_position: 4
   question: "Have you attended your interview with <%= @opp.employer.name %> yet?"
   tips:
     list:
@@ -94,12 +121,18 @@ attend interview:
   links: *default_links
 
 follow up after interview:
+  phase: "Interview"
+  title: "Follow Up After Your Interview"
+  phase_position: 5
   question: "Have you followed up after your interview with <%= @opp.employer.name %>?"
   tips:
     header: "Send a quick follow up to express your continued excitement for the opportunity and to follow-up on anything from the interview."
   links: *default_links_with_employer
   
 receive offer:
+  phase: "Offer"
+  title: "Look for an Offer!"
+  phase_position: 1
   question: "Have you received an offer from <%= @opp.employer.name %> yet?"
   links:
     next: "Yes"
@@ -108,6 +141,9 @@ receive offer:
     employer declined: "Employer Declined"
 
 submit counter-offer:
+  phase: "Offer"
+  title: "Consider a Counter Offer"
+  phase_position: 2
   question: "Have you submitted a counter offer to <%= @opp.employer.name %>?"
   tips:
     list:
@@ -121,5 +157,8 @@ submit counter-offer:
     fellow declined: "No Longer Interested"
 
 accept offer:
+  phase: "Offer"
+  title: "Accept Your Offer!"
+  phase_position: 3
   question: "Have you accepted your offer with <%= @opp.employer.name %>?"
   links: *default_links
