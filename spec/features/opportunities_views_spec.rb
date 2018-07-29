@@ -33,7 +33,6 @@ RSpec.feature "OpportunityViews", type: :feature do
     visit_page :opportunities
 
     click_on 'New Opportunity'
-    sleep 10
     click_on opportunity.employer.name
 
     expect(page).to have_content('New Opportunity')

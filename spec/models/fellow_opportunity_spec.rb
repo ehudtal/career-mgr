@@ -28,6 +28,33 @@ RSpec.describe FellowOpportunity, type: :model do
     it { should validate_uniqueness_of(:fellow_id).scoped_to(:opportunity_id) }
   end
   
+  ########
+  # Scopes
+  ########
+
+  describe 'active/inactive' do
+    let(:fellow_opportunity_active) { create :fellow_opportunity, active: true }
+    let(:fellow_opportunity_inactive) { create :fellow_opportunity, active: false }
+    
+    before do
+      fellow_opportunity_active; fellow_opportunity_inactive
+    end
+    
+    describe '::active' do
+      subject { FellowOpportunity.active }
+      
+      it { should include(fellow_opportunity_active) }
+      it { should_not include(fellow_opportunity_inactive) }
+    end
+    
+    describe '::inactive' do
+      subject { FellowOpportunity.inactive }
+      
+      it { should include(fellow_opportunity_inactive) }
+      it { should_not include(fellow_opportunity_active) }
+    end
+  end
+  
   ##################
   # Instance methods
   ##################
@@ -88,6 +115,19 @@ RSpec.describe FellowOpportunity, type: :model do
         
         it "creates a log record of same record" do
           expect_log(name_first)
+        end
+      end
+    
+      describe 'with special status "no change", and "from" option' do
+        let(:options) { {from: name_third} }
+        let(:name_update) { 'no change' }
+        
+        it "sets to 'from' stage" do
+          expect_stage(stage_third)
+        end
+        
+        it "creates a log record of 'from' record" do
+          expect_log(name_third)
         end
       end
     

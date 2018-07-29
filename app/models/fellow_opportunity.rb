@@ -14,6 +14,9 @@ class FellowOpportunity < ApplicationRecord
   validates :opportunity_id, presence: true
   validates :opportunity_stage_id, presence: true
   
+  scope :active, ->{ where(active: true) }
+  scope :inactive, -> { where(active: false) }
+  
   def log message
     logs.create status: message
   end
@@ -25,6 +28,10 @@ class FellowOpportunity < ApplicationRecord
   def update_stage stage_name, options={}
     case stage_name
     when 'no change'
+      if options[:from]
+        self.update opportunity_stage: OpportunityStage.find_by(name: options[:from])
+      end
+      
       log stage
 
     when 'next'
@@ -43,6 +50,21 @@ class FellowOpportunity < ApplicationRecord
       self.update opportunity_stage: OpportunityStage.find_by(name: stage_name)
       log stage_name
     end
+    
+    # set active flag properly
+    if ['fellow accepted', 'fellow declined', 'employer declined'].include?(stage)
+      self.archive!
+    else
+      self.activate!
+    end
+  end
+  
+  def activate!
+    self.update active: true
+  end
+  
+  def archive!
+    self.update active: false
   end
   
   private

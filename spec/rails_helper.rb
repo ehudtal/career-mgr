@@ -94,3 +94,7 @@ end
 def should condition
   expect(subject).to condition
 end
+
+def should_not condition
+  expect(subject).to_not condition
+end
