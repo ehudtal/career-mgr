@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :name, 'Opportunity Name or Job Title' %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, required: true %>
   </div>
 
   <div class="field">
@@ -43,7 +43,7 @@
         
         <div class="field">
           <%= location_form.label :name %>
-          <%= location_form.text_field :name %>
+          <%= location_form.text_field :name, required: true %>
           <%= location_form.hidden_field :_destroy, class: 'remove_hidden' %>
           <%= link_to 'remove', '#', class: 'remove' %>
         </div>
