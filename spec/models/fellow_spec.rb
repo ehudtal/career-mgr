@@ -56,7 +56,7 @@ RSpec.describe Fellow, type: :model do
   #############
 
   def self.required_attributes
-    [:first_name, :last_name, :employment_status_id]
+    [:first_name, :last_name]
   end
   
   required_attributes.each do |attribute|
