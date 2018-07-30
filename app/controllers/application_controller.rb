@@ -35,12 +35,20 @@ class ApplicationController < ActionController::Base
   end
   
   def authorized_by_token?
-    return false unless params[:token]
+    token_code = params[:token] || session[:token]
+    return false unless token_code
     
-    access_token = AccessToken.find_by code: params[:token]
+    access_token = AccessToken.find_by code: token_code
     return false if access_token.nil?
 
-    access_token.match?(request)
+    if access_token.match?(request)
+      session[:token] = token_code
+      @access_token = access_token
+      
+      true
+    else
+      false
+    end
   end
   
   def authorize_by_token!

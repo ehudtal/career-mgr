@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe TokenController, type: :controller do
   let(:access_token) { create :access_token, code: code, routes: [route_one, route_two] }
   let(:code) { 'aaaabbbbccccdddd' }
-  let(:route_one) { {'label' => 'one', 'method' => 'GET', 'path' => '/admin/industries/list'} }
-  let(:route_two) { {'label' => 'two', 'method' => 'GET', 'path' => '/admin/interests/list'} }
+  let(:route_one) { {'label' => 'one', 'method' => 'GET', 'params' => {'controller' => 'admin/industries', 'action' => 'list'}} }
+  let(:route_two) { {'label' => 'two', 'method' => 'GET', 'params' => {'controller' => 'admin/interests', 'action' => 'list'}} }
 
   describe "GET #show" do
     describe 'token path' do
@@ -17,7 +17,7 @@ RSpec.describe TokenController, type: :controller do
       before { get :show, params: {id: access_token.code} }
       
       it "redirects to the first route" do
-        expect(response).to redirect_to("/admin/industries/list?token=#{code}")
+        expect(response).to redirect_to("http://localhost:3011/admin/industries/list?token=#{code}")
       end
     end
     

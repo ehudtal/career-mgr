@@ -9,8 +9,11 @@ class Fellow < ApplicationRecord
   has_one :contact, as: :contactable, dependent: :destroy
   accepts_nested_attributes_for :contact
   
+  has_one :access_token, as: :owner
+  
   has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
+  has_many :fellow_opportunities
 
   taggable :industries, :interests, :industry_interests, :metros
   

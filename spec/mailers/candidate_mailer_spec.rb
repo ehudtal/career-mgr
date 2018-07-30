@@ -2,28 +2,203 @@ require "rails_helper"
 require 'nokogiri'
 
 RSpec.describe CandidateMailer, type: :mailer do
-  describe 'invitation' do
-    let(:access_token) { AccessToken.opportunity_invitation(fellow_opportunity) }
+  let(:access_token) { AccessToken.for(fellow_opportunity) }
 
-    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity }
-    let(:fellow) { create :fellow, contact: create(:contact, email: email) }
-    let(:email) { 'test@example.com' }
-    let(:opportunity) { create :opportunity, name: "New Opportunity" }
+  let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage }
+  let(:fellow) { create :fellow, contact: create(:contact, email: email) }
+  let(:email) { 'test@example.com' }
+  let(:opportunity) { create :opportunity, name: "New Opportunity" }
+  let(:opportunity_stage) { create :opportunity_stage, name: stage_name }
+  let(:stage_name) { view.to_s.gsub('_', ' ') }
 
-    let(:mail) { CandidateMailer.with(access_token: access_token, fellow_opportunity: fellow_opportunity).invitation }
-    
-    it "renders the headers" do
-      expect(mail.subject).to eq("You've been invited to apply for New Opportunity")
-      expect(mail.to).to include(email)
-      expect(mail.from).to include(Rails.application.secrets.mailer_from_email)
+  let(:mail) { CandidateMailer.with(access_token: access_token).send(view) }
+  
+  class << self
+    def expect_headers subject
+      it { expect(mail.subject).to eq(subject) }
+      it { expect(mail.to).to include(email) }
+      it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
     end
     
-    it "renders the body with interest links" do
-      body = mail.body.encoded
-      
-      expect(body).to include(opportunity.name)
-      expect(body).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Interested&token=#{access_token.code}")
-      expect(body).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?update=Not+Interested&token=#{access_token.code}")
+    def expect_content content
+      it "renders the body with content \"#{content}\"" do
+        expect(mail.body.encoded).to match(content)
+      end
     end
+  
+    def expect_status_link from, label
+      it "renders body with status link \"#{label}\"" do
+        expect(mail.body.encoded).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?from=#{from.gsub(' ', '+')}&token=#{access_token.code}&update=#{label.gsub(' ', '+')}")
+      end
+    end
+  end
+  
+  describe 'respond to invitation' do
+    let(:view) { :respond_to_invitation }
+    
+    expect_headers "You've been invited to apply for New Opportunity"
+    expect_content 'New Opportunity'
+
+    expect_status_link 'respond to invitation', 'research employer'
+    expect_status_link 'respond to invitation', 'fellow decline'
+  end
+
+  describe 'research employer' do
+    let(:view) { :research_employer }
+
+    expect_headers "New Opportunity: Research this Employer"
+    expect_content 'Have you researched'
+
+    expect_status_link 'research employer', 'next'
+    expect_status_link 'research employer', 'no change'
+    expect_status_link 'research employer', 'skip'
+    expect_status_link 'research employer', 'fellow declined'
+  end
+
+  describe 'connect with employees' do
+    let(:view) { :connect_with_employees }
+
+    expect_headers "New Opportunity: Connect with Current Employees"
+    expect_content "Have you networked"
+
+    expect_status_link 'connect with employees', 'next'
+    expect_status_link 'connect with employees', 'no change'
+    expect_status_link 'connect with employees', 'skip'
+    expect_status_link 'connect with employees', 'fellow declined'
+  end
+
+  describe 'customize application materials' do
+    let(:view) { :customize_application_materials }
+
+    expect_headers "New Opportunity: Customize Your Application Materials"
+    expect_content "Have you customized"
+
+    expect_status_link 'customize application materials', 'next'
+    expect_status_link 'customize application materials', 'no change'
+    expect_status_link 'customize application materials', 'skip'
+    expect_status_link 'customize application materials', 'fellow declined'
+  end
+
+  describe 'submit application' do
+    let(:view) { :submit_application }
+
+    expect_headers "New Opportunity: Submit Your Application"
+    expect_content "Have you submitted"
+
+    expect_status_link 'submit application', 'next'
+    expect_status_link 'submit application', 'no change'
+    expect_status_link 'submit application', 'skip'
+    expect_status_link 'submit application', 'fellow declined'
+  end
+
+  describe 'follow up after application' do
+    let(:view) { :follow_up_after_application }
+
+    expect_headers "New Opportunity: Follow Up on Your Application"
+    expect_content "Have you followed"
+
+    expect_status_link 'follow up after application', 'next'
+    expect_status_link 'follow up after application', 'no change'
+    expect_status_link 'follow up after application', 'skip'
+    expect_status_link 'follow up after application', 'fellow declined'
+    expect_status_link 'follow up after application', 'employer declined'
+  end
+
+  describe 'schedule interview' do
+    let(:view) { :schedule_interview }
+
+    expect_headers "New Opportunity: Schedule an Interview"
+    expect_content "Have you scheduled"
+
+    expect_status_link 'schedule interview', 'next'
+    expect_status_link 'schedule interview', 'no change'
+    expect_status_link 'schedule interview', 'skip'
+    expect_status_link 'schedule interview', 'fellow declined'
+    expect_status_link 'schedule interview', 'employer declined'
+  end
+
+  describe 'research interview process' do
+    let(:view) { :research_interview_process }
+
+    expect_headers "New Opportunity: Research the Interview Process"
+    expect_content "Have you researched"
+
+    expect_status_link 'research interview process', 'next'
+    expect_status_link 'research interview process', 'no change'
+    expect_status_link 'research interview process', 'skip'
+    expect_status_link 'research interview process', 'fellow declined'
+  end
+
+  describe 'practice for interview' do
+    let(:view) { :practice_for_interview }
+
+    expect_headers "New Opportunity: Practice for Your Interview"
+    expect_content "Have you practiced"
+
+    expect_status_link 'practice for interview', 'next'
+    expect_status_link 'practice for interview', 'no change'
+    expect_status_link 'practice for interview', 'skip'
+    expect_status_link 'practice for interview', 'fellow declined'
+  end
+
+  describe 'attend interview' do
+    let(:view) { :attend_interview }
+
+    expect_headers "New Opportunity: Ace Your Interview!"
+    expect_content "Have you attended"
+
+    expect_status_link 'attend interview', 'next'
+    expect_status_link 'attend interview', 'no change'
+    expect_status_link 'attend interview', 'skip'
+    expect_status_link 'attend interview', 'fellow declined'
+  end
+
+  describe 'follow up after interview' do
+    let(:view) { :follow_up_after_interview }
+
+    expect_headers "New Opportunity: Follow Up After Your Interview"
+    expect_content "Have you followed"
+
+    expect_status_link 'follow up after interview', 'next'
+    expect_status_link 'follow up after interview', 'no change'
+    expect_status_link 'follow up after interview', 'skip'
+    expect_status_link 'follow up after interview', 'fellow declined'
+    expect_status_link 'follow up after interview', 'employer declined'
+  end
+
+  describe 'receive offer' do
+    let(:view) { :receive_offer }
+
+    expect_headers "New Opportunity: Look for an Offer!"
+    expect_content "Have you received"
+
+    expect_status_link 'receive offer', 'next'
+    expect_status_link 'receive offer', 'no change'
+    expect_status_link 'receive offer', 'fellow declined'
+    expect_status_link 'receive offer', 'employer declined'
+  end
+
+  describe 'submit counter-offer' do
+    let(:view) { :submit_counter_offer }
+    let(:stage_name) { 'submit counter-offer' }
+
+    expect_headers "New Opportunity: Consider a Counter Offer"
+    expect_content "Have you submitted"
+
+    expect_status_link 'submit counter-offer', 'receive offer'
+    expect_status_link 'submit counter-offer', 'no change'
+    expect_status_link 'submit counter-offer', 'fellow accepted'
+    expect_status_link 'submit counter-offer', 'fellow declined'
+  end
+
+  describe 'accept offer' do
+    let(:view) { :accept_offer }
+
+    expect_headers "New Opportunity: Accept Your Offer!"
+    expect_content "Have you accepted"
+
+    expect_status_link 'accept offer', 'next'
+    expect_status_link 'accept offer', 'no change'
+    expect_status_link 'accept offer', 'fellow declined'
   end
 end

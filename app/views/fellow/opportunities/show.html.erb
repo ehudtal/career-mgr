@@ -1,0 +1,63 @@
+<h1><%= @candidate.opportunity.formatted_name %></h1>
+
+<table class="opportunity-stages" style="width: 800px">
+  <thead>
+    <th class="phase">Phase</th>
+    <th class="recommended-action">Recommended Action</th>
+  </thead>
+  
+  <tbody>
+    <% ['Apply', 'Interview', 'Offer'].each do |phase| %>
+      <% phase_content = @content.select{|k,v| v['phase'] == phase} %>
+    
+      <tr>
+        <td class="phase" rows="<%= phase_content.size %>"><%= phase %></td>
+        <td class="recommended-action">
+          <% phase_content.each do |stage_name, content| %>
+            <% if stage_name == @candidate.stage %>
+              <h1><%= content['phase_position'] %>. <%= content['title'] %></h1>
+          
+              <h3><%= interpolate(content['question']) %></h3>
+          
+              <% if content['materials'] %>
+                <ul class="materials">
+                  <% content['materials'].each do |material| %>
+                    <li><%= interpolate(material) %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+          
+              <% if content['links'] %>
+                <ul class="response-links">
+                  <% content['links'].each do |update, label| %>
+                    <li><%= link_to_status_update update, label %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+          
+              <% if content['tips'] %>
+                <h3>Tips</h3>
+                
+                <div class="tips">
+                  <% if content['tips']['header'] %>
+                    <p><%= interpolate(content['tips']['header']) %>
+                  <% end %>
+          
+                  <% if content['tips']['list'] %>
+                    <ul>
+                      <% content['tips']['list'].each do |tip| %>
+                        <li><%= interpolate(tip) %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <p><%= content['phase_position'] %>. <%= content['title'] %></p>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

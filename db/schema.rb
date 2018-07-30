@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_154954) do
+ActiveRecord::Schema.define(version: 2018_07_29_174435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,19 @@ ActiveRecord::Schema.define(version: 2018_07_24_154954) do
     t.text "routes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "owner_id"
+    t.string "owner_type"
+    t.datetime "expires_at"
     t.index ["code"], name: "index_access_tokens_on_code", unique: true
+    t.index ["owner_id", "owner_type"], name: "index_access_tokens_on_owner_id_and_owner_type"
+  end
+
+  create_table "candidate_logs", force: :cascade do |t|
+    t.integer "candidate_id"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_candidate_logs_on_candidate_id"
   end
 
   create_table "coaches", force: :cascade do |t|
@@ -148,6 +160,8 @@ ActiveRecord::Schema.define(version: 2018_07_24_154954) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.boolean "active"
+    t.index ["active"], name: "index_fellow_opportunities_on_active"
     t.index ["deleted_at"], name: "index_fellow_opportunities_on_deleted_at"
     t.index ["fellow_id", "opportunity_id"], name: "index_fellow_opportunities_on_fellow_id_and_opportunity_id", unique: true
     t.index ["opportunity_stage_id"], name: "index_fellow_opportunities_on_opportunity_stage_id"
@@ -270,6 +284,8 @@ ActiveRecord::Schema.define(version: 2018_07_24_154954) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "job_posting_url"
+    t.date "application_deadline"
+    t.text "steps"
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
   end
 
@@ -279,7 +295,11 @@ ActiveRecord::Schema.define(version: 2018_07_24_154954) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
+    t.boolean "togglable"
+    t.boolean "auto_notify", default: true
+    t.boolean "active_status", default: true
     t.index ["name"], name: "index_opportunity_stages_on_name", unique: true
+    t.index ["togglable"], name: "index_opportunity_stages_on_togglable"
   end
 
   create_table "postal_codes", force: :cascade do |t|

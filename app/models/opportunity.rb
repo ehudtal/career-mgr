@@ -16,6 +16,8 @@ class Opportunity < ApplicationRecord
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
   
+  serialize :steps, Array
+  
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   
@@ -39,6 +41,10 @@ class Opportunity < ApplicationRecord
     candidate_ids -= fellow_opportunities.pluck(:fellow_id)
     
     @candidates = Fellow.where(id: candidate_ids)
+  end
+  
+  def formatted_name
+    [employer.name, name].join(' - ')
   end
   
   def fellow_ids_for_interests names
@@ -107,8 +113,8 @@ class Opportunity < ApplicationRecord
   
   def notify_candidates fellow_opportunities_list
     fellow_opportunities_list.each do |fellow_opp|
-      access_token = AccessToken.opportunity_invitation(fellow_opp)
-      CandidateMailer.with(fellow_opportunity: fellow_opp, access_token: access_token).invitation.deliver_later
+      access_token = AccessToken.for(fellow_opp)
+      CandidateMailer.with(access_token: access_token).respond_to_invitation.deliver_later
     end
   end
   

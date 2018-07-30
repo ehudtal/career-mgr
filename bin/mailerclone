@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+to = ARGV[0]
+
+`cp app/views/candidate_mailer/connected_with_employees.html.erb app/views/candidate_mailer/#{to}.html.erb`
+`cp app/views/candidate_mailer/connected_with_employees.text.erb app/views/candidate_mailer/#{to}.text.erb`

@@ -33,7 +33,6 @@ RSpec.feature "OpportunityViews", type: :feature do
     visit_page :opportunities
 
     click_on 'New Opportunity'
-    sleep 10
     click_on opportunity.employer.name
 
     expect(page).to have_content('New Opportunity')
@@ -63,7 +62,6 @@ RSpec.feature "OpportunityViews", type: :feature do
     add_tag :opportunity, :metro, metro_included.name
 
     click_on 'Create Opportunity'
-
     opportunity = Opportunity.last
 
     [:name, :description].each do |attr|

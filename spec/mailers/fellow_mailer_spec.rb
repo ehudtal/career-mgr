@@ -3,12 +3,12 @@ require 'nokogiri'
 
 RSpec.describe FellowMailer, type: :mailer do
   describe 'profile' do
-    let(:access_token) { AccessToken.update_profile(fellow) }
+    let(:access_token) { AccessToken.for(fellow) }
 
     let(:fellow) { create :fellow, contact: create(:contact, email: email) }
     let(:email) { 'test@example.com' }
 
-    let(:mail) { FellowMailer.with(access_token: access_token, fellow: fellow).profile }
+    let(:mail) { FellowMailer.with(access_token: access_token).profile }
     
     it "renders the headers" do
       expect(mail.subject).to eq("Please Update Your Profile")

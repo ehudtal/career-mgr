@@ -33,6 +33,14 @@ RSpec.describe Opportunity, type: :model do
   
   it_should_behave_like "valid url", :job_posting_url
   
+  ###############
+  # Serialization
+  ###############
+
+  it "serializes steps to an array" do
+    expect(Opportunity.new.steps).to be_an(Array)
+  end
+  
   ##################
   # Instance methods
   ##################
@@ -112,6 +120,15 @@ RSpec.describe Opportunity, type: :model do
       
       expect(opportunity.candidates).to include(fellow)
       expect(opportunity.candidates.size).to eq(1)
+    end
+  end
+  
+  describe '#formatted_name' do
+    let(:employer) { build :employer, name: 'ABC Employer' }
+    let(:opportunity) { build :opportunity, name: 'Internship', employer: employer } 
+    
+    it "combines employer and opportunity name" do
+      expect(opportunity.formatted_name).to eq("ABC Employer - Internship")
     end
   end
   

@@ -26,6 +26,11 @@
     <%= form.text_field :job_posting_url %>
   </div>
   
+  <div class="field">
+    <%= form.label :application_deadline %>
+    <%= form.text_field :application_deadline, class: 'datetime' %>
+  </div>
+  
   <%= render 'admin/locations/check_boxes', parent: opportunity.employer, object: opportunity %>
   
   <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
@@ -90,6 +95,17 @@
 
   <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
   
+  <h3>Required Steps</h3>
+  
+  <p>
+    <% OpportunityStage.togglable_names.each do |stage_name| %>
+      <% tag_id = "steps_#{stage_name.underscore}" %>
+
+      <%= check_box_tag("opportunity[steps][]", stage_name, true, id: tag_id) %>
+      <%= label_tag(tag_id, stage_name, style: 'display: inline;') %><br>
+    <% end %>
+  </p>
+  
   <h3>Industries/Interests</h3>
 
   <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank' %>
@@ -105,35 +121,6 @@
   <div id="metro-tags" class="jquery-tags">
     <%= form.text_area :metro_tags %>
   </div>
-  
-  <!-- 
-    Caution! If you edit the task sub-form below, you NEED to update
-    the corresponding new_task_fields method in opportunities.coffee file.
-    
-    Otherwise, dynamically added tasks in the form won't reflect the changes.
-  -->
-  <h3>Deadlines:</h3>
-  
-  <ul class="task_forms">
-    <%= form.fields_for :tasks do |tasks_form| %>
-      <li class="task_fields removeable_fields">
-        <div class="field">
-          <%= tasks_form.label :name %>
-          <%= tasks_form.text_field :name %>
-        </div>
-        
-        <div class="field">
-          <%= tasks_form.label :due_at %>
-          <%= tasks_form.text_field :due_at, class: "datetime" %><br>
-
-          <%= tasks_form.hidden_field :_destroy, class: "remove_hidden" %>
-          <%= link_to 'remove', '#', class: 'remove' %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
-  
-  <p><%= link_to '+add another task', '#', class: 'new_task' %></p>
 
   <div class="actions">
     <%= form.submit %>

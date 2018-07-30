@@ -11,6 +11,8 @@ FactoryBot.define do
     factory :fellow_user do
       is_admin false
       is_fellow true
+      
+      association :fellow
     end
   end
 end

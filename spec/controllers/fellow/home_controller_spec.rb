@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Fellow::HomeController, type: :controller do
   render_views
   
-  let(:user) { create :fellow_user }
+  let(:user) { create :fellow_user, fellow: fellow }
+  let(:fellow) { create :fellow }
   
   before { sign_in user }
   

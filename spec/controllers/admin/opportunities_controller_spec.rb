@@ -223,21 +223,6 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
           expect(Opportunity.last.interests).to include(interest)
         end
-        
-        it "accepts nested tasks" do
-          task1 = {name: 'Task 1', due_at: Time.now + 1.day}
-          task2 = {name: 'Task 2', due_at: Time.now + 2.days}
-          blank_task = {name: '', due_at: ''}
-          
-          post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(tasks_attributes: {'0' => task1, '1' => task2, '2' => blank_task})}, session: valid_session
-
-          opportunity = Opportunity.last
-          expect(opportunity.tasks.count).to eq(2)
-
-          task_names = opportunity.tasks.pluck(:name)
-          expect(task_names).to include(task1[:name])
-          expect(task_names).to include(task2[:name])
-        end
       end
 
       context "with invalid params" do
