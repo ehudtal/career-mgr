@@ -14,7 +14,7 @@
         <td class="phase" rows="<%= phase_content.size %>"><%= phase %></td>
         <td class="recommended-action">
           <% phase_content.each do |stage_name, content| %>
-            <% if stage_name == @candidate.stage %>
+            <% if stage_name == @candidate.stage # Active Stage %>
               <h1><%= content['phase_position'] %>. <%= content['title'] %></h1>
           
               <h3><%= interpolate(content['question']) %></h3>
@@ -52,7 +52,7 @@
                   <% end %>
                 </div>
               <% end %>
-            <% else %>
+            <% else # Not the active Stage %>
               <p><%= content['phase_position'] %>. <%= content['title'] %></p>
             <% end %>
           <% end %>
