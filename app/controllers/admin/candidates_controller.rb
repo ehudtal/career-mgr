@@ -15,9 +15,12 @@ class Admin::CandidatesController < ApplicationController
   end
 
   def create
-    @opportunity.candidate_ids = params[:candidate_ids]
-    
-    redirect_to admin_opportunity_path(@opportunity), notice: "#{params[:candidate_ids].size} candidates have been notified."
+    if params[:candidate_ids]
+      @opportunity.candidate_ids = params[:candidate_ids] 
+      redirect_to admin_opportunity_path(@opportunity), notice: "#{params[:candidate_ids].size} candidates have been notified."
+    else
+      redirect_to admin_opportunity_candidates_path(@opportunity), notice: "no candidates were selected."
+    end
   end
   
   def update
