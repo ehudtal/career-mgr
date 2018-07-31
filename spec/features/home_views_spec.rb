@@ -27,7 +27,7 @@ RSpec.feature "HomeViews", type: :feature do
     end
     
     scenario "Viewing the homepage", js: true do
-      expect(page).to have_content('Fellow Dashboard')
+      expect(page).to have_content(/Fellow Dashboard/i)
     end
   end
 end

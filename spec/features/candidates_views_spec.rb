@@ -97,7 +97,7 @@ RSpec.feature "Candidate Views", type: :feature do
     expect(page).to have_content(employer.name)
 
     click_on opportunity.name
-    expect(page).to have_content('Active Candidates')
+    expect(page).to have_content(/Active Candidates/i)
     
     click_on 'Find Candidates'
     expect(page).to have_content(fellow.full_name)

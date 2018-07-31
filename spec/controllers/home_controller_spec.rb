@@ -5,9 +5,9 @@ RSpec.describe HomeController, type: :controller do
   
   let(:user) { create :user }
   
-  before { sign_in user }
-
   describe "GET #welcome" do
+    before { sign_in user }
+
     describe 'when user is admin' do
       let(:user) { create :admin_user }
 
@@ -31,6 +31,25 @@ RSpec.describe HomeController, type: :controller do
         get :welcome
         expect(response).to be_successful
       end
+    end
+  end
+  
+  describe 'GET health_check' do
+    before { allow(User).to receive(:count) }
+    
+    it "checks the user count, to test the database" do
+      expect(User).to receive(:count).once
+      get :health_check
+    end
+    
+    it "succeeds" do
+      get :health_check
+      expect(response).to be_successful
+    end
+    
+    it "returns text message" do
+      get :health_check
+      expect(response.body).to eq("200 OK")
     end
   end
 end

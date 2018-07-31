@@ -20,7 +20,7 @@ class Fellow < ApplicationRecord
   belongs_to :employment_status
   belongs_to :user, optional: true
   
-  validates :first_name, :last_name, :employment_status_id, presence: true
+  validates :first_name, :last_name, presence: true
   
   validates :graduation_semester, inclusion: {in: (Course::VALID_SEMESTERS + [nil])}
   validates :graduation_year, numericality: {greater_than: 2010, less_than: 2050, allow_nil: true, only_integer: true}

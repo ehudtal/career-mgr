@@ -29,7 +29,7 @@ RSpec.feature "Employer Views", type: :feature do
     visit_employers
     click_on 'Add New Employer'
     
-    expect(page).to have_content('New Employer')
+    expect(page).to have_content(/New Employer/i)
     
     fill_in 'Name', with: 'New Name'
 
@@ -52,14 +52,14 @@ RSpec.feature "Employer Views", type: :feature do
     
     click_on employer.name
     
-    expect(page).to have_content('Industries')
+    expect(page).to have_content(/Industries/i)
     
     within 'li' do
       expect(page).to have_content(industry.name)
     end
     
-    expect(page).to have_content('Opportunities')
-    expect(page).to have_content('Locations')
+    expect(page).to have_content("OPPORTUNITIES")
+    expect(page).to have_content('LOCATIONS')
   end
   
   scenario "Updating", js: true do
@@ -67,7 +67,7 @@ RSpec.feature "Employer Views", type: :feature do
 
     click_on 'Edit'
 
-    expect(page).to have_content('Editing Employer')
+    expect(page).to have_content(/Editing Employer/i)
     expect(page).to have_content(industry.name)
     
     fill_in 'Name', with: 'New Name'

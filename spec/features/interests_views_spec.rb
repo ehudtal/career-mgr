@@ -23,7 +23,7 @@ RSpec.feature "InterestViews", type: :feature do
     visit_interests
     click_on 'Add New Interest'
     
-    expect(page).to have_content('New Interest')
+    expect(page).to have_content('NEW INTEREST')
     
     fill_in 'Name', with: 'New Name'
     fill_in 'Description', with: 'New Description'
@@ -53,7 +53,7 @@ RSpec.feature "InterestViews", type: :feature do
 
     click_on 'Edit'
     
-    expect(page).to have_content('Editing Interest')
+    expect(page).to have_content('EDITING INTEREST')
     
     fill_in 'Name', with: 'Updated Name'
     fill_in 'Description', with: 'Updated Description'

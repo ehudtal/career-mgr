@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'feature_helper'
 
-RSpec.feature "IndustryViews", type: :feature do
+RSpec.feature "IndustriesViews", type: :feature do
   include FeatureHelper
 
   let(:industry) { create :industry }
@@ -15,7 +15,7 @@ RSpec.feature "IndustryViews", type: :feature do
   end
   
   def visit_industries
-    expect(page).to have_content("Industries")
+    expect(page).to have_content(/Industries/i)
     click_on "Industries"
   end
   
@@ -23,7 +23,7 @@ RSpec.feature "IndustryViews", type: :feature do
     visit_industries
     click_on 'Add New Industry'
     
-    expect(page).to have_content('New Industry')
+    expect(page).to have_content(/New Industry/i)
     
     fill_in 'Name', with: 'New Name'
     fill_in 'Description', with: 'New Description'
@@ -41,7 +41,7 @@ RSpec.feature "IndustryViews", type: :feature do
   scenario "Viewing", js: true do
     visit_industries
     
-    expect(page).to have_content("Industries")
+    expect(page).to have_content(/Industries/i)
     expect(page).to have_content("ADD NEW INDUSTRY")
     
     click_on industry.name
@@ -53,7 +53,7 @@ RSpec.feature "IndustryViews", type: :feature do
 
     click_on 'Edit'
     
-    expect(page).to have_content('Editing Industry')
+    expect(page).to have_content('EDITING INDUSTRY')
     
     fill_in 'Name', with: 'Updated Name'
     fill_in 'Description', with: 'Updated Description'

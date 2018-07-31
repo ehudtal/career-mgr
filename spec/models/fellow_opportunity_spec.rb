@@ -105,6 +105,10 @@ RSpec.describe FellowOpportunity, type: :model do
       it "creates a log record when stage is set" do
         expect_log(name_second)
       end
+      
+      it "updates last_contact_at timestamp" do
+        expect(fellow_opportunity.last_contact_at).to be_within(0.1).of(Time.now)
+      end
     
       describe 'with special status "no change"' do
         let(:name_update) { 'no change' }

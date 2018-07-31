@@ -43,12 +43,40 @@ RSpec.describe Admin::CandidatesController, type: :controller do
   end
 
   describe "POST #create" do
-    it "creates the fellow_opportunity relationships" do
-      expect(opportunity).to receive(:candidate_ids=).with(['1001'])
-      
-      post :create, params: {candidate_ids: ['1001'], opportunity_id: opportunity.id.to_s}
+    describe 'when candidates have been marked for notification' do
+      before { allow(opportunity).to receive(:candidate_ids=).with(['1001']) }
 
-      expect(response).to redirect_to(admin_opportunity_path(opportunity))
+      it "creates the fellow_opportunity relationships" do
+        expect(opportunity).to receive(:candidate_ids=).with(['1001'])
+        post :create, params: {candidate_ids: ['1001'], opportunity_id: opportunity.id.to_s}
+      end
+      
+      it "redirects to opportunity page" do
+        post :create, params: {candidate_ids: ['1001'], opportunity_id: opportunity.id.to_s}
+        expect(response).to redirect_to(admin_opportunity_path(opportunity))
+      end
+
+      it "shows successful flash message" do
+        post :create, params: {candidate_ids: ['1001'], opportunity_id: opportunity.id.to_s}
+        expect(flash[:notice]).to include('candidates have been notified')
+      end
+    end
+
+    describe 'when NO candidates have been marked for notification' do
+      it "creates the fellow_opportunity relationships" do
+        expect(opportunity).to receive(:candidate_ids=).never
+        post :create, params: {opportunity_id: opportunity.id.to_s}
+      end
+
+      it "redirects to opportunity page" do
+        post :create, params: {opportunity_id: opportunity.id.to_s}
+        expect(response).to redirect_to(admin_opportunity_candidates_path(opportunity))
+      end
+
+      it "shows successful flash message" do
+        post :create, params: {opportunity_id: opportunity.id.to_s}
+        expect(flash[:notice]).to include('no candidates were selected')
+      end
     end
   end
   
