@@ -19,6 +19,18 @@ body {
   margin: 0;
 }
 
+h1,h2,h3,h4,h5,h6 {
+  font-family: "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
+  text-transform: uppercase;
+  line-height: normal;
+  font-weight: normal;
+}
+
+#masthead h1 {
+  font-size: 1.1em;
+  margin: 2px 0 0 calc(110px + 1em);
+}
+
 h2 {
   margin-top: 2em;
 }
@@ -26,6 +38,24 @@ h2 {
 #masthead,
 main {
   padding: 2vw;
+  position: relative;
+}
+
+#masthead .login {
+  text-transform: uppercase;
+  position: absolute;
+  right: 2vw;
+  top: 2vw;
+}
+
+#header-logo {
+  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
+  width: 110px;
+  height: 26px;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 2vw;
+  top: 2vw;
 }
 
 a:link, a:visited {
@@ -72,8 +102,6 @@ table .back,
 }
 
 #masthead {
-  text-transform: uppercase;
-  font-size: 0.6em;
   background: #333;
 }
 
