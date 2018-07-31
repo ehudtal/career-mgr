@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_29_174435) do
+ActiveRecord::Schema.define(version: 2018_07_31_011322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 2018_07_29_174435) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.boolean "active"
+    t.datetime "last_contact_at"
     t.index ["active"], name: "index_fellow_opportunities_on_active"
     t.index ["deleted_at"], name: "index_fellow_opportunities_on_deleted_at"
     t.index ["fellow_id", "opportunity_id"], name: "index_fellow_opportunities_on_fellow_id_and_opportunity_id", unique: true
