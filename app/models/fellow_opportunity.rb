@@ -51,11 +51,7 @@ class FellowOpportunity < ApplicationRecord
       log stage_name
     end
     
-    update_active_status
-  end
-  
-  def update_active_status
-    self.update active: self.opportunity_stage.active_status
+    self.update active: self.opportunity_stage.active_status, last_contact_at: Time.now
   end
   
   def activate!
