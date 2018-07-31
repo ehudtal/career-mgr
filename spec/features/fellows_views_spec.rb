@@ -108,7 +108,7 @@ RSpec.feature "FellowViews", type: :feature do
 
     click_on 'Edit'
 
-    expect(page).to have_content('Editing Fellow')
+    expect(page).to have_content(/Editing Fellow/i)
 
     updated_first = fellow.first_name + 'x'
     fill_in 'First name', with: updated_first
