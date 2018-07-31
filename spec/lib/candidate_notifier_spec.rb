@@ -31,11 +31,12 @@ RSpec.describe CandidateNotifier do
   
   describe '::send_notifications' do
     let(:access_token) { AccessToken.for(fellow_opportunity) }
-    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage, last_contact_at: last_contact_at }
+    let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage, last_contact_at: last_contact_at, active: active }
     let(:fellow) { create :fellow }
     let(:opportunity) { create :opportunity }
     let(:opportunity_stage) { create :opportunity_stage, name: stage_name}
     let(:stage_name) { 'research employer' }
+    let(:active) { true }
     
     before do
       access_token 
@@ -76,6 +77,19 @@ RSpec.describe CandidateNotifier do
       
       it "updates the last_contact_at field" do
         expect(fellow_opportunity.reload.last_contact_at).to be_within(0.1).of(Time.now)
+      end
+    end
+    
+    describe 'when fellow_opportunity is no longer active' do
+      let(:last_contact_at) { 100.days.ago }
+      let(:active) { false }
+      
+      it 'doesn\'t notify the candidate' do
+        expect(Delayed::Job.where(queue: 'mailers').count).to eq(0)
+      end
+
+      it "DOES NOT update the last_contact_at field" do
+        expect(fellow_opportunity.reload.last_contact_at).to be_within(1).of(last_contact_at)
       end
     end
   end

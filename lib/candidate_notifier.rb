@@ -1,7 +1,7 @@
 module CandidateNotifier
   class << self
     def send_notifications
-      FellowOpportunity.where("last_contact_at < ?", 3.days.ago).each do |candidate|
+      FellowOpportunity.active.where("last_contact_at < ?", 3.days.ago).each do |candidate|
         access_token = AccessToken.for(candidate)
         
         case candidate.stage
