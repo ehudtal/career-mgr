@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   get 'home/welcome'
+  get 'health_check', to: 'home#health_check'
   get 'token/:id', to: 'token#show', as: 'token'
 
   get 'candidates/:fellow_opportunity_id/status', to: 'candidates#status', as: 'candidate_status'
