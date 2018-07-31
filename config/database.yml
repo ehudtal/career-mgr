@@ -12,6 +12,10 @@ development:
   <<: *default
   database: career-mgr_development
 
+staging:
+  <<: *default
+  database: career-mgr_development
+
 test:
   <<: *default
   database: career-mgr_test
