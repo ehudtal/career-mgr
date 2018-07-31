@@ -21,7 +21,8 @@ body {
 
 h1,h2,h3,h4,h5,h6,
 .logout,
-.button {
+.button,
+input[type="submit"] {
   font-family: "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
@@ -72,13 +73,11 @@ a:hover, a:active {
 
 input[type="submit"],
 a.button {
-  font-size: 0.8em;
   background: #EB3B46;
   color: #FFF;
   border: none;
   text-transform: uppercase;
-  font-weight: bold;
-  border-radius: 3px;
+  border-radius: 2px;
   transition: background-color 0.2s ease-in-out;
   padding: 8px 14px;
   margin-bottom: 0;
@@ -100,6 +99,7 @@ table .back,
 
 .actions {
   margin-top: 2em;
+  padding-top: 1em;
   border-top: 1px solid #CCC;
 }
 
