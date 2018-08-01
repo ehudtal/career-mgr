@@ -1,3 +1,68 @@
 // Place all the styles related to the opportunities controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.opportunity-stages {
+  width: 720px;
+}
+
+.opportunity-stages td,
+.opportunity-stages th {
+  padding: 5px;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.phase h2,
+th {
+  font-size: 1.2em;
+  margin-top: 0;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.opportunity-stages .completed {
+  background: rgba(0,0,0,0.05);
+  padding-right: 25px;
+  position: relative;
+}
+
+.opportunity-stages .not-completed {
+  color: #999;
+}
+
+.opportunity-stages .completed:after {
+  content: "\2714";
+  position: absolute;
+  display: block;
+  right: 5px;
+  top: 10px;
+  font-size: 24px;
+  color: green;
+}
+
+.stage h3 {
+  font-size: 1em;
+  margin: 0.25em 0;
+}
+
+.active-stage h3 {
+  font-size: 1.6em;
+  margin: 0 0 0.5em;
+}
+
+.active-stage h4 {
+  margin: 0 0 0.25em;
+}
+
+@media all and (max-width: 600px) {
+  .opportunity-stages {
+    width: 360px;
+  }
+}

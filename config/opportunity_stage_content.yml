@@ -127,7 +127,7 @@ follow up after interview:
   
 receive offer:
   phase: "Offer"
-  title: "Look for an Offer!"
+  title: "Look for an Offer"
   phase_position: 1
   question: "Have you received an offer from <%= @opp.employer.name %> yet?"
   links:
