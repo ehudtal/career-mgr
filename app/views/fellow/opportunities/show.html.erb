@@ -7,14 +7,15 @@
   </thead>
   
   <tbody>
+    <% completion = 'completed' %>
     <% ['Apply', 'Interview', 'Offer'].each do |phase| %>
       <% phase_content = @content.select{|k,v| v['phase'] == phase} %>
-      <% stage_counter = 0 %>
       <tr>
-        <td class="phase" rowspan="<%= phase_content.size %>"><%= phase %></td>
+        <td class="phase phase-<%= phase.downcase %>" rowspan="<%= phase_content.size %>"><h2><%= phase %></h2></td>
           <% phase_content.each do |stage_name, content| %>
             <% if stage_name == @candidate.stage # Active Stage %>
-              <td class="active-stage">
+              <% completion = 'not-completed' %> 
+              <td class="stage active-stage phase-<%= phase.downcase %>">
                 <h3><%= content['phase_position'] %>. <%= content['title'] %></h3>
           
                 <% if content['links'] %>
@@ -45,7 +46,7 @@
               </td>
 
             <% else # Not the active Stage %>
-              <td><%= content['phase_position'] %>. <%= content['title'] %></td>
+              <td class="stage <%= completion %> phase-<%= phase.downcase %>"><h3><%= content['phase_position'] %>. <%= content['title'] %></h3></td>
             <% end %>
           
         </tr>

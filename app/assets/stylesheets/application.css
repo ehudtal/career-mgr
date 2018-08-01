@@ -20,10 +20,11 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6,
+th,
 .logout,
 .button,
 input[type="submit"] {
-  font-family: "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
+  font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
   font-weight: normal;
