@@ -175,7 +175,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'receive offer' do
       let(:stage_name) { 'receive offer' }
 
-      expect_headers "New Opportunity: Look for an Offer!"
+      expect_headers "New Opportunity: Look for an Offer"
       expect_content "Have you received"
 
       expect_status_link 'receive offer', 'next'
