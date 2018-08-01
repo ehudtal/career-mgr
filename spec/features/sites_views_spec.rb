@@ -66,7 +66,7 @@ RSpec.feature "SiteViews", type: :feature do
     click_on site.name
 
     expect(page).to have_content(site.name)
-    expect(page).to have_content('Courses')
+    expect(page).to have_content('COURSES')
     expect(page).to have_content('Spring 2018')
   end
 
@@ -75,7 +75,7 @@ RSpec.feature "SiteViews", type: :feature do
 
     click_on 'Edit'
 
-    expect(page).to have_content('Editing Site')
+    expect(page).to have_content('EDITING SITE')
 
     fill_in 'site[name]', with: 'Updated Name'
     fill_in 'site[location_attributes][name]', with: 'Updated Location Name'

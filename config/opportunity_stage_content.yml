@@ -39,11 +39,7 @@ customize application materials:
   phase: "Apply"
   title: "Customize Your Application Materials"
   phase_position: 3
-  question: "Have you customized your:"
-  materials:
-    - "Resume?"
-    - "Cover Letter?"
-    - "Other materials for this opportunity (eg, portfolio)"
+  question: "Have you customized your resume, cover Letter, and other materials for this opportunity (eg, portfolio)?"
   tips:
     header: "More Info:"
     list:
@@ -131,7 +127,7 @@ follow up after interview:
   
 receive offer:
   phase: "Offer"
-  title: "Look for an Offer!"
+  title: "Look for an Offer"
   phase_position: 1
   question: "Have you received an offer from <%= @opp.employer.name %> yet?"
   links:

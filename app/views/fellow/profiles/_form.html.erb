@@ -13,6 +13,8 @@
     </div>
   <% end %>
 
+  <h2 id="info-personal">Personal Info</h2>
+
   <div class="field">
     <%= form.label :first_name %>
     <%= form.text_field :first_name, required: true %>
@@ -47,25 +49,29 @@
     <%= form.label :linkedin_url %>
     <%= form.text_field :linkedin_url %>
   </div>
+  
+  <h2 id="info-contact">Contact</h2>
+
+  <%= render 'admin/contacts/nested_form', form: form %>
+
+  <h2 id="info-career">Career Search Preferences</h2>
+
+  <p><em>The following settings help us match you to new opportunities. Keep them up to date!</em></p>
 
   <div class="field">
     <%= form.label :employment_status_id %>
     <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
   </div>
-  
-  <hr>
 
-  <%= render 'admin/contacts/nested_form', form: form %>
+  <h3 id="info-interests">Industries and Interests</h3>
   
-  <h3>Industries/Interests</h3>
-
   <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank' %>
 
   <div id="industry-interest-tags" class="jquery-tags">
     <%= form.text_area :industry_interest_tags %>
   </div>
   
-  <h3>Metro Areas</h3>
+  <h3 id="info-metro">Metro Areas</h3>
   
   <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank' %>
 

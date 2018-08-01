@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Career Manager Admin</title>
+    <title>My Career Manager &mdash; Braven</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -11,8 +11,9 @@
 
   <body>
     <header id="masthead">
-      <h1><%= link_to 'My Career Manager Admin', root_path %></h1>
-      <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete %>
+      <div id="header-logo">&nbsp;</div>
+      <h1><%= link_to 'My Career Manager', root_path %></h1>
+      <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete, class: 'logout button' %>
     </header>
     <main>
       <p id="notice"><%= notice %></p>

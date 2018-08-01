@@ -123,7 +123,7 @@ If you'd like to reset the database to the original seed data (with example empl
 ## Troubleshooting
 
 * `HTTPError Could not fetch specs from https://rubygems.org/` - Restart docker.
-* If rspec fails with a migration error, run this: `docker-compose exec career-mgr rake db:migrate RAILS_ENV=test`
+* If rspec fails with a `PendingMigrationError`, run this: `docker-compose exec career-mgr rake db:migrate RAILS_ENV=test` (sometimes you may need to run it more than once)
 
 ## Testing
 

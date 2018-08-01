@@ -35,7 +35,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     click_on 'New Opportunity'
     click_on opportunity.employer.name
 
-    expect(page).to have_content('New Opportunity')
+    expect(page).to have_content('NEW OPPORTUNITY')
 
     opportunity_attributes = attributes_for :opportunity
 
@@ -109,7 +109,7 @@ RSpec.feature "OpportunityViews", type: :feature do
 
     click_on 'Edit'
 
-    expect(page).to have_content('Editing Opportunity')
+    expect(page).to have_content('EDITING OPPORTUNITY')
 
     updated_name = opportunity.name + 'x'
     fill_in 'Opportunity Name or Job Title', with: updated_name
