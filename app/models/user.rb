@@ -25,6 +25,7 @@ class User < ApplicationRecord
 
   def attempt_admin_set
     return if email.nil?
+    return if FellowUserMatcher.match?(email)
     
     domain = email.split('@').last
     self.is_admin = ADMIN_DOMAIN_WHITELIST.include?(domain)

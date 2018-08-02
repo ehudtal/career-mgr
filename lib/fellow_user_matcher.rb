@@ -9,5 +9,9 @@ class FellowUserMatcher
         user.update is_fellow: true
       end
     end
+    
+    def match? email
+      Fellow.includes(:contact).where(contacts: {email: email}).count > 0
+    end
   end
 end

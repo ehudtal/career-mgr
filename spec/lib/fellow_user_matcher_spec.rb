@@ -3,6 +3,7 @@ require 'fellow_user_matcher'
 
 RSpec.describe FellowUserMatcher do
   let(:email) { 'matching@example.com' }
+  let(:email_nomatch) { 'nonmatching@example.com' }
   
   let(:user_match) { create :user, is_fellow: false, email: email }
   let(:user_nomatch) { create :user, is_fellow: false }
@@ -17,9 +18,23 @@ RSpec.describe FellowUserMatcher do
     contact
   end
   
-  subject { FellowUserMatcher.match(email) }
+  describe '::match(email)?' do
+    subject { FellowUserMatcher.match?(this_email) }
+    
+    describe 'when email matches a fellow' do
+      let(:this_email) { email }
+      it { should be(true) }
+    end
+    
+    describe 'when email doesn\'t match a fellow' do
+      let(:this_email) { email_nomatch }
+      it { should be(false) }
+    end
+  end
   
   describe "::match(email)" do
+    subject { FellowUserMatcher.match(email) }
+
     before { subject }
     
     it "associates a fellow to a matching user" do
