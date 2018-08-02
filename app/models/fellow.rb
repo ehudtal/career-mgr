@@ -37,7 +37,9 @@ class Fellow < ApplicationRecord
       CSV.new(contents, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/).each do |data|
         cohort = Site.cohort_for data['Braven class']
 
-        next if cohort.nil?
+        if cohort.nil?
+          puts "COULD NOT FIND A COHORT MATCH FOR #{data['Braven class'].inspect} '#{data['First Name']} #{data['Last Name']}'"
+        end
 
         attributes = {
           first_name: data['First Name'],

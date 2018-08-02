@@ -43,6 +43,15 @@ RSpec.describe User, type: :model do
       expect(user.reload.is_admin?).to be(true)
     end
     
+    it "leaves the user as not admin if they can be a fellow" do
+      email = "test@#{admin_domain}"
+      
+      allow(FellowUserMatcher).to receive(:match?).with(email).and_return(true)
+      user = create :user, email: email
+
+      expect(user.reload.is_admin?).to be(false)
+    end
+    
     it "leaves the user as not admin if the e-mail domain is not in the whitelist" do
       user = create :user, email: "test@not.#{admin_domain}"
       expect(user.reload.is_admin?).to be(false)
