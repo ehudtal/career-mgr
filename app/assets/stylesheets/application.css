@@ -29,7 +29,7 @@ body {
 
 main {
   width: 672px;
-  margin: 0 auto;
+  margin: 0 auto 5vw;
   position: relative;
 }
 
@@ -272,6 +272,11 @@ th {
   position: relative;
 }
 
+.tracker-item input:checked + label {
+  background: green;
+  color: white;
+}
+
 .tracker-item label {
   padding: 10px;
   display: flex;
@@ -308,11 +313,6 @@ th {
 .big-symbol {
   font-size: 5em !important;
   text-align: center;
-}
-
-.completed {
-  background: green;
-  color: white;
 }
 
 .tracker-item:hover {
