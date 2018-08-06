@@ -15,15 +15,30 @@
  *= require jquery-ui
  */
 
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
+}
+
+main {
+  width: 672px;
+  margin: 0 auto;
+  position: relative;
 }
 
 h1,h2,h3,h4,h5,h6,
 th,
 .logout,
 .button,
-input[type="submit"] {
+input[type="submit"],
+.tracker-item {
   font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
@@ -39,8 +54,7 @@ h2, h3 {
   margin-top: 2em;
 }
 
-#masthead,
-main {
+#masthead {
   padding: 2vw;
   position: relative;
 }
@@ -179,9 +193,6 @@ tr:first-child {
 }
 
 /* Opportunity Stages Job Hunter UI */
-.opportunity-stages {
-  width: 720px;
-}
 
 .opportunity-stages td,
 .opportunity-stages th {
@@ -238,10 +249,69 @@ th {
   margin: 0 0 0.25em;
 }
 
+/* Career Progress Tracker */
+
+#career-tracker {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.tracker-item {
+  width: 210px;
+  height: 210px;
+  margin: 3px;
+  flex-shrink: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: #FAFAFA;
+  position: relative;
+}
+
+.tracker-item p {
+  text-align: center;
+  text-transform: none;
+  font-size: 1.25em;
+}
+
+.tracker-item h4 {
+  font-size: 2em;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.tracker-item input {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.start {
+  background: #EB3B46;
+  color: white;
+}
+
+.big-symbol {
+  font-size: 5em !important;
+}
+
+.completed {
+  background: green;
+  color: white;
+}
+
 /* Media Queries */
 
-@media all and (max-width: 672px) {
-  .opportunity-stages {
-    width: 360px;
+@media all and (max-width: 700px) {
+  main {
+    width: 100%;
+    padding: 0 1vw;
+  }
+
+  .tracker-item.start {
+    display: none;
   }
 }
