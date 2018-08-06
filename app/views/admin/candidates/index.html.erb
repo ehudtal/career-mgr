@@ -27,13 +27,12 @@
         <th>Graduation</th>
         <th>GPA</th>
         <th>Efficacy</th>
-        <th>Interests</th>
-        <th>Industries</th>
+        <th>Interests / Industries</th>
         <th>Locations</th>
         <th>Distance</th>
         <th>Status</th>
       
-        <th colspan="2">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
 
@@ -60,8 +59,6 @@
                 <li><%= interest.name %></li>
               <% end %>
             </ul>
-          </td>
-          <td>
             <ul>
               <% fellow.industries.each do |industry| %>
                 <li><%= industry.name %></li>
@@ -77,8 +74,12 @@
           </td>
           <td><%= pluralize(fellow.nearest_distance(@opportunity.postal_codes).round, 'mile') %>
           <td><%= fellow.employment_status.name %></td>
-          <td><%= link_to 'Edit', edit_admin_fellow_path(fellow), class: 'edit' %></td>
-          <td><%= link_to 'Delete', admin_fellow_path(fellow), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          <td>
+            <ul>
+              <li><%= link_to 'Edit', edit_admin_fellow_path(fellow), class: 'edit' %></li>
+              <li><%= link_to 'Delete', admin_fellow_path(fellow), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></li>
+            </ul>
+          </td>
         </tr>
       <% end %>
     </tbody>

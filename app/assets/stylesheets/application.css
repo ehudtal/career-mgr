@@ -188,8 +188,15 @@ tr:first-child {
   margin-bottom: 20px;
 }
 
-.tablesorter th.header {
-  padding-right: 10px;
+table.tablesorter {
+  width: calc( 100vw - ( (100vw - 672px) / 2 ) - 20px );
+  font-size: 1em;
+}
+
+table.tablesorter thead tr th,
+table.tablesorter tfoot tr th {
+  font-size: 1em;
+  padding-right: 15px;
 }
 
 /* Opportunity Stages Job Hunter UI */
@@ -336,5 +343,9 @@ th {
 
   .tracker-item.start {
     display: none;
+  }
+
+  table.tablesorter {
+    width: 672px;
   }
 }
