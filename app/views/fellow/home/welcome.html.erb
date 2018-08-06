@@ -1,8 +1,12 @@
-<h1>Fellow Dashboard</h1>
+<h1><%= @fellow.first_name %>&rsquo;s Career Dashboard</h1>
 
-<%= link_to 'Your Profile', fellow_profile_path %>
+<%= link_to 'View profile details', fellow_profile_path %>
 
-<h3>Your Opportunities</h3>
+<h3>Career Progress</h3>
+
+
+
+<h3>Active Opportunities</h3>
 
 <% if @fellow.fellow_opportunities.empty? %>
   <p>None at this time.</p>
