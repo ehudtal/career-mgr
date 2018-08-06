@@ -261,16 +261,20 @@ th {
   height: 210px;
   margin: 3px;
   flex-shrink: 0;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
   background: #FAFAFA;
   position: relative;
 }
 
+.tracker-item label {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
 .tracker-item p {
-  text-align: center;
   text-transform: none;
   font-size: 1.25em;
 }
@@ -290,17 +294,36 @@ th {
 }
 
 .start {
-  background: #EB3B46;
+  background: #CCC;
   color: white;
 }
 
 .big-symbol {
   font-size: 5em !important;
+  text-align: center;
 }
 
 .completed {
   background: green;
   color: white;
+}
+
+.tracker-item:hover {
+  background: #EB3B46;
+  color: white;
+}
+
+.tracker-item.completed:hover {
+  background: darkgreen;
+}
+
+.tracker-item.start:hover {
+  background: #CCC;
+  cursor: default;
+}
+
+.tracker-item label:hover {
+  cursor: pointer;
 }
 
 /* Media Queries */
