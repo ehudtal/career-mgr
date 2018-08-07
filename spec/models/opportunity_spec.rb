@@ -16,6 +16,7 @@ RSpec.describe Opportunity, type: :model do
   
   it { should have_and_belong_to_many :industries }
   it { should have_and_belong_to_many :interests }
+  it { should have_and_belong_to_many :majors }
   it { should have_and_belong_to_many :metros }
   it { should have_and_belong_to_many :locations }
   
@@ -50,6 +51,8 @@ RSpec.describe Opportunity, type: :model do
     let(:fellow) { create :fellow }
     let(:interest) { create :interest }
     let(:industry) { create :industry }
+    let(:major_parent) { create :major }
+    let(:major_child) { create :major, parent: major_parent }
     let(:metro) { create :metro }
     
     def matching_industry
@@ -66,6 +69,10 @@ RSpec.describe Opportunity, type: :model do
       opportunity.metros << metro
       fellow.metros << metro
     end
+    
+    # def matching_majors
+    #   opportun
+    # end
     
     describe 'with matching metro' do
       before { matching_metro }

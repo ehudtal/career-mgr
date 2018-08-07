@@ -11,7 +11,7 @@ class Opportunity < ApplicationRecord
   has_many :fellow_opportunities
   has_many :fellows, through: :fellow_opportunities
   
-  taggable :industries, :interests, :industry_interests, :metros
+  taggable :industries, :interests, :majors, :industry_interests, :metros
 
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
