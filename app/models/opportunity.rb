@@ -68,11 +68,16 @@ class Opportunity < ApplicationRecord
   end
   
   def fellow_ids_for_majors names
-    selected_ids = if names
-      Major.where(name: names.split(';')).pluck(:id)
+    named = if names
+      Major.where(name: names.split(';'))
     else
-      major_ids
+      majors
     end
+    
+    parent_ids = named.pluck(:parent_id)
+    child_ids = named.map(&:children).flatten.map(&:id)
+    
+    selected_ids = (named.pluck(:id) + parent_ids + child_ids).uniq
     
     FellowMajor.fellow_ids_for(selected_ids)
   end

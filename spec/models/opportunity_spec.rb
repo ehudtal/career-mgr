@@ -71,8 +71,8 @@ RSpec.describe Opportunity, type: :model do
     end
     
     def matching_majors
-      opportunity.majors << major_parent
-      fellow.majors << major_parent
+      opportunity.majors << major_child
+      fellow.majors << major_child
     end
     
     describe 'with matching metro' do
@@ -110,6 +110,20 @@ RSpec.describe Opportunity, type: :model do
 
       it "includes fellow when there is a shared major" do
         matching_majors
+        expect(opportunity.candidates).to include(fellow)
+      end
+
+      it "includes fellow when opp major category matches specific fellow major" do
+        opportunity.majors << major_parent
+        fellow.majors << major_child
+        
+        expect(opportunity.candidates).to include(fellow)
+      end
+
+      it "includes fellow when specific opp major matches fellow major category" do
+        opportunity.majors << major_child
+        fellow.majors << major_parent
+
         expect(opportunity.candidates).to include(fellow)
       end
     
