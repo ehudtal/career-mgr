@@ -22,4 +22,39 @@ RSpec.describe Major, type: :model do
     subject { create :major }
     it { should validate_uniqueness_of :name }
   end
+  
+  ###############
+  # Class methods
+  ###############
+
+  describe '::load_from_yaml' do
+    before do
+      Major.create name: 'nonexistant'
+      Major.load_from_yaml
+    end
+    
+    subject { Major.pluck(:name) }
+    
+    it "removes pre-existing majors" do
+      expect(Major.find_by(name: 'nonexistant')).to be_nil
+    end
+    
+    it "loads categories" do
+      expect(subject).to include('Business')
+      expect(subject).to include('Education')
+    end
+    
+    it "loads majors" do
+      expect(subject).to include("Food Science")
+      expect(subject).to include("Accounting")
+    end
+    
+    it "connects parents to children" do
+      business = Major.find_by name: 'Business'
+      accounting = Major.find_by name: 'Accounting'
+      
+      expect(business.children).to include(accounting)
+      expect(accounting.parent).to eq(business)
+    end
+  end
 end

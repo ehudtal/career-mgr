@@ -6,4 +6,21 @@ class Major < ApplicationRecord
   has_many :children, class_name: 'Major', foreign_key: 'parent_id'
   
   validates :name, presence: true, uniqueness: true
+  
+  class << self
+    def load_from_yaml
+      destroy_all
+      
+      data = YAML.load(File.read("#{Rails.root}/config/majors.yml"))
+      
+      data.each do |category, major_names|
+        category = Major.create name: category
+        next if major_names.nil?
+
+        major_names.each do |major_name|
+          Major.create name: major_name, parent: category
+        end
+      end
+    end
+  end
 end
