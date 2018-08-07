@@ -67,11 +67,22 @@ class Opportunity < ApplicationRecord
     FellowIndustry.fellow_ids_for(selected_ids)
   end
   
+  def fellow_ids_for_majors names
+    selected_ids = if names
+      Major.where(name: names.split(';')).pluck(:id)
+    else
+      major_ids
+    end
+    
+    FellowMajor.fellow_ids_for(selected_ids)
+  end
+  
   def fellow_ids_for_industries_interests names
     industry_fellow_ids = fellow_ids_for_industries names
     interest_fellow_ids = fellow_ids_for_interests names
+    major_fellow_ids = fellow_ids_for_majors names
     
-    industry_fellow_ids | interest_fellow_ids
+    industry_fellow_ids | interest_fellow_ids | major_fellow_ids
   end
   
   def fellow_ids_for_metros names

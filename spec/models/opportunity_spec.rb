@@ -70,9 +70,10 @@ RSpec.describe Opportunity, type: :model do
       fellow.metros << metro
     end
     
-    # def matching_majors
-    #   opportun
-    # end
+    def matching_majors
+      opportunity.majors << major_parent
+      fellow.majors << major_parent
+    end
     
     describe 'with matching metro' do
       before { matching_metro }
@@ -106,6 +107,21 @@ RSpec.describe Opportunity, type: :model do
         fellow.industries << industry
         expect(opportunity.candidates).to_not include(fellow)
       end
+
+      it "includes fellow when there is a shared major" do
+        matching_majors
+        expect(opportunity.candidates).to include(fellow)
+      end
+    
+      it "excludes fellow when fellow does not share the major" do
+        opportunity.majors << major_parent
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+    
+      it "excludes fellow when opp does not share the major" do
+        fellow.majors << major_parent
+        expect(opportunity.candidates).to_not include(fellow)
+      end
     end
     
     describe 'without matching metro' do
@@ -118,12 +134,18 @@ RSpec.describe Opportunity, type: :model do
         matching_interest
         expect(opportunity.candidates).to_not include(fellow)
       end
+
+      it "excludes even with shared major" do
+        matching_majors
+        expect(opportunity.candidates).to_not include(fellow)
+      end
     end
     
     it "removes duplicates" do
       matching_metro
       matching_industry
       matching_interest
+      matching_majors
       
       expect(opportunity.candidates).to include(fellow)
       expect(opportunity.candidates.size).to eq(1)
