@@ -30,6 +30,18 @@ class ApplicationController < ActionController::Base
     redirect_to(root_path) unless current_user.is_fellow?
   end
   
+  def set_fellow
+    unless current_user.fellow
+      current_user.create_fellow(
+        first_name: 'unknown',
+        last_name: 'unknown',
+        employment_status: EmploymentStatus.find_by(position: 0)
+      )
+    end
+    
+    @fellow = current_user.fellow
+  end
+  
   def authenticate_user!
     super unless authorized_by_token?
   end
