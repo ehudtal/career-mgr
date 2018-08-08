@@ -74,7 +74,7 @@ $(document).on "turbolinks:load",  ->
         
   enableTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
-  enableTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Metro')
+  enableTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Location')
   
   enableIndustryInterestTags()
   
