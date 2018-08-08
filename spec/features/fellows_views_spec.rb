@@ -58,8 +58,8 @@ RSpec.feature "FellowViews", type: :feature do
     fill_in 'Email', with: contact_attributes[:email]
     fill_in 'Url', with: contact_attributes[:url]
 
-    expect_list_link_for 'industries/interests'
-    expect_list_link_for :metro_areas
+    expect_list_link_for 'industries/interests', link: 'full list', within: '#interests-collection'
+    expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
     
     add_tag :fellow, :industry_interest, industry_included.name
     add_tag :fellow, :industry_interest, interest_included.name
@@ -119,8 +119,8 @@ RSpec.feature "FellowViews", type: :feature do
     updated_city = fellow.contact.city + 'x'
     fill_in 'City', with: updated_city
 
-    expect_list_link_for 'industries/interests'
-    expect_list_link_for :metro_areas
+    expect_list_link_for 'industries/interests/majors', link: 'full list', within: '#interests-collection'
+    expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
 
     click_on 'Update Fellow'
 

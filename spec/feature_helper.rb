@@ -39,8 +39,14 @@ module FeatureHelper
     titleized = label.to_s.titleize
     options[:link]  ||= "full #{titleized.downcase} list"
     options[:title] ||= titleized
+    options[:within] ||= 'html'
   
-    new_tab = window_opened_by{ click_on options[:link] }
+    new_tab = window_opened_by do
+      within(options[:within]) do
+        click_on options[:link]
+      end
+    end
+    
     within_window new_tab do
       expect(page).to have_content(options[:title])
     end
