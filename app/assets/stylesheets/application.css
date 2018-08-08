@@ -15,15 +15,30 @@
  *= require jquery-ui
  */
 
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
+}
+
+main {
+  width: 672px;
+  margin: 0 auto 5vw;
+  position: relative;
 }
 
 h1,h2,h3,h4,h5,h6,
 th,
 .logout,
 .button,
-input[type="submit"] {
+input[type="submit"],
+.tracker-item {
   font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
@@ -39,8 +54,7 @@ h2, h3 {
   margin-top: 2em;
 }
 
-#masthead,
-main {
+#masthead {
   padding: 2vw;
   position: relative;
 }
@@ -174,6 +188,164 @@ tr:first-child {
   margin-bottom: 20px;
 }
 
-.tablesorter th.header {
-  padding-right: 10px;
+table.tablesorter {
+  width: calc( 100vw - ( (100vw - 672px) / 2 ) - 20px );
+  font-size: 1em;
+}
+
+table.tablesorter thead tr th,
+table.tablesorter tfoot tr th {
+  font-size: 1em;
+  padding-right: 15px;
+}
+
+/* Opportunity Stages Job Hunter UI */
+
+.opportunity-stages td,
+.opportunity-stages th {
+  padding: 5px;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.phase h2,
+th {
+  font-size: 1.2em;
+  margin-top: 0;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.opportunity-stages .completed {
+  background: rgba(0,0,0,0.05);
+  padding-right: 25px;
+  position: relative;
+}
+
+.opportunity-stages .not-completed {
+  color: #999;
+}
+
+.opportunity-stages .completed:after {
+  content: "\2714";
+  position: absolute;
+  display: block;
+  right: 5px;
+  top: 10px;
+  font-size: 24px;
+  color: green;
+}
+
+.stage h3 {
+  font-size: 1em;
+  margin: 0.25em 0;
+}
+
+.active-stage h3 {
+  font-size: 1.6em;
+  margin: 0 0 0.5em;
+}
+
+.active-stage h4 {
+  margin: 0 0 0.25em;
+}
+
+/* Career Progress Tracker */
+
+#career-tracker {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.tracker-item {
+  width: 210px;
+  height: 210px;
+  margin: 3px;
+  flex-shrink: 0;
+  background: #FAFAFA;
+  position: relative;
+}
+
+.tracker-item input:checked + label {
+  background: green;
+  color: white;
+}
+
+.tracker-item label {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.tracker-item p {
+  text-transform: none;
+  font-size: 1.25em;
+}
+
+.tracker-item h4 {
+  font-size: 2em;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.tracker-item input {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.start {
+  background: #CCC;
+  color: white;
+}
+
+.big-symbol {
+  font-size: 5em !important;
+  text-align: center;
+}
+
+.tracker-item:hover {
+  background: #EB3B46;
+  color: white;
+}
+
+.tracker-item.completed:hover {
+  background: darkgreen;
+}
+
+.tracker-item.start:hover {
+  background: #CCC;
+  cursor: default;
+}
+
+.tracker-item label:hover {
+  cursor: pointer;
+}
+
+/* Media Queries */
+
+@media all and (max-width: 700px) {
+  main {
+    width: 100%;
+    padding: 0 1vw;
+  }
+
+  .tracker-item.start {
+    display: none;
+  }
+
+  table.tablesorter {
+    width: 672px;
+  }
 }
