@@ -57,4 +57,40 @@ RSpec.describe Major, type: :model do
       expect(accounting.parent).to eq(business)
     end
   end
+  
+  ##################
+  # Instance methods
+  ##################
+  
+  describe '#all_parents' do
+    let(:unrelated) { create :major }
+    let(:grandparent) { create :major }
+    let(:parent) { create :major, parent: grandparent }
+    let(:child) { create :major, parent: parent }
+    
+    before { unrelated; child }
+    
+    subject { child.all_parents }
+    
+    it { should include(grandparent) }
+    it { should include(parent) }
+    it { should_not include(child) }
+    it { should_not include(unrelated) }
+  end
+  
+  describe '#all_children' do
+    let(:unrelated) { create :major }
+    let(:grandparent) { create :major }
+    let(:parent) { create :major, parent: grandparent }
+    let(:child) { create :major, parent: parent }
+    
+    before { unrelated; child }
+    
+    subject { grandparent.all_children }
+    
+    it { should include(child) }
+    it { should include(parent) }
+    it { should_not include(grandparent) }
+    it { should_not include(unrelated) }
+  end
 end

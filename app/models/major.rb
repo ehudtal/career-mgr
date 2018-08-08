@@ -23,4 +23,14 @@ class Major < ApplicationRecord
       end
     end
   end
+  
+  def all_parents
+    return [] if parent.nil?
+    ([parent] + parent.all_parents).compact
+  end
+  
+  def all_children
+    return [] if children.empty?
+    (children + children.map(&:all_children).flatten).compact
+  end
 end

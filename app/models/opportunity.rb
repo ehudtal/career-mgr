@@ -74,8 +74,8 @@ class Opportunity < ApplicationRecord
       majors
     end
     
-    parent_ids = named.pluck(:parent_id)
-    child_ids = named.map(&:children).flatten.map(&:id)
+    parent_ids = named.map(&:all_parents).flatten.uniq.map(&:id)
+    child_ids = named.map(&:all_children).flatten.uniq.map(&:id)
     
     selected_ids = (named.pluck(:id) + parent_ids + child_ids).uniq
     
