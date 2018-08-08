@@ -1,24 +1,27 @@
 <h1><%= @fellow.first_name %>&rsquo;s Career Dashboard</h1>
 
+<%= link_to 'View profile details', fellow_profile_path %>
+
 <h2>Career Progress</h2>
+
 <p>Complete these important milestones to set yourself up for successful job hunting. Most of the items can be completed as part of the Braven Accelerator.</p>
+
 <div id="career-tracker">
-  <div class="tracker-item"><input id="career-item-01" type="checkbox" checked><label for="career-item-01"><h4>1</h4><p>I know my strengths and values and can communicate my story</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-02" type="checkbox" checked><label for="career-item-02"><h4>2</h4><p>I understand what career-accelerating means and what career paths can look like</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-03" type="checkbox" checked><label for="career-item-03"><h4>3</h4><p>I have a career roadmap with professional goals and a plan</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-04" type="checkbox"><label for="career-item-04"><h4>4</h4><p>My resume is strong and ready to send to potential employers</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-05" type="checkbox"><label for="career-item-05"><h4>5</h4><p>My LinkedIn profile is updated and professional</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-06" type="checkbox"><label for="career-item-06"><h4>6</h4><p>My social media is scrubbed of content I don’t want potential employers to see</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-07" type="checkbox"><label for="career-item-07"><h4>7</h4><p>I know my elevator pitch like the back of my hand</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-08" type="checkbox"><label for="career-item-08"><h4>8</h4><p>I have a networking strategy and a system for keeping track of opportunities and people I meet</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-09" type="checkbox"><label for="career-item-09"><h4>9</h4><p>I’ve had informational interviews with professionals in my desired career field</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-10" type="checkbox"><label for="career-item-10"><h4>10</h4><p>I am ready to ace a job interview</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-11" type="checkbox"><label for="career-item-11"><h4>11</h4><p>I've reflected on what I want to look for next, and I have researched the field</p></label><a href="#">How to do this</a></div>
-  <div class="tracker-item"><input id="career-item-12" type="checkbox"><label for="career-item-12"><h4>12</h4><p>I've made a short list of my preferred positions and/or employers</p></label><a href="#">How to do this</a></div>
+  <div class="tracker-item start"><h4>START</h4><p class="big-symbol">&#10132;</p></div>
+  <% @fellow.career_steps.order(position: 'asc').each do |career_step| %>
+    <div class="tracker-item">
+      <input id="career-item-<%= sprintf('%02d', career_step.position + 1) %>" type="checkbox" <%= career_step.completed ? 'checked' : '' %>>
+      <label for="career-item-01">
+        <h4><%= career_step.position + 1 %></h4>
+        <p><%= career_step.description %></p>
+      </label></div>
+  <% end %>
 </div>
+
 <h2>Job Hunter</h2>
+
 <p>This tool shows career opportunities for selected Braven Fellows from our employer partners. You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>
-<h3>Active Opportunities</h3>
+
 <% if @fellow.fellow_opportunities.empty? %>
   <p>None at this time. You'll be notified when new ones come up that match <%= link_to 'your profile', fellow_profile_path %>.</p>
 <% else %>
