@@ -9,9 +9,16 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+/config/deploy/production.rb
+/config/deploy/staging.rb
 
 # Used by dotenv library to load environment variables.
 # .env
+
+# These files are too big for the repo, so we stored them in Google drive and copied them to the server to run the 
+# rake task that sets up postal codes and metro ares
+msa.txt
+postal-codes.csv
 
 ## Specific to RubyMotion:
 .dat*
