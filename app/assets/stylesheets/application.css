@@ -348,4 +348,9 @@ th {
   table.tablesorter {
     width: 672px;
   }
+
+ul.inline-list {
+  float: left;
+  padding-right: 20px;
+  margin: 0
 }

@@ -27,7 +27,7 @@
         <th>Graduation</th>
         <th>GPA</th>
         <th>Efficacy</th>
-        <th>Interests / Industries / Majors</th>
+        <th>Industries / Interests / Majors</th>
         <th>Locations</th>
         <th>Distance</th>
         <th>Status</th>
@@ -52,16 +52,13 @@
           <td><%= fellow.gpa || 'N/A' %></td>
           <td><%= fellow.efficacy_score || 'N/A' %></td>
           <td>
-            <ul>
-              <% fellow.industries.map(&:name).sort.each do |industry| %>
-                <li><%= industry %></li>
-              <% end %>
-            </ul>
-            <ul>
-              <% (fellow.interests + fellow.majors).map(&:name).uniq.sort.each do |interest| %>
-                <li><%= interest %></li>
-              <% end %>
-            </ul>
+            <% split_list((fellow.industries + fellow.interests + fellow.majors).map(&:name)).each do |list| %>
+              <ul class="inline-list">
+                <% list.each do |item| %>
+                  <li><%= item %></li>
+                <% end %>
+              </ul>
+            <% end %>
           </td>
           <td>
             <ul>

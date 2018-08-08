@@ -42,4 +42,38 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(interpolate(nil)).to eq('')
     end
   end
+  
+  describe 'split_list' do
+    it "splits odd list into two parts, biggest part first" do
+      list = [:a, :b, :c, :d, :e]
+      split = split_list(list)
+      
+      expect(split[0]).to eq([:a, :b, :c])
+      expect(split[1]).to eq([:d, :e])
+    end
+    
+    it "splits even list into equal parts" do
+      list = [:a, :b, :c, :d]
+      split = split_list(list)
+      
+      expect(split[0]).to eq([:a, :b])
+      expect(split[1]).to eq([:c, :d])
+    end
+    
+    it "sorts items before splitting" do
+      list = [:b, :c, :a, :e, :d]
+      split = split_list(list)
+      
+      expect(split[0]).to eq([:a, :b, :c])
+      expect(split[1]).to eq([:d, :e])
+    end
+    
+    it "removes duplicates before splitting" do
+      list = [:a, :b, :b, :c, :c, :d, :e, :e]
+      split = split_list(list)
+      
+      expect(split[0]).to eq([:a, :b, :c])
+      expect(split[1]).to eq([:d, :e])
+    end
+  end
 end
