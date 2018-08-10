@@ -26,6 +26,10 @@ group :production do
   gem 'capistrano-passenger'
   # Use RVM to manage Ruby versions
   gem 'capistrano-rvm'
+  # Helps manage the delayed jobs worker process
+  gem 'capistrano3-delayed-job', '~> 1.0'
+  # Needed by delayed-job gem above
+  gem 'daemons'
 end
 
 # Use SCSS for stylesheets
