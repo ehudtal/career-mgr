@@ -260,13 +260,22 @@ th {
 
 #career-tracker {
   display: flex;
+  -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
+  -webkit-justify-content: left; /* Safari */
+  justify-content:         left;
+  -webkit-align-content: flex-start; /* Safari */
+  align-content:         flex-start;
+  width: 920px;
+  margin: 0 calc( (672px - 930px)/2 );
 }
 
 .tracker-item {
-  width: 210px;
-  height: 210px;
-  margin: 3px;
+  width: 214px;
+  height: 135px;
+  margin: 5px;
+  -webkit-align-self: stretch;
+  align-self: stretch;
   flex-shrink: 0;
   background: #FAFAFA;
   position: relative;
@@ -288,11 +297,10 @@ th {
 
 .tracker-item p {
   text-transform: none;
-  font-size: 1.25em;
 }
 
 .tracker-item h4 {
-  font-size: 2em;
+  font-size: 1.5em;
   margin: 0;
   position: absolute;
   top: 10px;
@@ -335,14 +343,32 @@ th {
 
 /* Media Queries */
 
+@media all and (max-width: 1170px) {
+  #career-tracker {
+    width: 672px;
+    margin: 0 -5px;
+  }
+}
+
 @media all and (max-width: 700px) {
   main {
     width: 100%;
     padding: 0 1vw;
   }
 
-  .tracker-item.start {
-    display: none;
+  #career-tracker {
+    width: 100%;
+  }
+
+  .tracker-item {
+    width: 100%;
+    height: unset;
+  }
+
+  .tracker-item h4 {
+    position: static;
+    margin: 0 0.5em 0 0;
+    display: inline;
   }
 
   table.tablesorter {
