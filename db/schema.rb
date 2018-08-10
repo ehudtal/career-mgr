@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_31_011322) do
+ActiveRecord::Schema.define(version: 2018_08_07_212654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,6 +205,13 @@ ActiveRecord::Schema.define(version: 2018_07_31_011322) do
     t.index ["interest_id"], name: "index_fellows_interests_on_interest_id"
   end
 
+  create_table "fellows_majors", id: false, force: :cascade do |t|
+    t.bigint "fellow_id", null: false
+    t.bigint "major_id", null: false
+    t.index ["fellow_id", "major_id"], name: "index_fellows_majors_on_fellow_id_and_major_id"
+    t.index ["major_id", "fellow_id"], name: "index_fellows_majors_on_major_id_and_fellow_id"
+  end
+
   create_table "fellows_metros", id: false, force: :cascade do |t|
     t.bigint "fellow_id", null: false
     t.bigint "metro_id", null: false
@@ -256,6 +263,22 @@ ActiveRecord::Schema.define(version: 2018_07_31_011322) do
     t.bigint "opportunity_id", null: false
     t.index ["location_id"], name: "index_locations_opportunities_on_location_id"
     t.index ["opportunity_id"], name: "index_locations_opportunities_on_opportunity_id"
+  end
+
+  create_table "majors", force: :cascade do |t|
+    t.string "name"
+    t.integer "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_majors_on_name", unique: true
+    t.index ["parent_id"], name: "index_majors_on_parent_id"
+  end
+
+  create_table "majors_opportunities", id: false, force: :cascade do |t|
+    t.bigint "major_id", null: false
+    t.bigint "opportunity_id", null: false
+    t.index ["major_id", "opportunity_id"], name: "index_majors_opportunities_on_major_id_and_opportunity_id"
+    t.index ["opportunity_id", "major_id"], name: "index_majors_opportunities_on_opportunity_id_and_major_id"
   end
 
   create_table "metros", force: :cascade do |t|

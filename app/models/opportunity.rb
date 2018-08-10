@@ -11,7 +11,7 @@ class Opportunity < ApplicationRecord
   has_many :fellow_opportunities
   has_many :fellows, through: :fellow_opportunities
   
-  taggable :industries, :interests, :industry_interests, :metros
+  taggable :industries, :interests, :majors, :industry_interests, :metros
 
   has_and_belongs_to_many :locations, dependent: :destroy, after_add: :attach_metro
   accepts_nested_attributes_for :locations, reject_if: :all_blank, allow_destroy: true
@@ -67,11 +67,27 @@ class Opportunity < ApplicationRecord
     FellowIndustry.fellow_ids_for(selected_ids)
   end
   
+  def fellow_ids_for_majors names
+    named = if names
+      Major.where(name: names.split(';'))
+    else
+      majors
+    end
+    
+    parent_ids = named.map(&:all_parents).flatten.uniq.map(&:id)
+    child_ids = named.map(&:all_children).flatten.uniq.map(&:id)
+    
+    selected_ids = (named.pluck(:id) + parent_ids + child_ids).uniq
+    
+    FellowMajor.fellow_ids_for(selected_ids)
+  end
+  
   def fellow_ids_for_industries_interests names
     industry_fellow_ids = fellow_ids_for_industries names
     interest_fellow_ids = fellow_ids_for_interests names
+    major_fellow_ids = fellow_ids_for_majors names
     
-    industry_fellow_ids | interest_fellow_ids
+    industry_fellow_ids | interest_fellow_ids | major_fellow_ids
   end
   
   def fellow_ids_for_metros names

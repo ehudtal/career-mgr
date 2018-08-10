@@ -103,8 +103,8 @@ RSpec.feature "Candidate Views", type: :feature do
     expect(page).to have_content(fellow.full_name)
     expect(page).to_not have_content(fellow_other.full_name)
 
-    expect_list_link_for 'industries/interests'
-    expect_list_link_for :metro_areas
+    expect_list_link_for 'industries/interests', link: 'full list', within: '#industry-interest-tags'
+    expect_list_link_for :metro_areas, link: 'full list', within: '#metro-tags'
 
     add_tag :opportunity, :industry_interest, industry_other.name
     remove_tag :opportunity, :metro, metro.name

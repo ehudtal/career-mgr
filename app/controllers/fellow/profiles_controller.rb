@@ -19,18 +19,6 @@ class Fellow::ProfilesController < ApplicationController
   
   private
   
-  def set_fellow
-    unless current_user.fellow
-      current_user.create_fellow(
-        first_name: 'unknown',
-        last_name: 'unknown',
-        employment_status: EmploymentStatus.find_by(position: 0)
-      )
-    end
-    
-    @fellow = current_user.fellow
-  end
-  
   def fellow_params
     params.require(:fellow).permit(
       :key, :first_name, :last_name, :graduation_year, :graduation_semester,

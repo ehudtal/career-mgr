@@ -56,28 +56,25 @@ $(document).on "turbolinks:load",  ->
     element = $('#industry-interest-tags textarea') 
     
     if element.length
-      $.get '/admin/industries/list.json', (industries) ->
-        $.get '/admin/interests/list.json', (interests) ->
-          data = $.unique(industries.concat(interests))
-          
-          element.show()
-          
-          element.tagsInput
-            autocomplete: {source: data}
-            placeholder: 'Add Industries/Interests'
-            delimiter: ';'
-            validationPattern: new RegExp('^[a-zA-Z0-9, \&/-]+$')
-            onAddTag: (tag) ->
-              if $(tag).hasClass('auto-refresh')
-                $(tag).form().submit()
-            onRemoveTag: (tag) ->
-              if $(tag).hasClass('auto-refresh')
-                $(tag).form().submit()
+      $.get '/admin/industries/combined.json', (data) ->
+        element.show()
+        
+        element.tagsInput
+          autocomplete: {source: data}
+          placeholder: 'Add Industries/Interests/Majors'
+          delimiter: ';'
+          validationPattern: new RegExp('^[a-zA-Z0-9, \&/-]+$')
+          onAddTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
+          onRemoveTag: (tag) ->
+            if $(tag).hasClass('auto-refresh')
+              $(tag).form().submit()
             
         
   enableTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
-  enableTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Metro')
+  enableTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Location')
   
   enableIndustryInterestTags()
   

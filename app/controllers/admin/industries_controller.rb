@@ -15,8 +15,12 @@ class Admin::IndustriesController < ApplicationController
   end
   
   def combined
-    @names = (Industry.pluck(:name) | Interest.pluck(:name)).sort
-    render layout: false
+    @names = (Industry.pluck(:name) | Interest.pluck(:name) | Major.pluck(:name)).sort
+    
+    respond_to do |format|
+      format.html { render layout: false }
+      format.json { render json: @names}
+    end
   end
 
   # GET /industries/1

@@ -54,8 +54,8 @@ RSpec.feature "OpportunityViews", type: :feature do
     fill_in 'Email', with: contact_attributes[:email]
     fill_in 'Url', with: contact_attributes[:url]
     
-    expect_list_link_for 'industries/interests'
-    expect_list_link_for :metro_areas
+    expect_list_link_for 'industries/interests', link: 'full list', within: '#interests-collection'
+    expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
 
     add_tag :opportunity, :industry_interest, industry_included.name
     add_tag :opportunity, :industry_interest, interest_included.name
@@ -117,8 +117,8 @@ RSpec.feature "OpportunityViews", type: :feature do
     updated_desc = opportunity.description + 'x'
     fill_in 'Description', with: updated_desc
     
-    expect_list_link_for 'industries/interests'
-    expect_list_link_for :metro_areas
+    expect_list_link_for 'industries/interests', link: 'full list', within: '#interests-collection'
+    expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
 
     remove_tag :opportunity, :industry_interest, industry_included.name
     add_tag    :opportunity, :industry_interest, industry_excluded.name

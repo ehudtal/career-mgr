@@ -26,4 +26,11 @@ module ApplicationHelper
   def interpolate string
     ERB.new(string || '').result(binding)
   end
+  
+  def split_list list
+    sorted_list = list.uniq.sort
+    half = (sorted_list.size.to_f / 2).round
+
+    [sorted_list[0...half], sorted_list[half..-1]]
+  end
 end
