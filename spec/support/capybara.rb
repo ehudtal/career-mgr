@@ -3,6 +3,7 @@ require 'warden'
 
 include Warden::Test::Helpers
 
+# TODO: when not runing in docker, configure the Selenium Driver to use however the headless browser is setup on the Admin Server or local machine
 Capybara.register_driver :chrome_in_container do |app|
   Capybara::Selenium::Driver.new app, 
     browser: :remote, 
