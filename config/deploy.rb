@@ -32,6 +32,11 @@ append :linked_files, "config/database.yml", "config/secrets.yml"
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "vendor/bundle", ".bundle"
 
+# what specs should be run before deployment is allowed to
+# continue, see lib/capistrano/tasks/run_tests.cap
+# The following value runs: bundle exec rspec spec
+set :tests, []
+
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
@@ -47,5 +52,9 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # http://www.capistranorb.com/documentation/getting-started/flow/
 # is worth reading for a quick overview of what tasks are called and when
 namespace :deploy do
+  # Self explanatory. Restart the server!
   after 'deploy:publishing', 'deploy:restart'
+
+  # only allow a deploy with passing tests to deployed
+  before :deploy, "deploy:run_tests"
 end
