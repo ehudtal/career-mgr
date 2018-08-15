@@ -14,13 +14,14 @@ research employer:
   phase_position: 1
   question: "Have you researched <%= @opp.employer.name %> online?"
   tips:
-    header: "Look up the employer on websites such as:"
+    header: "Look up the employer's own website (see link above) and on other sites such as:"
     list:
-      - "GlassDoor"
       - "LinkedIn"
+      - "GlassDoor"
       - "Better Business Bureau"
       - "Idealist.org (for mission-driven organizations)"
   links: *default_links
+  burden: "15 minutes"
 
 connect with employees:
   phase: "Apply"
@@ -30,10 +31,13 @@ connect with employees:
   tips:
     list:
       - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at the company you're aiming for."
+      - "If you can't find any connections you can try to reach out directly through LinkedIn to someone who works there now. You have absolutely nothing to lose and it's very easy to do!"
       - "Introduce yourself, attach a resume, and ask them: \"What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?\""
       - "If it sounds like you're a good fit, ask for a referral: \"Would you be willing to refer me internally?\""
+      - "This step doesn't take a lot of effort but it does take time. We'll send you helpful reminders about it so you stay on track."
       - "PRO TIP: Keep taking feedback and revise your application materials accordingly."
   links: *default_links
+  burden: "3 hours"
 
 customize application materials:
   phase: "Apply"
@@ -49,6 +53,7 @@ customize application materials:
       - "Follow key companies and people in the industry, and join relevant groups and meetups."
       - "PRO TIP: Catch all the typos! Professional polish shows that you care about doing your job well."
   links: *default_links
+  burden: "30 minutes"
     
 submit application:
   phase: "Apply"
@@ -60,6 +65,7 @@ submit application:
       - "Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else)."
       - "If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply."
   links: *default_links
+  burden: "a couple of minutes"
       
 follow up after application:
   phase: "Apply"
@@ -69,6 +75,7 @@ follow up after application:
   tips:
     header: "Follow up with any contacts you have who might have some influence at the company (e.g. current and past employees, partners, clients) by sending them a copy of the resume and cover letter and asking \"Would you be willing to put in a word for me to make sure my application is considered?\""
   links: *default_links_with_employer
+  burden: "5 minutes"
 
 schedule interview:
   phase: "Interview"

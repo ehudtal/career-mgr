@@ -1,5 +1,16 @@
 <h1><%= @candidate.opportunity.formatted_name %></h1>
-
+<p>
+  <strong>Description:</strong>
+  <%= @candidate.opportunity.description %>
+</p>
+<p>
+  <strong>Job Posting URL:</strong>
+  <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
+</p>
+<p><strong>Industries</strong></p>
+<%= render 'admin/industries/list', object: @candidate.opportunity %>
+<%= render 'admin/interests/list', object: @candidate.opportunity %>
+<h2>Where am I in the process?</h2>
 <table class="opportunity-stages">
   <thead>
     <th class="phase">Phase</th>
@@ -22,8 +33,12 @@
             <% completion = 'not-completed' %> 
 
             <td class="stage active-stage phase-<%= phase.downcase %>">
-              <h3><%= content['phase_position'] %>. <%= content['title'] %></h3>
-      
+              <h3>
+                <%= content['phase_position'] %>. <%= content['title'] %>
+              </h3>
+              <% if content['burden'] %>
+                  <p class="burden">About <%= interpolate(content['burden']) %></p>
+                <% end %>
               <% if content['links'] %>
                 <h4 class="question"><%= interpolate(content['question']) %></h4>     
                 <ul class="response-links">
@@ -51,10 +66,41 @@
             </td>
 
           <% else # Not the active Stage %>
-            <td class="stage <%= completion %> phase-<%= phase.downcase %>"><h3><%= content['phase_position'] %>. <%= content['title'] %></h3></td>
+            <td class="stage <%= completion %> phase-<%= phase.downcase %> inactive">
+              <h4 class="toggle-next">
+                <%= content['phase_position'] %>. <%= content['title'] %>
+                <% if content['burden'] %>
+                  <span class="burden">About <%= interpolate(content['burden']) %></span>
+                <% end %>    
+              </h4>
+              <div class="more collapsed">
+                <h5 class="question"><%= interpolate(content['question']) %></h5>     
+                <% if content['tips'] %>
+                  <div class="tips">
+                    <% if content['tips']['header'] %>
+                      <p><%= interpolate(content['tips']['header']) %></p>
+                    <% end %>
+                    <% if content['tips']['list'] %>
+                      <ul>
+                        <% content['tips']['list'].each do |tip| %>
+                          <li><%= interpolate(tip) %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </td>
           <% end %>
         </tr>
       <% end %>
     <% end %>
   </tbody>
 </table>
+<script>
+  $('.toggle-next').click(function(e){
+    e.preventDefault();
+    $(this).next().toggleClass('collapsed');
+    console.log('blah');
+  });
+</script>
