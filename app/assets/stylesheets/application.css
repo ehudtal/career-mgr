@@ -286,7 +286,7 @@ span.burden {
   font-style: normal;
   position: relative;
   bottom: 1px;
-  margin-right: 2px;";
+  margin-right: 2px;
 }
 
 /* Career Progress Tracker */
@@ -295,8 +295,8 @@ span.burden {
   display: flex;
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
-  -webkit-justify-content: left; /* Safari */
-  justify-content:         left;
+  -webkit-justify-content: start; /* Safari */
+  justify-content:         start;
   -webkit-align-content: flex-start; /* Safari */
   align-content:         flex-start;
   width: 920px;
