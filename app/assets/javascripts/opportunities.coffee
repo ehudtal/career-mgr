@@ -128,5 +128,10 @@ $(document).on "turbolinks:load",  ->
     reset_datepicker()
     reset_removeable()
 
+  $('.toggle-next').click (e) ->
+    e.preventDefault();
+    $(this).next().toggleClass('collapsed');
+
+
   reset_datepicker()
   reset_removeable()
