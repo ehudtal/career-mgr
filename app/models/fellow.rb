@@ -138,6 +138,15 @@ class Fellow < ApplicationRecord
     end
   end
   
+  def completed_career_steps
+    career_steps.completed.pluck(:position)
+  end
+  
+  def completed_career_steps= positions
+    career_steps.update_all(completed: false)
+    career_steps.where(position: positions).update_all(completed: true)
+  end
+  
   private
   
   def generate_key

@@ -361,4 +361,31 @@ RSpec.describe Fellow, type: :model do
     it { expect(subject[11].name).to eq('employers') }
     it { expect(subject[11].description).to eq("I've made a shortlist of positions and/or employers") }
   end
+  
+  describe '#completed_career_steps' do
+    let(:completed_positions) { [1,3,5] }
+    
+    subject { fellow.completed_career_steps }
+    
+    before do
+      fellow.career_steps.where(position: completed_positions).update_all(completed: true)
+    end
+    
+    it "returns active step ids" do
+      expect(subject).to eq(completed_positions)
+    end
+  end
+  
+  describe '#active_career_steps=' do
+    let(:completed_positions) { [1,3,5] }
+    
+    before do
+      fellow.career_steps.first.update completed: true
+      fellow.completed_career_steps = completed_positions 
+    end
+    
+    subject { fellow.completed_career_steps }
+    
+    it { should eq(completed_positions) }
+  end
 end

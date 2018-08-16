@@ -23,4 +23,16 @@ RSpec.describe Fellow::HomeController, type: :controller do
       expect(response.status).to eq(200) #have_http_status(:success)
     end
   end
+  
+  describe 'POST career' do
+    it "updates career steps" do
+      post :career, params: {career_steps: ['1', '3', '5']}
+      expect(fellow.completed_career_steps).to eq([1,3,5])
+    end
+    
+    it "redirects to #welcome" do
+      post :career, params: {career_steps: ['1', '3', '5']}
+      expect(response).to redirect_to(fellow_home_welcome_path)
+    end
+  end
 end
