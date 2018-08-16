@@ -8,7 +8,7 @@ class Fellow::HomeController < ApplicationController
   
   def career
     @fellow.completed_career_steps = params[:career_steps]
-    redirect_to fellow_home_welcome_path
+    # redirect_to fellow_home_welcome_path
   end
   
   def new_opportunity

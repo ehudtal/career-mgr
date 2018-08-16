@@ -5,3 +5,14 @@
 $(document).on "turbolinks:load",  ->
   $('input.career[type=checkbox]').click (event) ->
     $(event.target).form().submit()
+    
+  $('form.career-tracker-form').submit (event) ->
+    event.preventDefault()
+    
+    $.ajax({
+      type: 'POST',
+      url: this.action,
+      data: $(this).serialize(),
+      success: () ->
+        console.log('career steps have been updated.')
+    })
