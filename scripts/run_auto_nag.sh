@@ -1,3 +1,3 @@
 #!/bin/bash
 cd ..
-bundle exec rake candidate_mailer:send_notifications 
+RAILS_ENV=production bundle exec rake candidate_mailer:send_notifications
