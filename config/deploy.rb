@@ -27,7 +27,7 @@ set :bundle_flags, '--deployment' # Default is --quiet, but it's nice to have lo
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/secrets.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml", "config/master.key", "config/credentials.yml.enc"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "vendor/bundle", ".bundle"
