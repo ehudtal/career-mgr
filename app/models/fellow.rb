@@ -14,6 +14,7 @@ class Fellow < ApplicationRecord
   has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
   has_many :fellow_opportunities
+  has_many :career_steps
 
   taggable :industries, :interests, :majors, :industry_interests, :metros
   
@@ -30,6 +31,7 @@ class Fellow < ApplicationRecord
   validates :efficacy_score, numericality: {greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0, allow_nil: true}
   
   before_create :generate_key
+  after_create :generate_career_steps
   after_save :attempt_fellow_match, if: :missing_user?
   
   class << self
@@ -136,6 +138,15 @@ class Fellow < ApplicationRecord
     end
   end
   
+  def completed_career_steps
+    career_steps.completed.pluck(:position)
+  end
+  
+  def completed_career_steps= positions
+    career_steps.update_all(completed: false)
+    career_steps.where(position: positions).update_all(completed: true)
+  end
+  
   private
   
   def generate_key
@@ -144,6 +155,12 @@ class Fellow < ApplicationRecord
     
     hash = Digest::MD5.hexdigest([first_name, last_name, graduation_year, unique_count].join('-'))[0,4]
     self.key = [first_name[0].upcase, last_name[0].upcase, ((graduation_year || 0) % 100), hash].join('').upcase
+  end
+  
+  def generate_career_steps
+    YAML.load(File.read("#{Rails.root}/config/career_steps.yml")).each_with_index do |step, position|
+      career_steps.create position: position, name: step['name'], description: step['description']
+    end
   end
   
   def missing_user?

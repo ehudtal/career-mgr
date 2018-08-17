@@ -37,6 +37,7 @@ RSpec.describe Fellow, type: :model do
   it { should have_many :cohort_fellows }
   it { should have_many :cohorts }
   it { should have_many :fellow_opportunities }
+  it { should have_many :career_steps }
   
   it { should have_and_belong_to_many :interests }
   it { should have_and_belong_to_many :industries }
@@ -347,5 +348,44 @@ RSpec.describe Fellow, type: :model do
       expect(PostalCode).to receive(:find_by).with(code: fellow.contact.postal_code).once.and_return(postal_code)
       2.times { fellow.default_metro }
     end
+  end
+  
+  describe '#generate_career_steps' do
+    subject { fellow.career_steps }
+    
+    it { expect(subject[0].position).to eq(0) }
+    it { expect(subject[0].name).to eq('strengths') }
+    it { expect(subject[0].description).to eq('I know my strengths and values and can communicate my story') }
+    
+    it { expect(subject[11].position).to eq(11) }
+    it { expect(subject[11].name).to eq('employers') }
+    it { expect(subject[11].description).to eq("I've made a shortlist of positions and/or employers") }
+  end
+  
+  describe '#completed_career_steps' do
+    let(:completed_positions) { [1,3,5] }
+    
+    subject { fellow.completed_career_steps }
+    
+    before do
+      fellow.career_steps.where(position: completed_positions).update_all(completed: true)
+    end
+    
+    it "returns active step ids" do
+      expect(subject).to eq(completed_positions)
+    end
+  end
+  
+  describe '#active_career_steps=' do
+    let(:completed_positions) { [1,3,5] }
+    
+    before do
+      fellow.career_steps.first.update completed: true
+      fellow.completed_career_steps = completed_positions 
+    end
+    
+    subject { fellow.completed_career_steps }
+    
+    it { should eq(completed_positions) }
   end
 end

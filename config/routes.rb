@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   namespace :fellow do
     get 'home/welcome'
+    post 'home/career'
     
     resource :profile, only: [:show, :edit, :update]
     resources :opportunities, only: [:show, :update]
