@@ -29,6 +29,11 @@ RSpec.describe CandidateNotifier do
     expect(delayed_mailer[:stage_name]).to eq(params[:stage_name])
   end
   
+  describe '::MAILER_FREQUENCY' do
+    subject { CandidateNotifier::MAILER_FREQUENCY }
+    it { should eq(24) }
+  end
+  
   describe '::send_notifications' do
     let(:access_token) { AccessToken.for(fellow_opportunity) }
     let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage, last_contact_at: last_contact_at, active: active }
@@ -44,7 +49,7 @@ RSpec.describe CandidateNotifier do
     end
     
     describe 'when last contact was more than three days ago' do
-      let(:last_contact_at) { 73.hours.ago }
+      let(:last_contact_at) { (CandidateNotifier::MAILER_FREQUENCY + 1).hours.ago }
       
       it "sends the 'notify' mailer, with the proper stage name" do
         expect_mailer 'CandidateMailer#notify', access_token: access_token, stage_name: stage_name
@@ -56,7 +61,7 @@ RSpec.describe CandidateNotifier do
     end
     
     describe 'when last contact was less than three days ago' do
-      let(:last_contact_at) { 71.hours.ago }
+      let(:last_contact_at) { (CandidateNotifier::MAILER_FREQUENCY - 1).hours.ago }
       
       it 'doesn\'t notify the candidate' do
         expect(Delayed::Job.where(queue: 'mailers').count).to eq(0)
