@@ -33,4 +33,9 @@ module ApplicationHelper
 
     [sorted_list[0...half], sorted_list[half..-1]]
   end
+  
+  def nearest_distance fellow, postal_codes
+    distance = fellow.nearest_distance(postal_codes)
+    distance ? pluralize(distance.round, 'mile') : 'N/A'
+  end
 end

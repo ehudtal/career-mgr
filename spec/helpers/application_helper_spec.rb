@@ -76,4 +76,35 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(split[1]).to eq([:d, :e])
     end
   end
+  
+  describe '#nearest_distance(fellow, postal_codes)' do
+    let(:postal_codes) { ['12345', '23456'] }
+    let(:fellow) { build :fellow }
+    
+    before do
+      allow(fellow).to receive(:nearest_distance).with(postal_codes).and_return(distance)
+    end
+    
+    subject { nearest_distance(fellow, postal_codes) }
+
+    describe 'when a nearest distance is zero' do
+      let(:distance) { 0 }
+      it { should eq("0 miles") }
+    end
+    
+    describe 'when a nearest distance is singular' do
+      let(:distance) { 1 }
+      it { should eq("1 mile") }
+    end
+    
+    describe 'when a nearest distance is plural' do
+      let(:distance) { 2 }
+      it { should eq("2 miles") }
+    end
+    
+    describe 'when no nearest distance is returned' do
+      let(:distance) { nil }
+      it { should eq("N/A") }
+    end
+  end
 end

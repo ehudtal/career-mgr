@@ -67,7 +67,7 @@
               <% end %>
             </ul>
           </td>
-          <td><%= pluralize(fellow.nearest_distance(@opportunity.postal_codes).round, 'mile') %>
+          <td><%= nearest_distance(fellow, @opportunity.postal_codes) %>
           <td><%= fellow.employment_status.name %></td>
         </tr>
       <% end %>
