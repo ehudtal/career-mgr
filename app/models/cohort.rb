@@ -27,7 +27,7 @@ class Cohort < ApplicationRecord
           })
         end
 
-        fellow.metros << fellow.default_metro if fellow.default_metro
+        fellow.add_metro(fellow.default_metro)
 
         proxy_association.owner.cohort_fellows.find_or_create_by(fellow_id: fellow.id).update(cohort_fellow_attributes)
       rescue ActiveRecord::RecordInvalid

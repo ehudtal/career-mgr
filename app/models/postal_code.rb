@@ -10,7 +10,10 @@ class PostalCode < ApplicationRecord
   class << self
     def distance origin_zip, destination_zip
       origin = find_by code: origin_zip
+      return nil if origin.nil?
+      
       destination = find_by code: destination_zip
+      return nil if destination.nil?
       
       GeoDistance.haversine(origin.coordinates, destination.coordinates)
     end
