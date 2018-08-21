@@ -16,7 +16,7 @@
         <tr>
           <td><%= opportunity.employer.name %>
           <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
-          <td><%= opportunity.description %></td>
+          <td><%= truncate(opportunity.description, length: 100, separator: ' ') %></td>
           <td><%= link_to 'Edit', edit_admin_opportunity_path(opportunity), class: 'edit' %></td>
           <td><%= link_to 'Delete', admin_opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
         </tr>
