@@ -111,7 +111,7 @@ class Fellow < ApplicationRecord
   end
   
   def nearest_distance zip_list
-    zip_list.map{|zip| distance_from(zip)}.min
+    zip_list.map{|zip| distance_from(zip)}.compact.min
   end
   
   def distance_from postal_code
