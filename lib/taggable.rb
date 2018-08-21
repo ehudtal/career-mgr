@@ -81,5 +81,11 @@ module Taggable
     def metro_tags= tag_string
       self.metro_ids = Metro.where(name: tag_string.split(';')).pluck(:id)
     end
+    
+    def add_metro metro
+      if (metro && !self.metros.include?(metro))
+        self.metros << metro
+      end
+    end
   end
 end
