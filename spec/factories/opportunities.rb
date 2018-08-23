@@ -6,7 +6,7 @@ FactoryBot.define do
     association :employer
     
     after(:build) do |opp, evaluator|
-      opp.metros << create(:metro)
+      opp.metros << create(:metro) if opp.metros.empty?
     end
   end
 end

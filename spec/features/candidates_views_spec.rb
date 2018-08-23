@@ -22,7 +22,7 @@ RSpec.feature "Candidate Views", type: :feature do
   let(:metro_other) { create :metro }
   
   let(:employer) { create :employer }
-  let(:opportunity) { create :opportunity, employer: employer }
+  let(:opportunity) { create :opportunity, employer: employer, metro_ids: [metro.id] }
   
   let(:fellow) { create :fellow }
   let(:contact_fellow) { create :contact, contactable: fellow, postal_code: postal_code.code }
@@ -38,19 +38,22 @@ RSpec.feature "Candidate Views", type: :feature do
     contact; contact_fellow; contact_fellow_other
     fellow.reload; fellow_other.reload
     employer.industries << industry
+    expect(Metro.count).to eq(2)
 
     opportunity.industries << industry
     opportunity.interests << interest
-    opportunity.metros << metro
     opportunity.locations << location
+    expect(Metro.count).to eq(2)
     
     fellow.industries << industry
     fellow.interests << interest
     fellow.metros << metro
+    expect(Metro.count).to eq(2)
     
     fellow_other.industries << industry_other
     fellow_other.interests << interest_other
     fellow_other.metros << metro_other
+    expect(Metro.count).to eq(2)
     
     expect(Employer.count).to eq(1)
 
@@ -66,6 +69,7 @@ RSpec.feature "Candidate Views", type: :feature do
     expect(opportunity.interests.count).to eq(1)
     expect(opportunity.interests).to include(interest)
     expect(opportunity.metros.count).to eq(1)
+
     expect(opportunity.metros).to include(metro)
     
     expect(Fellow.count).to eq(2)
