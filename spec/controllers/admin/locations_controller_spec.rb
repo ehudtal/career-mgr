@@ -34,7 +34,7 @@ RSpec.describe Admin::LocationsController, type: :controller do
   let(:employer) { build :employer, id: 1001 }
   
   let(:valid_attributes) { attributes_for :location }
-  let(:invalid_attributes) { {name: ''} }
+  let(:invalid_attributes) { {name: create(:location, locateable: employer).name} }
   
   before do
     sign_in user
@@ -169,10 +169,11 @@ RSpec.describe Admin::LocationsController, type: :controller do
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        location = Location.create! valid_attributes
-        allow(employer.locations).to receive(:find).and_return(location)
+        employer = create :employer
+        location = employer.locations.create valid_attributes.merge(locateable: employer)
+        other_location = create :location, locateable: employer, name: 'other location'
 
-        put :update, params: {id: location.to_param, location: invalid_attributes}, session: valid_session
+        put :update, params: {id: location.to_param, location: {name: 'other location'}}, session: valid_session
         expect(response).to be_successful
       end
     end

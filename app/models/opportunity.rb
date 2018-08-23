@@ -20,6 +20,7 @@ class Opportunity < ApplicationRecord
   
   validates :name, presence: true
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
+  validate :validate_locateable
   
   def candidates search_params=nil
     search_params ||= {}
@@ -135,7 +136,7 @@ class Opportunity < ApplicationRecord
   end
   
   def postal_codes
-    locations.map(&:contact).map(&:postal_code)
+    locations.map(&:contact).compact.map(&:postal_code).compact
   end
   
   private
@@ -151,5 +152,21 @@ class Opportunity < ApplicationRecord
     return if metro.nil?
     
     metros << metro unless metros.include?(metro)
+  end
+  
+  def validate_locateable
+    errors.add(:location, "must contain a zip code or a metro area") unless is_locateable?
+  end
+  
+  def is_locateable?
+    has_metro? || has_postal_code?
+  end
+  
+  def has_metro?
+    !metros.empty?
+  end
+  
+  def has_postal_code?
+    !postal_codes.empty?
   end
 end
