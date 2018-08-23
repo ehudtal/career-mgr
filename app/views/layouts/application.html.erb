@@ -23,5 +23,17 @@
       
       <%= yield %>
     </main>
+
+    <% if Rails.application.secrets.google_analytics_account %>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.secrets.google_analytics_account %>"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '<%= Rails.application.secrets.google_analytics_account %>');
+      </script>
+    <% end %>
   </body>
 </html>
