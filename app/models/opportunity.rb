@@ -5,6 +5,7 @@ class Opportunity < ApplicationRecord
   
   belongs_to :employer
   belongs_to :opportunity_type
+  belongs_to :region
   
   has_many :tasks, as: :taskable, dependent: :destroy
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true

@@ -6,6 +6,7 @@ FactoryBot.define do
 
     association :employer
     association :opportunity_type
+    association :region
     
     after(:build) do |opp, evaluator|
       opp.metros << create(:metro) if opp.metros.empty?

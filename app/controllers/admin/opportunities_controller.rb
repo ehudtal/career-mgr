@@ -83,7 +83,8 @@ class Admin::OpportunitiesController < ApplicationController
   def opportunity_params
     params.require(:opportunity).permit(
       :_destroy,
-      :name, :description, :employer_id, :job_posting_url, :application_deadline, :inbound, :recurring, :opportunity_type_id,
+      :name, :description, :employer_id, :job_posting_url, :application_deadline, 
+      :inbound, :recurring, :opportunity_type_id, :region_id,
       :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
       industry_ids: [], 
       interest_ids: [],

@@ -10,6 +10,7 @@ RSpec.describe Opportunity, type: :model do
 
   it { should belong_to :employer }
   it { should belong_to :opportunity_type }
+  it { should belong_to :region }
   
   it { should have_many :tasks }
   it { should have_many :fellow_opportunities }
