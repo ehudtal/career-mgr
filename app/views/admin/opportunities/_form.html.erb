@@ -17,6 +17,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :opportunity_type_id, 'Opportunity Type' %>
+    <%= form.collection_select(:opportunity_type_id, OpportunityType.order(position: :asc), :id, :name) %>
+  </div>
+
+  <div class="field">
     <%= form.check_box :inbound %>
     <%= form.label :inbound, 'Inbound?', class: 'checkbox' %>
   </div>
