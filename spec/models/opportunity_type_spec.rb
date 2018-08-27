@@ -20,4 +20,17 @@ RSpec.describe OpportunityType, type: :model do
     it { should validate_uniqueness_of(:name) }
     it { should validate_uniqueness_of(:position) }
   end
+  
+  ###############
+  # Class methods
+  ###############
+
+  describe '::types' do
+    subject { OpportunityType.types }
+    
+    it { should be_an(Array) }
+    it { expect(subject.size).to eq(9) }
+    it { expect(subject.first).to eq('Internship') }
+    it { expect(subject.last).to eq('Volunteer') }
+  end
 end
