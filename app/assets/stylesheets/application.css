@@ -425,3 +425,7 @@ ul.inline-list {
   padding-right: 20px;
   margin: 0
 }
+
+label.checkbox {
+  display: inline;
+}

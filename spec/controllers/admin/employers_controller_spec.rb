@@ -33,7 +33,7 @@ RSpec.describe Admin::EmployersController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Employer. As you add validations to Employer, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { attributes_for :employer }
+  let(:valid_attributes) { attributes_for(:employer).merge(employer_partner: true) }
   let(:invalid_attributes) { {name: ''} }
   
   let(:industry) { create :industry }
@@ -140,6 +140,13 @@ RSpec.describe Admin::EmployersController, type: :controller do
       it "associates specified industries with the employer" do
         post :create, params: {employer: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
         expect(Employer.last.industries).to include(industry)
+      end
+      
+      it "sets employer partner status" do
+        post :create, params: {employer: valid_attributes}, session: valid_session
+        employer = Employer.last
+        
+        expect(employer.employer_partner).to eq(true)
       end
     end
 
