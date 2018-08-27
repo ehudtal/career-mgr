@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_27_142646) do
+ActiveRecord::Schema.define(version: 2018_08_27_144720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -323,7 +323,11 @@ ActiveRecord::Schema.define(version: 2018_08_27_142646) do
     t.string "job_posting_url"
     t.date "application_deadline"
     t.text "steps"
+    t.boolean "inbound", default: false
+    t.boolean "recurring", default: false
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
+    t.index ["inbound"], name: "index_opportunities_on_inbound"
+    t.index ["recurring"], name: "index_opportunities_on_recurring"
   end
 
   create_table "opportunity_stages", force: :cascade do |t|
