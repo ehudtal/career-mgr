@@ -4,6 +4,7 @@ class Opportunity < ApplicationRecord
   include Taggable
   
   belongs_to :employer
+  belongs_to :opportunity_type
   
   has_many :tasks, as: :taskable, dependent: :destroy
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true

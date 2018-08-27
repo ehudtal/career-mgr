@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_27_144720) do
+ActiveRecord::Schema.define(version: 2018_08_27_153400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -325,8 +325,10 @@ ActiveRecord::Schema.define(version: 2018_08_27_144720) do
     t.text "steps"
     t.boolean "inbound", default: false
     t.boolean "recurring", default: false
+    t.integer "opportunity_type_id"
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
     t.index ["inbound"], name: "index_opportunities_on_inbound"
+    t.index ["opportunity_type_id"], name: "index_opportunities_on_opportunity_type_id"
     t.index ["recurring"], name: "index_opportunities_on_recurring"
   end
 
@@ -341,6 +343,15 @@ ActiveRecord::Schema.define(version: 2018_08_27_144720) do
     t.boolean "active_status", default: true
     t.index ["name"], name: "index_opportunity_stages_on_name", unique: true
     t.index ["togglable"], name: "index_opportunity_stages_on_togglable"
+  end
+
+  create_table "opportunity_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_opportunity_types_on_name"
+    t.index ["position"], name: "index_opportunity_types_on_position"
   end
 
   create_table "postal_codes", force: :cascade do |t|

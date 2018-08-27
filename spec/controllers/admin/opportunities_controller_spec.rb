@@ -32,6 +32,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
   let(:employer) { create :employer }
+  let(:opportunity_type) { create :opportunity_type }
   
   let(:industry) { create :industry }
   let(:interest) { create :interest }
@@ -39,7 +40,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   let(:contact)  { create :contact}
   let(:location) { create :location, contact: contact, locateable: saved_employer }
 
-  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, inbound: true, recurring: true, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
+  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, inbound: true, recurring: true, opportunity_type_id: opportunity_type.id, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
   let(:invalid_attributes) { { name: ''} }
   
   # This should return the minimal set of values that should be in the session
