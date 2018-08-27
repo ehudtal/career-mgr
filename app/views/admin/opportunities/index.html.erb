@@ -1,5 +1,7 @@
 <h1><%= @employer ? "#{@employer.name} " : '' %>Opportunities</h1>
 
+<p><%= link_to 'Export to CSV', admin_opportunities_path(format: 'csv'), class: "button" %></p>
+
 <%= render "admin/opportunities/list", opportunities: @opportunities %>
 
 <%= will_paginate @opportunities %>

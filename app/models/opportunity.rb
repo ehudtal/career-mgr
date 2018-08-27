@@ -24,6 +24,12 @@ class Opportunity < ApplicationRecord
   validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
   validate :validate_locateable
   
+  class << self
+    def csv_headers
+      ['Region', 'Employer', 'Position', 'Type', 'City', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests']
+    end
+  end
+  
   def candidates search_params=nil
     search_params ||= {}
     return @candidates if defined?(@candidates)
@@ -139,6 +145,25 @@ class Opportunity < ApplicationRecord
   
   def postal_codes
     locations.map(&:contact).compact.map(&:postal_code).compact
+  end
+  
+  def csv_fields
+    begin
+      [
+        region.name,
+        employer.name,
+        name,
+        opportunity_type.name,
+        locations.first.contact.city,
+        job_posting_url,
+        (employer.employer_partner ? 'yes' : 'no'),
+        (inbound ? 'yes' : 'no'),
+        (recurring ? 'yes' : 'no'),
+        (interests + industries + majors).map(&:name).uniq.sort.join(', ')
+      ]
+    rescue
+      nil
+    end
   end
   
   private

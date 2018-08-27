@@ -7,6 +7,15 @@ class Admin::OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.json
   def index
+    respond_to do |format|
+      format.html
+      format.json
+      
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"opportunities.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   # GET /opportunities/1

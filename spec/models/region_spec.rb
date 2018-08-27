@@ -30,7 +30,7 @@ RSpec.describe Region, type: :model do
     
     it { should be_an(Array) }
     it { expect(subject.size).to eq(4) }
-    it { expect(subject.first).to eq('Chicago, IL') }
+    it { expect(subject.first).to eq('Bay') }
     it { expect(subject.last).to eq('Nationwide') }
   end
 end

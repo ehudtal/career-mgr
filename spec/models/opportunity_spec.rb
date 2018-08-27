@@ -74,6 +74,15 @@ RSpec.describe Opportunity, type: :model do
     expect(Opportunity.new.steps).to be_an(Array)
   end
   
+  ###############
+  # Class methods
+  ###############
+  
+  describe '#csv_headers' do
+    subject { Opportunity.csv_headers }
+    it { should eq(['Region', 'Employer', 'Position', 'Type', 'City', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests'])}
+  end
+  
   ##################
   # Instance methods
   ##################
@@ -262,5 +271,41 @@ RSpec.describe Opportunity, type: :model do
       expect(opportunity.postal_codes).to include('10001')
       expect(opportunity.postal_codes).to include('10002')
     end
+  end
+  
+  describe '#csv_fields' do
+    let(:employer) { create :employer, employer_partner: true}
+    let(:opportunity) { create :opportunity, employer: employer, inbound: false, recurring: true }
+
+    let(:fellow) { create :fellow }
+    let(:interest) { create :interest, name: 'Interest' }
+    let(:industry) { create :industry, name: 'Industry' }
+    let(:major) { create :major, name: 'Major' }
+    
+    let(:contact) { create :contact, city: 'Lincoln', contactable: location }
+    let(:location) { create :location, locateable: opportunity }
+    
+    before do
+      contact
+      
+      opportunity.interests << interest
+      opportunity.industries << industry
+      opportunity.majors << major
+      opportunity.locations << location
+    end
+    
+    subject { opportunity.csv_fields }
+    
+    it { should be_an(Array) }
+    it { expect(subject[0]).to eq(opportunity.region.name) }
+    it { expect(subject[1]).to eq(opportunity.employer.name) }
+    it { expect(subject[2]).to eq(opportunity.name) }
+    it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
+    it { expect(subject[4]).to eq(opportunity.locations.first.contact.city) }
+    it { expect(subject[5]).to eq(opportunity.job_posting_url) }
+    it { expect(subject[6]).to eq('yes') }
+    it { expect(subject[7]).to eq('no') }
+    it { expect(subject[8]).to eq('yes') }
+    it { expect(subject[9]).to eq("Industry, Interest, Major") }
   end
 end
