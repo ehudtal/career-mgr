@@ -308,4 +308,50 @@ RSpec.describe Opportunity, type: :model do
     it { expect(subject[8]).to eq('yes') }
     it { expect(subject[9]).to eq("Industry, Interest, Major") }
   end
+  
+  describe '#priority' do
+    let(:employer) { create :employer, employer_partner: employer_partner }
+    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring }
+
+    let(:employer_partner) { false }
+    let(:inbound) { false }
+    let(:recurring) { false }
+    
+    
+    subject { opportunity.priority }
+    
+    describe 'when employer_partner AND inbound AND recurring' do
+      let(:employer_partner) { true }
+      let(:inbound) { true }
+      let(:recurring) { true }
+      
+      it { should eq(0) }
+    end
+    
+    describe 'when employer_partner AND inbound' do
+      let(:employer_partner) { true }
+      let(:inbound) { true }
+
+      it { should eq(1) }
+    end
+    
+    describe 'when inbound' do
+      let(:inbound) { true }
+      it { should eq(2) }
+    end
+    
+    describe 'when employer_partner' do
+      let(:employer_partner) { true }
+      it { should eq(2) }
+    end
+    
+    describe 'when recurring' do
+      let(:recurring) { true }
+      it { should eq(3) }
+    end
+    
+    describe 'when none are true' do
+      it { should eq(4) }
+    end
+  end
 end

@@ -12,6 +12,8 @@ class Admin::OpportunitiesController < ApplicationController
       format.json
       
       format.csv do
+        @opportunities = unpaginated_opportunities
+        
         headers['Content-Disposition'] = "attachment; filename=\"opportunities.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -81,6 +83,10 @@ class Admin::OpportunitiesController < ApplicationController
   def set_employer
     @employer = Employer.find(params[:employer_id]) if params[:employer_id]
     @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
+  end
+  
+  def unpaginated_opportunities
+    (@employer ? @employer.opportunities : Opportunity.all).sort_by(&:priority).sort_by{|o| o.region.position}
   end
   
   # Use callbacks to share common setup or constraints between actions.

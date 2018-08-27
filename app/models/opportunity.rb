@@ -166,6 +166,21 @@ class Opportunity < ApplicationRecord
     end
   end
   
+  # lowest priority is best/first
+  def priority
+    if employer.employer_partner && inbound && recurring
+      0
+    elsif employer.employer_partner && inbound
+      1
+    elsif employer.employer_partner || inbound
+      2
+    elsif recurring
+      3
+    else
+      4
+    end
+  end
+  
   private
   
   def archived_fellow_opp candidate_id
