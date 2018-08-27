@@ -23,7 +23,7 @@
 
   <div class="field">
     <%= form.label :region_id, 'Region' %>
-    <%= form.collection_select(:region_id, Region.order(name: :asc), :id, :name) %>
+    <%= form.collection_select(:region_id, Region.order(position: :asc), :id, :name) %>
   </div>
 
   <div class="field">
