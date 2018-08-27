@@ -39,7 +39,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   let(:contact)  { create :contact}
   let(:location) { create :location, contact: contact, locateable: saved_employer }
 
-  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
+  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, inbound: true, recurring: true, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
   let(:invalid_attributes) { { name: ''} }
   
   # This should return the minimal set of values that should be in the session
@@ -222,6 +222,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         it "associates specified interests with the opportunity" do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
           expect(Opportunity.last.interests).to include(interest)
+        end
+        
+        it "sets the inbound/recurring booleans" do
+          post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
+          opportunity = Opportunity.last
+          
+          expect(opportunity.inbound).to eq(true)
+          expect(opportunity.recurring).to eq(true)
         end
       end
 

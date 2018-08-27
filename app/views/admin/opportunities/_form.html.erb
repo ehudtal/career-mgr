@@ -17,6 +17,16 @@
   </div>
 
   <div class="field">
+    <%= form.check_box :inbound %>
+    <%= form.label :inbound, 'Inbound?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :recurring %>
+    <%= form.label :recurring, 'Recurring?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
     <%= form.label :description, 'Description (please keep it short!)' %>
     <%= form.text_area :description %>
   </div>
