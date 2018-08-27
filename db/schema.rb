@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_27_202757) do
+ActiveRecord::Schema.define(version: 2018_08_27_204909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -370,7 +370,9 @@ ActiveRecord::Schema.define(version: 2018_08_27_202757) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["name"], name: "index_regions_on_name"
+    t.index ["position"], name: "index_regions_on_position"
   end
 
   create_table "sites", force: :cascade do |t|
