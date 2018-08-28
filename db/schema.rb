@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_08_193539) do
+ActiveRecord::Schema.define(version: 2018_08_28_211232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 2018_08_08_193539) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "employer_partner", default: false
+    t.index ["employer_partner"], name: "index_employers_on_employer_partner"
     t.index ["name"], name: "index_employers_on_name", unique: true
   end
 
@@ -321,7 +323,15 @@ ActiveRecord::Schema.define(version: 2018_08_08_193539) do
     t.string "job_posting_url"
     t.date "application_deadline"
     t.text "steps"
+    t.boolean "inbound", default: false
+    t.boolean "recurring", default: false
+    t.integer "opportunity_type_id"
+    t.integer "region_id"
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
+    t.index ["inbound"], name: "index_opportunities_on_inbound"
+    t.index ["opportunity_type_id"], name: "index_opportunities_on_opportunity_type_id"
+    t.index ["recurring"], name: "index_opportunities_on_recurring"
+    t.index ["region_id"], name: "index_opportunities_on_region_id"
   end
 
   create_table "opportunity_stages", force: :cascade do |t|
@@ -337,6 +347,15 @@ ActiveRecord::Schema.define(version: 2018_08_08_193539) do
     t.index ["togglable"], name: "index_opportunity_stages_on_togglable"
   end
 
+  create_table "opportunity_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_opportunity_types_on_name"
+    t.index ["position"], name: "index_opportunity_types_on_position"
+  end
+
   create_table "postal_codes", force: :cascade do |t|
     t.string "code"
     t.decimal "latitude", precision: 10, scale: 6
@@ -345,6 +364,15 @@ ActiveRecord::Schema.define(version: 2018_08_08_193539) do
     t.datetime "updated_at", null: false
     t.string "msa_code"
     t.index ["code"], name: "index_postal_codes_on_code"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position"
+    t.index ["name"], name: "index_regions_on_name"
+    t.index ["position"], name: "index_regions_on_position"
   end
 
   create_table "sites", force: :cascade do |t|
