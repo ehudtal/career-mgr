@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_28_211901) do
+ActiveRecord::Schema.define(version: 2018_08_28_220203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,6 +292,14 @@ ActiveRecord::Schema.define(version: 2018_08_28_211901) do
     t.bigint "opportunity_id", null: false
     t.index ["major_id", "opportunity_id"], name: "index_majors_opportunities_on_major_id_and_opportunity_id"
     t.index ["opportunity_id", "major_id"], name: "index_majors_opportunities_on_opportunity_id_and_major_id"
+  end
+
+  create_table "metro_relationships", id: false, force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "child_id"
+    t.index ["child_id"], name: "index_metro_relationships_on_child_id"
+    t.index ["parent_id", "child_id"], name: "index_metro_relationships_on_parent_id_and_child_id"
+    t.index ["parent_id"], name: "index_metro_relationships_on_parent_id"
   end
 
   create_table "metros", force: :cascade do |t|
