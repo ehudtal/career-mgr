@@ -5,7 +5,7 @@ class Metro < ApplicationRecord
   validates :code, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: true
   
-  scope :city, ->{ where.not(source: 'ST') }
+  scope :city, ->{ where.not(source: ['ST', 'ANY']) }
   scope :state, ->{ where(source: 'ST') }
 
   class << self

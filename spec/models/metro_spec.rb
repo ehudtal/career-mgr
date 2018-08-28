@@ -22,6 +22,37 @@ RSpec.describe Metro, type: :model do
     it { should validate_uniqueness_of(:name) }
   end
   
+  ########
+  # Scopes
+  ########
+
+  describe 'city/state scopes' do
+    let(:city1) { create :metro, source: 'MSA' }
+    let(:city2) { create :metro, source: 'SMSA' }
+    let(:state) { create :metro, source: 'ST' }
+    let(:anywhere) { create :metro, source: 'ANY' }
+    
+    before { city1; city2; state; anywhere }
+    
+    describe 'city' do
+      subject { Metro.city }
+      
+      it { should include(city1) }
+      it { should include(city2) }
+      it { should_not include (state) }
+      it { should_not include(anywhere) }
+    end
+    
+    describe 'state' do
+      subject { Metro.state }
+      
+      it { should_not include(city1) }
+      it { should_not include(city2) }
+      it { should include (state) }
+      it { should_not include(anywhere) }
+    end
+  end
+  
   ###############
   # Class methods
   ###############
