@@ -14,7 +14,7 @@ RSpec.describe Contact, type: :model do
   
   it { should validate_inclusion_of(:state).in_array(Contact::STATES) }
   
-  it_behaves_like "valid url", :url
+  it_behaves_like "valid url", :url, allow_blank: true
   
   ##################
   # Instance methods

@@ -154,25 +154,32 @@ class Opportunity < ApplicationRecord
         employer.name,
         "=HYPERLINK(\"#{job_posting_url}\", \"#{name}\")",
         opportunity_type.name,
-        primary_city_state(metros.first.name),
+        primary_city_state,
         job_posting_url,
         (employer.employer_partner ? 'yes' : 'no'),
         (inbound ? 'yes' : 'no'),
         (recurring ? 'yes' : 'no'),
         (interests + industries + majors).map(&:name).uniq.sort.join(', ')
       ]
-    rescue
+    rescue => e
+      Rails.logger.info("COULD NOT EXPORT OPP #{id}: #{e.message}")
       nil
     end
   end
   
-  def primary_city_state metro_name
-    city, state = metro_name.split(/,\s+/)
+  def primary_city_state
+    if metros.first
+      city, state = metros.first.name.split(/,\s+/)
     
-    return metro_name unless state
-    primary_state, secondary_state = state.split('-', 2)
+      return metro_name unless state
+      primary_state, secondary_state = state.split('-', 2)
     
-    [city, primary_state].join(', ')
+      [city, primary_state].join(', ')
+    else
+      contact = locations.first.contact
+      
+      [contact.city, contact.state].join(', ')
+    end
   end
   
   # lowest priority is best/first

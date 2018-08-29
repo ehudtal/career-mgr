@@ -102,6 +102,13 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       expect(response).to be_successful
     end
   end
+  
+  describe 'POST #export' do
+    it "returns a success response" do
+      post :export, params: {format: 'csv'}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
 
   describe "GET #show" do
     it "returns a success response" do

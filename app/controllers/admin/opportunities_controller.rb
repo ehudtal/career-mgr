@@ -7,13 +7,15 @@ class Admin::OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.json
   def index
+  end
+  
+  def export
     respond_to do |format|
-      format.html
-      format.json
-      
       format.csv do
         @opportunities = unpaginated_opportunities
-        
+        Rails.logger.info("OPPS: #{@opportunities.inspect}")
+        Opportunity.where(id: @opportunities.map(&:id)).update_all(published: true)
+    
         headers['Content-Disposition'] = "attachment; filename=\"opportunities.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -86,7 +88,7 @@ class Admin::OpportunitiesController < ApplicationController
   end
   
   def unpaginated_opportunities
-    (@employer ? @employer.opportunities : Opportunity.all).sort_by(&:priority).sort_by{|o| o.region.position}
+    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).sort_by(&:priority).sort_by{|o| o.region.position}
   end
   
   # Use callbacks to share common setup or constraints between actions.
