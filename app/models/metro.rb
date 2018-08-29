@@ -44,4 +44,14 @@ class Metro < ApplicationRecord
     
     state_list.split('-')
   end
+  
+  def all_parents
+    return [] if parents.empty?
+    (parents + parents.map(&:all_parents).flatten).compact
+  end
+  
+  def all_children
+    return [] if children.empty?
+    (children + children.map(&:all_children).flatten).compact
+  end
 end

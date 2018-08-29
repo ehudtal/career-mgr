@@ -105,4 +105,50 @@ RSpec.describe Metro, type: :model do
       expect(metro.states).to include('IA')
     end
   end
+
+  describe 'ancestry' do
+    let(:unrelated) { create :metro }
+    let(:grandparent) { create :metro }
+    let(:parent) { create :metro }
+    let(:child) { create :metro }
+    let(:sibling) { create :metro }
+    let(:uncle) { create :metro }
+    let(:cousin) { create :metro }
+  
+    before do
+      grandparent.children << parent
+      grandparent.children << uncle
+      
+      parent.children << child
+      parent.children << sibling
+      
+      uncle.children << cousin
+      
+      unrelated
+    end
+  
+    describe '#all_parents' do
+      subject { child.all_parents }
+    
+      it { should_not include(child) }
+      it { should include(parent) }
+      it { should include(grandparent) }
+      it { should_not include(uncle) }
+      it { should_not include(sibling) }
+      it { should_not include(cousin) }
+      it { should_not include(unrelated) }
+    end
+  
+    describe '#all_children' do
+      subject { grandparent.all_children }
+    
+      it { should include(child) }
+      it { should include(parent) }
+      it { should include(uncle) }
+      it { should include(sibling) }
+      it { should include(cousin) }
+      it { should_not include(grandparent) }
+      it { should_not include(unrelated) }
+    end
+  end
 end
