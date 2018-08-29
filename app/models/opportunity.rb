@@ -152,7 +152,7 @@ class Opportunity < ApplicationRecord
       [
         region.name,
         employer.name,
-        name,
+        "=HYPERLINK(\"#{job_posting_url}\", \"#{name}\")",
         opportunity_type.name,
         locations.first.contact.city,
         job_posting_url,

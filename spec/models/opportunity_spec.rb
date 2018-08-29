@@ -275,7 +275,7 @@ RSpec.describe Opportunity, type: :model do
   
   describe '#csv_fields' do
     let(:employer) { create :employer, employer_partner: true}
-    let(:opportunity) { create :opportunity, employer: employer, inbound: false, recurring: true }
+    let(:opportunity) { create :opportunity, employer: employer, inbound: false, recurring: true, job_posting_url: 'http://example.com', name: 'CSV Opp' }
 
     let(:fellow) { create :fellow }
     let(:interest) { create :interest, name: 'Interest' }
@@ -299,7 +299,7 @@ RSpec.describe Opportunity, type: :model do
     it { should be_an(Array) }
     it { expect(subject[0]).to eq(opportunity.region.name) }
     it { expect(subject[1]).to eq(opportunity.employer.name) }
-    it { expect(subject[2]).to eq(opportunity.name) }
+    it { expect(subject[2]).to eq('=HYPERLINK("http://example.com", "CSV Opp")') }
     it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
     it { expect(subject[4]).to eq(opportunity.locations.first.contact.city) }
     it { expect(subject[5]).to eq(opportunity.job_posting_url) }
