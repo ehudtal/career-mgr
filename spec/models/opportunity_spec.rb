@@ -34,6 +34,36 @@ RSpec.describe Opportunity, type: :model do
   
   it_should_behave_like "valid url", :job_posting_url
   
+  describe 'validating locate-ability' do
+    let(:location_error) { "must contain a zip code or a metro area" }
+    
+    it "allows opportunity with just a location zip code, no metro area" do
+      contact = build :contact
+      location = Location.new contact: contact
+
+      opportunity = Opportunity.new
+      allow(opportunity).to receive(:locations).and_return([location])
+      
+      opportunity.valid?
+      expect(opportunity.errors[:location]).to_not include(location_error)
+    end
+    
+    it "allows opportunity with just a metro area, no location zip code" do
+      opportunity = Opportunity.new
+      allow(opportunity).to receive(:metros).and_return([:placeholder])
+      
+      opportunity.valid?
+      expect(opportunity.errors[:location]).to_not include(location_error)
+    end
+    
+    it "is invalid if location zip cod and metro area are missing" do
+      opportunity = Opportunity.new
+      
+      opportunity.valid?
+      expect(opportunity.errors[:location]).to include(location_error)
+    end
+  end
+  
   ###############
   # Serialization
   ###############

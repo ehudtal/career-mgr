@@ -4,5 +4,9 @@ FactoryBot.define do
     description "Description"
     job_posting_url "https://example.com"
     association :employer
+    
+    after(:build) do |opp, evaluator|
+      opp.metros << create(:metro) if opp.metros.empty?
+    end
   end
 end

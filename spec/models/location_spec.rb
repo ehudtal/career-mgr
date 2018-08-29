@@ -16,8 +16,6 @@ RSpec.describe Location, type: :model do
   # Validations
   #############
 
-  it { should validate_presence_of :name }
-  
   describe "validating uniqueness" do
     subject { create :location, locateable: locateable }
     it { should validate_uniqueness_of(:name).scoped_to([:locateable_id, :locateable_type]) }
