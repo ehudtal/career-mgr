@@ -340,18 +340,26 @@ RSpec.describe Opportunity, type: :model do
       it { should eq(2) }
     end
     
+    describe 'when employer_partner AND recurring' do
+      let(:employer_partner) { true }
+      let(:recurring) { true }
+      
+      it { should eq(3) }
+    end
+    
     describe 'when employer_partner' do
       let(:employer_partner) { true }
-      it { should eq(2) }
+      
+      it { should eq(4) }
     end
     
     describe 'when recurring' do
       let(:recurring) { true }
-      it { should eq(3) }
+      it { should eq(5) }
     end
     
     describe 'when none are true' do
-      it { should eq(4) }
+      it { should eq(6) }
     end
   end
 end

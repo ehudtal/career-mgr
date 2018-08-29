@@ -168,16 +168,22 @@ class Opportunity < ApplicationRecord
   
   # lowest priority is best/first
   def priority
-    if employer.employer_partner && inbound && recurring
+    employer_partner = employer.employer_partner
+    
+    if employer_partner && inbound && recurring
       0
-    elsif employer.employer_partner && inbound
+    elsif employer_partner && inbound
       1
-    elsif employer.employer_partner || inbound
+    elsif inbound
       2
-    elsif recurring
+    elsif employer_partner && recurring
       3
-    else
+    elsif employer_partner
       4
+    elsif recurring
+      5
+    else
+      6
     end
   end
   
