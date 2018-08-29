@@ -154,7 +154,7 @@ class Opportunity < ApplicationRecord
         employer.name,
         "=HYPERLINK(\"#{job_posting_url}\", \"#{name}\")",
         opportunity_type.name,
-        locations.first.contact.city,
+        primary_city_state(metros.first.name),
         job_posting_url,
         (employer.employer_partner ? 'yes' : 'no'),
         (inbound ? 'yes' : 'no'),
@@ -164,6 +164,15 @@ class Opportunity < ApplicationRecord
     rescue
       nil
     end
+  end
+  
+  def primary_city_state metro_name
+    city, state = metro_name.split(/,\s+/)
+    
+    return metro_name unless state
+    primary_state, secondary_state = state.split('-', 2)
+    
+    [city, primary_state].join(', ')
   end
   
   # lowest priority is best/first

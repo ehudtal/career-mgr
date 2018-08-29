@@ -281,6 +281,7 @@ RSpec.describe Opportunity, type: :model do
     let(:interest) { create :interest, name: 'Interest' }
     let(:industry) { create :industry, name: 'Industry' }
     let(:major) { create :major, name: 'Major' }
+    let(:metro) { create :metro, name: 'Omaha, NE-IA'}
     
     let(:contact) { create :contact, city: 'Lincoln', contactable: location }
     let(:location) { create :location, locateable: opportunity }
@@ -292,6 +293,7 @@ RSpec.describe Opportunity, type: :model do
       opportunity.industries << industry
       opportunity.majors << major
       opportunity.locations << location
+      opportunity.metros << metro
     end
     
     subject { opportunity.csv_fields }
@@ -301,7 +303,7 @@ RSpec.describe Opportunity, type: :model do
     it { expect(subject[1]).to eq(opportunity.employer.name) }
     it { expect(subject[2]).to eq('=HYPERLINK("http://example.com", "CSV Opp")') }
     it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
-    it { expect(subject[4]).to eq(opportunity.locations.first.contact.city) }
+    it { expect(subject[4]).to eq('Omaha, NE') }
     it { expect(subject[5]).to eq(opportunity.job_posting_url) }
     it { expect(subject[6]).to eq('yes') }
     it { expect(subject[7]).to eq('no') }
