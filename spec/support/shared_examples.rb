@@ -7,11 +7,11 @@ shared_examples_for "valid url" do |attribute|
       expect(object.errors[attribute]).to include('is an invalid URL')
     end
   
-    it "allows blank urls" do
+    it "rejects blank urls" do
       object = described_class.new
       object.valid?
     
-      expect(object.errors[attribute]).to_not include('is an invalid URL')
+      expect(object.errors[attribute]).to include('is an invalid URL')
     end
   
     it "sets the protocol if missing" do

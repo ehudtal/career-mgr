@@ -21,12 +21,12 @@ class Opportunity < ApplicationRecord
   serialize :steps, Array
   
   validates :name, presence: true
-  validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
+  validates :job_posting_url, url: {ensure_protocol: true}
   validate :validate_locateable
   
   class << self
     def csv_headers
-      ['Region', 'Employer', 'Position', 'Type', 'City', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests']
+      ['Region', 'Employer', 'Position', 'Type', 'Location', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests']
     end
   end
   

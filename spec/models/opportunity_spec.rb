@@ -80,7 +80,7 @@ RSpec.describe Opportunity, type: :model do
   
   describe '#csv_headers' do
     subject { Opportunity.csv_headers }
-    it { should eq(['Region', 'Employer', 'Position', 'Type', 'City', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests'])}
+    it { should eq(['Region', 'Employer', 'Position', 'Type', 'Location', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests'])}
   end
   
   ##################
