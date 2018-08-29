@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_28_221845) do
+ActiveRecord::Schema.define(version: 2018_08_29_174336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -335,9 +335,11 @@ ActiveRecord::Schema.define(version: 2018_08_28_221845) do
     t.boolean "recurring", default: false
     t.integer "opportunity_type_id"
     t.integer "region_id"
+    t.boolean "published", default: false
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
     t.index ["inbound"], name: "index_opportunities_on_inbound"
     t.index ["opportunity_type_id"], name: "index_opportunities_on_opportunity_type_id"
+    t.index ["published"], name: "index_opportunities_on_published"
     t.index ["recurring"], name: "index_opportunities_on_recurring"
     t.index ["region_id"], name: "index_opportunities_on_region_id"
   end
