@@ -100,16 +100,18 @@ class Opportunity < ApplicationRecord
   end
   
   def fellow_ids_for_metros names
-    selected_ids = if names
-      Metro.where(name: names.split(';')).pluck(:id)
+    named = if names
+      Metro.where(name: names.split(';'))
     else
-      metro_ids
+      metros
     end
     
-    state_ids = state_ids_for_metro_ids(selected_ids)
-    city_ids = metro_ids_for_state_ids(selected_ids)
+    parent_ids = named.map(&:all_parents).flatten.uniq.map(&:id)
+    child_ids = named.map(&:all_children).flatten.uniq.map(&:id)
     
-    FellowMetro.fellow_ids_for(selected_ids + state_ids + city_ids)
+    selected_ids = (named.pluck(:id) + parent_ids + child_ids).uniq
+    
+    FellowMetro.fellow_ids_for(selected_ids)
   end
   
   def state_ids_for_metro_ids metro_ids

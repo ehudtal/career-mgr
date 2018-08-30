@@ -1,11 +1,14 @@
 class Metro < ApplicationRecord
   has_and_belongs_to_many :opportunities
   has_and_belongs_to_many :fellows
+  
+  has_and_belongs_to_many :parents, class_name: 'Metro', join_table: 'metro_relationships', foreign_key: 'parent_id', association_foreign_key: 'child_id'
+  has_and_belongs_to_many :children, class_name: 'Metro', join_table: 'metro_relationships', foreign_key: 'child_id', association_foreign_key: 'parent_id'
 
   validates :code, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: true
   
-  scope :city, ->{ where.not(source: 'ST') }
+  scope :city, ->{ where.not(source: ['ST', 'ANY']) }
   scope :state, ->{ where(source: 'ST') }
 
   class << self
@@ -40,5 +43,15 @@ class Metro < ApplicationRecord
     return [] if state_list.nil?
     
     state_list.split('-')
+  end
+  
+  def all_parents
+    return [] if parents.empty?
+    (parents + parents.map(&:all_parents).flatten).compact
+  end
+  
+  def all_children
+    return [] if children.empty?
+    (children + children.map(&:all_children).flatten).compact
   end
 end
