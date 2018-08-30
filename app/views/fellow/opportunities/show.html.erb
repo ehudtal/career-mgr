@@ -33,6 +33,10 @@
             <% completion = 'not-completed' %> 
 
             <td class="stage active-stage phase-<%= phase.downcase %>">
+              <% if flash[:stage_notice] %>
+                <div id="stage-notice"><%= flash[:stage_notice]%></div>
+              <% end %>
+              
               <h3>
                 <%= content['phase_position'] %>. <%= content['title'] %>
               </h3>

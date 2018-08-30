@@ -55,6 +55,30 @@ RSpec.describe FellowOpportunity, type: :model do
     end
   end
   
+  describe 'most_neglected' do
+    let(:recent) { create :fellow_opportunity, active: true, last_contact_at: 1.minute.ago }
+    let(:neglected) { create :fellow_opportunity, active: true, last_contact_at: 1.year.ago }
+    let(:inactive) { create :fellow_opportunity, active: false }
+    
+    before do
+      recent; neglected; inactive
+    end
+
+    subject { FellowOpportunity.most_neglected }
+    
+    it "contains the neglected opp first" do
+      expect(subject.first).to eq(neglected)
+    end
+    
+    it "contains the recently updated opp last" do
+      expect(subject.last).to eq(recent)
+    end
+    
+    it "does not contain the inactive opp" do
+      expect(subject).to_not include(inactive)
+    end
+  end
+  
   ##################
   # Instance methods
   ##################

@@ -15,6 +15,11 @@
     <%= form.label :name %>
     <%= form.text_field :name, required: true %>
   </div>
+
+  <div class="field">
+    <%= form.check_box :employer_partner %>
+    <%= form.label :employer_partner, 'Employer Partner?', class: 'checkbox' %>
+  </div>
   
   <h3>Industries</h3>
 

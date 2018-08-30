@@ -31,7 +31,9 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
-  let(:employer) { build :employer, id: 1001 }
+  let(:employer) { create :employer }
+  let(:opportunity_type) { create :opportunity_type }
+  let(:region) { create :region }
   
   let(:industry) { create :industry }
   let(:interest) { create :interest }
@@ -39,7 +41,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   let(:contact)  { create :contact}
   let(:location) { create :location, contact: contact, locateable: saved_employer }
 
-  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id }
+  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, inbound: true, recurring: true, opportunity_type_id: opportunity_type.id, region_id: region.id, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
   let(:invalid_attributes) { { name: ''} }
   
   # This should return the minimal set of values that should be in the session
@@ -95,15 +97,22 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      opportunity = Opportunity.create! valid_attributes
+      opportunity = create :opportunity
       get :index, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+  
+  describe 'POST #export' do
+    it "returns a success response" do
+      post :export, params: {format: 'csv'}, session: valid_session
       expect(response).to be_successful
     end
   end
 
   describe "GET #show" do
     it "returns a success response" do
-      opportunity = Opportunity.create! valid_attributes
+      opportunity = create :opportunity
       get :show, params: {id: opportunity.to_param}, session: valid_session
       expect(response).to be_successful
     end
@@ -111,7 +120,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
 
   describe "GET #edit" do
     it "returns a success response" do
-      opportunity = Opportunity.create! valid_attributes
+      opportunity = create :opportunity
       get :edit, params: {id: opportunity.to_param}, session: valid_session
       expect(response).to be_successful
     end
@@ -123,7 +132,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       let(:new_attributes) { {name: new_name} }
 
       it "updates the requested opportunity" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         put :update, params: {id: opportunity.to_param, opportunity: new_attributes}, session: valid_session
         opportunity.reload
       
@@ -137,7 +146,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       end
 
       it "associates specified industries with the opportunity" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
         opportunity.reload
       
@@ -145,7 +154,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       end
 
       it "associates specified interests with the opportunity" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
         opportunity.reload
       
@@ -153,7 +162,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       end
 
       it "associates specified locations with the opportunity" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(location_ids: [location.id.to_s])}, session: valid_session
         opportunity.reload
       
@@ -163,7 +172,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         put :update, params: {id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
@@ -172,14 +181,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested opportunity" do
-      opportunity = Opportunity.create! valid_attributes
+      opportunity = create :opportunity
       expect {
         delete :destroy, params: {id: opportunity.to_param}, session: valid_session
       }.to change(Opportunity, :count).by(-1)
     end
 
     it "redirects to the opportunities list" do
-      opportunity = Opportunity.create! valid_attributes
+      opportunity = create :opportunity
       delete :destroy, params: {id: opportunity.to_param}, session: valid_session
       expect(response).to redirect_to(admin_employer_opportunities_url(employer))
     end
@@ -188,7 +197,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   describe "with employer nesting" do    
     describe "GET #index" do
       it "returns a success response" do
-        opportunity = Opportunity.create! valid_attributes
+        opportunity = create :opportunity
         get :index, params: {employer_id: employer.id}, session: valid_session
         expect(response).to be_successful
       end
@@ -222,6 +231,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         it "associates specified interests with the opportunity" do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
           expect(Opportunity.last.interests).to include(interest)
+        end
+        
+        it "sets the inbound/recurring booleans" do
+          post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
+          opportunity = Opportunity.last
+          
+          expect(opportunity.inbound).to eq(true)
+          expect(opportunity.recurring).to eq(true)
         end
       end
 

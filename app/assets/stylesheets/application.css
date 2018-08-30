@@ -425,3 +425,12 @@ ul.inline-list {
   padding-right: 20px;
   margin: 0
 }
+
+div#stage-notice {
+  background: #efe;
+  font-weight: bold;
+}
+
+label.checkbox {
+  display: inline;
+}

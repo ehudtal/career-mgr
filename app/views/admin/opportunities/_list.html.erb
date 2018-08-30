@@ -1,26 +1,32 @@
 <% if opportunities.empty? %>
   <p class="empty-list">There are no opportunities for this employer yet.</p>
 <% else %>
-  <table>
-    <thead>
-      <tr>
-        <th>Employer</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th colspan="2">Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% opportunities.each do |opportunity| %>
+  <%= form_tag export_admin_opportunities_path(format: 'csv'), method: :post do %>
+    <table>
+      <thead>
         <tr>
-          <td><%= opportunity.employer.name %>
-          <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
-          <td><%= opportunity.description %></td>
-          <td><%= link_to 'Edit', edit_admin_opportunity_path(opportunity), class: 'edit' %></td>
-          <td><%= link_to 'Delete', admin_opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          <th>Employer</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th colspan="2">Actions</th>
+          <th>Export</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <% opportunities.each do |opportunity| %>
+          <tr>
+            <td><%= opportunity.employer.name %>
+            <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
+            <td><%= truncate(opportunity.description, length: 100, separator: ' ') %></td>
+            <td><%= link_to 'Edit', edit_admin_opportunity_path(opportunity), class: 'edit' %></td>
+            <td><%= link_to 'Delete', admin_opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+            <td><%= check_box_tag 'export_ids[]', opportunity.id, !opportunity.published %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <p><%= submit_tag 'Export to CSV' %></p>
+  <% end %>
 <% end %>
