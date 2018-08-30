@@ -281,7 +281,6 @@ RSpec.describe Opportunity, type: :model do
     let(:interest) { create :interest, name: 'Interest' }
     let(:industry) { create :industry, name: 'Industry' }
     let(:major) { create :major, name: 'Major' }
-    let(:metro) { create :metro, name: 'Omaha, NE-IA'}
     
     let(:contact) { create :contact, city: 'Lincoln', contactable: location }
     let(:location) { create :location, locateable: opportunity }
@@ -293,7 +292,7 @@ RSpec.describe Opportunity, type: :model do
       opportunity.industries << industry
       opportunity.majors << major
       opportunity.locations << location
-      opportunity.metros << metro
+      opportunity.metros.first.update(name: 'Omaha, NE-IA')
     end
     
     subject { opportunity.csv_fields }

@@ -161,15 +161,17 @@ class Opportunity < ApplicationRecord
         (recurring ? 'yes' : 'no'),
         (interests + industries + majors).map(&:name).uniq.sort.join(', ')
       ]
-    rescue => e
-      Rails.logger.info("COULD NOT EXPORT OPP #{id}: #{e.message}")
-      nil
+    # rescue => e
+    #   Rails.logger.info("COULD NOT EXPORT OPP #{id}: #{e.message}")
+    #   nil
     end
   end
   
   def primary_city_state
     if metros.first
-      city, state = metros.first.name.split(/,\s+/)
+      metro_name = metros.first.name
+      
+      city, state = metro_name.split(/,\s+/)
     
       return metro_name unless state
       primary_state, secondary_state = state.split('-', 2)
