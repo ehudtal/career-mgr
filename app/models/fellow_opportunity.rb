@@ -16,6 +16,7 @@ class FellowOpportunity < ApplicationRecord
   
   scope :active, ->{ where(active: true) }
   scope :inactive, -> { where(active: false) }
+  scope :most_neglected, -> { active.order(last_contact_at: :asc) }
   
   def log message
     logs.create status: message

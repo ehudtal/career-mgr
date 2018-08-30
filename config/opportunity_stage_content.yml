@@ -7,6 +7,13 @@ default links: &default_links
 default links with employer: &default_links_with_employer
   <<: *default_links
   employer declined: "Employer Declined"
+  
+default notices: &default_notices
+  next: "Great!"
+  no change: "Okay."
+  skip: "Okay."
+  fellow declined: "Thanks for letting us know."
+  employer declined: "Sorry to hear that."
 
 research employer:
   phase: "Apply"
@@ -21,6 +28,7 @@ research employer:
       - "Better Business Bureau"
       - "Idealist.org (for mission-driven organizations)"
   links: *default_links
+  notices: *default_notices
   burden: "15 minutes"
 
 connect with employees:
@@ -37,6 +45,7 @@ connect with employees:
       - "This step doesn't take a lot of effort but it does take time. We'll send you helpful reminders about it so you stay on track."
       - "PRO TIP: Keep taking feedback and revise your application materials accordingly."
   links: *default_links
+  notices: *default_notices
   burden: "3 hours"
 
 customize application materials:
@@ -53,6 +62,7 @@ customize application materials:
       - "Follow key companies and people in the industry, and join relevant groups and meetups."
       - "PRO TIP: Catch all the typos! Professional polish shows that you care about doing your job well."
   links: *default_links
+  notices: *default_notices
   burden: "30 minutes"
     
 submit application:
@@ -65,6 +75,7 @@ submit application:
       - "Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else)."
       - "If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply."
   links: *default_links
+  notices: *default_notices
   burden: "a couple of minutes"
       
 follow up after application:
@@ -75,6 +86,7 @@ follow up after application:
   tips:
     header: "Follow up with any contacts you have who might have some influence at the company (e.g. current and past employees, partners, clients) by sending them a copy of the resume and cover letter and asking \"Would you be willing to put in a word for me to make sure my application is considered?\""
   links: *default_links_with_employer
+  notices: *default_notices
   burden: "5 minutes"
 
 schedule interview:
@@ -83,6 +95,7 @@ schedule interview:
   phase_position: 1
   question: "Have you scheduled an interview?"
   links: *default_links_with_employer
+  notices: *default_notices
   
 research interview process:
   phase: "Interview"
@@ -96,6 +109,7 @@ research interview process:
       - "Brainstorm what questions they might ask based on what you've learned about them."
       - "PRO TIP: Research what people wear on the actual job so you can dress appropriately for your interview."
   links: *default_links
+  notices: *default_notices
 
 practice for interview:
   phase: "Interview"
@@ -109,6 +123,7 @@ practice for interview:
       - "Prepare 3-5 questions you can ask your interviewer."
       - "Practice with people you know in the field, your campus career center, other Fellows, your Coach, or even friends and family."
   links: *default_links
+  notices: *default_notices
 
 attend interview:
   phase: "Interview"
@@ -122,6 +137,7 @@ attend interview:
       - "Reserve some free time after the interview in case it starts late or goes longer than expected."
       - "PRO TIP: Bring copies of your resume and some business cards."
   links: *default_links
+  notices: *default_notices
 
 follow up after interview:
   phase: "Interview"
@@ -131,6 +147,7 @@ follow up after interview:
   tips:
     header: "Send a quick follow up to express your continued excitement for the opportunity and to follow-up on anything from the interview."
   links: *default_links_with_employer
+  notices: *default_notices
   
 receive offer:
   phase: "Offer"
@@ -142,6 +159,7 @@ receive offer:
     no change: "Not Yet"
     fellow declined: "No Longer Interested"
     employer declined: "Employer Declined"
+  notices: *default_notices
 
 submit counter-offer:
   phase: "Offer"
@@ -158,6 +176,10 @@ submit counter-offer:
     no change: "Not Yet"
     fellow accepted: "Accepted Offer"
     fellow declined: "No Longer Interested"
+  notices:
+    <<: *default_notices
+    receive offer: "Way to Go!"
+    fellow accepted: "Congratulations!"
 
 accept offer:
   phase: "Offer"
@@ -165,3 +187,6 @@ accept offer:
   phase_position: 3
   question: "Have you accepted your offer with <%= @opp.employer.name %>?"
   links: *default_links
+  notices:
+    <<: *default_notices
+    next: "Congratulations!"
