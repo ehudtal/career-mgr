@@ -17,13 +17,33 @@
   </div>
 
   <div class="field">
+    <%= form.label :opportunity_type_id, 'Opportunity Type' %>
+    <%= form.collection_select(:opportunity_type_id, OpportunityType.order(position: :asc), :id, :name) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :region_id, 'Region' %>
+    <%= form.collection_select(:region_id, Region.order(position: :asc), :id, :name) %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :inbound %>
+    <%= form.label :inbound, 'Inbound?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :recurring %>
+    <%= form.label :recurring, 'Recurring?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
     <%= form.label :description, 'Description (please keep it short!)' %>
     <%= form.text_area :description %>
   </div>
 
   <div class="field">
     <%= form.label :job_posting_url %>
-    <%= form.text_field :job_posting_url %>
+    <%= form.text_field :job_posting_url, required: true %>
   </div>
   
   <div class="field">

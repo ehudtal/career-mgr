@@ -5,6 +5,10 @@ RSpec.describe Admin::OpportunitiesController, type: :routing do
     it "routes to #index" do
       expect(:get => "/admin/opportunities").to route_to("admin/opportunities#index")
     end
+    
+    it "routes to #export" do
+      expect(:post => '/admin/opportunities/export').to route_to('admin/opportunities#export')
+    end
 
     it "routes to #show" do
       expect(:get => "/admin/opportunities/1").to route_to("admin/opportunities#show", :id => "1")

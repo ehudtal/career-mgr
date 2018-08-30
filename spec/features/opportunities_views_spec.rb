@@ -53,6 +53,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     fill_in 'Phone', with: contact_attributes[:phone]
     fill_in 'Email', with: contact_attributes[:email]
     fill_in 'Url', with: contact_attributes[:url]
+    fill_in 'Job Posting URL', with: opportunity_attributes[:job_posting_url]
     
     expect_list_link_for 'industries/interests', link: 'full list', within: '#interests-collection'
     expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
@@ -64,7 +65,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     click_on 'Create Opportunity'
     opportunity = Opportunity.last
 
-    [:name, :description].each do |attr|
+    [:name, :description, :job_posting_url].each do |attr|
       expect(opportunity.send(attr)).to eq(opportunity_attributes[attr])
     end
 

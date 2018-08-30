@@ -30,7 +30,11 @@ Rails.application.routes.draw do
       end
     end
   
-    resources :opportunities, only: [:index]
+    resources :opportunities, only: [:index] do
+      collection do
+        post :export
+      end
+    end
 
     resources :sites, shallow: true do
       resources :courses, except: [:index]

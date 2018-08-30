@@ -8,6 +8,19 @@ class Admin::OpportunitiesController < ApplicationController
   # GET /opportunities.json
   def index
   end
+  
+  def export
+    respond_to do |format|
+      format.csv do
+        @opportunities = unpaginated_opportunities
+        Rails.logger.info("OPPS: #{@opportunities.inspect}")
+        Opportunity.where(id: @opportunities.map(&:id)).update_all(published: true)
+    
+        headers['Content-Disposition'] = "attachment; filename=\"opportunities.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
 
   # GET /opportunities/1
   # GET /opportunities/1.json
@@ -74,6 +87,10 @@ class Admin::OpportunitiesController < ApplicationController
     @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
   end
   
+  def unpaginated_opportunities
+    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).sort_by(&:priority).sort_by{|o| o.region.position}
+  end
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_opportunity
     @opportunity = @opportunities.find(params[:id])
@@ -83,7 +100,8 @@ class Admin::OpportunitiesController < ApplicationController
   def opportunity_params
     params.require(:opportunity).permit(
       :_destroy,
-      :name, :description, :employer_id, :job_posting_url, :application_deadline,
+      :name, :description, :employer_id, :job_posting_url, :application_deadline, 
+      :inbound, :recurring, :opportunity_type_id, :region_id,
       :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
       industry_ids: [], 
       interest_ids: [],

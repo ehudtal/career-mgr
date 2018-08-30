@@ -430,3 +430,7 @@ div#stage-notice {
   background: #efe;
   font-weight: bold;
 }
+
+label.checkbox {
+  display: inline;
+}
