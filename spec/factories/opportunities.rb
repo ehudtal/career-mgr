@@ -3,7 +3,10 @@ FactoryBot.define do
     sequence(:name) {|i| "Opportunity #{i}"}
     description "Description"
     job_posting_url "https://example.com"
+
     association :employer
+    association :opportunity_type
+    association :region
     
     after(:build) do |opp, evaluator|
       opp.metros << create(:metro) if opp.metros.empty?

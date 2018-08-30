@@ -4,6 +4,8 @@ class Opportunity < ApplicationRecord
   include Taggable
   
   belongs_to :employer
+  belongs_to :opportunity_type
+  belongs_to :region
   
   has_many :tasks, as: :taskable, dependent: :destroy
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true
@@ -19,8 +21,14 @@ class Opportunity < ApplicationRecord
   serialize :steps, Array
   
   validates :name, presence: true
-  validates :job_posting_url, url: {ensure_protocol: true}, allow_blank: true
+  validates :job_posting_url, url: {ensure_protocol: true}
   validate :validate_locateable
+  
+  class << self
+    def csv_headers
+      ['Region', 'Employer', 'Position', 'Type', 'Location', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests']
+    end
+  end
   
   def candidates search_params=nil
     search_params ||= {}
@@ -137,6 +145,64 @@ class Opportunity < ApplicationRecord
   
   def postal_codes
     locations.map(&:contact).compact.map(&:postal_code).compact
+  end
+  
+  def csv_fields
+    begin
+      [
+        region.name,
+        employer.name,
+        "=HYPERLINK(\"#{job_posting_url}\", \"#{name}\")",
+        opportunity_type.name,
+        primary_city_state,
+        job_posting_url,
+        (employer.employer_partner ? 'yes' : 'no'),
+        (inbound ? 'yes' : 'no'),
+        (recurring ? 'yes' : 'no'),
+        (interests + industries + majors).map(&:name).uniq.sort.join(', ')
+      ]
+    # rescue => e
+    #   Rails.logger.info("COULD NOT EXPORT OPP #{id}: #{e.message}")
+    #   nil
+    end
+  end
+  
+  def primary_city_state
+    if metros.first
+      metro_name = metros.first.name
+      
+      city, state = metro_name.split(/,\s+/)
+    
+      return metro_name unless state
+      primary_state, secondary_state = state.split('-', 2)
+    
+      [city, primary_state].join(', ')
+    else
+      contact = locations.first.contact
+      
+      [contact.city, contact.state].join(', ')
+    end
+  end
+  
+  # lowest priority is best/first
+  def priority
+    employer_partner = employer.employer_partner
+    
+    if employer_partner && inbound && recurring
+      0
+    elsif employer_partner && inbound
+      1
+    elsif inbound
+      2
+    elsif employer_partner && recurring
+      3
+    elsif employer_partner
+      4
+    elsif recurring
+      5
+    else
+      6
+    end
   end
   
   private

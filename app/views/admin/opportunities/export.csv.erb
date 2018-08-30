@@ -1,0 +1,5 @@
+<%= CSV.generate_line Opportunity.csv_headers -%>
+<%- @opportunities.each do |opp| -%>
+<%- next unless opp.csv_fields -%>
+<%= CSV.generate_line(opp.csv_fields).html_safe -%>
+<%- end -%>

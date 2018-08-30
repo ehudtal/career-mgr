@@ -9,6 +9,8 @@ RSpec.describe Opportunity, type: :model do
   ##############
 
   it { should belong_to :employer }
+  it { should belong_to :opportunity_type }
+  it { should belong_to :region }
   
   it { should have_many :tasks }
   it { should have_many :fellow_opportunities }
@@ -70,6 +72,15 @@ RSpec.describe Opportunity, type: :model do
 
   it "serializes steps to an array" do
     expect(Opportunity.new.steps).to be_an(Array)
+  end
+  
+  ###############
+  # Class methods
+  ###############
+  
+  describe '#csv_headers' do
+    subject { Opportunity.csv_headers }
+    it { should eq(['Region', 'Employer', 'Position', 'Type', 'Location', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests'])}
   end
   
   ##################
@@ -259,6 +270,97 @@ RSpec.describe Opportunity, type: :model do
       expect(opportunity.postal_codes.size).to eq(2)
       expect(opportunity.postal_codes).to include('10001')
       expect(opportunity.postal_codes).to include('10002')
+    end
+  end
+  
+  describe '#csv_fields' do
+    let(:employer) { create :employer, employer_partner: true}
+    let(:opportunity) { create :opportunity, employer: employer, inbound: false, recurring: true, job_posting_url: 'http://example.com', name: 'CSV Opp' }
+
+    let(:fellow) { create :fellow }
+    let(:interest) { create :interest, name: 'Interest' }
+    let(:industry) { create :industry, name: 'Industry' }
+    let(:major) { create :major, name: 'Major' }
+    
+    let(:contact) { create :contact, city: 'Lincoln', contactable: location }
+    let(:location) { create :location, locateable: opportunity }
+    
+    before do
+      contact
+      
+      opportunity.interests << interest
+      opportunity.industries << industry
+      opportunity.majors << major
+      opportunity.locations << location
+      opportunity.metros.first.update(name: 'Omaha, NE-IA')
+    end
+    
+    subject { opportunity.csv_fields }
+    
+    it { should be_an(Array) }
+    it { expect(subject[0]).to eq(opportunity.region.name) }
+    it { expect(subject[1]).to eq(opportunity.employer.name) }
+    it { expect(subject[2]).to eq('=HYPERLINK("http://example.com", "CSV Opp")') }
+    it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
+    it { expect(subject[4]).to eq('Omaha, NE') }
+    it { expect(subject[5]).to eq(opportunity.job_posting_url) }
+    it { expect(subject[6]).to eq('yes') }
+    it { expect(subject[7]).to eq('no') }
+    it { expect(subject[8]).to eq('yes') }
+    it { expect(subject[9]).to eq("Industry, Interest, Major") }
+  end
+  
+  describe '#priority' do
+    let(:employer) { create :employer, employer_partner: employer_partner }
+    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring }
+
+    let(:employer_partner) { false }
+    let(:inbound) { false }
+    let(:recurring) { false }
+    
+    
+    subject { opportunity.priority }
+    
+    describe 'when employer_partner AND inbound AND recurring' do
+      let(:employer_partner) { true }
+      let(:inbound) { true }
+      let(:recurring) { true }
+      
+      it { should eq(0) }
+    end
+    
+    describe 'when employer_partner AND inbound' do
+      let(:employer_partner) { true }
+      let(:inbound) { true }
+
+      it { should eq(1) }
+    end
+    
+    describe 'when inbound' do
+      let(:inbound) { true }
+      it { should eq(2) }
+    end
+    
+    describe 'when employer_partner AND recurring' do
+      let(:employer_partner) { true }
+      let(:recurring) { true }
+      
+      it { should eq(3) }
+    end
+    
+    describe 'when employer_partner' do
+      let(:employer_partner) { true }
+      
+      it { should eq(4) }
+    end
+    
+    describe 'when recurring' do
+      let(:recurring) { true }
+      it { should eq(5) }
+    end
+    
+    describe 'when none are true' do
+      it { should eq(6) }
     end
   end
 end

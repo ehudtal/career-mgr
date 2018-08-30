@@ -32,6 +32,8 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   # Opportunity. As you add validations to Opportunity, be sure to
   # adjust the attributes here as well.
   let(:employer) { create :employer }
+  let(:opportunity_type) { create :opportunity_type }
+  let(:region) { create :region }
   
   let(:industry) { create :industry }
   let(:interest) { create :interest }
@@ -39,7 +41,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   let(:contact)  { create :contact}
   let(:location) { create :location, contact: contact, locateable: saved_employer }
 
-  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
+  let(:valid_attributes) { attributes_for :opportunity, employer_id: employer.id, inbound: true, recurring: true, opportunity_type_id: opportunity_type.id, region_id: region.id, locations_attributes: {"0" => {locateable_type: 'Employer', locateable_id: employer.id, contact_attributes: {postal_code: '12345'}}} }
   let(:invalid_attributes) { { name: ''} }
   
   # This should return the minimal set of values that should be in the session
@@ -97,6 +99,13 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
     it "returns a success response" do
       opportunity = create :opportunity
       get :index, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+  end
+  
+  describe 'POST #export' do
+    it "returns a success response" do
+      post :export, params: {format: 'csv'}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -222,6 +231,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         it "associates specified interests with the opportunity" do
           post :create, params: {employer_id: employer.id, opportunity: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
           expect(Opportunity.last.interests).to include(interest)
+        end
+        
+        it "sets the inbound/recurring booleans" do
+          post :create, params: {employer_id: employer.id, opportunity: valid_attributes}, session: valid_session
+          opportunity = Opportunity.last
+          
+          expect(opportunity.inbound).to eq(true)
+          expect(opportunity.recurring).to eq(true)
         end
       end
 
