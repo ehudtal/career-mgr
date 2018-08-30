@@ -37,7 +37,22 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = {host: 'localhost', port: 3010}
   config.action_mailer.show_previews = true
-  config.action_mailer.delivery_method = :test
+
+  config.action_mailer.delivery_method = :safety_mailer
+  config.action_mailer.safety_mailer_settings = {
+    allowed_matchers: [/@bebraven\.org$/, /@beyondz\.org/],
+    delivery_method: :smtp,
+    delivery_method_settings: {
+      address:              Rails.application.secrets.smtp_server,
+      port:                 587,
+      domain:               Rails.application.secrets.smtp_domain,
+      user_name:            Rails.application.secrets.smtp_username,
+      password:             Rails.application.secrets.smtp_password,
+      authentication:       'login',
+      default_name:         'Braven Careers',
+      enable_starttls_auto: true
+    }
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
