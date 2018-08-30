@@ -93,3 +93,4 @@ gem 'delayed_job_active_record'
 
 gem 'devise'
 gem 'devise_cas_authenticatable'
+gem 'safety_mailer'
