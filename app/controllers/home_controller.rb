@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :authenticate_user!, except: [:health_check]
+  before_action :authenticate_user!, except: [:health_check, :login]
   
   def welcome
     case current_user.role
@@ -13,5 +13,9 @@ class HomeController < ApplicationController
   def health_check
     User.count
     render inline: '200 OK'
+  end
+  
+  def login
+    flash[:alert] = nil
   end
 end

@@ -38,4 +38,22 @@ module ApplicationHelper
     distance = fellow.nearest_distance(postal_codes)
     distance ? pluralize(distance.round, 'mile') : 'N/A'
   end
+  
+  def sso_encode repeat=1
+    url = "#{request.base_url}/users/service"
+    
+    repeat.times do
+      url = URI.encode(url, /[^\-_!~*'()a-zA-Z\d;?@&=+$,\[\]]/)
+    end
+    
+    url
+  end
+  
+  def braven_login
+    "https://stagingsso.bebraven.org/login?service=#{sso_encode()}"
+  end
+  
+  def nlu_login
+    "https://sts.nl.edu/adfs/ls/?wa=wsignin1.0&wtrealm=https%3a%2f%2fcps66.quicklaunchsso.com%2f&wctx=rm%3d0%26id%3dpassive%26ru%3d%252fcas%252flogin%253fservice%253d#{sso_encode(3)}&wct=2018-08-30T22%3a01%3a32Z"
+  end
 end
