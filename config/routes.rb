@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get 'home/welcome'
   get 'health_check', to: 'home#health_check'
+  get 'login', to: 'home#login'
   get 'token/:id', to: 'token#show', as: 'token'
 
   get 'candidates/:fellow_opportunity_id/status', to: 'candidates#status', as: 'candidate_status'

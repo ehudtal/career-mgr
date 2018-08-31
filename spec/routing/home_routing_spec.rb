@@ -6,6 +6,10 @@ RSpec.describe HomeController, type: :routing do
       expect(:get => "/home/welcome").to route_to("home#welcome")
     end
     
+    it "routes to #login via GET" do
+      expect(:get => '/login').to route_to('home#login')
+    end
+    
     it "routes to #health_check via GET" do
       expect(:get => '/health_check').to route_to('home#health_check')
     end

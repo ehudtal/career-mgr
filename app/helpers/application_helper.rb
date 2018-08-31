@@ -38,4 +38,16 @@ module ApplicationHelper
     distance = fellow.nearest_distance(postal_codes)
     distance ? pluralize(distance.round, 'mile') : 'N/A'
   end
+  
+  def sso_encode
+    URI.encode("#{request.base_url}/users/service", /[^\-_!~*'()a-zA-Z\d;?@&=+$,\[\]]/)
+  end
+  
+  def braven_login
+    "#{Rails.application.secrets.sso_url}login?service=#{sso_encode}"
+  end
+  
+  def nlu_login
+    "#{Rails.application.secrets.nlu_sso_url}login?service=#{sso_encode}"
+  end
 end

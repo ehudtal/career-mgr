@@ -34,6 +34,13 @@ RSpec.describe HomeController, type: :controller do
     end
   end
   
+  describe 'GET login' do
+    it "succeeds" do
+      get :login
+      expect(response).to be_successful
+    end
+  end
+  
   describe 'GET health_check' do
     before { allow(User).to receive(:count) }
     
