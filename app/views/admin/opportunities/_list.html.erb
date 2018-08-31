@@ -1,5 +1,5 @@
 <%= form_tag admin_opportunities_path, method: :get, id: 'opportunity-filters' do %>
-  <%= select_tag(:region_id, options_from_collection_for_select(Region.order(position: :asc), :id, :name), include_blank: 'filter by region')%>
+  <%= select_tag(:region_id, options_from_collection_for_select(Region.order(position: :asc), :id, :name, params[:region_id]), include_blank: 'filter by region')%>
   
   <%= submit_tag 'filter' %>
 <% end %>
