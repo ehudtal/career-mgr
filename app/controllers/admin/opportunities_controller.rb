@@ -85,6 +85,10 @@ class Admin::OpportunitiesController < ApplicationController
   def set_employer
     @employer = Employer.find(params[:employer_id]) if params[:employer_id]
     @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
+    
+    unless params[:region_id].blank?
+      @opportunities = @opportunities.where(region_id: params[:region_id])
+    end
   end
   
   def unpaginated_opportunities

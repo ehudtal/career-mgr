@@ -1,12 +1,12 @@
-<% if opportunities.empty? %>
-  <p class="empty-list">There are no opportunities for this employer yet.</p>
-<% else %>
-  <%= form_tag admin_opportunities_path, method: :get, id: 'opportunity-filters' do %>
-    <%= select_tag(:region_id, options_from_collection_for_select(Region.order(position: :asc), :id, :name), include_blank: 'filter by region')%>
-    
-    <%= submit_tag 'filter' %>
-  <% end %>
+<%= form_tag admin_opportunities_path, method: :get, id: 'opportunity-filters' do %>
+  <%= select_tag(:region_id, options_from_collection_for_select(Region.order(position: :asc), :id, :name), include_blank: 'filter by region')%>
+  
+  <%= submit_tag 'filter' %>
+<% end %>
 
+<% if opportunities.empty? %>
+  <p class="empty-list">There are no opportunties to show here.</p>
+<% else %>
   <%= form_tag export_admin_opportunities_path(format: 'csv'), method: :post do %>
     <table>
       <thead>
