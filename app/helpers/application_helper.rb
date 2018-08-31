@@ -50,7 +50,7 @@ module ApplicationHelper
   end
   
   def braven_login
-    "https://stagingsso.bebraven.org/login?service=#{sso_encode()}"
+    "#{Rails.application.secrets.sso_url}login?service=#{sso_encode()}"
   end
   
   def nlu_login
