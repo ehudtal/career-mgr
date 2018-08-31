@@ -473,3 +473,7 @@ label.checkbox {
   max-height: 100%;
   margin: 0 auto;
 }
+
+form#opportunity-filters {
+  margin-top: 2em;
+}
