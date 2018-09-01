@@ -6,10 +6,18 @@ module FeatureHelper
     begin
       find('a[href="/users/sign_out_sso"]')
     rescue Capybara::ElementNotFound
-      fill_in 'username', with: 'admin@beyondz.org'
-      fill_in 'password', with: 'test1234'
+      find("img[alt='Braven']").click
+
+      begin
+        find('a[href="/users/sign_out_sso"]')
+      rescue
+        expect(page).to have_content('PLATFORM LOGIN')
+      
+        fill_in 'username', with: 'admin@beyondz.org'
+        fill_in 'password', with: 'test1234'
   
-      click_on 'Log in'
+        click_on 'Log in'
+      end
     end
   end
 
