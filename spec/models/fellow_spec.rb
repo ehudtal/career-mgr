@@ -142,6 +142,22 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  ########
+  # Scopes
+  ########
+
+  describe 'receive_opportunities' do
+    let(:subscribed) { create :fellow, receive_opportunities: true }
+    let(:unsubscribed) { create :fellow, receive_opportunities: false }
+    
+    before { subscribed; unsubscribed }
+    
+    subject { Fellow.receive_opportunities }
+    
+    it { should include(subscribed) }
+    it { should_not include(unsubscribed) }
+  end
+  
   ###############
   # Class methods
   ###############

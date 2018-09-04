@@ -34,7 +34,7 @@ class Opportunity < ApplicationRecord
     search_params ||= {}
     return @candidates if defined?(@candidates)
     
-    candidate_ids = Fellow.pluck(:id)
+    candidate_ids = Fellow.receive_opportunities.pluck(:id)
     
     unless search_params[:industries_interests] == ''
       candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])

@@ -34,6 +34,8 @@ class Fellow < ApplicationRecord
   after_create :generate_career_steps
   after_save :attempt_fellow_match, if: :missing_user?
   
+  scope :receive_opportunities, -> { where(receive_opportunities: true) }
+  
   class << self
     def import contents
       CSV.new(contents, headers: true, skip_lines: /(Anticipated Graduation|STUDENT INFORMATION)/).each do |data|
