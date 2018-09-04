@@ -65,4 +65,18 @@ RSpec.describe Fellow::ProfilesController, type: :controller do
       end
     end
   end
+
+  describe "GET #unsubscribe" do
+    it "returns a success response" do
+      get :unsubscribe, params: {}, session: valid_session
+      expect(response).to be_successful
+    end
+
+    it "returns a success response" do
+      get :unsubscribe, params: {}, session: valid_session
+      fellow.reload
+      
+      expect(fellow.receive_opportunities).to eq(false)
+    end
+  end
 end

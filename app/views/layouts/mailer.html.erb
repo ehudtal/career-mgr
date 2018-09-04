@@ -43,10 +43,23 @@
       ul.response-links li {
         padding: 10px 0;
       }
+      
+      .unsubscribe {
+        margin-top: 40px;
+        text-align: center;
+        color: aaa;
+        font-size: smaller;
+      }
     </style>
   </head>
 
   <body>
     <%= yield %>
+    
+    <div class="unsubscribe">
+      <hr>
+      <%= link_to_unsubscribe(@fellow) %>
+      from notifications about future opportunities.
+    </p>
   </body>
 </html>

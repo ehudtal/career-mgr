@@ -17,6 +17,10 @@ class Fellow::ProfilesController < ApplicationController
     end
   end
   
+  def unsubscribe
+    @fellow.ignore_opportunities!
+  end
+  
   private
   
   def fellow_params

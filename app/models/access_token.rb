@@ -40,7 +40,7 @@ class AccessToken < ApplicationRecord
         {label: 'view', method: 'GET', params: {controller: 'admin/fellows', action: 'show', id: fellow.id.to_s}},
         {label: 'Edit Your Profile', method: 'GET', params: {controller: 'fellows', action: 'edit', id: fellow.id.to_s}},
         {label: 'Update Your Profile', method: 'PUT', params: {controller: 'fellows', action: 'update', id: fellow.id.to_s}},
-        {label: 'Unsubscribe', method: 'GET', params: {controller: 'fellow/profile', action: 'unsubscribe'}}
+        {label: 'Unsubscribe', method: 'GET', params: {controller: 'fellow/profiles', action: 'unsubscribe'}}
       ]
     end
     
