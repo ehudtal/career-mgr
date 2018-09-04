@@ -300,7 +300,7 @@ RSpec.describe Opportunity, type: :model do
     it { should be_an(Array) }
     it { expect(subject[0]).to eq(opportunity.region.name) }
     it { expect(subject[1]).to eq(opportunity.employer.name) }
-    it { expect(subject[2]).to eq('=HYPERLINK("http://example.com", "CSV Opp")') }
+    it { expect(subject[2]).to eq(opportunity.name) }
     it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
     it { expect(subject[4]).to eq('Omaha, NE') }
     it { expect(subject[5]).to eq(opportunity.job_posting_url) }
