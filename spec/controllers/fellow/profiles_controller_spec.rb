@@ -39,6 +39,13 @@ RSpec.describe Fellow::ProfilesController, type: :controller do
         
         expect(fellow.last_name).to eq(new_last_name)
       end
+      
+      it "updates the receive_opportunities flag" do
+        put :update, params: {fellow: {receive_opportunities: false}}, session: valid_session
+        fellow.reload
+        
+        expect(fellow.receive_opportunities).to eq(false)
+      end
 
       it "redirects to the industries list" do
         put :update, params: {fellow: {last_name: new_last_name}}, session: valid_session
