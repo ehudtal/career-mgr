@@ -31,11 +31,7 @@ RSpec.describe FellowsController, type: :controller do
       before { get :edit, params: {id: fellow.id} }
       
       it "redirects" do
-        expect(response).to redirect_to(root_path)
-      end
-      
-      it "sets flash notice" do
-        expect(flash[:notice]).to include('unavailable')
+        expect(response).to redirect_to(login_path)
       end
     end
     
@@ -50,11 +46,7 @@ RSpec.describe FellowsController, type: :controller do
       before { put :update, params: {id: fellow.id, fellow: {}} }
       
       it "redirects" do
-        expect(response).to redirect_to(root_path)
-      end
-      
-      it "sets flash notice" do
-        expect(flash[:notice]).to include('unavailable')
+        expect(response).to redirect_to(login_path)
       end
     end
 
