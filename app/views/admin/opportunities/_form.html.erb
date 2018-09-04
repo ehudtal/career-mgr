@@ -42,6 +42,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :how_to_apply, 'How to Apply' %>
+    <%= form.text_area :how_to_apply %>
+  </div>
+
+  <div class="field">
     <%= form.label :job_posting_url %>
     <%= form.text_field :job_posting_url, required: true %>
   </div>
