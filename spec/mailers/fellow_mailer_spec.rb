@@ -2,11 +2,24 @@ require "rails_helper"
 require 'nokogiri'
 
 RSpec.describe FellowMailer, type: :mailer do
+  def self.skips_unsubscribed
+    describe 'when user is unsubscribed from receiving opportunities' do
+      let(:receive_opportunities) { false }
+
+      it "does not send the mailer" do
+        expect {
+          mail.deliver
+        }.to_not change(ActionMailer::Base.deliveries, :count) 
+      end
+    end
+  end
+
   describe 'profile' do
     let(:access_token) { AccessToken.for(fellow) }
 
-    let(:fellow) { create :fellow, contact: create(:contact, email: email) }
+    let(:fellow) { create :fellow, receive_opportunities: receive_opportunities, contact: create(:contact, email: email) }
     let(:email) { 'test@example.com' }
+    let(:receive_opportunities) { true }
 
     let(:mail) { FellowMailer.with(access_token: access_token).profile }
     
@@ -20,5 +33,7 @@ RSpec.describe FellowMailer, type: :mailer do
       body = mail.body.encoded
       expect(body).to include("http://localhost:3011/fellows/#{fellow.id}/edit?token=#{access_token.code}")
     end
+    
+    skips_unsubscribed
   end
 end

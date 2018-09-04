@@ -3,7 +3,7 @@ class CandidateMailer < ApplicationMailer
 
   def respond_to_invitation
     set_objects
-    mail(to: @fellow.contact.email, subject: "You've been invited to apply for #{@opp.name}")
+    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: "You've been invited to apply for #{@opp.name}")
   end
   
   def notify
@@ -12,7 +12,7 @@ class CandidateMailer < ApplicationMailer
     @opportunity_stage = OpportunityStage.find_by(name: params[:stage_name])
     @content = @opportunity_stage.content
 
-    mail(to: @fellow.contact.email, subject: "#{@opp.name}: #{@content['title']}")
+    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: "#{@opp.name}: #{@content['title']}")
   end
   
   private
