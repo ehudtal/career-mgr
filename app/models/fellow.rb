@@ -149,6 +149,14 @@ class Fellow < ApplicationRecord
     career_steps.where(position: positions).update_all(completed: true)
   end
   
+  def receive_opportunities!
+    update receive_opportunities: true
+  end
+  
+  def ignore_opportunities!
+    update receive_opportunities: false
+  end
+  
   private
   
   def generate_key
