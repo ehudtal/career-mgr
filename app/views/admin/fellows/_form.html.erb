@@ -71,6 +71,11 @@
     <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
   </div>
   
+  <div class="field">
+    <%= form.check_box :receive_opportunities %>
+    <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
+  </div>
+  
   <hr>
 
   <%= render 'admin/contacts/nested_form', form: form %>
