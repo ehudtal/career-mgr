@@ -112,7 +112,7 @@ $(document).on "turbolinks:load",  ->
 
   add_metro_tag = (zip) ->
       $.get "/admin/metros/search?zip=#{zip}", (data) ->
-        $("#opportunity_metro_tags").addTag(data['name'])
+        $(".metro-tags").addTag(data['name'])
     
   reset_datepicker = () ->
     $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
