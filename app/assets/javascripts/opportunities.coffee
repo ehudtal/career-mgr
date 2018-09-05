@@ -110,6 +110,10 @@ $(document).on "turbolinks:load",  ->
       <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_url\">Url</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][url]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_url\" /></div>
     </li>"
 
+  add_metro_tag = (zip) ->
+      $.get "/admin/metros/search?zip=#{zip}", (data) ->
+        $("#opportunity_metro_tags").addTag(data['name'])
+    
   reset_datepicker = () ->
     $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
     
@@ -122,8 +126,11 @@ $(document).on "turbolinks:load",  ->
     
   reset_zip_match = () ->
     $('input.postal_code').change (event) ->
-      $.get "/admin/metros/search?zip=#{event.target.value}", (data) ->
-        $("#opportunity_metro_tags").addTag(data['name'])
+      add_metro_tag(this.value)
+      
+    $('input.location[type="checkbox"]').change (event) ->
+      if (this.checked)
+        add_metro_tag($(this).data('zip'))
 
   $('a.new_location').click (event) ->
     event.preventDefault()
