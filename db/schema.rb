@@ -376,7 +376,10 @@ ActiveRecord::Schema.define(version: 2018_09_04_210053) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "msa_code"
+    t.string "city"
+    t.string "state"
     t.index ["code"], name: "index_postal_codes_on_code"
+    t.index ["state"], name: "index_postal_codes_on_state"
   end
 
   create_table "regions", force: :cascade do |t|

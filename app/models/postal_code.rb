@@ -77,6 +77,6 @@ class PostalCode < ApplicationRecord
   
   def metro
     return @metro if defined?(@metro)
-    @metro = Metro.find_by code: msa_code
+    @metro = Metro.find_by(code: msa_code) || Metro.find_by(code: state)
   end
 end
