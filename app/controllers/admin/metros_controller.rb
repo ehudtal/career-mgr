@@ -1,6 +1,6 @@
 class Admin::MetrosController < ApplicationController
-  before_action :authenticate_user!, except: [:list]
-  before_action :ensure_admin!, except: [:list]
+  before_action :authenticate_user!, except: [:list, :search]
+  before_action :ensure_admin!, except: [:list, :search]
 
   # GET /metros.json
   def index
