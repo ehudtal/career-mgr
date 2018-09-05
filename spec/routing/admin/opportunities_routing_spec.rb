@@ -22,6 +22,10 @@ RSpec.describe Admin::OpportunitiesController, type: :routing do
       expect(:put => "/admin/opportunities/1").to route_to("admin/opportunities#update", :id => "1")
     end
 
+    it "routes to #unpublish via PUT" do
+      expect(:put => "/admin/opportunities/1/unpublish").to route_to("admin/opportunities#unpublish", :id => "1")
+    end
+
     it "routes to #update via PATCH" do
       expect(:patch => "/admin/opportunities/1").to route_to("admin/opportunities#update", :id => "1")
     end

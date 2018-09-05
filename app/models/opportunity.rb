@@ -207,6 +207,10 @@ class Opportunity < ApplicationRecord
     end
   end
   
+  def unpublish!
+    update published: false
+  end
+  
   private
   
   def archived_fellow_opp candidate_id
