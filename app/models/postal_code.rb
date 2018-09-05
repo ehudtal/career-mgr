@@ -74,4 +74,9 @@ class PostalCode < ApplicationRecord
   def lon= new_longitude
     self.longitude = new_longitude
   end
+  
+  def metro
+    return @metro if defined?(@metro)
+    @metro = Metro.find_by code: msa_code
+  end
 end

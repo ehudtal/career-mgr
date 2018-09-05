@@ -9,5 +9,9 @@ RSpec.describe Admin::MetrosController, type: :routing do
     it "routes to #list" do
       expect(:get => "/admin/metros/list").to route_to("admin/metros#list")
     end
+
+    it "routes to #search" do
+      expect(:get => "/admin/metros/search").to route_to("admin/metros#search")
+    end
   end
 end

@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     resources :metros, only: [:index] do
       collection do
         get :list
+        get :search
       end
     end
     resources :cohort_fellows

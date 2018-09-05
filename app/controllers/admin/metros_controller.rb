@@ -11,4 +11,16 @@ class Admin::MetrosController < ApplicationController
     @metros = Metro.order('name asc').all
     render layout: false
   end
+  
+  def search
+    respond_to do |format|
+      format.json do
+        if postal_code = PostalCode.find_by(code: params[:zip])
+          render json: postal_code.metro.as_json 
+        else
+          render json: nil
+        end
+      end
+    end
+  end
 end
