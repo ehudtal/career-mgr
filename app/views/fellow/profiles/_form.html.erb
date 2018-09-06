@@ -13,6 +13,8 @@
     </div>
   <% end %>
 
+  <p><em>The following information helps Braven connect you with opportunities, and may be shared with potential employers. Keep it up to date to ensure you get the most relevant offers.</em></p>
+
   <h2 id="info-personal">Personal Info</h2>
 
   <div class="field">
@@ -56,11 +58,12 @@
 
   <h2 id="info-career">Career Search Preferences</h2>
 
-  <p><em>The following settings help us match you to new opportunities. Keep them up to date!</em></p>
+  <p><em>The following info helps us match you to new opportunities. Keep it up to date!</em></p>
 
   <div class="field">
-    <%= form.label :employment_status_id %>
+    <%= form.label :employment_status_id, 'Current job strength' %>
     <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
+    <p><strong>Tip:</strong> Use the <a href="https://drive.google.com/a/bebraven.org/file/d/1RAfYwl8kRP9DkhjuVLKeCmYQzIhBzKVn/view?usp=sharing">Braven Career Accelerating Scorecard</a> to asssess your current job's strength.</p>
   </div>
 
   <h3 id="info-interests">Industries and Interests</h3>
