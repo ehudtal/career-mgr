@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       collection do
         post :export
       end
+      
+      member do
+        put :unpublish
+      end
     end
 
     resources :sites, shallow: true do

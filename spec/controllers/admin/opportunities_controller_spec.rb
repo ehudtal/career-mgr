@@ -187,6 +187,26 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
     end
   end
 
+  describe "PUT #unpublish" do
+    let(:referer) { '/admin/opportunities' }
+    
+    before { request.env['HTTP_REFERER'] = referer }
+
+    it "unpublishes the opportunity" do
+      opportunity = create :opportunity, published: true
+      put :unpublish, params: {id: opportunity.to_param}, session: valid_session
+      
+      expect(opportunity.reload.published).to eq(false)
+    end
+    
+    it "redirects to the referring page" do
+      opportunity = create :opportunity, published: true
+      put :unpublish, params: {id: opportunity.to_param}, session: valid_session
+      
+      expect(response).to redirect_to(referer)
+    end
+  end
+
   describe "DELETE #destroy" do
     it "destroys the requested opportunity" do
       opportunity = create :opportunity

@@ -2,7 +2,7 @@ class Admin::OpportunitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_admin!
   before_action :set_employer
-  before_action :set_opportunity, only: [:show, :edit, :update, :destroy]
+  before_action :set_opportunity, only: [:show, :edit, :update, :unpublish, :destroy]
 
   # GET /opportunities
   # GET /opportunities.json
@@ -66,6 +66,11 @@ class Admin::OpportunitiesController < ApplicationController
         format.json { render json: @opportunity.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def unpublish
+    @opportunity.unpublish!
+    redirect_to request.referer
   end
 
   # DELETE /opportunities/1

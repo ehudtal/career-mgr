@@ -14,20 +14,21 @@
           <th>Employer</th>
           <th>Title</th>
           <th>Description</th>
-          <th colspan="2">Actions</th>
+          <th colspan="3">Actions</th>
           <th>Export</th>
         </tr>
       </thead>
 
       <tbody>
-        <% opportunities.each do |opportunity| %>
+        <% opportunities.sort_by{|o| [o.employer.name, o.name]}.each do |opportunity| %>
           <tr>
             <td><%= opportunity.employer.name %>
             <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
             <td><%= truncate(opportunity.description, length: 100, separator: ' ') %></td>
             <td><%= link_to 'Edit', edit_admin_opportunity_path(opportunity), class: 'edit' %></td>
             <td><%= link_to 'Delete', admin_opportunity_path(opportunity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
-            <td><%= check_box_tag 'export_ids[]', opportunity.id, !opportunity.published %></td>
+            <td><%= link_to('Unpublish', unpublish_admin_opportunity_path(opportunity), method: :put, class: 'edit') if opportunity.published? %></td>
+            <td class="numeric"><%= check_box_tag 'export_ids[]', opportunity.id, !opportunity.published %></td>
           </tr>
         <% end %>
       </tbody>

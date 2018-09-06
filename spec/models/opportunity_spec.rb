@@ -374,4 +374,18 @@ RSpec.describe Opportunity, type: :model do
       it { should eq(6) }
     end
   end
+  
+  describe '#unpublish!' do
+    subject { opportunity.unpublish!; opportunity.reload.published }
+    
+    describe 'when opp is already published' do
+      let(:opportunity) { create :opportunity, published: true }
+      it { should eq(false) }
+    end
+
+    describe 'when opp is unpublished' do
+      let(:opportunity) { create :opportunity, published: false }
+      it { should eq(false) }
+    end
+  end
 end
