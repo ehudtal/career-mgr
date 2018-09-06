@@ -13,7 +13,7 @@
     </div>
   <% end %>
 
-  <p><em>The following information helps Braven connect you with opportunities, and may be shared with potential employers. Keep it up to date to ensure you get the most relevant offers.</em></p>
+  <p>The following information helps Braven connect you with opportunities, and may be shared with potential employers. <em>Keep it up to date to ensure you get the most relevant offers.</em></p>
 
   <h2 id="info-personal">Personal Info</h2>
 
@@ -43,12 +43,12 @@
   </div>
 
   <div class="field">
-    <%= form.label :affiliations %>
+    <%= form.label :affiliations, 'Affiliations (e.g. professional associations, greek orgs, clubs)' %>
     <%= form.text_area :affiliations %>
   </div>
 
   <div class="field">
-    <%= form.label :linkedin_url %>
+    <%= form.label :linkedin_url, 'LinkedIn profile URL ("https://...")' %>
     <%= form.text_field :linkedin_url %>
   </div>
   
@@ -58,7 +58,7 @@
 
   <h2 id="info-career">Career Search Preferences</h2>
 
-  <p><em>The following info helps us match you to new opportunities. Keep it up to date!</em></p>
+  <p>Braven uses the following to find opportunities for you that match what you want to do and where you want to do it.</p>
 
   <div class="field">
     <%= form.label :employment_status_id, 'Current job strength' %>
@@ -76,6 +76,8 @@
  
   <h3 id="info-metro">Where You'd Like to Work</h3>
   
+  <p><strong>Note:</strong> you can choose metro areas or entire states. Leaving this blank is the same as saying you're fine working from anywhere.</p>
+
   <div id="metro-tags" class="jquery-tags">
     <%= form.text_area :metro_tags %>
   </div>
