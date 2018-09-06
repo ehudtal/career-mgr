@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_04_210053) do
+ActiveRecord::Schema.define(version: 2018_09_06_125011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,27 @@ ActiveRecord::Schema.define(version: 2018_09_04_210053) do
     t.datetime "expires_at"
     t.index ["code"], name: "index_access_tokens_on_code", unique: true
     t.index ["owner_id", "owner_type"], name: "index_access_tokens_on_owner_id_and_owner_type"
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "candidate_logs", force: :cascade do |t|
@@ -376,7 +397,10 @@ ActiveRecord::Schema.define(version: 2018_09_04_210053) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "msa_code"
+    t.string "city"
+    t.string "state"
     t.index ["code"], name: "index_postal_codes_on_code"
+    t.index ["state"], name: "index_postal_codes_on_state"
   end
 
   create_table "regions", force: :cascade do |t|

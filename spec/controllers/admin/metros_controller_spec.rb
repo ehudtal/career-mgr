@@ -76,4 +76,55 @@ RSpec.describe Admin::MetrosController, type: :controller do
       expect(response).to be_successful
     end
   end
+  
+  describe 'GET #search' do
+    let(:postal_code) { create :postal_code, msa_code: '1001' }
+    let(:metro) { create :metro, code: postal_code.msa_code }
+    
+    describe 'when metro is found' do
+      before { postal_code; metro }
+    
+      it "returns a success response" do
+        get :search, params: {zip: postal_code.code, format: 'json'}, session: valid_session
+        expect(response).to be_successful
+      end
+      
+      it "returns the metro" do
+        get :search, params: {zip: postal_code.code, format: 'json'}, session: valid_session
+        
+        json = JSON.parse(response.body)
+        expect(json['name']).to eq(metro.name)
+      end
+    end
+
+    describe 'when metro is NOT found' do
+      before { postal_code }
+      
+      it "returns a success response" do
+        get :search, params: {zip: postal_code.code, format: 'json'}, session: valid_session
+        expect(response).to be_successful
+      end
+      
+      it "returns the metro" do
+        get :search, params: {zip: postal_code.code, format: 'json'}, session: valid_session
+        
+        json = JSON.parse(response.body)
+        expect(json).to be_nil
+      end
+    end
+
+    describe 'when postal_code is NOT found' do
+      it "returns a success response" do
+        get :search, params: {zip: '00000', format: 'json'}, session: valid_session
+        expect(response).to be_successful
+      end
+      
+      it "returns the metro" do
+        get :search, params: {zip: '00000', format: 'json'}, session: valid_session
+        
+        json = JSON.parse(response.body)
+        expect(json).to be_nil
+      end
+    end
+  end
 end

@@ -104,12 +104,16 @@ $(document).on "turbolinks:load",  ->
         <option value=\"VT\">VT</option><option value=\"WA\">WA</option><option value=\"WI\">WI</option><option value=\"WV\">WV</option><option value=\"WY\">WY</option></select>
       </div>
 
-      <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_postal_code\">Postal code</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][postal_code]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_postal_code\" /></div>
+      <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_postal_code\">Postal code</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][postal_code]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_postal_code\" class=\"postal_code\"/></div>
       <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_phone\">Phone</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][phone]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_phone\" /></div>
       <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_email\">Email</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][email]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_email\" /></div>
       <div class=\"field\"><label for=\"opportunity_locations_attributes_#{index}_contact_attributes_url\">Url</label><input type=\"text\" name=\"opportunity[locations_attributes][#{index}][contact_attributes][url]\" id=\"opportunity_locations_attributes_#{index}_contact_attributes_url\" /></div>
     </li>"
 
+  add_metro_tag = (zip) ->
+      $.get "/admin/metros/search?zip=#{zip}", (data) ->
+        $(".metro-tags").addTag(data['name'])
+    
   reset_datepicker = () ->
     $('.datetime').datepicker({dateFormat: 'yy-mm-dd'})
     
@@ -119,6 +123,14 @@ $(document).on "turbolinks:load",  ->
     
       $(this).closest('.removeable_fields').find('.remove_hidden').attr('value', '1')
       $(this).closest('.removeable_fields').remove()
+    
+  reset_zip_match = () ->
+    $('input.postal_code').change (event) ->
+      add_metro_tag(this.value)
+      
+    $('input.location[type="checkbox"]').change (event) ->
+      if (this.checked)
+        add_metro_tag($(this).data('zip'))
 
   $('a.new_location').click (event) ->
     event.preventDefault()
@@ -127,6 +139,7 @@ $(document).on "turbolinks:load",  ->
     
     reset_datepicker()
     reset_removeable()
+    reset_zip_match()
 
   $('.toggle-next').click (e) ->
     e.preventDefault();
@@ -135,3 +148,4 @@ $(document).on "turbolinks:load",  ->
 
   reset_datepicker()
   reset_removeable()
+  reset_zip_match()

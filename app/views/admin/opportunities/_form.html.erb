@@ -96,7 +96,7 @@
 
           <div class="field">
             <%= contact_form.label :postal_code %>
-            <%= contact_form.text_field :postal_code %>
+            <%= contact_form.text_field :postal_code, class: 'postal_code' %>
           </div>
 
           <div class="field">
@@ -147,7 +147,7 @@
     <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
   
     <div id="metro-tags" class="jquery-tags">
-      <%= form.text_area :metro_tags %>
+      <%= form.text_area :metro_tags, class: 'metro-tags' %>
     </div>
   </div>
 
