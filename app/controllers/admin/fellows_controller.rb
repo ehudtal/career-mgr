@@ -6,7 +6,7 @@ class Admin::FellowsController < ApplicationController
   # GET /fellows
   # GET /fellows.json
   def index
-    @fellows = Fellow.paginate(page: params[:page])
+    @fellows = Fellow.order(last_name: :asc, first_name: :asc).paginate(page: params[:page])
   end
 
   # GET /fellows/1
