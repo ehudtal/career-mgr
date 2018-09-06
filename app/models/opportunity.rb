@@ -24,6 +24,8 @@ class Opportunity < ApplicationRecord
   validates :job_posting_url, url: {ensure_protocol: true}
   validate :validate_locateable
   
+  scope :prioritized, -> { order(priority: :asc) }
+  
   before_save :set_priority
   
   class << self

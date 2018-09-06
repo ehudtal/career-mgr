@@ -89,7 +89,7 @@ class Admin::OpportunitiesController < ApplicationController
   
   def set_employer
     @employer = Employer.find(params[:employer_id]) if params[:employer_id]
-    @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
+    @opportunities = (@employer ? @employer.opportunities : Opportunity).prioritized.paginate(page: params[:page])
     
     unless params[:region_id].blank?
       @opportunities = @opportunities.where(region_id: params[:region_id])
@@ -97,7 +97,7 @@ class Admin::OpportunitiesController < ApplicationController
   end
   
   def unpaginated_opportunities
-    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).sort_by(&:priority).sort_by{|o| o.region.position}
+    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).prioritized.sort_by{|o| o.region.position}
   end
   
   # Use callbacks to share common setup or constraints between actions.

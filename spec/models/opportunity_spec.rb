@@ -73,10 +73,33 @@ RSpec.describe Opportunity, type: :model do
   it "sets the priority before save" do
     opportunity = build :opportunity
     allow(opportunity).to receive(:calculated_priority).and_return(42)
-    expect(opportunity.priority).to be_nil
+    expect(opportunity.priority).to eq(Opportunity.column_defaults['priority'])
     
     opportunity.save
     expect(opportunity.priority).to eq(42)
+  end
+  
+  ########
+  # Scopes
+  ########
+
+  describe 'prioritized' do
+    let(:partner) { create :employer, employer_partner: true }
+    let(:nonpartner) { create :employer, employer_partner: false }
+    
+    let(:first)  { create :opportunity, published: false, employer: partner,    inbound: true,  recurring: true }
+    let(:second) { create :opportunity, published: false, employer: nonpartner, inbound: false, recurring: false }
+    let(:third)  { create :opportunity, published: true,  employer: partner,    inbound: true,  recurring: true }
+    let(:fourth) { create :opportunity, published: true,  employer: nonpartner, inbound: false, recurring: false }
+    
+    before { second; fourth; first; third }
+    
+    subject { Opportunity.prioritized }
+    
+    it { expect(subject[0]).to eq(first) }
+    it { expect(subject[1]).to eq(second) }
+    it { expect(subject[2]).to eq(third) }
+    it { expect(subject[3]).to eq(fourth) }
   end
   
   ###############
