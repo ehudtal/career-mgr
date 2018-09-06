@@ -16,3 +16,12 @@
 //= require jquery
 //= require jquery-ui
 //= require_tree .
+
+jQuery(function(){
+  jQuery('#main-nav').hide();
+});
+
+function bzToggleNav(obj) {
+  obj.classList.toggle('expanded');
+  jQuery('#main-nav').slideToggle();
+}

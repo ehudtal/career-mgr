@@ -15,7 +15,7 @@
     <header id="masthead">
       <div id="header-logo">&nbsp;</div>
       <h1><%= link_to 'My Career Manager', root_path %></h1>
-        <div id="menu-icon" onclick="myFunction(this)">
+        <div id="menu-icon" onclick="bzToggleNav(this)">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
@@ -31,10 +31,10 @@
             <li><%= link_to "Fellows", admin_fellows_path %> (<%= Fellow.count %>)</li>
           </ul>
           <% end %>
+          <% if current_user %>
+            <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete, class: 'logout button' %>
+          <% end %>
         </nav>
-        <% if current_user %>
-          <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete, class: 'logout button' %>
-        <% end %>
       </header>
     <main>
       <p id="notice"><%= notice %></p>

@@ -59,10 +59,10 @@ h2, h3 {
   text-transform: uppercase;
   font-size: 0.8em;
   letter-spacing: 0.1em;
-  padding: 6px 12px;
-  position: absolute;
-  right: 60px;
-  top: 10px;
+  padding: 6px 10px;
+  margin: 20px 10px;
+  position: relative;
+  top: 5px;
 }
 
 #header-logo {
@@ -86,9 +86,10 @@ h2, h3 {
   width: 200px;
   position: absolute;
   right: 0;
-  top: 80px;
+  top: 40px;
   z-index: 9;
   background: #333;
+  padding: 0 10px 30px;
 }
 
 #main-nav ul {
@@ -100,6 +101,7 @@ h2, h3 {
 
 #main-nav li {
   margin: 10px;
+  display: block;
 }
 
 #menu-icon {
@@ -121,15 +123,15 @@ h2, h3 {
 }
 
 #menu-icon.expanded .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-  transform: rotate(-45deg) translate(-9px, 6px);
+  -webkit-transform: rotate(-45deg) translate(-7px, 7px);
+  transform: rotate(-45deg) translate(-7px, 7px);
 }
 
 #menu-icon.expanded .bar2 {opacity: 0;}
 
 #menu-icon.expanded .bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
-  transform: rotate(45deg) translate(-8px, -8px);
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
 }
 
 a:link, a:visited,
