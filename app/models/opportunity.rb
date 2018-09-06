@@ -187,7 +187,7 @@ class Opportunity < ApplicationRecord
   end
   
   # lowest priority is best/first
-  def priority
+  def calculated_priority
     employer_partner = employer.employer_partner
     
     value = if employer_partner && inbound && recurring

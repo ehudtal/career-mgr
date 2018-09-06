@@ -329,7 +329,7 @@ RSpec.describe Opportunity, type: :model do
     let(:inbound) { false }
     let(:recurring) { false }
     
-    subject { opportunity.priority }
+    subject { opportunity.calculated_priority }
     
     describe 'when previously published' do
       let(:published) { true }
