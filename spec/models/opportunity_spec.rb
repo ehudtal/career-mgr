@@ -323,55 +323,104 @@ RSpec.describe Opportunity, type: :model do
   
   describe '#priority' do
     let(:employer) { create :employer, employer_partner: employer_partner }
-    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring }
+    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring, published: published }
 
     let(:employer_partner) { false }
     let(:inbound) { false }
     let(:recurring) { false }
     
-    
     subject { opportunity.priority }
     
-    describe 'when employer_partner AND inbound AND recurring' do
-      let(:employer_partner) { true }
-      let(:inbound) { true }
-      let(:recurring) { true }
+    describe 'when previously published' do
+      let(:published) { true }
       
-      it { should eq(0) }
-    end
+      describe 'when employer_partner AND inbound AND recurring' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+        let(:recurring) { true }
+      
+        it { should eq(10) }
+      end
     
-    describe 'when employer_partner AND inbound' do
-      let(:employer_partner) { true }
-      let(:inbound) { true }
+      describe 'when employer_partner AND inbound' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
 
-      it { should eq(1) }
-    end
+        it { should eq(11) }
+      end
     
-    describe 'when inbound' do
-      let(:inbound) { true }
-      it { should eq(2) }
-    end
+      describe 'when inbound' do
+        let(:inbound) { true }
+        it { should eq(12) }
+      end
     
-    describe 'when employer_partner AND recurring' do
-      let(:employer_partner) { true }
-      let(:recurring) { true }
+      describe 'when employer_partner AND recurring' do
+        let(:employer_partner) { true }
+        let(:recurring) { true }
       
-      it { should eq(3) }
-    end
+        it { should eq(13) }
+      end
     
-    describe 'when employer_partner' do
-      let(:employer_partner) { true }
+      describe 'when employer_partner' do
+        let(:employer_partner) { true }
       
-      it { should eq(4) }
+        it { should eq(14) }
+      end
+    
+      describe 'when recurring' do
+        let(:recurring) { true }
+        it { should eq(15) }
+      end
+    
+      describe 'when none are true' do
+        it { should eq(16) }
+      end
     end
     
-    describe 'when recurring' do
-      let(:recurring) { true }
-      it { should eq(5) }
-    end
+    describe 'when not previously published' do
+      let(:published) { false }
+      
+      describe 'when employer_partner AND inbound AND recurring' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+        let(:recurring) { true }
+      
+        it { should eq(0) }
+      end
     
-    describe 'when none are true' do
-      it { should eq(6) }
+      describe 'when employer_partner AND inbound' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+
+        it { should eq(1) }
+      end
+    
+      describe 'when inbound' do
+        let(:inbound) { true }
+        it { should eq(2) }
+      end
+    
+      describe 'when employer_partner AND recurring' do
+        let(:employer_partner) { true }
+        let(:recurring) { true }
+      
+        it { should eq(3) }
+      end
+    
+      describe 'when employer_partner' do
+        let(:employer_partner) { true }
+      
+        it { should eq(4) }
+      end
+    
+      describe 'when recurring' do
+        let(:recurring) { true }
+        it { should eq(5) }
+      end
+    
+      describe 'when none are true' do
+        it { should eq(6) }
+      end
     end
   end
   

@@ -190,7 +190,7 @@ class Opportunity < ApplicationRecord
   def priority
     employer_partner = employer.employer_partner
     
-    if employer_partner && inbound && recurring
+    value = if employer_partner && inbound && recurring
       0
     elsif employer_partner && inbound
       1
@@ -205,6 +205,10 @@ class Opportunity < ApplicationRecord
     else
       6
     end
+    
+    value += 10 if published?
+    
+    value
   end
   
   def unpublish!
