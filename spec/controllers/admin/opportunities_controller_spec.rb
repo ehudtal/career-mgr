@@ -168,6 +168,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       
         expect(opportunity.locations).to include(location)
       end
+      
+      it "sets the 'how to apply' text" do
+        opportunity = create :opportunity
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(how_to_apply: 'Just Try It!')}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.how_to_apply).to eq("Just Try It!")
+      end
     end
 
     context "with invalid params" do

@@ -4,6 +4,10 @@
   <%= @candidate.opportunity.description %>
 </p>
 <p>
+  <strong>How to Apply:</strong>
+  <%= @candidate.opportunity.how_to_apply %>
+</p>
+<p>
   <strong>Job Posting URL:</strong>
   <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
 </p>
