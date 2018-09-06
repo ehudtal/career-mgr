@@ -116,6 +116,10 @@ RSpec.describe Opportunity, type: :model do
       fellow.majors << major_child
     end
     
+    def unsubscribed
+      fellow.update receive_opportunities: false
+    end
+    
     describe 'with matching metro' do
       before { matching_metro }
     
@@ -175,6 +179,13 @@ RSpec.describe Opportunity, type: :model do
     
       it "excludes fellow when opp does not share the major" do
         fellow.majors << major_parent
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+      
+      it "excludes fellow when unsubscribed from recieving opportunities" do
+        matching_industry
+        unsubscribed
+        
         expect(opportunity.candidates).to_not include(fellow)
       end
     end

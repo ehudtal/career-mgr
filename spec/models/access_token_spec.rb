@@ -164,7 +164,7 @@ RSpec.describe AccessToken, type: :model do
     
       it "has an array of routes" do
         expect(subject.routes).to be_an(Array)
-        expect(subject.routes.size).to eq(3)
+        expect(subject.routes.size).to eq(4)
       end
     
       it "generates access token with dashboard view only" do
@@ -192,6 +192,15 @@ RSpec.describe AccessToken, type: :model do
           controller: 'fellows',
           action: 'update',
           id: owner.id
+        }
+        
+        expect(subject.match?(request)).to be(true)
+      end
+      
+      it "generates a token with unsubscribe route" do
+        request = route_request 'GET', "http://localhost:3011/fellows/profile/unsubscribe", {
+          controller: 'fellow/profiles',
+          action: 'unsubscribe',
         }
         
         expect(subject.match?(request)).to be(true)

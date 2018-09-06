@@ -42,6 +42,10 @@
       <th>Employment status:</th>
       <td><%= @fellow.employment_status.name %></td>
     </tr>
+    <tr>
+      <th>Receive career opportunities from Braven?</th>
+      <td><%= @fellow.receive_opportunities ? 'yes' : 'no' %></td>
+    </tr>
   </tbody>
 </table>
 
