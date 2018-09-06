@@ -8,12 +8,8 @@
       <td><%= @fellow.key %></td>
     </tr>
     <tr>
-      <th>First name:</th>
-      <td><%= @fellow.first_name %></td>
-    </tr>
-    <tr>
-      <th>Last name:</th>
-      <td><%= @fellow.last_name %></td>
+      <th>Resumé:</th>
+      <td><%= link_to 'available', url_for(@fellow.resume), target: '_blank' %></td>
     </tr>
     <tr class="new-section">
       <th>Graduation year:</th>
