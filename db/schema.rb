@@ -360,7 +360,7 @@ ActiveRecord::Schema.define(version: 2018_09_06_194400) do
     t.integer "region_id"
     t.boolean "published", default: false
     t.text "how_to_apply"
-    t.integer "priority"
+    t.integer "priority", default: 1000
     t.index ["employer_id"], name: "index_opportunities_on_employer_id"
     t.index ["inbound"], name: "index_opportunities_on_inbound"
     t.index ["opportunity_type_id"], name: "index_opportunities_on_opportunity_type_id"

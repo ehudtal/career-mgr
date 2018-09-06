@@ -66,6 +66,19 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  ###########
+  # Callbacks
+  ###########
+
+  it "sets the priority before save" do
+    opportunity = build :opportunity
+    allow(opportunity).to receive(:calculated_priority).and_return(42)
+    expect(opportunity.priority).to be_nil
+    
+    opportunity.save
+    expect(opportunity.priority).to eq(42)
+  end
+  
   ###############
   # Serialization
   ###############
