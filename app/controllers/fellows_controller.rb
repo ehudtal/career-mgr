@@ -1,5 +1,5 @@
 class FellowsController < ApplicationController
-  before_action :authorize_by_token!
+  before_action :authenticate_user!
   before_action :set_fellow
 
   def edit
