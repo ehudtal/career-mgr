@@ -53,6 +53,14 @@ RSpec.describe Fellow, type: :model do
   
   it_behaves_like 'taggable_combined', :fellow, :industry, :interest
   
+  it "has one attached resume" do
+    fellow = build :fellow
+    
+    [:resume, :resume=, :resume_attachment, :resume_attachment=, :resume_blob, :resume_blob=].each do |method|
+      expect(fellow).to respond_to(method)
+    end
+  end
+  
   #############
   # Validations
   #############

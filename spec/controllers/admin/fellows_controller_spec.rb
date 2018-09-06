@@ -34,6 +34,7 @@ RSpec.describe Admin::FellowsController, type: :controller do
   let(:employment_status) { build :employment_status, id: 1001 }
   let(:industry) { create :industry }
   let(:interest) { create :interest }
+  let(:resume) { fixture_file_upload('files/resume.pdf') }
   
   let(:valid_attributes) { attributes_for :fellow, employment_status_id: employment_status.id }
   let(:invalid_attributes) { {first_name: ''} }
@@ -153,28 +154,35 @@ RSpec.describe Admin::FellowsController, type: :controller do
         expect(fellow.first_name).to eq(new_first_name)
         expect(fellow.receive_opportunities).to eq(false)
       end
+      
+      it "attaches the resume" do
+        fellow = Fellow.create! valid_attributes
+        put :update, params: {id: fellow.to_param, fellow: new_attributes.merge(resume: resume)}, session: valid_session
+        
+        expect(fellow.reload.resume.attached?).to eq(true)
+      end
 
       it "redirects to the fellow" do
         fellow = Fellow.create! valid_attributes
         put :update, params: {id: fellow.to_param, fellow: valid_attributes}, session: valid_session
         expect(response).to redirect_to(admin_fellows_path)
       end
-    end
 
-    it "associates specified industries with the fellow" do
-      fellow = Fellow.create! valid_attributes
-      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
-      fellow.reload
+      it "associates specified industries with the fellow" do
+        fellow = Fellow.create! valid_attributes
+        put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(industry_ids: [industry.id.to_s])}, session: valid_session
+        fellow.reload
     
-      expect(fellow.industries).to include(industry)
-    end
+        expect(fellow.industries).to include(industry)
+      end
 
-    it "associates specified interests with the fellow" do
-      fellow = Fellow.create! valid_attributes
-      put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
-      fellow.reload
+      it "associates specified interests with the fellow" do
+        fellow = Fellow.create! valid_attributes
+        put :update, params: {id: fellow.to_param, fellow: valid_attributes.merge(interest_ids: [interest.id.to_s])}, session: valid_session
+        fellow.reload
     
-      expect(fellow.interests).to include(interest)
+        expect(fellow.interests).to include(interest)
+      end
     end
 
     context "with invalid params" do
