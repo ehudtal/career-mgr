@@ -20,7 +20,7 @@
       </thead>
 
       <tbody>
-        <% opportunities.sort_by{|o| [o.employer.name, o.name]}.each do |opportunity| %>
+        <% opportunities.each do |opportunity| %>
           <tr>
             <td><%= opportunity.employer.name %>
             <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>

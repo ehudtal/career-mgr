@@ -24,6 +24,10 @@ class Opportunity < ApplicationRecord
   validates :job_posting_url, url: {ensure_protocol: true}
   validate :validate_locateable
   
+  scope :prioritized, -> { order(priority: :asc) }
+  
+  before_save :set_priority
+  
   class << self
     def csv_headers
       ['Region', 'Employer', 'Position', 'Type', 'Location', 'Link', 'Employer Partner', 'Inbound', 'Recurring', 'Interests']
@@ -187,10 +191,10 @@ class Opportunity < ApplicationRecord
   end
   
   # lowest priority is best/first
-  def priority
+  def calculated_priority
     employer_partner = employer.employer_partner
     
-    if employer_partner && inbound && recurring
+    value = if employer_partner && inbound && recurring
       0
     elsif employer_partner && inbound
       1
@@ -205,6 +209,10 @@ class Opportunity < ApplicationRecord
     else
       6
     end
+    
+    value += 10 if published?
+    
+    value
   end
   
   def unpublish!
@@ -240,5 +248,9 @@ class Opportunity < ApplicationRecord
   
   def has_postal_code?
     !postal_codes.empty?
+  end
+  
+  def set_priority
+    self.priority = calculated_priority
   end
 end

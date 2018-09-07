@@ -12,6 +12,7 @@ spec.log
 /tmp/
 /config/deploy/production.rb
 /config/deploy/staging.rb
+/storage
 
 # Used by dotenv library to load environment variables.
 # .env
