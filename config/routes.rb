@@ -16,7 +16,10 @@ Rails.application.routes.draw do
     get 'home/welcome'
     post 'home/career'
     
-    resource :profile, only: [:show, :edit, :update]
+    resource :profile, only: [:show, :edit, :update] do
+      get :unsubscribe
+    end
+    
     resources :opportunities, only: [:show, :update]
   end
 
@@ -34,6 +37,10 @@ Rails.application.routes.draw do
     resources :opportunities, only: [:index] do
       collection do
         post :export
+      end
+      
+      member do
+        put :unpublish
       end
     end
 
@@ -69,6 +76,7 @@ Rails.application.routes.draw do
     resources :metros, only: [:index] do
       collection do
         get :list
+        get :search
       end
     end
     resources :cohort_fellows

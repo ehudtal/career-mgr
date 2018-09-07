@@ -541,3 +541,7 @@ label.checkbox {
 form#opportunity-filters {
   margin-top: 2em;
 }
+
+td.numeric {
+  text-align: right;
+}

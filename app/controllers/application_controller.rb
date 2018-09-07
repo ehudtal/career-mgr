@@ -64,13 +64,4 @@ class ApplicationController < ActionController::Base
       false
     end
   end
-  
-  def authorize_by_token!
-    fail_token_authorize! unless authorized_by_token?
-  end
-  
-  def fail_token_authorize!
-    flash[:notice] = 'The link you requested is unavailable.'
-    redirect_to root_path
-  end
 end

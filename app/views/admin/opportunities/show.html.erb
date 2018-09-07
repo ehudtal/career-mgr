@@ -15,6 +15,11 @@
   <strong>Description:</strong>
   <%= @opportunity.description %>
 </p>
+<p>
+  <strong>How to Apply:</strong>
+  <%= @opportunity.how_to_apply %>
+</p>
+
 
 <%= render 'admin/industries/list', object: @opportunity %>
 <%= render 'admin/interests/list', object: @opportunity %>

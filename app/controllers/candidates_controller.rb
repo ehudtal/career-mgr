@@ -1,5 +1,5 @@
 class CandidatesController < ApplicationController
-  before_action :authorize_by_token!
+  before_action :authenticate_user!
   
   def status
     if @fellow_opportunity = FellowOpportunity.find_by(id: params[:fellow_opportunity_id])

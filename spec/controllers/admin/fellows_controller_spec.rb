@@ -143,7 +143,7 @@ RSpec.describe Admin::FellowsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_first_name) { valid_attributes[:first_name] + ' 2' }
-      let(:new_attributes) { {first_name: new_first_name} }
+      let(:new_attributes) { {first_name: new_first_name, receive_opportunities: false} }
 
       it "updates the requested fellow" do
         fellow = Fellow.create! valid_attributes
@@ -151,6 +151,7 @@ RSpec.describe Admin::FellowsController, type: :controller do
         fellow.reload
         
         expect(fellow.first_name).to eq(new_first_name)
+        expect(fellow.receive_opportunities).to eq(false)
       end
 
       it "redirects to the fellow" do

@@ -18,5 +18,9 @@ RSpec.describe Fellow::ProfilesController, type: :routing do
     it "routes to #update via PATCH" do
       expect(:patch => "/fellow/profile").to route_to("fellow/profiles#update")
     end
+
+    it "routes to #unsubscribe" do
+      expect(:get => "/fellow/profile/unsubscribe").to route_to("fellow/profiles#unsubscribe")
+    end
   end
 end

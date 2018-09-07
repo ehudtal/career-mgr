@@ -71,6 +71,11 @@
     <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
   </div>
   
+  <div class="field">
+    <%= form.check_box :receive_opportunities %>
+    <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
+  </div>
+  
   <hr>
 
   <%= render 'admin/contacts/nested_form', form: form %>
@@ -90,7 +95,7 @@
     <h3>Where Fellow Would Like to Work</h3>
   
     <div id="metro-tags" class="jquery-tags">
-      <%= form.text_area :metro_tags %>
+      <%= form.text_area :metro_tags, class: 'metro-tags' %>
     </div>
 
     <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>

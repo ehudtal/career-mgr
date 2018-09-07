@@ -168,6 +168,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       
         expect(opportunity.locations).to include(location)
       end
+      
+      it "sets the 'how to apply' text" do
+        opportunity = create :opportunity
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(how_to_apply: 'Just Try It!')}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.how_to_apply).to eq("Just Try It!")
+      end
     end
 
     context "with invalid params" do
@@ -176,6 +184,26 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         put :update, params: {id: opportunity.to_param, opportunity: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
+    end
+  end
+
+  describe "PUT #unpublish" do
+    let(:referer) { '/admin/opportunities' }
+    
+    before { request.env['HTTP_REFERER'] = referer }
+
+    it "unpublishes the opportunity" do
+      opportunity = create :opportunity, published: true
+      put :unpublish, params: {id: opportunity.to_param}, session: valid_session
+      
+      expect(opportunity.reload.published).to eq(false)
+    end
+    
+    it "redirects to the referring page" do
+      opportunity = create :opportunity, published: true
+      put :unpublish, params: {id: opportunity.to_param}, session: valid_session
+      
+      expect(response).to redirect_to(referer)
     end
   end
 

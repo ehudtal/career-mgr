@@ -65,6 +65,11 @@
     <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
     <p><strong>Tip:</strong> Use the <a href="https://drive.google.com/a/bebraven.org/file/d/1RAfYwl8kRP9DkhjuVLKeCmYQzIhBzKVn/view?usp=sharing">Braven Career Accelerating Scorecard</a> to asssess your current job's strength.</p>
   </div>
+  
+  <div class="field">
+    <%= form.check_box :receive_opportunities %>
+    <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
+  </div>
 
   <h3 id="info-interests">Industries and Interests</h3>
   
@@ -79,7 +84,7 @@
   <p><strong>Note:</strong> You can choose metro areas or entire states (try typing the full state name). Leaving this blank may prevent you from getting any opportunities.</p>
 
   <div id="metro-tags" class="jquery-tags">
-    <%= form.text_area :metro_tags %>
+    <%= form.text_area :metro_tags, class: 'metro-tags' %>
   </div>
 
   <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank', class: 'full-list' %>

@@ -5,11 +5,12 @@ RSpec.describe CandidateMailer, type: :mailer do
   let(:access_token) { AccessToken.for(fellow_opportunity) }
 
   let(:fellow_opportunity) { create :fellow_opportunity, fellow: fellow, opportunity: opportunity, opportunity_stage: opportunity_stage }
-  let(:fellow) { create :fellow, contact: create(:contact, email: email) }
+  let(:fellow) { create :fellow, receive_opportunities: receive_opportunities, contact: create(:contact, email: email) }
   let(:email) { 'test@example.com' }
   let(:opportunity) { create :opportunity, name: "New Opportunity" }
   let(:opportunity_stage) { create :opportunity_stage, name: stage_name }
   let(:stage_name) { view.to_s.gsub('_', ' ') }
+  let(:receive_opportunities) { true }
 
   let(:mail) { CandidateMailer.with(access_token: access_token, stage_name: stage_name).send(view) }
   
@@ -31,6 +32,18 @@ RSpec.describe CandidateMailer, type: :mailer do
         expect(mail.body.encoded).to include("http://localhost:3011/candidates/#{fellow_opportunity.id}/status?from=#{from.gsub(' ', '+')}&token=#{access_token.code}&update=#{label.gsub(' ', '+')}")
       end
     end
+    
+    def skips_unsubscribed
+      describe 'when user is unsubscribed from receiving opportunities' do
+        let(:receive_opportunities) { false }
+
+        it "does not send the mailer" do
+          expect {
+            mail.deliver
+          }.to_not change(ActionMailer::Base.deliveries, :count) 
+        end
+      end
+    end
   end
   
   describe 'respond to invitation' do
@@ -43,6 +56,8 @@ RSpec.describe CandidateMailer, type: :mailer do
 
     expect_status_link 'respond to invitation', 'research employer'
     expect_status_link 'respond to invitation', 'fellow decline'
+    
+    skips_unsubscribed
   end
   
   describe 'via notify mailer' do
@@ -59,6 +74,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'research employer', 'no change'
       expect_status_link 'research employer', 'skip'
       expect_status_link 'research employer', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'connect with employees' do
@@ -71,6 +88,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'connect with employees', 'no change'
       expect_status_link 'connect with employees', 'skip'
       expect_status_link 'connect with employees', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'customize application materials' do
@@ -83,6 +102,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'customize application materials', 'no change'
       expect_status_link 'customize application materials', 'skip'
       expect_status_link 'customize application materials', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'submit application' do
@@ -95,6 +116,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'submit application', 'no change'
       expect_status_link 'submit application', 'skip'
       expect_status_link 'submit application', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'follow up after application' do
@@ -108,6 +131,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'follow up after application', 'skip'
       expect_status_link 'follow up after application', 'fellow declined'
       expect_status_link 'follow up after application', 'employer declined'
+      
+      skips_unsubscribed
     end
 
     describe 'schedule interview' do
@@ -121,6 +146,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'schedule interview', 'skip'
       expect_status_link 'schedule interview', 'fellow declined'
       expect_status_link 'schedule interview', 'employer declined'
+      
+      skips_unsubscribed
     end
 
     describe 'research interview process' do
@@ -133,6 +160,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'research interview process', 'no change'
       expect_status_link 'research interview process', 'skip'
       expect_status_link 'research interview process', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'practice for interview' do
@@ -145,6 +174,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'practice for interview', 'no change'
       expect_status_link 'practice for interview', 'skip'
       expect_status_link 'practice for interview', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'attend interview' do
@@ -157,6 +188,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'attend interview', 'no change'
       expect_status_link 'attend interview', 'skip'
       expect_status_link 'attend interview', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'follow up after interview' do
@@ -170,6 +203,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'follow up after interview', 'skip'
       expect_status_link 'follow up after interview', 'fellow declined'
       expect_status_link 'follow up after interview', 'employer declined'
+      
+      skips_unsubscribed
     end
 
     describe 'receive offer' do
@@ -182,6 +217,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'receive offer', 'no change'
       expect_status_link 'receive offer', 'fellow declined'
       expect_status_link 'receive offer', 'employer declined'
+      
+      skips_unsubscribed
     end
 
     describe 'submit counter-offer' do
@@ -194,6 +231,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'submit counter-offer', 'no change'
       expect_status_link 'submit counter-offer', 'fellow accepted'
       expect_status_link 'submit counter-offer', 'fellow declined'
+      
+      skips_unsubscribed
     end
 
     describe 'accept offer' do
@@ -205,6 +244,8 @@ RSpec.describe CandidateMailer, type: :mailer do
       expect_status_link 'accept offer', 'next'
       expect_status_link 'accept offer', 'no change'
       expect_status_link 'accept offer', 'fellow declined'
+      
+      skips_unsubscribed
     end
   end
 end

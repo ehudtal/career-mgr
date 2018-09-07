@@ -142,6 +142,22 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  ########
+  # Scopes
+  ########
+
+  describe 'receive_opportunities' do
+    let(:subscribed) { create :fellow, receive_opportunities: true }
+    let(:unsubscribed) { create :fellow, receive_opportunities: false }
+    
+    before { subscribed; unsubscribed }
+    
+    subject { Fellow.receive_opportunities }
+    
+    it { should include(subscribed) }
+    it { should_not include(unsubscribed) }
+  end
+  
   ###############
   # Class methods
   ###############
@@ -387,5 +403,41 @@ RSpec.describe Fellow, type: :model do
     subject { fellow.completed_career_steps }
     
     it { should eq(completed_positions) }
+  end
+  
+  describe '#receive_opportunities!' do
+    it "sets unsubscribed fellow to subscribed" do
+      fellow = create :fellow, receive_opportunities: false
+      fellow.receive_opportunities!
+      
+      fellow.reload
+      expect(fellow.receive_opportunities).to eq(true)
+    end
+    
+    it "leaves subscribed fellow as subscribed" do
+      fellow = create :fellow, receive_opportunities: true
+      fellow.receive_opportunities!
+      
+      fellow.reload
+      expect(fellow.receive_opportunities).to eq(true)
+    end
+  end
+  
+  describe '#ignore_opportunities!' do
+    it "sets subscribed fellow to unsubscribed" do
+      fellow = create :fellow, receive_opportunities: true
+      fellow.ignore_opportunities!
+      
+      fellow.reload
+      expect(fellow.receive_opportunities).to eq(false)
+    end
+    
+    it "leaves unsubscribed fellow as unsubscribed" do
+      fellow = create :fellow, receive_opportunities: false
+      fellow.ignore_opportunities!
+      
+      fellow.reload
+      expect(fellow.receive_opportunities).to eq(false)
+    end
   end
 end

@@ -23,6 +23,10 @@ module ApplicationHelper
     link_to_access_token(@token, 'status', title: title, params: {from: from, update: update}, class: 'button')
   end
   
+  def link_to_unsubscribe fellow
+    link_to('Unsubscribe', AccessToken.for(fellow).path_with_token('Unsubscribe')).html_safe
+  end
+  
   def interpolate string
     ERB.new(string || '').result(binding)
   end

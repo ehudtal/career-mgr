@@ -109,4 +109,54 @@ RSpec.describe PostalCode, type: :model do
       expect(postal_code.longitude).to eq(-100.0)
     end
   end
+  
+  describe '#metro' do
+    let(:postal_code) { create :postal_code, msa_code: '0000', state: 'NE' }
+    let(:state) { create :metro, code: state_code, name: 'Nebraska (Statewide)' }
+    let(:metro) { create :metro, code: metro_code }
+    
+    subject { postal_code.metro }
+    
+    before { postal_code; metro }
+    
+    describe 'when postal code maps to an existing metro' do
+      let(:metro_code) { postal_code.msa_code }
+      let(:state_code) { postal_code.state }
+
+      it { should eq(metro) }
+      
+      it "memoizes the result" do
+        expect(Metro).to receive(:find_by).with(code: postal_code.msa_code).once.and_return(metro)
+        2.times { postal_code.metro }
+      end
+    end
+    
+    describe 'when postal code does NOT map to an existing metro, but state exists' do
+      let(:metro_code) { '1111' }
+      let(:state_code) { postal_code.state }
+
+      it { should eq(state) }
+      
+      it "memoizes the result" do
+        expect(Metro).to receive(:find_by).with(code: postal_code.msa_code).once.and_return(nil)
+        expect(Metro).to receive(:find_by).with(code: postal_code.state).once.and_return(nil)
+
+        2.times { postal_code.metro }
+      end
+    end
+    
+    describe 'when postal code does NOT map to an existing metro, and state does NOT exist' do
+      let(:metro_code) { '1111' }
+      let(:state_code) { 'NA' }
+
+      it { should be_nil }
+      
+      it "memoizes the result" do
+        expect(Metro).to receive(:find_by).with(code: postal_code.msa_code).once.and_return(nil)
+        expect(Metro).to receive(:find_by).with(code: postal_code.state).once.and_return(nil)
+
+        2.times { postal_code.metro }
+      end
+    end
+  end
 end

@@ -30,6 +30,16 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
   
+  describe 'link_to_unsubscribe' do
+    let(:fellow) { create :fellow }
+    let(:access_token) { AccessToken.for(fellow) }
+    
+    it "links to unsubscribe" do
+      access_token
+      expect(link_to_unsubscribe(fellow)).to eq(link_to('Unsubscribe', "http://localhost:3011/fellow/profile/unsubscribe?token=#{access_token.code}".html_safe))
+    end
+  end
+  
   describe 'interpolate' do
     it "uses ERB interpolation" do
       @answer = 'three'

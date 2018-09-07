@@ -66,6 +66,42 @@ RSpec.describe Opportunity, type: :model do
     end
   end
   
+  ###########
+  # Callbacks
+  ###########
+
+  it "sets the priority before save" do
+    opportunity = build :opportunity
+    allow(opportunity).to receive(:calculated_priority).and_return(42)
+    expect(opportunity.priority).to eq(Opportunity.column_defaults['priority'])
+    
+    opportunity.save
+    expect(opportunity.priority).to eq(42)
+  end
+  
+  ########
+  # Scopes
+  ########
+
+  describe 'prioritized' do
+    let(:partner) { create :employer, employer_partner: true }
+    let(:nonpartner) { create :employer, employer_partner: false }
+    
+    let(:first)  { create :opportunity, published: false, employer: partner,    inbound: true,  recurring: true }
+    let(:second) { create :opportunity, published: false, employer: nonpartner, inbound: false, recurring: false }
+    let(:third)  { create :opportunity, published: true,  employer: partner,    inbound: true,  recurring: true }
+    let(:fourth) { create :opportunity, published: true,  employer: nonpartner, inbound: false, recurring: false }
+    
+    before { second; fourth; first; third }
+    
+    subject { Opportunity.prioritized }
+    
+    it { expect(subject[0]).to eq(first) }
+    it { expect(subject[1]).to eq(second) }
+    it { expect(subject[2]).to eq(third) }
+    it { expect(subject[3]).to eq(fourth) }
+  end
+  
   ###############
   # Serialization
   ###############
@@ -114,6 +150,10 @@ RSpec.describe Opportunity, type: :model do
     def matching_majors
       opportunity.majors << major_child
       fellow.majors << major_child
+    end
+    
+    def unsubscribed
+      fellow.update receive_opportunities: false
     end
     
     describe 'with matching metro' do
@@ -175,6 +215,13 @@ RSpec.describe Opportunity, type: :model do
     
       it "excludes fellow when opp does not share the major" do
         fellow.majors << major_parent
+        expect(opportunity.candidates).to_not include(fellow)
+      end
+      
+      it "excludes fellow when unsubscribed from recieving opportunities" do
+        matching_industry
+        unsubscribed
+        
         expect(opportunity.candidates).to_not include(fellow)
       end
     end
@@ -300,7 +347,7 @@ RSpec.describe Opportunity, type: :model do
     it { should be_an(Array) }
     it { expect(subject[0]).to eq(opportunity.region.name) }
     it { expect(subject[1]).to eq(opportunity.employer.name) }
-    it { expect(subject[2]).to eq('=HYPERLINK("http://example.com", "CSV Opp")') }
+    it { expect(subject[2]).to eq(opportunity.name) }
     it { expect(subject[3]).to eq(opportunity.opportunity_type.name) }
     it { expect(subject[4]).to eq('Omaha, NE') }
     it { expect(subject[5]).to eq(opportunity.job_posting_url) }
@@ -312,55 +359,118 @@ RSpec.describe Opportunity, type: :model do
   
   describe '#priority' do
     let(:employer) { create :employer, employer_partner: employer_partner }
-    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring }
+    let(:opportunity) { build :opportunity, employer: employer, inbound: inbound, recurring: recurring, published: published }
 
     let(:employer_partner) { false }
     let(:inbound) { false }
     let(:recurring) { false }
     
+    subject { opportunity.calculated_priority }
     
-    subject { opportunity.priority }
-    
-    describe 'when employer_partner AND inbound AND recurring' do
-      let(:employer_partner) { true }
-      let(:inbound) { true }
-      let(:recurring) { true }
+    describe 'when previously published' do
+      let(:published) { true }
       
-      it { should eq(0) }
-    end
+      describe 'when employer_partner AND inbound AND recurring' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+        let(:recurring) { true }
+      
+        it { should eq(10) }
+      end
     
-    describe 'when employer_partner AND inbound' do
-      let(:employer_partner) { true }
-      let(:inbound) { true }
+      describe 'when employer_partner AND inbound' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
 
-      it { should eq(1) }
-    end
+        it { should eq(11) }
+      end
     
-    describe 'when inbound' do
-      let(:inbound) { true }
-      it { should eq(2) }
-    end
+      describe 'when inbound' do
+        let(:inbound) { true }
+        it { should eq(12) }
+      end
     
-    describe 'when employer_partner AND recurring' do
-      let(:employer_partner) { true }
-      let(:recurring) { true }
+      describe 'when employer_partner AND recurring' do
+        let(:employer_partner) { true }
+        let(:recurring) { true }
       
-      it { should eq(3) }
-    end
+        it { should eq(13) }
+      end
     
-    describe 'when employer_partner' do
-      let(:employer_partner) { true }
+      describe 'when employer_partner' do
+        let(:employer_partner) { true }
       
-      it { should eq(4) }
+        it { should eq(14) }
+      end
+    
+      describe 'when recurring' do
+        let(:recurring) { true }
+        it { should eq(15) }
+      end
+    
+      describe 'when none are true' do
+        it { should eq(16) }
+      end
     end
     
-    describe 'when recurring' do
-      let(:recurring) { true }
-      it { should eq(5) }
-    end
+    describe 'when not previously published' do
+      let(:published) { false }
+      
+      describe 'when employer_partner AND inbound AND recurring' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+        let(:recurring) { true }
+      
+        it { should eq(0) }
+      end
     
-    describe 'when none are true' do
-      it { should eq(6) }
+      describe 'when employer_partner AND inbound' do
+        let(:employer_partner) { true }
+        let(:inbound) { true }
+
+        it { should eq(1) }
+      end
+    
+      describe 'when inbound' do
+        let(:inbound) { true }
+        it { should eq(2) }
+      end
+    
+      describe 'when employer_partner AND recurring' do
+        let(:employer_partner) { true }
+        let(:recurring) { true }
+      
+        it { should eq(3) }
+      end
+    
+      describe 'when employer_partner' do
+        let(:employer_partner) { true }
+      
+        it { should eq(4) }
+      end
+    
+      describe 'when recurring' do
+        let(:recurring) { true }
+        it { should eq(5) }
+      end
+    
+      describe 'when none are true' do
+        it { should eq(6) }
+      end
+    end
+  end
+  
+  describe '#unpublish!' do
+    subject { opportunity.unpublish!; opportunity.reload.published }
+    
+    describe 'when opp is already published' do
+      let(:opportunity) { create :opportunity, published: true }
+      it { should eq(false) }
+    end
+
+    describe 'when opp is unpublished' do
+      let(:opportunity) { create :opportunity, published: false }
+      it { should eq(false) }
     end
   end
 end

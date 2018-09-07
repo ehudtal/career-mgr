@@ -15,6 +15,9 @@ default notices: &default_notices
   fellow declined: "Thanks for letting us know."
   employer declined: "Sorry to hear that."
 
+respond to invitation:
+  notices: *default_notices
+    
 research employer:
   phase: "Apply"
   title: "Research this Employer"

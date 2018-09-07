@@ -24,22 +24,19 @@ RSpec.describe CandidatesController, type: :controller do
     it "redirects without token" do
       get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted'}
 
-      expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to include('The link you requested is unavailable')
+      expect(response).to redirect_to(login_path)
     end
     
     it "redirects with bad token" do
       get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: 'badtoken'}
 
-      expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to include('The link you requested is unavailable')
+      expect(response).to redirect_to(login_path)
     end
     
     it "redirects with bad fellow_opp id" do
       get :status, params: {fellow_opportunity_id: '1001', update: 'accepted', token: access_token.code}
       
-      expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to include('The link you requested is unavailable')
+      expect(response).to redirect_to(login_path)
     end
     
     it "returns http success" do

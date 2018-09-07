@@ -2,7 +2,7 @@ class Admin::OpportunitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_admin!
   before_action :set_employer
-  before_action :set_opportunity, only: [:show, :edit, :update, :destroy]
+  before_action :set_opportunity, only: [:show, :edit, :update, :unpublish, :destroy]
 
   # GET /opportunities
   # GET /opportunities.json
@@ -67,6 +67,11 @@ class Admin::OpportunitiesController < ApplicationController
       end
     end
   end
+  
+  def unpublish
+    @opportunity.unpublish!
+    redirect_to request.referer
+  end
 
   # DELETE /opportunities/1
   # DELETE /opportunities/1.json
@@ -84,7 +89,7 @@ class Admin::OpportunitiesController < ApplicationController
   
   def set_employer
     @employer = Employer.find(params[:employer_id]) if params[:employer_id]
-    @opportunities = (@employer ? @employer.opportunities : Opportunity).paginate(page: params[:page])
+    @opportunities = (@employer ? @employer.opportunities : Opportunity).prioritized.paginate(page: params[:page])
     
     unless params[:region_id].blank?
       @opportunities = @opportunities.where(region_id: params[:region_id])
@@ -92,7 +97,7 @@ class Admin::OpportunitiesController < ApplicationController
   end
   
   def unpaginated_opportunities
-    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).sort_by(&:priority).sort_by{|o| o.region.position}
+    (@employer ? @employer.opportunities : Opportunity).where(id: params[:export_ids]).prioritized.sort_by{|o| o.region.position}
   end
   
   # Use callbacks to share common setup or constraints between actions.
@@ -105,13 +110,10 @@ class Admin::OpportunitiesController < ApplicationController
     params.require(:opportunity).permit(
       :_destroy,
       :name, :description, :employer_id, :job_posting_url, :application_deadline, 
-      :inbound, :recurring, :opportunity_type_id, :region_id,
+      :inbound, :recurring, :opportunity_type_id, :region_id, :how_to_apply,
       :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
-      industry_ids: [], 
-      interest_ids: [],
       steps: [],
-      metro_ids: [],
-      location_ids: [],
+      industry_ids: [], interest_ids: [], metro_ids: [], location_ids: [],
       locations_attributes: [
         :_destroy, :id, :name, :locateable_id, :locateable_type,
         contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
