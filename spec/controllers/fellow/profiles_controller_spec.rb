@@ -47,6 +47,17 @@ RSpec.describe Fellow::ProfilesController, type: :controller do
         
         expect(fellow.receive_opportunities).to eq(false)
       end
+      
+      it "updates the opportunity types" do
+        this_type = create :opportunity_type
+        that_type = create :opportunity_type
+        
+        put :update, params: {fellow: {opportunity_type_ids: [this_type.id]}}, session: valid_session
+        fellow.reload
+        
+        expect(fellow.opportunity_types).to include(this_type)
+        expect(fellow.opportunity_types).to_not include(that_type)
+      end
 
       it "redirects to the industries list" do
         put :update, params: {fellow: {last_name: new_last_name}}, session: valid_session
