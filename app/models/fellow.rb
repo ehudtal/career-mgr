@@ -17,6 +17,8 @@ class Fellow < ApplicationRecord
   has_many :cohorts, through: :cohort_fellows
   has_many :fellow_opportunities
   has_many :career_steps
+  
+  has_and_belongs_to_many :opportunity_types
 
   taggable :industries, :interests, :majors, :industry_interests, :metros
   

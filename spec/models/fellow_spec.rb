@@ -43,6 +43,7 @@ RSpec.describe Fellow, type: :model do
   it { should have_and_belong_to_many :industries }
   it { should have_and_belong_to_many :majors }
   it { should have_and_belong_to_many :metros }
+  it { should have_and_belong_to_many :opportunity_types }
   
   it { should belong_to :employment_status }
   it { should belong_to :user }
