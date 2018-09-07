@@ -24,7 +24,7 @@ research employer:
     header: "Look up the employer's own website (see link above) and on other sites such as:"
     list:
       - "LinkedIn"
-      - "GlassDoor"
+      - "<a href='https://glassdoor.com'>GlassDoor</a>"
       - "Better Business Bureau"
       - "Idealist.org (for mission-driven organizations)"
   links: *default_links
@@ -38,7 +38,7 @@ connect with employees:
   question: "Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?"
   tips:
     list:
-      - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at the company you're aiming for."
+      - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at <%= @opp.employer.name %>."
       - "If you can't find any connections you can try to reach out directly through LinkedIn to someone who works there now. You have absolutely nothing to lose and it's very easy to do!"
       - "Introduce yourself, attach a resume, and ask them: \"What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?\""
       - "If it sounds like you're a good fit, ask for a referral: \"Would you be willing to refer me internally?\""
@@ -46,7 +46,7 @@ connect with employees:
       - "PRO TIP: Keep taking feedback and revise your application materials accordingly."
   links: *default_links
   notices: *default_notices
-  burden: "3 hours"
+  burden: "an hour"
 
 customize application materials:
   phase: "Apply"
@@ -73,10 +73,11 @@ submit application:
   tips:
     list:
       - "Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else)."
+      - "You don't need special software; just search online for \"how to print to PDF on [Windows/Mac/Linux]\""
       - "If you're emailing the application be sure to include a short note thanking the hiring manager for the opportunity to apply."
   links: *default_links
   notices: *default_notices
-  burden: "a couple of minutes"
+  burden: "5-15 minutes"
       
 follow up after application:
   phase: "Apply"
