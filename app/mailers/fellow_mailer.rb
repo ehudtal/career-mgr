@@ -5,6 +5,6 @@ class FellowMailer < ApplicationMailer
     @token = params[:access_token]
     @fellow = @token.owner
     
-    mail(to: @fellow.contact.email, subject: "Please Update Your Profile")
+    mail(to: @fellow.contact.email, subject: "@fellow.contact.name - Please update your profile")
   end
 end

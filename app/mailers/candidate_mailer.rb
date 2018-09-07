@@ -3,7 +3,7 @@ class CandidateMailer < ApplicationMailer
 
   def respond_to_invitation
     set_objects
-    mail(to: @fellow.contact.email, subject: "You've been invited to apply for #{@opp.name}")
+    mail(to: @fellow.contact.email, subject: "#{@opp.name} matches your career profile")
   end
   
   def notify
