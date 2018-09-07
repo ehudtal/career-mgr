@@ -22,7 +22,7 @@ RSpec.feature "Candidate Views", type: :feature do
   let(:metro_other) { create :metro }
   
   let(:employer) { create :employer }
-  let(:opportunity) { create :opportunity, employer: employer, metro_ids: [metro.id] }
+  let(:opportunity) { create :opportunity, employer: employer, metro_ids: [metro.id], opportunity_type: opportunity_type }
   
   let(:fellow) { create :fellow }
   let(:contact_fellow) { create :contact, contactable: fellow, postal_code: postal_code.code }
@@ -32,6 +32,8 @@ RSpec.feature "Candidate Views", type: :feature do
   
   let(:opportunity_stage) { create :opportunity_stage, name: 'First', position: 0, probability: 0.1 }
   let(:opportunity_stage_next) { create :opportunity_stage, name: 'Second', position: 1, probability: 0.2 }
+  
+  let(:opportunity_type) { create :opportunity_type }
   
   background do
     opportunity_stage; opportunity_stage_next
@@ -48,11 +50,13 @@ RSpec.feature "Candidate Views", type: :feature do
     fellow.industries << industry
     fellow.interests << interest
     fellow.metros << metro
+    fellow.opportunity_types << opportunity_type
     expect(Metro.count).to eq(2)
     
     fellow_other.industries << industry_other
     fellow_other.interests << interest_other
     fellow_other.metros << metro_other
+    fellow_other.opportunity_types << opportunity_type
     expect(Metro.count).to eq(2)
     
     expect(Employer.count).to eq(1)
