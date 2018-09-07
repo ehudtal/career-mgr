@@ -162,6 +162,18 @@ RSpec.describe Admin::FellowsController, type: :controller do
         expect(fellow.reload.resume.attached?).to eq(true)
       end
 
+      it "updates the opportunity types" do
+        fellow = Fellow.create! valid_attributes
+        this_type = create :opportunity_type
+        that_type = create :opportunity_type
+        
+        put :update, params: {id: fellow.to_param, fellow: {opportunity_type_ids: [this_type.id]}}, session: valid_session
+        fellow.reload
+        
+        expect(fellow.opportunity_types).to include(this_type)
+        expect(fellow.opportunity_types).to_not include(that_type)
+      end
+
       it "redirects to the fellow" do
         fellow = Fellow.create! valid_attributes
         put :update, params: {id: fellow.to_param, fellow: valid_attributes}, session: valid_session
