@@ -13,7 +13,7 @@
         <tr>
           <th>Employer</th>
           <th>Title</th>
-          <th>Description</th>
+          <th>Summary</th>
           <th>Published</th>
           <th>Partner</th>
           <th>Inbound</th>
@@ -28,7 +28,7 @@
           <tr>
             <td><%= opportunity.employer.name %>
             <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
-            <td><%= truncate(opportunity.description, length: 100, separator: ' ') %></td>
+            <td><%= truncate(opportunity.summary, length: 100, separator: ' ') %></td>
             <td class="checkmark"><%= checkmark(opportunity.published?) %></td>
             <td class="checkmark"><%= checkmark(opportunity.employer.employer_partner) %>
             <td class="checkmark"><%= checkmark(opportunity.inbound) %></td>
