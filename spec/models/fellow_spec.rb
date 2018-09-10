@@ -478,7 +478,7 @@ RSpec.describe Fellow, type: :model do
       
       it { should include(type1) }
       it { should include(type2) }
-      it { should include(type3) }
+      it { should_not include(type3) }
     end
   end
 end

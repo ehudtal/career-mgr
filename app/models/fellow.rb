@@ -163,7 +163,7 @@ class Fellow < ApplicationRecord
   end
   
   def select_all_opportunity_types
-    self.opportunity_types << OpportunityType.all
+    self.opportunity_types << OpportunityType.all if self.opportunity_types.empty?
   end
   
   private
