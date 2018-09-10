@@ -58,4 +58,9 @@ module ApplicationHelper
   def checkmark boolean
     boolean ? '&#x2714;'.html_safe : ''
   end
+  
+  def paragraph_format text
+    cleaned_text = text.gsub(/\r/, '').gsub(/\n+/, '</p><p>')
+    "<p>#{cleaned_text}</p>".html_safe
+  end
 end
