@@ -36,6 +36,7 @@ class Fellow < ApplicationRecord
   
   before_create :generate_key
   after_create :generate_career_steps
+  after_create :select_all_opportunity_types
   after_save :attempt_fellow_match, if: :missing_user?
   
   scope :receive_opportunities, -> { where(receive_opportunities: true) }
@@ -159,6 +160,10 @@ class Fellow < ApplicationRecord
   
   def ignore_opportunities!
     update receive_opportunities: false
+  end
+  
+  def select_all_opportunity_types
+    self.opportunity_types << OpportunityType.all
   end
   
   private
