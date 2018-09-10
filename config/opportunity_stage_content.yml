@@ -9,7 +9,7 @@ default links with employer: &default_links_with_employer
   employer declined: "Employer Declined"
   
 default notices: &default_notices
-  next: "Great!"
+  next: "Okay, thanks for the update, <%= @fellow.first_name %>. Here’s the next recommended step:"
   no change: "Okay."
   skip: "Okay."
   fellow declined: "Thanks for letting us know."

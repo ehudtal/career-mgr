@@ -11,7 +11,6 @@
   <strong>Job Posting URL:</strong>
   <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
 </p>
-<p><strong>Industries</strong></p>
 <%= render 'admin/industries/list', object: @candidate.opportunity %>
 <%= render 'admin/interests/list', object: @candidate.opportunity %>
 <h2>Where am I in the process?</h2>
