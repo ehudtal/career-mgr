@@ -117,4 +117,18 @@ RSpec.describe ApplicationHelper, type: :helper do
       it { should eq("N/A") }
     end
   end
+  
+  describe '#checkmark(boolean)' do
+    subject { checkmark(boolean) }
+    
+    describe 'when boolean is true' do
+      let(:boolean) { true }
+      it { should eq('&#x2714;'.html_safe) }
+    end
+    
+    describe 'when boolean is false' do
+      let(:boolean) { false }
+      it { should be_blank }
+    end
+  end
 end

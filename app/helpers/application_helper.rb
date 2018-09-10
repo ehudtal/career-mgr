@@ -54,4 +54,8 @@ module ApplicationHelper
   def nlu_login
     "#{Rails.application.secrets.nlu_sso_url}login?service=#{sso_encode}"
   end
+  
+  def checkmark boolean
+    boolean ? '&#x2714;'.html_safe : ''
+  end
 end
