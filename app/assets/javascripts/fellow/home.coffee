@@ -6,6 +6,14 @@ $(document).on "turbolinks:load",  ->
   $('input.career[type=checkbox]').click (event) ->
     $(event.target).form().submit()
     
+    checkboxes = 'form.career-tracker-form input.career[type="checkbox"]'
+
+    if $(checkboxes).length == $(checkboxes + ':checked').length
+      $('#career-progress').addClass('all-done')
+    else
+      $('#career-progress').removeClass('all-done')
+      
+    
   $('form.career-tracker-form').submit (event) ->
     event.preventDefault()
     
