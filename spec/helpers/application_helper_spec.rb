@@ -117,4 +117,43 @@ RSpec.describe ApplicationHelper, type: :helper do
       it { should eq("N/A") }
     end
   end
+  
+  describe '#checkmark(boolean)' do
+    subject { checkmark(boolean) }
+    
+    describe 'when boolean is true' do
+      let(:boolean) { true }
+      it { should eq('&#x2714;'.html_safe) }
+    end
+    
+    describe 'when boolean is false' do
+      let(:boolean) { false }
+      it { should be_blank }
+    end
+  end
+  
+  describe '#paragraph_format(text)' do
+    subject { paragraph_format(text) }
+    
+    describe 'when text has only one paragraph' do
+      let(:text) { 'This is short text.' }
+
+      it { should eq("<p>This is short text.</p>") }
+      it { should be_html_safe }
+    end
+    
+    describe 'when text has newlines' do
+      let(:text) { "Test\nTest\n\nTest" }
+
+      it { should eq("<p>Test</p><p>Test</p><p>Test</p>") }
+      it { should be_html_safe }
+    end
+    
+    describe 'when text uses carriage returns as well as newlines' do
+      let(:text) { "Test\r\nTest\r\n\r\nTest" }
+
+      it { should eq("<p>Test</p><p>Test</p><p>Test</p>") }
+      it { should be_html_safe }
+    end
+  end
 end
