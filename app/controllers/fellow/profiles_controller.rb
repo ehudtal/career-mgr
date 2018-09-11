@@ -28,7 +28,7 @@ class Fellow::ProfilesController < ApplicationController
       :key, :first_name, :last_name, :graduation_year, :graduation_semester,
       :major, :affiliations, :linkedin_url, :receive_opportunities, :resume,
       :employment_status_id, :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
-      industry_ids: [], interest_ids: [], metro_ids: [],
+      opportunity_type_ids: [], industry_ids: [], interest_ids: [], metro_ids: [],
       contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
     )
   end

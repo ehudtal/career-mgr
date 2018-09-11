@@ -96,7 +96,7 @@ class Admin::FellowsController < ApplicationController
         :interests_description, :major, :affiliations, :gpa, :linkedin_url, :staff_notes, :efficacy_score, 
         :employment_status_id, :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
         :resume, :receive_opportunities,
-        industry_ids: [], interest_ids: [], metro_ids: [],
+        opportunity_type_ids: [], industry_ids: [], interest_ids: [], metro_ids: [],
         contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
       )
     end

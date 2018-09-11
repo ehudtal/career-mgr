@@ -40,6 +40,8 @@ class Opportunity < ApplicationRecord
     
     candidate_ids = Fellow.receive_opportunities.pluck(:id)
     
+    candidate_ids &= fellow_ids_for_opportunity_type
+    
     unless search_params[:industries_interests] == ''
       candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
     end
@@ -58,6 +60,10 @@ class Opportunity < ApplicationRecord
   
   def formatted_name
     [employer.name, name].join(' - ')
+  end
+  
+  def fellow_ids_for_opportunity_type
+    self.class.connection.query("select fellow_id from fellows_opportunity_types where opportunity_type_id = #{opportunity_type.id}").flatten.uniq
   end
   
   def fellow_ids_for_interests names
