@@ -11,6 +11,8 @@ class Fellow < ApplicationRecord
   
   has_one :access_token, as: :owner
   
+  has_one_attached :resume
+  
   has_many :cohort_fellows, dependent: :destroy
   has_many :cohorts, through: :cohort_fellows
   has_many :fellow_opportunities

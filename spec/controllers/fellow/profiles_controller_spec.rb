@@ -5,6 +5,7 @@ RSpec.describe Fellow::ProfilesController, type: :controller do
   
   let(:user) { create :fellow_user }
   let(:fellow) { create :fellow, contact: create(:contact) }
+  let(:resume) { fixture_file_upload('files/resume.pdf') }
   
   before do 
     user.fellow = fellow
@@ -55,6 +56,11 @@ RSpec.describe Fellow::ProfilesController, type: :controller do
       it "creates update notice message" do
         put :update, params: {fellow: {last_name: new_last_name}}, session: valid_session
         expect(flash[:notice]).to include('updated')
+      end
+      
+      it "attaches the resume" do
+        put :update, params: {fellow: {resume: resume}}, session: valid_session
+        expect(fellow.reload.resume).to be_attached
       end
     end
 
