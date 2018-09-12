@@ -4,10 +4,105 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
       /* Email styles need to be inline */
+
+      body {
+        font-family: Georgia, serif;
+      }
+
+      h1,h2,h3,h4,h5,h6,
+      th,
+      .logout,
+      .button,
+      input[type="submit"],
+      .tracker-item {
+        font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
+        text-transform: uppercase;
+        line-height: normal;
+        font-weight: normal;
+      }
+
+      h2, h3 {
+        margin-top: 2em;
+      }
+
+      a:link, a:visited,
+      .toggle-next:active {
+        color: #0081bd;
+        text-decoration: none;
+        background: none;
+      }
+
+      a:hover, a:active,
+      .toggle-next:hover {
+        text-decoration: underline;
+      }
+
+      input[type="submit"],
+      a.button {
+        background: #EB3B46;
+        color: #FFF;
+        border: none;
+        text-transform: uppercase;
+        border-radius: 2px;
+        transition: background-color 0.2s ease-in-out;
+        padding: 8px 14px;
+        margin-bottom: 0;
+        line-height: 1;
+      }
+
+      input[type="submit"]:hover,
+      a.button:hover {
+        background: #c8141f;
+        text-decoration: none;
+      }
+      
+      li {
+        margin: 0.5em 0;
+      }
+
+      .response-links li {
+        display: inline-block;
+        margin-right: 0.75em;
+      }
+
+      ul.response-links {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      
+      ul.response-links li {
+        padding: 10px 0;
+      }
+
+      .response-links .button {
+        background: #999;
+      }
+
+      .response-links .yes .button {
+        background: green;
+      }
+
+      .response-links .yes .button:hover {
+        background: darkgreen;
+      }
+
+      .unsubscribe {
+        margin-top: 40px;
+        text-align: center;
+        color: aaa;
+        font-size: smaller;
+      }
+
     </style>
   </head>
 
   <body>
     <%= yield %>
+    
+    <div class="unsubscribe">
+      <hr>
+      <%= link_to_unsubscribe(@fellow) %>
+      from notifications about future opportunities.
+    </p>
   </body>
 </html>

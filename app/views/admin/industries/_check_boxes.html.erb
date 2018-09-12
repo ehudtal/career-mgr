@@ -1,0 +1,11 @@
+<% object_name = object.class.name.downcase %>  
+<div id="industry-checklist" class="industries checklist">
+  <% Industry.order('name asc').each do |industry| %>
+    <% tag_id = "industry_ids_#{industry.id}" %>
+    
+    <%= check_box_tag("#{object_name}[industry_ids][]", industry.id, object.industries.include?(industry), id: tag_id, class: "industry_checkbox") %>
+    <%= label_tag(tag_id, industry.name, style: 'display: inline;') %><br>
+  <% end %>
+
+  <%= link_to 'see shorter list', '#', id: 'industry-short-list' %>
+</div>

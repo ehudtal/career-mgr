@@ -1,0 +1,7 @@
+<h1><%= @employer ? "#{@employer.name} " : '' %>Opportunities</h1>
+
+<p><%= link_to 'Add New Opportunity', (@employer ? new_admin_employer_opportunity_path(@employer) : admin_new_opportunity_path), class: 'button add' %></p>
+
+<%= render "admin/opportunities/list", opportunities: @opportunities %>
+
+<%= will_paginate @opportunities %>

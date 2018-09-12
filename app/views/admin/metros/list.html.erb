@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Career Manager</title>
+  </head>
+
+  <body>
+    <main>
+      <h1>Metro Areas</h1>
+      
+      <ul>
+        <% @metros.each do |metro| %>
+          <li><%= metro.name %></li>
+        <% end %>
+      </ul>
+    </main>
+  </body>
+</html>

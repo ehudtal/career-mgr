@@ -7,12 +7,6 @@ body {
   line-height: 18px;
 }
 
-p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-}
-
 pre {
   background-color: #eee;
   padding: 10px;
@@ -81,4 +75,18 @@ div {
 
 label {
   display: block;
+}
+
+table.fellows td {
+  vertical-align: top;
+}
+
+table.fellows ul {
+  margin-top: 0;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.right {
+  text-align: right;
 }

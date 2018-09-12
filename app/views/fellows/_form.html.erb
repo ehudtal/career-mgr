@@ -1,7 +1,9 @@
-<%= form_with(model: fellow, local: true) do |form| %>
+<%= form_with(model: [fellow], local: true) do |form| %>
+  <%= hidden_field_tag :token, params[:token] %>
+  
   <% if fellow.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(fellow.errors.count, "error") %> prohibited this fellow from being saved:</h2>
+      <h2><%= pluralize(fellow.errors.count, "error") %> prohibited this profile from being saved:</h2>
 
       <ul>
       <% fellow.errors.full_messages.each do |message| %>
@@ -12,18 +14,13 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :key %>
-    <%= form.text_field :key %>
-  </div>
-
-  <div class="field">
     <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
+    <%= form.text_field :first_name, required: true %>
   </div>
 
   <div class="field">
     <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
+    <%= form.text_field :last_name, required: true %>
   </div>
 
   <div class="field">
@@ -32,18 +29,8 @@
   </div>
 
   <div class="field">
-    <%= form.label :graduation_semester %>
-    <%= form.text_field :graduation_semester %>
-  </div>
-
-  <div class="field">
-    <%= form.label :graduation_fiscal_year %>
-    <%= form.number_field :graduation_fiscal_year %>
-  </div>
-
-  <div class="field">
-    <%= form.label :interests_description %>
-    <%= form.text_area :interests_description %>
+    <%= form.label :graduation_semester, 'Graduation term' %>
+    <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
   </div>
 
   <div class="field">
@@ -57,31 +44,36 @@
   </div>
 
   <div class="field">
-    <%= form.label :gpa %>
-    <%= form.text_field :gpa %>
-  </div>
-
-  <div class="field">
     <%= form.label :linkedin_url %>
     <%= form.text_field :linkedin_url %>
   </div>
 
   <div class="field">
-    <%= form.label :staff_notes %>
-    <%= form.text_area :staff_notes %>
-  </div>
-
-  <div class="field">
-    <%= form.label :efficacy_score %>
-    <%= form.text_field :efficacy_score %>
-  </div>
-
-  <div class="field">
     <%= form.label :employment_status_id %>
-    <%= form.number_field :employment_status_id %>
+    <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
   </div>
+  
+  <hr>
+
+  <%= render 'admin/contacts/nested_form', form: form %>
+  
+  <h3>Industries/Interests/Majors</h3>
+
+  <div id="industry-interest-tags" class="jquery-tags">
+    <%= form.text_area :industry_interest_tags %>
+  </div>
+
+  <%= link_to 'full list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+  
+  <h3>Where Fellow Would Like to Work</h3>
+  
+  <div id="metro-tags" class="jquery-tags">
+    <%= form.text_area :metro_tags %>
+  </div>
+
+  <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Update Profile' %>
   </div>
 <% end %>

@@ -1,0 +1,2 @@
+module Fellow::ProfileHelper
+end

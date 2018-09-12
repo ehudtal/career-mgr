@@ -1,0 +1,26 @@
+<% if locations.empty? %>
+  <p class="empty-list">There are no locations for this employer yet.</p>
+<% else %>
+  <table>
+    <thead>
+      <tr>
+        <th><%= locations.first.locateable.class.name %></th>
+        <th>Name</th>
+        <th>Address</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% locations.order('name asc').each do |location| %>
+        <tr>
+          <td><%= location.locateable.name %>
+          <td><%= link_to location.name, admin_location_path(location) %></td>
+          <td><%= location.label %></td>
+          <td><%= link_to 'Edit', edit_admin_location_path(location), class: 'edit' %></td>
+          <td><%= link_to 'Delete', admin_location_path(location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -1,0 +1,17 @@
+<h1>Employers</h1>
+
+<table class="action-list employers">
+  <tbody>
+    <% @employers.order(name: :asc).each do |employer| %>
+      <tr>
+        <td><%= link_to employer.name, admin_employer_path(employer) %></td>
+        <td><%= link_to 'Edit', edit_admin_employer_path(employer), class: 'edit' %></td>
+        <td><%= link_to 'Delete', admin_employer_path(employer), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Add New Employer', new_admin_employer_path, class: 'button add' %>

@@ -1,0 +1,27 @@
+<h1>Opportunity Stages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Probability</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @opportunity_stages.each do |opportunity_stage| %>
+      <tr>
+        <td><%= opportunity_stage.name %></td>
+        <td><%= opportunity_stage.probability %></td>
+        <td><%= link_to 'Show', admin_opportunity_stage_path(opportunity_stage) %></td>
+        <td><%= link_to 'Edit', edit_admin_opportunity_stage_path(opportunity_stage) %></td>
+        <td><%= link_to 'Destroy', admin_opportunity_stage_path(opportunity_stage), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Opportunity Stage', new_admin_opportunity_stage_path %>

@@ -1,0 +1,78 @@
+<h1><%= @opportunity.name %>: Candidates</h1>
+
+<p>Select candidates to notify about this opportunity, from the list below:</p>
+
+<%= form_tag admin_opportunity_candidates_path(@opportunity), method: :get do %>
+  <div id="industry-interest-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Industries/Interests/Majors</h3>
+    <%= link_to 'full list', combined_admin_industries_path, target: '_blank' %>
+    <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
+  </div>
+
+  <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Locations</h3>
+    <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
+    <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
+  </div>
+<% end %>
+
+<h3 style="clear: both;"><%= pluralize(@candidates.count, 'Match')%></h3>
+
+<%= form_tag admin_opportunity_candidates_path(@opportunity), method: :post do %>
+  <table id='candidate-list' class="fellows tablesorter">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Graduation</th>
+        <th>GPA</th>
+        <th>Efficacy</th>
+        <th>Industries / Interests / Majors</th>
+        <th>Locations</th>
+        <th>Distance</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @candidates.each do |fellow| %>
+        <tr>
+          <td>
+            <%= check_box_tag 'candidate_ids[]', fellow.id, false, id: "candidate_ids_#{fellow.id}" %>
+          </td>
+          <td><%= link_to fellow.full_name, admin_fellow_path(fellow) %></td>
+          <td>
+            <ul>
+              <% unless fellow.major.blank? %>
+                <li><%= fellow.major %></li>
+              <% end %>
+              <li><%= fellow.graduation %></li>
+            </ul>
+          </td>
+          <td><%= fellow.gpa || 'N/A' %></td>
+          <td><%= fellow.efficacy_score || 'N/A' %></td>
+          <td>
+            <% split_list((fellow.industries + fellow.interests + fellow.majors).map(&:name)).each do |list| %>
+              <ul class="inline-list">
+                <% list.each do |item| %>
+                  <li><%= item %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          </td>
+          <td>
+            <ul>
+              <% fellow.metros.each do |metro| %>
+                <li><%= metro.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td><%= nearest_distance(fellow, @opportunity.postal_codes) %>
+          <td><%= fellow.employment_status.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <%= submit_tag 'Notify Candidates' %>
+<% end %>

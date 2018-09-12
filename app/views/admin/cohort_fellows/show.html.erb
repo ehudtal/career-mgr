@@ -1,0 +1,49 @@
+<p>
+  <strong>Grade:</strong>
+  <%= @cohort_fellow.grade %>
+</p>
+
+<p>
+  <strong>Attendance:</strong>
+  <%= @cohort_fellow.attendance %>
+</p>
+
+<p>
+  <strong>Nps response:</strong>
+  <%= @cohort_fellow.nps_response %>
+</p>
+
+<p>
+  <strong>Endorsement:</strong>
+  <%= @cohort_fellow.endorsement %>
+</p>
+
+<p>
+  <strong>Professionalism:</strong>
+  <%= @cohort_fellow.professionalism %>
+</p>
+
+<p>
+  <strong>Teamwork:</strong>
+  <%= @cohort_fellow.teamwork %>
+</p>
+
+<p>
+  <strong>Feedback:</strong>
+  <%= @cohort_fellow.feedback %>
+</p>
+
+<p>
+  <strong>Fellow:</strong>
+  <%= @cohort_fellow.fellow_id %>
+</p>
+
+<p>
+  <strong>Cohort:</strong>
+  <%= @cohort_fellow.cohort_id %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_cohort_fellow_path(@cohort_fellow), class: 'edit' %> |
+  <%= link_to 'Back', admin_cohort_fellows_path %>
+</footer>

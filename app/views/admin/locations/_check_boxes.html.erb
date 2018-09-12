@@ -1,0 +1,11 @@
+<% object_name = object.class.name.downcase %>  
+
+<div class="locations checklist">
+  <h3>Locations</h3>
+  <% parent.locations.order('name asc').each do |location| %>
+    <% tag_id = "location_ids_#{location.id}" %>
+    
+    <%= check_box_tag("#{object_name}[location_ids][]", location.id, object.locations.include?(location), id: tag_id, 'data-zip' => location.contact.postal_code, class: 'location') %>
+    <%= label_tag(tag_id, location.label, style: 'display: inline;') %><br>
+  <% end %>
+</div>

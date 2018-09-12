@@ -1,0 +1,12 @@
+<div id="opportunity-types-collection">
+  <h3>Desired Positions</h3>
+
+  <p>
+    <% OpportunityType.order(position: :asc).each do |opportunity_type| %>
+      <% tag_id = "fellow_opportunity_type_id_#{opportunity_type.id}"%>
+      
+      <%= check_box_tag("fellow[opportunity_type_ids][]", opportunity_type.id, fellow.opportunity_types.include?(opportunity_type), id: tag_id) %>
+      <%= label_tag(tag_id, opportunity_type.name, style: 'display: inline;') %><br>
+    <% end %>
+  </p>
+</div>

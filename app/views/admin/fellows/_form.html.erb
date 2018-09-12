@@ -1,0 +1,115 @@
+<%= form_with(model: [:admin, fellow], local: true, multipart: true) do |form| %>
+  <% if fellow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(fellow.errors.count, "error") %> prohibited this fellow from being saved:</h2>
+
+      <ul>
+      <% fellow.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :resume, 'Resume PDF' %>
+    <%= form.file_field :resume %>
+  </div>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :graduation_year %>
+    <%= form.number_field :graduation_year %>
+  </div>
+
+  <div class="field">
+    <%= form.label :graduation_semester, 'Graduation term' %>
+    <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :graduation_fiscal_year %>
+    <%= form.number_field :graduation_fiscal_year %>
+  </div>
+
+  <div class="field">
+    <%= form.label :major %>
+    <%= form.text_field :major %>
+  </div>
+
+  <div class="field">
+    <%= form.label :affiliations %>
+    <%= form.text_area :affiliations %>
+  </div>
+
+  <div class="field">
+    <%= form.label :gpa %>
+    <%= form.text_field :gpa %>
+  </div>
+
+  <div class="field">
+    <%= form.label :linkedin_url %>
+    <%= form.text_field :linkedin_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff_notes %>
+    <%= form.text_area :staff_notes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :efficacy_score %>
+    <%= form.text_field :efficacy_score %>
+  </div>
+
+  <div class="field">
+    <%= form.label :employment_status_id %>
+    <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
+  </div>
+  
+  <div class="field">
+    <%= form.check_box :receive_opportunities %>
+    <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
+  </div>
+  
+  <hr>
+
+  <%= render 'admin/contacts/nested_form', form: form %>
+
+  <%= render 'admin/opportunity_types/check_boxes', fellow: fellow %>
+  
+  <div id="interests-collection">
+    <h3>Industries/Interests/Majors</h3>
+
+    <div id="industry-interest-tags" class="jquery-tags">
+      <%= form.text_area :industry_interest_tags %>
+    </div>
+
+    <%= link_to 'full list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+
+  </div>
+  
+  <div id="metros-collection">
+    <h3>Where Fellow Would Like to Work</h3>
+  
+    <div id="metro-tags" class="jquery-tags">
+      <%= form.text_area :metro_tags, class: 'metro-tags' %>
+    </div>
+
+    <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
+    
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

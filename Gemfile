@@ -7,8 +7,31 @@ ruby '2.4.4'
 gem 'rails', '~> 5.2.0'
 
 gem 'pg'
-# Use Puma as the app server
-gem 'puma', '~> 3.11'
+
+group :development, :test do
+  # Use Puma as the app server
+  gem 'puma', '~> 3.11'
+end
+
+group :production do
+  # Use Capistrano for deployment
+  gem 'capistrano', '~> 3.11.0'
+  # rails specific capistrano funcitons
+  gem 'capistrano-rails', '~> 1.4.0'
+  # TODO: Helpers to run delayed jobs
+  #gem 'capistrano3-delayed-job', '~> 1.4.0'
+  # integrate bundler with capistrano
+  gem 'capistrano-bundler'
+  # Use Passenger Phusion app server on prod and staging servers
+  gem 'capistrano-passenger'
+  # Use RVM to manage Ruby versions
+  gem 'capistrano-rvm'
+  # Helps manage the delayed jobs worker process
+  gem 'capistrano3-delayed-job', '~> 1.0'
+  # Needed by delayed-job gem above
+  gem 'daemons'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -30,9 +53,6 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
@@ -44,6 +64,8 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'capybara', '~> 2.18'
   gem 'selenium-webdriver', '~> 3.7'
+  gem 'database_cleaner'
+  gem 'dotenv'
 end
 
 group :development do
@@ -53,8 +75,23 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  
+  gem 'guard-rspec', require: false
 end
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'valid_url', git: 'https://github.com/bellmyer/valid_url'
+gem 'paranoia'
+gem 'bulk_insert'
+
+gem 'will_paginate'
+gem 'delayed_job_active_record'
+
+gem 'devise'
+gem 'devise_cas_authenticatable'
+gem 'safety_mailer'
+gem 'aws-sdk-s3', require: false

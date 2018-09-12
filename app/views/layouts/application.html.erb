@@ -1,19 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CareerMgr</title>
+    <title>My Career Manager &mdash; Braven</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <link rel="shortcut icon" href="https://bebraven.org/wp-content/themes/bebraven/favicon.ico">
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <p><b><%= link_to 'Home', root_path %></b></p>
-    
-    <hr>
-    
-    <%= yield %>
+    <header id="masthead">
+      <div id="header-logo">&nbsp;</div>
+      <h1><%= link_to 'My Career Manager', root_path %></h1>
+        <div id="menu-icon" onclick="bzToggleNav(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+      <nav id="main-nav">
+          <% if true %>
+          <!-- Please replace with relevant if statements and nav items per user type: Fellow, Admin -->
+          <ul>
+            <li><%= link_to "Employers", admin_employers_path %> (<%= Employer.count %>)</li>
+            <li><%= link_to "Opportunities", admin_opportunities_path %> (<%= Opportunity.count %>)</li>
+            <li><%= link_to "Industries", admin_industries_path %> (<%= Industry.count %>)</li>
+            <li><%= link_to "Interests", admin_interests_path %> (<%= Interest.count %>)</li>
+            <li><%= link_to "Sites", admin_sites_path %> (<%= Site.count %>)</li>
+            <li><%= link_to "Fellows", admin_fellows_path %> (<%= Fellow.count %>)</li>
+          </ul>
+          <% end %>
+          <% if current_user %>
+            <%= link_to 'Sign Out', destroy_sso_user_session_path, method: :delete, class: 'logout button' %>
+          <% end %>
+        </nav>
+      </header>
+    <main>
+      <p id="notice"><%= notice %></p>
+      <p id="alert"><%= alert %></p>
+      
+      <%= yield %>
+    </main>
+
+    <% if Rails.application.secrets.google_analytics_account %>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.secrets.google_analytics_account %>"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '<%= Rails.application.secrets.google_analytics_account %>');
+      </script>
+    <% end %>
   </body>
 </html>

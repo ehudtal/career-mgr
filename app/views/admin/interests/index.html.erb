@@ -1,0 +1,31 @@
+<h1>Interests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Opportunities</th>
+      <th>Fellows</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @interests.each do |interest| %>
+      <tr>
+        <td><%= link_to interest.name, admin_interest_path(interest) %></td>
+        <td class="numeric"><%= interest.opportunities.count %></td>
+        <td class="numeric"><%= interest.fellows.count %></td>
+        <td><%= link_to 'Edit', edit_admin_interest_path(interest), class: 'edit' %></td>
+        <td>
+          <% if interest.opportunities.count + interest.fellows.count == 0%>
+            <%= link_to 'Delete', admin_interest_path(interest), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Add New Interest', new_admin_interest_path, class: 'button add' %>

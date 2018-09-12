@@ -1,0 +1,11 @@
+<h1>Add New Opportunity</h1>
+<h2>Step 1: Choose an existing employer:</h2>
+<ul>  
+  <% @employers.each do |employer| %>
+    <li><%= link_to employer.name, new_admin_employer_opportunity_path(employer) %></li>
+  <% end %>
+</ul>
+<h2>OR</h2>
+<ul>
+  <li><strong><%= link_to 'Add a New Employer', new_admin_employer_path(redirect: 'new_opportunity') %></strong></li>
+</ul>

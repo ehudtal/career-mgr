@@ -1,0 +1,41 @@
+<%= form.fields_for :contact do |contact_form| %>
+  <div class="field">
+    <%= contact_form.label :address_1 %>
+    <%= contact_form.text_field :address_1 %>
+  </div>
+
+  <div class="field">
+    <%= contact_form.label :address_2, 'Address 2 (e.g. apartment #)' %>
+    <%= contact_form.text_field :address_2 %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :city %>
+    <%= contact_form.text_field :city %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :state %>
+    <%= contact_form.select :state, Contact::STATES %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :postal_code, 'ZIP/Postal code' %>
+    <%= contact_form.text_field :postal_code, class: 'postal_code' %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :phone %>
+    <%= contact_form.text_field :phone %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :email %>
+    <%= contact_form.text_field :email %>
+  </div>
+  
+  <div class="field">
+    <%= contact_form.label :url %>
+    <%= contact_form.text_field :url %>
+  </div>
+<% end %>

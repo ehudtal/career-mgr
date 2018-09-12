@@ -1,0 +1,19 @@
+<p>
+  <strong>Site:</strong>
+  <%= @course.site.name %>
+</p>
+
+<p>
+  <strong>Semester:</strong>
+  <%= @course.semester %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @course.year %>
+</p>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_course_path(@course), class: 'edit' %> |
+  <%= link_to 'Back', admin_site_path(@course.site) %>
+</footer>

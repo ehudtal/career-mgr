@@ -1,9 +1,0 @@
-<% object_name = object.class.name.downcase %>  
-
-<p>
-  Industries<br>
-  <% Industry.all.each do |industry| %>
-    <%= check_box_tag("#{object_name}[industry_ids][]", industry.id, object.industries.include?(industry)) %>
-    <%= label_tag("#{object_name}[industry_ids][]", industry.name, style: 'display: inline;') %><br>
-  <% end %>
-</p>

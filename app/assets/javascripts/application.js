@@ -13,4 +13,11 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
+//= require jquery
+//= require jquery-ui
 //= require_tree .
+
+function bzToggleNav(obj) {
+  obj.classList.toggle('expanded');
+  jQuery('#main-nav').slideToggle().toggleClass('expanded');
+}

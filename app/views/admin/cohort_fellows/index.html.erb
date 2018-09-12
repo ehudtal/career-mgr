@@ -1,0 +1,41 @@
+<h1>Cohort Fellows</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Grade</th>
+      <th>Attendance</th>
+      <th>Nps response</th>
+      <th>Endorsement</th>
+      <th>Professionalism</th>
+      <th>Teamwork</th>
+      <th>Feedback</th>
+      <th>Fellow</th>
+      <th>Cohort</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cohort_fellows.each do |cohort_fellow| %>
+      <tr>
+        <td><%= cohort_fellow.grade %></td>
+        <td><%= cohort_fellow.attendance %></td>
+        <td><%= cohort_fellow.nps_response %></td>
+        <td><%= cohort_fellow.endorsement %></td>
+        <td><%= cohort_fellow.professionalism %></td>
+        <td><%= cohort_fellow.teamwork %></td>
+        <td><%= cohort_fellow.feedback %></td>
+        <td><%= cohort_fellow.fellow_id %></td>
+        <td><%= cohort_fellow.cohort_id %></td>
+        <td><%= link_to 'Show', admin_cohort_fellow_path(cohort_fellow) %></td>
+        <td><%= link_to 'Edit', edit_admin_cohort_fellow_path(cohort_fellow) %></td>
+        <td><%= link_to 'Destroy', admin_cohort_fellow_path(cohort_fellow), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cohort Fellow', new_admin_cohort_fellow_path %>

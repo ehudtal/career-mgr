@@ -1,0 +1,37 @@
+<%= form_with(model: [:admin, employer], local: true) do |form| %>
+  <% if employer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(employer.errors.count, "error") %> prohibited this employer from being saved:</h2>
+
+      <ul>
+      <% employer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :employer_partner %>
+    <%= form.label :employer_partner, 'Employer Partner?', class: 'checkbox' %>
+  </div>
+  
+  <h3>Industries</h3>
+
+  <p>List the industries of the company rather than for specific roles</p>
+
+  <%= link_to 'full industries list', list_admin_industries_path, target: '_blank' %>
+
+  <div id="industry-tags" class="jquery-tags">
+    <%= form.text_area :industry_tags %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

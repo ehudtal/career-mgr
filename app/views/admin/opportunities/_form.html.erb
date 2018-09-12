@@ -1,0 +1,157 @@
+<%= form_with(model: [:admin, employer, opportunity], local: true) do |form| %>
+  <% if opportunity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(opportunity.errors.count, "error") %> prohibited this opportunity from being saved:</h2>
+
+      <ul>
+      <% opportunity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, 'Opportunity Name or Job Title' %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :opportunity_type_id, 'Opportunity Type' %>
+    <%= form.collection_select(:opportunity_type_id, OpportunityType.order(position: :asc), :id, :name) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :region_id, 'Region' %>
+    <%= form.collection_select(:region_id, Region.order(position: :asc), :id, :name) %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :inbound %>
+    <%= form.label :inbound, 'Inbound?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
+    <%= form.check_box :recurring %>
+    <%= form.label :recurring, 'Recurring?', class: 'checkbox' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :summary, 'Summary (please keep it short!)' %>
+    <%= form.text_area :summary %>
+  </div>
+
+  <div class="field">
+    <%= form.label :how_to_apply, 'How to Apply' %>
+    <%= form.text_area :how_to_apply %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_posting_url %>
+    <%= form.text_field :job_posting_url, required: true %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :application_deadline %>
+    <%= form.text_field :application_deadline, class: 'datetime' %>
+  </div>
+  
+  <%= render 'admin/locations/check_boxes', parent: opportunity.employer, object: opportunity %>
+  
+  <ul class="location_forms" data-employer-id="<%= opportunity.employer.id %>">
+    <%= form.fields_for :locations do |location_form| %>
+      <% next unless location_form.object.new_record? %>
+      
+      <li class="location_fields removeable_fields">
+        <%= location_form.hidden_field :locateable_id, value: opportunity.employer.id %>
+        <%= location_form.hidden_field :locateable_type, value: 'Employer' %>
+        
+        <div class="field">
+          <%= location_form.label :name %>
+          <%= location_form.text_field :name, required: true %>
+          <%= location_form.hidden_field :_destroy, class: 'remove_hidden' %>
+          <%= link_to 'remove', '#', class: 'remove' %>
+        </div>
+
+        <%= location_form.fields_for :contact do |contact_form| %>
+          <div class="field">
+            <%= contact_form.label :address_1 %>
+            <%= contact_form.text_field :address_1 %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :address_2 %>
+            <%= contact_form.text_field :address_2 %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :city %>
+            <%= contact_form.text_field :city %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :state %>
+            <%= contact_form.select :state, Contact::STATES %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :postal_code %>
+            <%= contact_form.text_field :postal_code, class: 'postal_code' %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :phone %>
+            <%= contact_form.text_field :phone %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :email %>
+            <%= contact_form.text_field :email %>
+          </div>
+
+          <div class="field">
+            <%= contact_form.label :url %>
+            <%= contact_form.text_field :url %>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <p><%= link_to '+add a location', '#', class: 'new_location' %></p>
+  
+  <h3>Required Steps</h3>
+  
+  <p>
+    <% OpportunityStage.togglable_names.each do |stage_name| %>
+      <% tag_id = "steps_#{stage_name.underscore}" %>
+
+      <%= check_box_tag("opportunity[steps][]", stage_name, true, id: tag_id) %>
+      <%= label_tag(tag_id, stage_name, style: 'display: inline;') %><br>
+    <% end %>
+  </p>
+  
+  <div id="interests-collection">
+    <h3>Industries/Interests</h3>
+
+    <%= link_to 'full list', combined_admin_industries_path, target: '_blank' %>
+  
+    <div id="industry-interest-tags" class="jquery-tags">
+      <%= form.text_area :industry_interest_tags %>
+    </div>
+  </div>
+  
+  <div id="metros-collection">
+    <h3>Metro Areas</h3>
+
+    <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
+  
+    <div id="metro-tags" class="jquery-tags">
+      <%= form.text_area :metro_tags, class: 'metro-tags' %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -47,7 +47,6 @@ Be sure to re-source this file in any open console windows to get it to work. No
     # run database migrations
     career rake db:migrate
 
-
 ### Non-Docker (untested)
 
 First, we need to copy a couple of environment files in the app directory:
@@ -81,17 +80,32 @@ Now you should be able to run the app using the following command. We're specify
 
 Go to http://localhost:3010 in your favorite browser. If everything's working correctly, you should see the greeting, "Yay! You're on Rails!"
 
+## Post-Setup
+
+At least once, you should load the database with valid zip codes and metro areas. The import files are not in the repo, they're too large. They're located in Google Drive:
+
+* `postal-codes.csv`: https://drive.google.com/open?id=1vfwSF3bwX2GnM7fLq3iktgR7CDIhaPsI
+* `msa.txt`: https://drive.google.com/open?id=16oM_ZJXogOBtz9U6MDEaZXzW6fn4AMog
+
+Copy them to the `tmp`, then:
+
+    docker-compose exec career-mgr rake postal:load
+
+This will allow the app to calculate distances between fellows and opportunities, and will generate all the needed metro areas for fellow/opp matching.
 
 ## Continuing Development
 
-Whenever you pull in changes from upstream, you should run these commands in the root directory of the app:
+If you restarted your OS, it's usually a good thing to restart the Docker app.
+
+Whenever you pull in changes from upstream, you should run the following commands in the root directory of the app: 
 
     docker-compose build career-mgr
     docker-compose stop career-mgr
     docker-compose up -d --force-recreate career-mgr
+    docker-compose up -d
     
     docker-compose exec career-mgr rake db:migrate
-    
+   
     docker-compose exec career-mgr rspec
 
 If you make updates to `Gemfile` on your own, run the first group of commands above. If you create migrations of your own, run the `rake db:migrate` command to update the database.
@@ -101,6 +115,25 @@ Periodically, run rspec to ensure that you haven't broken any existing tests wit
 If you'd like to reset the database to the original seed data (with example employers, industries, and interests), you can re-run this command at any time:
 
     docker-compose exec career-mgr rake db:seed
+
+...or go all out with this one:
+
+    docker-compose exec career-mgr rake db:drop db:create db:schema:load db:init db:seed
+
+## Troubleshooting
+
+* `HTTPError Could not fetch specs from https://rubygems.org/` - Restart docker.
+* If rspec fails with a `PendingMigrationError`, run this: `docker-compose exec career-mgr rake db:migrate RAILS_ENV=test` (sometimes you may need to run it more than once)
+
+## Testing
+
+You can run the test suite like so:
+
+    docker-compose exec career-mgr rspec
+
+You can open a dedicated terminal window and have tests run automatically as you code:
+
+    docker-compose exec career-mgr guard
 
 
 ## Conclusion

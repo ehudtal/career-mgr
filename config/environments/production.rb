@@ -65,6 +65,23 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.default_url_options = {host: 'career.bebraven.org'}
+  config.action_mailer.delivery_method = :safety_mailer
+  config.action_mailer.safety_mailer_settings = {
+    allowed_matchers: [/@/],
+    delivery_method: :smtp,
+    delivery_method_settings: {
+      address:              Rails.application.secrets.smtp_server,
+      port:                 587,
+      domain:               Rails.application.secrets.smtp_domain,
+      user_name:            Rails.application.secrets.smtp_username,
+      password:             Rails.application.secrets.smtp_password,
+      authentication:       'login',
+      default_name:         'Braven Careers',
+      enable_starttls_auto: true
+    }
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

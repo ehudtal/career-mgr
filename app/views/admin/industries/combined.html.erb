@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Career Manager</title>
+  </head>
+
+  <body>
+    <main>
+      <h1>Industries/Interests/Majors</h1>
+      <p><strong>Tip:</strong> Click ctrl+F (cmd+F on a Mac) to find an item.</p>
+      <ul>
+        <% @names.each do |name| %>
+          <li><%= name %></li>
+        <% end %>
+      </ul>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<p>
+  <strong>Opportunity Name:</strong>
+  <%= @opportunity.name %>
+</p>
+
+<p>
+  <strong>Employer:</strong>
+  <%= @opportunity.employer.name %>
+</p>
+<p>
+  <strong>Job Posting URL:</strong>
+  <%= link_to @opportunity.job_posting_url, @opportunity.job_posting_url, target: '_blank' %>
+</p>
+<p>
+  <strong>Summary:</strong>
+  <%= @opportunity.summary %>
+</p>
+<p>
+  <strong>How to Apply:</strong>
+  <%= @opportunity.how_to_apply %>
+</p>
+
+
+<%= render 'admin/industries/list', object: @opportunity %>
+<%= render 'admin/interests/list', object: @opportunity %>
+
+<h3>Active Candidates</h3>
+
+<% if @opportunity.fellow_opportunities.empty? %>
+  <p>There are no active candidates at this time.</p>
+<% else %>
+  <table class="fellows">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Stage</th>
+        <th>Probability</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @opportunity.fellow_opportunities.sort_by{|fo| 0-fo.opportunity_stage.probability}.each do |candidacy| %>
+        <%= form_for [:admin, candidacy], url: admin_candidate_path(candidacy), method: :put do |f| %>
+          <tr>
+            <td><%= link_to candidacy.fellow.full_name, admin_fellow_path(candidacy.fellow) %></td>
+            <td><%= f.collection_select :opportunity_stage_id, OpportunityStage.order('position asc').all, :id, :name %></td>
+            <td class="right"><%= sprintf("%d%%", candidacy.opportunity_stage.probability * 100) %></td>
+            <td><%= f.submit 'Update' %></td>
+            <td><%= link_to 'Archive', admin_candidate_path(candidacy), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= link_to 'Find Candidates', admin_opportunity_candidates_path(@opportunity), class: "button" %>
+
+<footer class="actions">
+  <%= link_to 'Edit', edit_admin_opportunity_path(@opportunity), class: 'edit' %> |
+  <%= link_to 'Back', :back, class: 'back' %>
+</footer>

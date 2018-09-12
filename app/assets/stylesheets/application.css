@@ -12,4 +12,551 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui
  */
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+}
+
+main {
+  margin: 0 5vw;
+  position: relative;
+}
+
+h1,h2,h3,h4,h5,h6,
+th,
+.logout,
+.button,
+input[type="submit"],
+.tracker-item {
+  font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
+  text-transform: uppercase;
+  line-height: normal;
+  font-weight: normal;
+}
+
+h2, h3 {
+  margin-top: 2em;
+}
+
+ul.inline-list {
+  float: left;
+  padding-right: 20px;
+  margin: 0
+}
+
+label.checkbox {
+  display: inline;
+}
+
+form#opportunity-filters {
+  margin-top: 2em;
+}
+
+td.numeric {
+  text-align: right;
+}
+
+td.checkmark {
+  text-align: center;
+}
+
+a:link, a:visited,
+.toggle-next:active {
+  color: #0081bd;
+  text-decoration: none;
+  background: none;
+}
+
+a:hover, a:active,
+.toggle-next:hover {
+  text-decoration: underline;
+}
+
+input[type="submit"],
+a.button {
+  background: #EB3B46;
+  color: #FFF;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: background-color 0.2s ease-in-out;
+  padding: 8px 14px;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+input[type="submit"]:hover,
+a.button:hover {
+  background: #c8141f;
+  text-decoration: none;
+}
+
+table .edit,
+table .delete,
+table .back,
+.actions {
+  font-size: 0.75em;
+}
+
+.actions {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #CCC;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 2em 0;
+}
+
+th {
+  text-align: left;
+}
+
+td, th {
+  padding: 0.25em 1em 0.25em 0;
+  border: none;
+}
+
+tr {
+  border-bottom: 1px solid #CCC;
+}
+
+tr:first-child {
+  border-top: 1px solid #CCC;
+}
+
+.checklist {
+  margin-bottom: 1em;
+}
+
+.checklist input,
+.checklist label {
+  cursor: pointer;
+}
+
+#notice {
+  font-weight: bold;
+}
+
+.red-border {
+  border: 2px solid red;
+}
+
+/* Header and main nav */
+
+#masthead {
+  position: relative;
+  padding-top: 10px;
+  height: 40px;
+}
+
+#masthead .logout {
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+  padding: 6px 10px;
+  margin: 20px 10px;
+  position: relative;
+  top: 5px;
+}
+
+#header-logo {
+  margin-left: 2vw;
+  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
+  background-size: contain;
+  width: 110px;
+  height: 22px;
+  background-repeat: no-repeat;
+}
+
+#masthead h1 {
+  font-size: 1.1em;
+  text-align: center;
+  position: absolute;
+  top: 2px;
+  width: 100%;
+}
+
+#main-nav {
+  width: 200px;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  z-index: 9;
+  background: #333;
+  padding: 0 10px 30px;
+  display: none;
+}
+
+#main-nav.expanded {
+  display: block;
+}
+
+#main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #CCC;
+}
+
+#main-nav li {
+  margin: 10px;
+  display: block;
+}
+
+#menu-icon {
+  display: inline-block;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+#menu-icon .bar1, 
+#menu-icon .bar2, 
+#menu-icon .bar3 {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+#menu-icon.expanded .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-7px, 7px);
+  transform: rotate(-45deg) translate(-7px, 7px);
+}
+
+#menu-icon.expanded .bar2 {opacity: 0;}
+
+#menu-icon.expanded .bar3 {
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
+}
+
+#masthead {
+  background: black;
+}
+
+#masthead a {
+  color: #FFF;
+}
+
+/* JQuery tags */
+
+.jquery-tags {
+  width: 400px;
+}
+
+.jquery-tags textarea {
+  display: none;
+}
+
+#industry-checklist, #interest-checklist, #metro-checklist {
+  display: none;
+}
+
+#jquery-tags {
+  margin-bottom: 20px;
+}
+
+.floating-search {
+  float: left;
+  width: 450px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+/* Table sorter */
+
+table.tablesorter {
+  width: calc( 100vw - ( (100vw - 672px) / 2 ) - 20px );
+  font-size: 1em;
+}
+
+table.tablesorter thead tr th,
+table.tablesorter tfoot tr th {
+  font-size: 1em;
+  padding-right: 15px;
+}
+
+/* Generic collapse/expand/toggle */
+
+.collapsed {
+  display: none;
+}
+
+.more {
+  transition: height 1s;
+}
+
+.toggle-next {
+  cursor: pointer;
+}
+
+/* Opportunity Stages Job Hunter UI */
+
+.opportunity-stages td,
+.opportunity-stages th {
+  padding: 5px;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.phase h2,
+th {
+  font-size: 1.2em;
+  margin-top: 0;
+}
+
+.phase {
+  padding: 10px;
+  text-align: center;
+}
+
+.opportunity-stages .completed {
+  background: rgba(0,0,0,0.05);
+  padding-right: 25px;
+  position: relative;
+}
+
+.opportunity-stages .not-completed {
+  color: #999;
+}
+
+.opportunity-stages .completed:after {
+  content: "\2714";
+  position: absolute;
+  display: block;
+  right: 5px;
+  top: 10px;
+  font-size: 24px;
+  color: green;
+}
+
+.stage h3 {
+  font-size: 1em;
+  margin: 0.25em 0;
+}
+
+.active-stage h3 {
+  font-size: 1.6em;
+  margin: 0 0 0.5em;
+}
+
+.active-stage h4 {
+  margin: 0 0 0.25em;
+}
+
+.inactive h4 {
+  margin: 0.5em 0;
+}
+
+span.burden {
+  font-size: 0.8em;
+  margin-left: 1em;
+}
+
+.burden::before {
+  content: "\1F553";
+  display: inline-block;
+  font-weight: normal;
+  font-style: normal;
+  position: relative;
+  bottom: 1px;
+  margin-right: 2px;
+}
+
+#stage-notice {
+  margin: -5px -5px 10px;
+  padding: 10px 5px;
+  background: gold;
+  font-style: italic;
+}
+
+/* Career Progress Tracker */
+
+#career-tracker {
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-justify-content: start; /* Safari */
+  justify-content:         start;
+  -webkit-align-content: flex-start; /* Safari */
+  align-content:         flex-start;
+  width: 920px;
+  margin: 0 calc( (672px - 930px)/2 );
+}
+
+.tracker-item {
+  width: 214px;
+  height: 135px;
+  margin: 5px;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+  flex-shrink: 0;
+  background: #FAFAFA;
+  position: relative;
+}
+
+.tracker-item input:checked + label {
+  background: green;
+  color: white;
+}
+
+.tracker-item label {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.tracker-item p {
+  text-transform: none;
+}
+
+.tracker-item h4 {
+  font-size: 1.5em;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.tracker-item input {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.start {
+  background: #CCC;
+  color: white;
+}
+
+.big-symbol {
+  font-size: 5em !important;
+  text-align: center;
+}
+
+.tracker-item:hover {
+  background: #DDD;
+}
+
+.tracker-item input:checked + label:hover {
+  background: darkgreen;
+}
+
+.tracker-item a {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+  font-size: 0.85em;
+}
+
+.tracker-item input:checked + label + a {
+  color: #CCC;
+}
+
+.tracker-item.start:hover {
+  background: #CCC;
+  cursor: default;
+}
+
+.tracker-item label:hover {
+  cursor: pointer;
+}
+
+/* SSO Discovery */
+
+#sso_discovery {
+  margin: 1em 2em;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#sso_discovery h2 {
+  font-size: 100%;
+  font-family: "TradeGothicNo.20-CondBold", "Oswald", "Open Sans", sans-serif;
+  text-transform: uppercase;
+  line-height: normal;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  display: block;
+}
+
+#sso_discovery a {
+  display: inline-block;
+  vertical-align: top;
+  width: 10em;
+  height: 10em;
+  margin: 1em;
+  border: solid 1px #ccc;
+  box-sizing: border-box;
+  padding: 1em;
+  text-align: center;
+  line-height: 8em;
+}
+
+#sso_discovery a img {
+  vertical-align: middle;
+  display: inline;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+}
+
+/* Media Queries */
+
+@media all and (max-width: 1170px) {
+  #career-tracker {
+    width: 672px;
+    margin: 0 -5px;
+  }
+}
+
+@media all and (max-width: 700px) {
+  main {
+    width: 100%;
+    padding: 0 1vw;
+  }
+
+  #career-tracker {
+    width: 100%;
+  }
+
+  .tracker-item {
+    width: 100%;
+    height: unset;
+  }
+
+  .tracker-item h4 {
+    position: static;
+    margin: 0 0.5em 0 0;
+    display: inline;
+  }
+
+  table.tablesorter {
+    width: 672px;
+  }
+}

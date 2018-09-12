@@ -1,0 +1,45 @@
+<h1>Fellows</h1>
+
+<table class="fellows">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Graduation</th>
+      <th>Major</th>
+      <th>GPA</th>
+      <th>Efficacy score</th>
+      <th>Employment status</th>
+      <th>Resumé</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fellows.each do |fellow| %>
+      <tr>
+        <td><%= fellow.key %></td>
+        <td><%= link_to fellow.full_name, admin_fellow_path(fellow) %></td>
+        <td><%= fellow.graduation %></td>
+        <td><%= fellow.major || 'N/A' %></td>
+        <td><%= fellow.gpa || 'N/A' %></td>
+        <td><%= fellow.efficacy_score || 'N/A' %></td>
+        <td><%= fellow.employment_status.name %></td>
+        <td>
+          <% if fellow.resume.attached? %>
+            <%= link_to 'available', url_for(fellow.resume), target: '_blank' %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Edit', edit_admin_fellow_path(fellow), class: 'edit' %></td>
+        <td><%= link_to 'Delete', admin_fellow_path(fellow), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @fellows %>
+
+<br>
+
+<%= link_to 'New Fellow', new_admin_fellow_path %> |
+<%= link_to 'Upload Fellows via CSV', upload_admin_fellows_path %>

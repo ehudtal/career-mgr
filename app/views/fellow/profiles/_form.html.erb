@@ -1,0 +1,102 @@
+<%= form_with(model: [:fellow, fellow], local: true, multipart: true, url: fellow_profile_path, html: {method: 'patch'}) do |form| %>
+  <%= hidden_field_tag :token, params[:token] %>
+  
+  <% if fellow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(fellow.errors.count, "error") %> prohibited this profile from being saved:</h2>
+
+      <ul>
+      <% fellow.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>The following information helps Braven connect you with opportunities, and may be shared with potential employers. <em>Keep it up to date to ensure you get the most relevant offers.</em></p>
+
+  <h2 id="info-personal">Personal Info</h2>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :resume, 'Resumé PDF' %>
+    <%= form.file_field :resume %>
+  </div>
+
+  <div class="field">
+    <%= form.label :graduation_year %>
+    <%= form.number_field :graduation_year %>
+  </div>
+
+  <div class="field">
+    <%= form.label :graduation_semester, 'Graduation term' %>
+    <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :major %>
+    <%= form.text_field :major %>
+  </div>
+
+  <div class="field">
+    <%= form.label :affiliations, 'Affiliations (e.g. professional associations, greek orgs, clubs)' %>
+    <%= form.text_area :affiliations %>
+  </div>
+
+  <div class="field">
+    <%= form.label :linkedin_url, 'LinkedIn profile URL ("https://...")' %>
+    <%= form.text_field :linkedin_url %>
+  </div>
+  
+  <h2 id="info-contact">Contact</h2>
+
+  <%= render 'admin/contacts/nested_form', form: form %>
+
+  <h2 id="info-career">Career Search Preferences</h2>
+
+  <p>Braven uses the following to find opportunities for you that match what you want to do and where you want to do it.</p>
+
+  <div class="field">
+    <%= form.label :employment_status_id, 'Current job strength' %>
+    <%= form.collection_select(:employment_status_id, EmploymentStatus.all, :id, :name) %>
+    <p><strong>Tip:</strong> Use the <a href="https://drive.google.com/a/bebraven.org/file/d/1RAfYwl8kRP9DkhjuVLKeCmYQzIhBzKVn/view?usp=sharing">Braven Career Accelerating Scorecard</a> to asssess your current job's strength.</p>
+  </div>
+  
+  <div class="field">
+    <%= form.check_box :receive_opportunities %>
+    <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
+  </div>
+
+  <%= render 'admin/opportunity_types/check_boxes', fellow: fellow %>
+
+  <h3 id="info-interests">Industries and Interests</h3>
+  
+  <div id="industry-interest-tags" class="jquery-tags">
+    <%= form.text_area :industry_interest_tags %>
+  </div>
+
+  <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+ 
+  <h3 id="info-metro">Where You'd Like to Work</h3>
+  
+  <p><strong>Note:</strong> You can choose metro areas or entire states (try typing the full state name). Leaving this blank may prevent you from getting any opportunities.</p>
+
+  <div id="metro-tags" class="jquery-tags">
+    <%= form.text_area :metro_tags, class: 'metro-tags' %>
+  </div>
+
+  <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
+
+  <div class="actions">
+    <%= form.submit 'Update Profile' %>
+  </div>
+<% end %>

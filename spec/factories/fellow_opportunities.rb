@@ -3,5 +3,7 @@ FactoryBot.define do
     association :fellow
     association :opportunity
     association :opportunity_stage
+    
+    active true
   end
 end

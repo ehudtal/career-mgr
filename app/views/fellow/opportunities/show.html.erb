@@ -1,0 +1,107 @@
+<h1><%= @candidate.opportunity.formatted_name %></h1>
+<p>
+  <strong>Summary:</strong>
+  <%= @candidate.opportunity.summary %>
+</p>
+<p>
+  <strong>How to Apply:</strong>
+  <%= @candidate.opportunity.how_to_apply %>
+</p>
+<p>
+  <strong>Job Posting URL:</strong>
+  <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
+</p>
+<%= render 'admin/industries/list', object: @candidate.opportunity %>
+<%= render 'admin/interests/list', object: @candidate.opportunity %>
+<h2>Where am I in the process?</h2>
+<p><strong>Note:</strong> You're not expected to do everything below in one go. If you take a break we'll simply send you a helpful reminder so you can pick up where you left off.</p>
+<table class="opportunity-stages">
+  <thead>
+    <th class="phase">Phase</th>
+    <th class="recommended-action">Recommended Action</th>
+  </thead>
+  
+  <tbody>
+    <% completion = 'completed' %>
+
+    <% ['Apply', 'Interview', 'Offer'].each do |phase| %>
+      <% phase_content = @content.select{|k,v| v['phase'] == phase} %>
+
+      <% phase_content.each do |stage_name, content| %>
+        <tr>
+          <% if content['phase_position'].to_i == 1 %>
+            <td class="phase phase-<%= phase.downcase %>" rowspan="<%= phase_content.size %>"><h2><%= phase %></h2></td>
+          <% end %>
+
+          <% if stage_name == @candidate.stage # Active Stage %>
+            <% completion = 'not-completed' %> 
+
+            <td class="stage active-stage phase-<%= phase.downcase %>">
+              <% if flash[:stage_notice] %>
+                <div id="stage-notice"><%= interpolate(flash[:stage_notice]) %></div>
+              <% end %>
+              
+              <h3>
+                <%= content['phase_position'] %>. <%= content['title'] %>
+              </h3>
+              <% if content['burden'] %>
+                  <p class="burden">About <%= interpolate(content['burden']) %></p>
+                <% end %>
+              <% if content['links'] %>
+                <h4 class="question"><%= interpolate(content['question']) %></h4>     
+                <ul class="response-links">
+                  <% content['links'].each do |update, label| %>
+                    <li><%= link_to_status_update update, label %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+          
+              <% if content['tips'] %>
+                <h4 class="tips-toggle">How to do this like a pro</h4>
+                <div class="tips">
+                  <% if content['tips']['header'] %>
+                    <p><%= interpolate(content['tips']['header']) %></p>
+                  <% end %>
+                  <% if content['tips']['list'] %>
+                    <ul>
+                      <% content['tips']['list'].each do |tip| %>
+                        <li><%= interpolate(tip) %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </div>
+              <% end %>
+            </td>
+
+          <% else # Not the active Stage %>
+            <td class="stage <%= completion %> phase-<%= phase.downcase %> inactive">
+              <h4 class="toggle-next">
+                <%= content['phase_position'] %>. <%= content['title'] %>
+                <% if content['burden'] %>
+                  <span class="burden">About <%= interpolate(content['burden']) %></span>
+                <% end %>    
+              </h4>
+              <div class="more collapsed">
+                <h5 class="question"><%= interpolate(content['question']) %></h5>     
+                <% if content['tips'] %>
+                  <div class="tips">
+                    <% if content['tips']['header'] %>
+                      <p><%= interpolate(content['tips']['header']) %></p>
+                    <% end %>
+                    <% if content['tips']['list'] %>
+                      <ul>
+                        <% content['tips']['list'].each do |tip| %>
+                          <li><%= interpolate(tip) %></li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

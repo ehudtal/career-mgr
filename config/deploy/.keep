@@ -1,0 +1,1 @@
+Here so we can checkin the empty deploy directory. The production.rb and staging.rb files aren't in src ctrl so we don't expose any sensitive info.
