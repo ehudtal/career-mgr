@@ -10,10 +10,10 @@ default links with employer: &default_links_with_employer
   
 default notices: &default_notices
   next: "Okay, thanks for the update, <%= @fellow.first_name %>. Here’s the next recommended step:"
-  no change: "Okay."
-  skip: "Okay."
-  fellow declined: "Thanks for letting us know."
-  employer declined: "Sorry to hear that."
+  skip: "Okay, thanks for the update, <%= @fellow.first_name %>. Here’s the next recommended step:"
+  no change: "Okay, <%= \"block out #{@content[@candidate.stage]['burden']} on your calendar to do this\" if @content[@candidate.stage]['burden'] %> but don’t let it drag on too long. You’ll get another reminder soon!"
+  fellow declined: "Sorry to hear it wasn't a good fit. Keep looking, we're sure you'll find something that works out!"
+  employer declined: "Sorry to hear it wasn't a good fit. Keep looking, we're sure you'll find something that works out!"
 
 respond to invitation:
   notices: *default_notices
@@ -27,7 +27,7 @@ research employer:
     header: "Look up the employer's own website (see link above) and on other sites such as:"
     list:
       - "LinkedIn"
-      - "<a href='https://glassdoor.com'>GlassDoor</a>"
+      - "GlassDoor"
       - "Better Business Bureau"
       - "Idealist.org (for mission-driven organizations)"
   links: *default_links

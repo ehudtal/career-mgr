@@ -38,7 +38,7 @@
 
             <td class="stage active-stage phase-<%= phase.downcase %>">
               <% if flash[:stage_notice] %>
-                <div id="stage-notice"><%= flash[:stage_notice]%></div>
+                <div id="stage-notice"><%= interpolate(flash[:stage_notice]) %></div>
               <% end %>
               
               <h3>

@@ -50,6 +50,109 @@ h2, h3 {
   margin-top: 2em;
 }
 
+ul.inline-list {
+  float: left;
+  padding-right: 20px;
+  margin: 0
+}
+
+label.checkbox {
+  display: inline;
+}
+
+form#opportunity-filters {
+  margin-top: 2em;
+}
+
+td.numeric {
+  text-align: right;
+}
+
+a:link, a:visited,
+.toggle-next:active {
+  color: #0081bd;
+  text-decoration: none;
+  background: none;
+}
+
+a:hover, a:active,
+.toggle-next:hover {
+  text-decoration: underline;
+}
+
+input[type="submit"],
+a.button {
+  background: #EB3B46;
+  color: #FFF;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: background-color 0.2s ease-in-out;
+  padding: 8px 14px;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+input[type="submit"]:hover,
+a.button:hover {
+  background: #c8141f;
+  text-decoration: none;
+}
+
+table .edit,
+table .delete,
+table .back,
+.actions {
+  font-size: 0.75em;
+}
+
+.actions {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #CCC;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 2em 0;
+}
+
+th {
+  text-align: left;
+}
+
+td, th {
+  padding: 0.25em 1em 0.25em 0;
+  border: none;
+}
+
+tr {
+  border-bottom: 1px solid #CCC;
+}
+
+tr:first-child {
+  border-top: 1px solid #CCC;
+}
+
+.checklist {
+  margin-bottom: 1em;
+}
+
+.checklist input,
+.checklist label {
+  cursor: pointer;
+}
+
+#notice {
+  font-weight: bold;
+}
+
+.red-border {
+  border: 2px solid red;
+}
+
+/* Header and main nav */
+
 #masthead {
   position: relative;
   padding-top: 10px;
@@ -140,50 +243,6 @@ h2, h3 {
   transform: rotate(45deg) translate(-6px, -6px);
 }
 
-a:link, a:visited,
-.toggle-next:active {
-  color: #0081bd;
-  text-decoration: none;
-  background: none;
-}
-
-a:hover, a:active,
-.toggle-next:hover {
-  text-decoration: underline;
-}
-
-input[type="submit"],
-a.button {
-  background: #EB3B46;
-  color: #FFF;
-  border: none;
-  text-transform: uppercase;
-  border-radius: 2px;
-  transition: background-color 0.2s ease-in-out;
-  padding: 8px 14px;
-  margin-bottom: 0;
-  line-height: 1;
-}
-
-input[type="submit"]:hover,
-a.button:hover {
-  background: #c8141f;
-  text-decoration: none;
-}
-
-table .edit,
-table .delete,
-table .back,
-.actions {
-  font-size: 0.75em;
-}
-
-.actions {
-  margin-top: 2em;
-  padding-top: 1em;
-  border-top: 1px solid #CCC;
-}
-
 #masthead {
   background: black;
 }
@@ -192,44 +251,7 @@ table .back,
   color: #FFF;
 }
 
-table {
-  border-collapse: collapse;
-  margin: 2em 0;
-}
-
-th {
-  text-align: left;
-}
-
-td, th {
-  padding: 0.25em 1em 0.25em 0;
-  border: none;
-}
-
-tr {
-  border-bottom: 1px solid #CCC;
-}
-
-tr:first-child {
-  border-top: 1px solid #CCC;
-}
-
-.checklist {
-  margin-bottom: 1em;
-}
-
-.checklist input,
-.checklist label {
-  cursor: pointer;
-}
-
-#notice {
-  font-weight: bold;
-}
-
-.red-border {
-  border: 2px solid red;
-}
+/* JQuery tags */
 
 .jquery-tags {
   width: 400px;
@@ -254,6 +276,8 @@ tr:first-child {
   margin-bottom: 20px;
 }
 
+/* Table sorter */
+
 table.tablesorter {
   width: calc( 100vw - ( (100vw - 672px) / 2 ) - 20px );
   font-size: 1em;
@@ -264,6 +288,8 @@ table.tablesorter tfoot tr th {
   font-size: 1em;
   padding-right: 15px;
 }
+
+/* Generic collapse/expand/toggle */
 
 .collapsed {
   display: none;
@@ -351,6 +377,13 @@ span.burden {
   position: relative;
   bottom: 1px;
   margin-right: 2px;
+}
+
+#stage-notice {
+  margin: -5px -5px 10px;
+  padding: 10px 5px;
+  background: gold;
+  font-style: italic;
 }
 
 /* Career Progress Tracker */
@@ -449,55 +482,7 @@ span.burden {
   cursor: pointer;
 }
 
-/* Media Queries */
-
-@media all and (max-width: 1170px) {
-  #career-tracker {
-    width: 672px;
-    margin: 0 -5px;
-  }
-}
-
-@media all and (max-width: 700px) {
-  main {
-    width: 100%;
-    padding: 0 1vw;
-  }
-
-  #career-tracker {
-    width: 100%;
-  }
-
-  .tracker-item {
-    width: 100%;
-    height: unset;
-  }
-
-  .tracker-item h4 {
-    position: static;
-    margin: 0 0.5em 0 0;
-    display: inline;
-  }
-
-  table.tablesorter {
-    width: 672px;
-  }
-}
-
-ul.inline-list {
-  float: left;
-  padding-right: 20px;
-  margin: 0
-}
-
-div#stage-notice {
-  background: #efe;
-  font-weight: bold;
-}
-
-label.checkbox {
-  display: inline;
-}
+/* SSO Discovery */
 
 #sso_discovery {
   margin: 1em 2em;
@@ -538,10 +523,38 @@ label.checkbox {
   margin: 0 auto;
 }
 
-form#opportunity-filters {
-  margin-top: 2em;
+/* Media Queries */
+
+@media all and (max-width: 1170px) {
+  #career-tracker {
+    width: 672px;
+    margin: 0 -5px;
+  }
 }
 
-td.numeric {
-  text-align: right;
+@media all and (max-width: 700px) {
+  main {
+    width: 100%;
+    padding: 0 1vw;
+  }
+
+  #career-tracker {
+    width: 100%;
+  }
+
+  .tracker-item {
+    width: 100%;
+    height: unset;
+  }
+
+  .tracker-item h4 {
+    position: static;
+    margin: 0 0.5em 0 0;
+    display: inline;
+  }
+
+  table.tablesorter {
+    width: 672px;
+  }
 }
+
