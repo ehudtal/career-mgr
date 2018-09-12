@@ -41,7 +41,24 @@ $(document).on "turbolinks:load",  ->
         
           $("##{element}-checklist").hide()
           $("##{element}-tags").show()
-        
+
+  preventPartialTags = () ->
+    $('form').submit (event) ->
+      $('.jquery-tags input').each ->
+        if $(this).val().length > 0
+          event.preventDefault()
+          
+          leftover = $(this).val()
+          label = $(this).parents('.jquery-tags').prevAll('h3').text()
+          
+          alert("Please complete or remove your search for \"#{leftover}\" in \"#{label}\"")
+          setTimeout(reenableSubmit, 1000)
+  
+  reenableSubmit = () ->
+    $('form input[type="submit"]').removeAttr('disabled', 'false')
+          
   enableFellowTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableFellowTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
   enableFellowTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Location')
+
+  preventPartialTags()

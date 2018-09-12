@@ -64,6 +64,8 @@ RSpec.feature "OpportunityViews", type: :feature do
 
     click_on 'Create Opportunity'
     opportunity = Opportunity.last
+    
+    expect(page).to have_content("successfully created")
 
     [:name, :summary, :job_posting_url].each do |attr|
       expect(opportunity.send(attr)).to eq(opportunity_attributes[attr])

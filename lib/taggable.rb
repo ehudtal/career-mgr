@@ -33,7 +33,7 @@ module Taggable
   
   module IndustryMethods
     def industry_tags
-      industries.pluck(:name).join(';')
+      Industry.where(id: self.industry_ids).pluck(:name).join(';')
     end
   
     def industry_tags= tag_string
@@ -43,7 +43,7 @@ module Taggable
   
   module InterestMethods
     def interest_tags
-      interests.pluck(:name).join(';')
+      Interest.where(id: self.interest_ids).pluck(:name).join(';')
     end
   
     def interest_tags= tag_string
@@ -53,7 +53,7 @@ module Taggable
   
   module MajorMethods
     def major_tags
-      majors.pluck(:name).join(';')
+      Major.where(id: self.major_ids).pluck(:name).join(';')
     end
   
     def major_tags= tag_string
@@ -63,7 +63,7 @@ module Taggable
   
   module IndustryInterestMethods
     def industry_interest_tags
-      (industries.pluck(:name) | interests.pluck(:name) | majors.pluck(:name)).sort.join(';')
+      (industry_tags.split(';') | interest_tags.split(';') | major_tags.split(';')).sort.join(';')
     end
   
     def industry_interest_tags= tag_string
@@ -75,7 +75,7 @@ module Taggable
   
   module MetroMethods
     def metro_tags
-      metros.pluck(:name).join(';')
+      Metro.where(id: self.metro_ids).pluck(:name).join(';')
     end
   
     def metro_tags= tag_string
