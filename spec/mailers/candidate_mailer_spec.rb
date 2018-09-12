@@ -51,7 +51,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     
     let(:mail) { CandidateMailer.with(access_token: access_token).respond_to_invitation }
 
-    expect_headers "#{fellow.first_name} - Please update your profile"
+    expect_headers "New Opportunity matches your career profile"
     expect_content 'New Opportunity'
 
     expect_status_link 'respond to invitation', 'research employer'
