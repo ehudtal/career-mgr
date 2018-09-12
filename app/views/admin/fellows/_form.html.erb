@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, fellow], local: true) do |form| %>
+<%= form_with(model: [:admin, fellow], local: true, multipart: true) do |form| %>
   <% if fellow.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(fellow.errors.count, "error") %> prohibited this fellow from being saved:</h2>
@@ -10,6 +10,11 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="field">
+    <%= form.label :resume, 'Resume PDF' %>
+    <%= form.file_field :resume %>
+  </div>
 
   <div class="field">
     <%= form.label :first_name %>
@@ -79,6 +84,8 @@
   <hr>
 
   <%= render 'admin/contacts/nested_form', form: form %>
+
+  <%= render 'admin/opportunity_types/check_boxes', fellow: fellow %>
   
   <div id="interests-collection">
     <h3>Industries/Interests/Majors</h3>

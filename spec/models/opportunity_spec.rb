@@ -131,6 +131,7 @@ RSpec.describe Opportunity, type: :model do
     let(:major_parent) { create :major }
     let(:major_child) { create :major, parent: major_parent }
     let(:metro) { create :metro }
+    let(:opportunity_type) { create :opportunity_type }
     
     def matching_industry
       opportunity.industries << industry
@@ -156,12 +157,24 @@ RSpec.describe Opportunity, type: :model do
       fellow.update receive_opportunities: false
     end
     
+    before do
+      opportunity.opportunity_type = opportunity_type
+      fellow.opportunity_types << opportunity_type
+    end
+    
     describe 'with matching metro' do
       before { matching_metro }
     
       it "includes fellow when there is a shared interest" do
         matching_interest
         expect(opportunity.candidates).to include(fellow)
+      end
+    
+      it "excludes fellow when fellow does not share overlap opportunity types" do
+        matching_interest
+        fellow.opportunity_types = []
+        
+        expect(opportunity.candidates).to_not include(fellow)
       end
     
       it "excludes fellow when fellow does not share the interest" do

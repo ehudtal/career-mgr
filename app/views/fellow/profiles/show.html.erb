@@ -8,6 +8,23 @@
       <th>Name:</th>
       <td><%= @fellow.full_name %></td>
     </tr>
+<<<<<<< HEAD
+=======
+    <tr class="key">
+      <th>Key:</th>
+      <td><%= @fellow.key %></td>
+    </tr>
+    <tr>
+      <th>Resumé:</th>
+      <td>
+        <% if @fellow.resume.attached? %>
+          <%= link_to 'available', url_for(@fellow.resume), target: '_blank' %>
+        <% else %>
+          unavailable
+        <% end %>
+      </td>
+    </tr>
+>>>>>>> 569fac743713f00d2605500638f4837ddac2e701
     <tr class="new-section">
       <th>Graduation:</th>
       <td><%= @fellow.graduation_semester %> <%= @fellow.graduation_year %></td>

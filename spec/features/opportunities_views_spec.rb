@@ -40,7 +40,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     opportunity_attributes = attributes_for :opportunity
 
     fill_in 'Opportunity Name or Job Title', with: opportunity_attributes[:name]
-    fill_in 'Description', with: opportunity_attributes[:description]
+    fill_in 'Summary', with: opportunity_attributes[:summary]
 
     click_on '+add a location'
 
@@ -65,7 +65,7 @@ RSpec.feature "OpportunityViews", type: :feature do
     click_on 'Create Opportunity'
     opportunity = Opportunity.last
 
-    [:name, :description, :job_posting_url].each do |attr|
+    [:name, :summary, :job_posting_url].each do |attr|
       expect(opportunity.send(attr)).to eq(opportunity_attributes[attr])
     end
 
@@ -115,8 +115,8 @@ RSpec.feature "OpportunityViews", type: :feature do
     updated_name = opportunity.name + 'x'
     fill_in 'Opportunity Name or Job Title', with: updated_name
 
-    updated_desc = opportunity.description + 'x'
-    fill_in 'Description', with: updated_desc
+    updated_summary = opportunity.summary + 'x'
+    fill_in 'Summary', with: updated_summary
     
     expect_list_link_for 'industries/interests', link: 'full list', within: '#interests-collection'
     expect_list_link_for :metro_areas, link: 'full list', within: '#metros-collection'
@@ -134,7 +134,7 @@ RSpec.feature "OpportunityViews", type: :feature do
 
     opportunity.reload
     expect(opportunity.name).to eq(updated_name)
-    expect(opportunity.description).to eq(updated_desc)
+    expect(opportunity.summary).to eq(updated_summary)
 
     expect(opportunity.industries).to include(industry_excluded)
     expect(opportunity.industries).to_not include(industry_included)

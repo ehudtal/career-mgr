@@ -7,6 +7,8 @@ RSpec.describe OpportunityType, type: :model do
   
   it { should have_many :opportunities }
   
+  it { should have_and_belong_to_many :fellows }
+  
   #############
   # Validations
   #############

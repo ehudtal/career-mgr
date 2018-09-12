@@ -1,6 +1,8 @@
 class OpportunityType < ApplicationRecord
   has_many :opportunities
   
+  has_and_belongs_to_many :fellows
+  
   validates :name, :position, presence: true, uniqueness: true
   
   class << self

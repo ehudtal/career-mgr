@@ -1,37 +1,48 @@
-<h1><%= @fellow.first_name %>&rsquo;s Career Dashboard</h1>
+<div id="career-progress" class="<%= @fellow.career_steps.all?(&:completed?) ? ' all-done' : '' %>">
+  <h1><%= @fellow.first_name %>&rsquo;s Career Dashboard</h1>
 
-<%= link_to 'View profile details', fellow_profile_path %>
+  <%= link_to 'View profile details', fellow_profile_path %>
 
-<h2>Career Progress</h2>
+  <h2>Career Progress</h2>
 
-<p>Complete these important milestones to set yourself up for successful job hunting. Most of the items can be completed as part of the Braven Accelerator.</p>
+  <p>Complete these important milestones to set yourself up for successful job hunting. Most of the items can be completed as part of the Braven Accelerator.</p>
 
+<<<<<<< HEAD
 <%= form_tag fellow_home_career_path, class: 'career-tracker-form' do %>
   <div id="career-tracker">
     <% @fellow.career_steps.order(position: 'asc').each do |career_step| %>
       <% label = "career-item-#{sprintf('%02d', career_step.position + 1)}" %>
+=======
+
+  <%= form_tag fellow_home_career_path, class: 'career-tracker-form' do %>
+    <div id="career-tracker">
+      <div class="tracker-item start"><h4>START</h4><p class="big-symbol">&#10132;</p></div>
+      <% @fellow.career_steps.order(position: 'asc').each do |career_step| %>
+        <% label = "career-item-#{sprintf('%02d', career_step.position + 1)}" %>
+>>>>>>> 569fac743713f00d2605500638f4837ddac2e701
     
-      <div class="tracker-item">
-        <%= check_box_tag('career_steps[]', career_step.position, career_step.completed, id: label, class: 'career') %>
+        <div class="tracker-item">
+          <%= check_box_tag('career_steps[]', career_step.position, career_step.completed, id: label, class: 'career') %>
       
-        <label for="<%= label %>">
-          <h4><%= career_step.position + 1 %></h4>
-          <p><%= career_step.description %></p>
-        </label></div>
-    <% end %>
-  </div>
-<% end %>
+          <label for="<%= label %>">
+            <h4><%= career_step.position + 1 %></h4>
+            <p><%= career_step.description %></p>
+          </label></div>
+      <% end %>
+    </div>
+  <% end %>
 
-<h2>Job Hunter</h2>
+  <h2>Job Hunter</h2>
 
-<p>This tool shows career opportunities for selected Braven Fellows from our employer partners. You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>
+  <p>This tool shows career opportunities for selected Braven Fellows from our employer partners. You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>
 
-<% if @fellow.fellow_opportunities.empty? %>
-  <p>None at this time. You'll be notified when new ones come up that match <%= link_to 'your profile', fellow_profile_path %>.</p>
-<% else %>
-  <ul class="fellow-opportunities">
-    <% @fellow.fellow_opportunities.each do |candidate| %>
-      <li><%= link_to candidate.opportunity.formatted_name, fellow_opportunity_path(candidate) %></li>
-    <% end %>
-  </ul>
-<% end %>
+  <% if @fellow.fellow_opportunities.empty? %>
+    <p>None at this time. You'll be notified when new ones come up that match <%= link_to 'your profile', fellow_profile_path %>.</p>
+  <% else %>
+    <ul class="fellow-opportunities">
+      <% @fellow.fellow_opportunities.each do |candidate| %>
+        <li><%= link_to candidate.opportunity.formatted_name, fellow_opportunity_path(candidate) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

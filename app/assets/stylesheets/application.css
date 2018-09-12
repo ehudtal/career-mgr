@@ -29,8 +29,7 @@ body {
 }
 
 main {
-  width: 672px;
-  margin: 0 auto 5vw;
+  margin: 0 5vw;
   position: relative;
 }
 
@@ -66,6 +65,10 @@ form#opportunity-filters {
 
 td.numeric {
   text-align: right;
+}
+
+td.checkmark {
+  text-align: center;
 }
 
 a:link, a:visited,
@@ -557,4 +560,3 @@ span.burden {
     width: 672px;
   }
 }
-

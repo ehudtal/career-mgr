@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :opportunity do
     sequence(:name) {|i| "Opportunity #{i}"}
-    description "Description"
+    summary "Summary"
     job_posting_url "https://example.com"
 
     association :employer
