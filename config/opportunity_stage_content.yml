@@ -9,11 +9,11 @@ default links with employer: &default_links_with_employer
   employer declined: "Employer Declined"
   
 default notices: &default_notices
-  next: "Great!"
-  no change: "Okay."
-  skip: "Okay."
-  fellow declined: "Thanks for letting us know."
-  employer declined: "Sorry to hear that."
+  next: "Okay, thanks for the update, <%= @fellow.first_name %>. Here’s the next recommended step:"
+  skip: "Okay, thanks for the update, <%= @fellow.first_name %>. Here’s the next recommended step:"
+  no change: "Okay, <%= \"block out #{@content[@candidate.stage]['burden']} on your calendar to do this\" if @content[@candidate.stage]['burden'] %> but don’t let it drag on too long. You’ll get another reminder soon!"
+  fellow declined: "Sorry to hear it wasn't a good fit. Keep looking, we're sure you'll find something that works out!"
+  employer declined: "Sorry to hear it wasn't a good fit. Keep looking, we're sure you'll find something that works out!"
 
 respond to invitation:
   notices: *default_notices
@@ -22,12 +22,12 @@ research employer:
   phase: "Apply"
   title: "Research this Employer"
   phase_position: 1
-  question: "Have you researched <%= @opp.employer.name %> online?"
+  question: "Have you researched <%= @opportunity.employer.name %> online?"
   tips:
     header: "Look up the employer's own website (see link above) and on other sites such as:"
     list:
       - "LinkedIn"
-      - "<a href='https://glassdoor.com'>GlassDoor</a>"
+      - "GlassDoor"
       - "Better Business Bureau"
       - "Idealist.org (for mission-driven organizations)"
   links: *default_links
@@ -38,10 +38,10 @@ connect with employees:
   phase: "Apply"
   title: "Connect with Current Employees"
   phase_position: 2
-  question: "Have you networked and talked to people who work(ed) for <%= @opp.employer.name %>?"
+  question: "Have you networked and talked to people who work(ed) for <%= @opportunity.employer.name %>?"
   tips:
     list:
-      - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at <%= @opp.employer.name %>."
+      - "Use your LinkedIn and Facebook connections to reach out to people who work(ed) at <%= @opportunity.employer.name %>."
       - "If you can't find any connections you can try to reach out directly through LinkedIn to someone who works there now. You have absolutely nothing to lose and it's very easy to do!"
       - "Introduce yourself, attach a resume, and ask them: \"What is it like to work there? What does the interview look like? Do you think I'll be a good fit for the company and the role?\""
       - "If it sounds like you're a good fit, ask for a referral: \"Would you be willing to refer me internally?\""
@@ -72,7 +72,7 @@ submit application:
   phase: "Apply"
   title: "Submit Your Application"
   phase_position: 4
-  question: "Have you submitted your application to <%= @opp.employer.name %>?"
+  question: "Have you submitted your application to <%= @opportunity.employer.name %>?"
   tips:
     list:
       - "Make sure your resume and cover letter are in the appropriate format (PDF unless they ask for something else)."
@@ -105,7 +105,7 @@ research interview process:
   phase: "Interview"
   title: "Research the Interview Process"
   phase_position: 2
-  question: "Have you researched the interview process at <%= @opp.employer.name %>?"
+  question: "Have you researched the interview process at <%= @opportunity.employer.name %>?"
   tips:
     list:
       - "Look through the job posting and anything else you've gotten from this employer so far for info on how the interview process works."
@@ -119,7 +119,7 @@ practice for interview:
   phase: "Interview"
   title: "Practice for Your Interview"
   phase_position: 3
-  question: "Have you practiced for your interview with <%= @opp.employer.name %>?"
+  question: "Have you practiced for your interview with <%= @opportunity.employer.name %>?"
   tips:
     list:
       - "Brainstorm possible questions they may ask and write out your answers (can be in bullet points)."
@@ -133,7 +133,7 @@ attend interview:
   phase: "Interview"
   title: "Ace Your Interview!"
   phase_position: 4
-  question: "Have you attended your interview with <%= @opp.employer.name %> yet?"
+  question: "Have you attended your interview with <%= @opportunity.employer.name %> yet?"
   tips:
     list:
       - "Make a great first impression: dress to impress (match the employer's dress code), arrive 10 minutes early, and be kind and courteous (e.g. turn off your phone)."
@@ -147,7 +147,7 @@ follow up after interview:
   phase: "Interview"
   title: "Follow Up After Your Interview"
   phase_position: 5
-  question: "Have you followed up after your interview with <%= @opp.employer.name %>?"
+  question: "Have you followed up after your interview with <%= @opportunity.employer.name %>?"
   tips:
     header: "Send a quick follow up to express your continued excitement for the opportunity and to follow-up on anything from the interview."
   links: *default_links_with_employer
@@ -157,7 +157,7 @@ receive offer:
   phase: "Offer"
   title: "Look for an Offer"
   phase_position: 1
-  question: "Have you received an offer from <%= @opp.employer.name %> yet?"
+  question: "Have you received an offer from <%= @opportunity.employer.name %> yet?"
   links:
     next: "Yes"
     no change: "Not Yet"
@@ -169,7 +169,7 @@ submit counter-offer:
   phase: "Offer"
   title: "Consider a Counter Offer"
   phase_position: 2
-  question: "Have you submitted a counter offer to <%= @opp.employer.name %>?"
+  question: "Have you submitted a counter offer to <%= @opportunity.employer.name %>?"
   tips:
     list:
       - "Give yourself a pat on the back and celebrate! You've made it this far, regardless of whether you'll end up agreeing on the terms."
@@ -189,7 +189,7 @@ accept offer:
   phase: "Offer"
   title: "Accept Your Offer!"
   phase_position: 3
-  question: "Have you accepted your offer with <%= @opp.employer.name %>?"
+  question: "Have you accepted your offer with <%= @opportunity.employer.name %>?"
   links: *default_links
   notices:
     <<: *default_notices

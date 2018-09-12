@@ -1,7 +1,7 @@
 <h1><%= @candidate.opportunity.formatted_name %></h1>
 <p>
-  <strong>Description:</strong>
-  <%= @candidate.opportunity.description %>
+  <strong>Summary:</strong>
+  <%= @candidate.opportunity.summary %>
 </p>
 <p>
   <strong>How to Apply:</strong>
@@ -11,7 +11,6 @@
   <strong>Job Posting URL:</strong>
   <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
 </p>
-<p><strong>Industries</strong></p>
 <%= render 'admin/industries/list', object: @candidate.opportunity %>
 <%= render 'admin/interests/list', object: @candidate.opportunity %>
 <h2>Where am I in the process?</h2>
@@ -39,7 +38,7 @@
 
             <td class="stage active-stage phase-<%= phase.downcase %>">
               <% if flash[:stage_notice] %>
-                <div id="stage-notice"><%= flash[:stage_notice]%></div>
+                <div id="stage-notice"><%= interpolate(flash[:stage_notice]) %></div>
               <% end %>
               
               <h3>

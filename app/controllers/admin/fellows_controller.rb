@@ -6,7 +6,7 @@ class Admin::FellowsController < ApplicationController
   # GET /fellows
   # GET /fellows.json
   def index
-    @fellows = Fellow.paginate(page: params[:page])
+    @fellows = Fellow.order(last_name: :asc, first_name: :asc).paginate(page: params[:page])
   end
 
   # GET /fellows/1
@@ -95,8 +95,8 @@ class Admin::FellowsController < ApplicationController
         :key, :first_name, :last_name, :graduation_year, :graduation_semester, :graduation_fiscal_year, 
         :interests_description, :major, :affiliations, :gpa, :linkedin_url, :staff_notes, :efficacy_score, 
         :employment_status_id, :industry_tags, :interest_tags, :metro_tags, :industry_interest_tags,
-        :receive_opportunities,
-        industry_ids: [], interest_ids: [], metro_ids: [],
+        :resume, :receive_opportunities,
+        opportunity_type_ids: [], industry_ids: [], interest_ids: [], metro_ids: [],
         contact_attributes: [:id, :address_1, :address_2, :city, :state, :postal_code, :phone, :email, :url]
       )
     end

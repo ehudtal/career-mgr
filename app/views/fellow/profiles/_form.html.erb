@@ -1,4 +1,4 @@
-<%= form_with(model: [:fellow, fellow], local: true, url: fellow_profile_path, html: {method: 'patch'}) do |form| %>
+<%= form_with(model: [:fellow, fellow], local: true, multipart: true, url: fellow_profile_path, html: {method: 'patch'}) do |form| %>
   <%= hidden_field_tag :token, params[:token] %>
   
   <% if fellow.errors.any? %>
@@ -25,6 +25,11 @@
   <div class="field">
     <%= form.label :last_name %>
     <%= form.text_field :last_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :resume, 'Resumé PDF' %>
+    <%= form.file_field :resume %>
   </div>
 
   <div class="field">
@@ -70,6 +75,8 @@
     <%= form.check_box :receive_opportunities %>
     <%= form.label :receive_opportunities, 'Receive Career Opportunties from Braven?', class: 'checkbox' %>
   </div>
+
+  <%= render 'admin/opportunity_types/check_boxes', fellow: fellow %>
 
   <h3 id="info-interests">Industries and Interests</h3>
   

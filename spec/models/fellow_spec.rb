@@ -43,6 +43,7 @@ RSpec.describe Fellow, type: :model do
   it { should have_and_belong_to_many :industries }
   it { should have_and_belong_to_many :majors }
   it { should have_and_belong_to_many :metros }
+  it { should have_and_belong_to_many :opportunity_types }
   
   it { should belong_to :employment_status }
   it { should belong_to :user }
@@ -52,6 +53,14 @@ RSpec.describe Fellow, type: :model do
   it_behaves_like 'taggable', :fellow, :metro
   
   it_behaves_like 'taggable_combined', :fellow, :industry, :interest
+  
+  it "has one attached resume" do
+    fellow = build :fellow
+    
+    [:resume, :resume=, :resume_attachment, :resume_attachment=, :resume_blob, :resume_blob=].each do |method|
+      expect(fellow).to respond_to(method)
+    end
+  end
   
   #############
   # Validations
@@ -112,6 +121,13 @@ RSpec.describe Fellow, type: :model do
       expect(FellowUserMatcher).to receive(:match).with(email).never
 
       fellow.save
+    end
+  end
+  
+  describe 'opportunity_type selection' do
+    it "selects all upon create" do
+      expect_any_instance_of(Fellow).to receive(:select_all_opportunity_types).once
+      create :fellow
     end
   end
   
@@ -438,6 +454,31 @@ RSpec.describe Fellow, type: :model do
       
       fellow.reload
       expect(fellow.receive_opportunities).to eq(false)
+    end
+  end
+  
+  describe '#select_all_opportunity_types' do
+    let(:fellow) { create :fellow }
+    let(:type1) { create :opportunity_type }
+    let(:type2) { create :opportunity_type }
+    let(:type3) { create :opportunity_type }
+    
+    before { fellow.opportunity_types = []; type1; type2; type3 }
+    
+    subject { fellow.select_all_opportunity_types; fellow.opportunity_types }
+    
+    describe 'when fellow has no opportunity types selected' do
+      it { should include(type1) }
+      it { should include(type2) }
+      it { should include(type3) }
+    end
+    
+    describe 'when fellow has some opportunity types selected' do
+      before { fellow.opportunity_types = [type1, type2] }
+      
+      it { should include(type1) }
+      it { should include(type2) }
+      it { should_not include(type3) }
     end
   end
 end

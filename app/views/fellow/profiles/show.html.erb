@@ -9,6 +9,16 @@
       <td><%= @fellow.full_name %></td>
     </tr>
     <tr class="new-section">
+      <th>Resumé:</th>
+      <td>
+        <% if @fellow.resume.attached? %>
+          <%= link_to 'available', url_for(@fellow.resume), target: '_blank' %>
+        <% else %>
+          unavailable
+        <% end %>
+      </td>
+    </tr>
+    <tr class="new-section">
       <th>Graduation:</th>
       <td><%= @fellow.graduation_semester %> <%= @fellow.graduation_year %></td>
     </tr>
@@ -40,11 +50,11 @@
       <th>Strength of current job:</th>
       <td><%= @fellow.employment_status.name %><br /><small><a href="https://drive.google.com/a/bebraven.org/file/d/1RAfYwl8kRP9DkhjuVLKeCmYQzIhBzKVn/view?usp=sharing">See Braven Career Accelerating Scorecard</a></small></td>
     </tr>
-    <tr class="key">
+    <tr class="new-section key">
       <th>Braven Key:</th>
       <td><%= @fellow.key %></td>
     </tr>
-    <tr>
+    <tr class="new-section">
       <th>Receive career opportunities from Braven?</th>
       <td><%= @fellow.receive_opportunities ? 'yes' : 'no' %></td>
     </tr>

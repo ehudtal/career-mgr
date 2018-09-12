@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker-compose exec database pg_dump -U postgres career-mgr_development > tmp/backup.sql
