@@ -9,7 +9,7 @@ class Fellow::OpportunitiesController < ApplicationController
 
     @fellow_opp = @candidate
     @fellow = @fellow_opp.fellow
-    @opp = @fellow_opp.opportunity
+    @opportunity = @fellow_opp.opportunity
     
     @token = AccessToken.for(@fellow_opp)
     @opportunity_stage = @fellow_opp.opportunity_stage

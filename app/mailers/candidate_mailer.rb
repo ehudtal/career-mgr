@@ -30,6 +30,6 @@ class CandidateMailer < ApplicationMailer
     @token = params[:access_token]
     @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
-    @opp = @fellow_opp.opportunity
+    @opportunity = @fellow_opp.opportunity
   end
 end
