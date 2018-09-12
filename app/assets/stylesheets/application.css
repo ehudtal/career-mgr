@@ -25,6 +25,7 @@ html {
 
 body {
   margin: 0;
+  font-family: Georgia, serif;
 }
 
 main {
@@ -44,35 +45,30 @@ input[type="submit"],
   font-weight: normal;
 }
 
-#masthead h1 {
-  font-size: 1.1em;
-  margin: 2px 0 0 calc(110px + 1em);
-}
-
 h2, h3 {
   margin-top: 2em;
 }
 
-#masthead {
-  padding: 2vw;
-  position: relative;
+ul.inline-list {
+  float: left;
+  padding-right: 20px;
+  margin: 0
 }
 
-#masthead .logout {
-  text-transform: uppercase;
-  position: absolute;
-  right: 2vw;
-  top: 2vw;
+label.checkbox {
+  display: inline;
 }
 
-#header-logo {
-  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
-  width: 110px;
-  height: 26px;
-  background-repeat: no-repeat;
-  position: absolute;
-  left: 2vw;
-  top: 2vw;
+form#opportunity-filters {
+  margin-top: 2em;
+}
+
+td.numeric {
+  text-align: right;
+}
+
+td.checkmark {
+  text-align: center;
 }
 
 a:link, a:visited,
@@ -119,14 +115,6 @@ table .back,
   border-top: 1px solid #CCC;
 }
 
-#masthead {
-  background: #333;
-}
-
-#masthead a {
-  color: #FFF;
-}
-
 table {
   border-collapse: collapse;
   margin: 2em 0;
@@ -166,6 +154,108 @@ tr:first-child {
   border: 2px solid red;
 }
 
+/* Header and main nav */
+
+#masthead {
+  position: relative;
+  padding-top: 10px;
+  height: 40px;
+}
+
+#masthead .logout {
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+  padding: 6px 10px;
+  margin: 20px 10px;
+  position: relative;
+  top: 5px;
+}
+
+#header-logo {
+  margin-left: 2vw;
+  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
+  background-size: contain;
+  width: 110px;
+  height: 22px;
+  background-repeat: no-repeat;
+}
+
+#masthead h1 {
+  font-size: 1.1em;
+  text-align: center;
+  position: absolute;
+  top: 2px;
+  width: 100%;
+}
+
+#main-nav {
+  width: 200px;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  z-index: 9;
+  background: #333;
+  padding: 0 10px 30px;
+  display: none;
+}
+
+#main-nav.expanded {
+  display: block;
+}
+
+#main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #CCC;
+}
+
+#main-nav li {
+  margin: 10px;
+  display: block;
+}
+
+#menu-icon {
+  display: inline-block;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+#menu-icon .bar1, 
+#menu-icon .bar2, 
+#menu-icon .bar3 {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+#menu-icon.expanded .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-7px, 7px);
+  transform: rotate(-45deg) translate(-7px, 7px);
+}
+
+#menu-icon.expanded .bar2 {opacity: 0;}
+
+#menu-icon.expanded .bar3 {
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
+}
+
+#masthead {
+  background: black;
+}
+
+#masthead a {
+  color: #FFF;
+}
+
+/* JQuery tags */
+
 .jquery-tags {
   width: 400px;
 }
@@ -189,6 +279,8 @@ tr:first-child {
   margin-bottom: 20px;
 }
 
+/* Table sorter */
+
 table.tablesorter {
   width: calc( 100vw - ( (100vw - 672px) / 2 ) - 20px );
   font-size: 1em;
@@ -199,6 +291,8 @@ table.tablesorter tfoot tr th {
   font-size: 1em;
   padding-right: 15px;
 }
+
+/* Generic collapse/expand/toggle */
 
 .collapsed {
   display: none;
@@ -286,6 +380,13 @@ span.burden {
   position: relative;
   bottom: 1px;
   margin-right: 2px;
+}
+
+#stage-notice {
+  margin: -5px -5px 10px;
+  padding: 10px 5px;
+  background: gold;
+  font-style: italic;
 }
 
 /* Career Progress Tracker */
@@ -384,55 +485,7 @@ span.burden {
   cursor: pointer;
 }
 
-/* Media Queries */
-
-@media all and (max-width: 1170px) {
-  #career-tracker {
-    width: 672px;
-    margin: 0 -5px;
-  }
-}
-
-@media all and (max-width: 700px) {
-  main {
-    width: 100%;
-    padding: 0 1vw;
-  }
-
-  #career-tracker {
-    width: 100%;
-  }
-
-  .tracker-item {
-    width: 100%;
-    height: unset;
-  }
-
-  .tracker-item h4 {
-    position: static;
-    margin: 0 0.5em 0 0;
-    display: inline;
-  }
-
-  table.tablesorter {
-    width: 672px;
-  }
-}
-
-ul.inline-list {
-  float: left;
-  padding-right: 20px;
-  margin: 0
-}
-
-div#stage-notice {
-  background: #efe;
-  font-weight: bold;
-}
-
-label.checkbox {
-  display: inline;
-}
+/* SSO Discovery */
 
 #sso_discovery {
   margin: 1em 2em;
@@ -473,14 +526,37 @@ label.checkbox {
   margin: 0 auto;
 }
 
-form#opportunity-filters {
-  margin-top: 2em;
+/* Media Queries */
+
+@media all and (max-width: 1170px) {
+  #career-tracker {
+    width: 672px;
+    margin: 0 -5px;
+  }
 }
 
-td.numeric {
-  text-align: right;
-}
+@media all and (max-width: 700px) {
+  main {
+    width: 100%;
+    padding: 0 1vw;
+  }
 
-td.checkmark {
-  text-align: center;
+  #career-tracker {
+    width: 100%;
+  }
+
+  .tracker-item {
+    width: 100%;
+    height: unset;
+  }
+
+  .tracker-item h4 {
+    position: static;
+    margin: 0 0.5em 0 0;
+    display: inline;
+  }
+
+  table.tablesorter {
+    width: 672px;
+  }
 }

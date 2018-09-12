@@ -1,16 +1,14 @@
 <h1>My Profile</h1>
 
+<p>The following information helps Braven connect you with opportunities, and may be shared with potential employers. <%= link_to 'Keep it up to date', edit_fellow_profile_path %> to ensure you get the most relevant offers.</p>
+
 <table>
   <tbody>
     <tr class="name">
       <th>Name:</th>
       <td><%= @fellow.full_name %></td>
     </tr>
-    <tr class="key">
-      <th>Key:</th>
-      <td><%= @fellow.key %></td>
-    </tr>
-    <tr>
+    <tr class="new-section">
       <th>Resumé:</th>
       <td>
         <% if @fellow.resume.attached? %>
@@ -49,10 +47,14 @@
       <td><%= @fellow.linkedin_url %></td>
     </tr>
     <tr>
-      <th>Employment status:</th>
-      <td><%= @fellow.employment_status.name %></td>
+      <th>Strength of current job:</th>
+      <td><%= @fellow.employment_status.name %><br /><small><a href="https://drive.google.com/a/bebraven.org/file/d/1RAfYwl8kRP9DkhjuVLKeCmYQzIhBzKVn/view?usp=sharing">See Braven Career Accelerating Scorecard</a></small></td>
     </tr>
-    <tr>
+    <tr class="new-section key">
+      <th>Braven Key:</th>
+      <td><%= @fellow.key %></td>
+    </tr>
+    <tr class="new-section">
       <th>Receive career opportunities from Braven?</th>
       <td><%= @fellow.receive_opportunities ? 'yes' : 'no' %></td>
     </tr>

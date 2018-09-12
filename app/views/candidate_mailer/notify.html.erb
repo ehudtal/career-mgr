@@ -1,4 +1,9 @@
-<h1><%= interpolate(@content['question']) %></h1>
+<% 
+question_str = interpolate(@content['question'])
+question_str[0] = question_str[0].downcase
+ %>
+
+<p><%= @fellow.first_name %>, <%= question_str %></p>
 
 <% if @content['materials'] %>
   <ul class="materials">
@@ -8,8 +13,17 @@
   </ul>
 <% end %>
 
+<% if @content['links'] %>
+  <ul class="response-links">
+    <% @content['links'].each do |update, label| %>
+      <li class="<%= label.parameterize %>"><%= button_to_status_update @opportunity_stage.name, update, label %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <% if @content['tips'] %>
   <div class="tips">
+    <p>How to do this:</p>
     <% if @content['tips']['header'] %>
       <p><%= interpolate(@content['tips']['header']) %></p>
     <% end %>
@@ -22,14 +36,4 @@
       </ul>
     <% end %>
   </div>
-<% end %>
-
-<% if @content['links'] %>
-  <hr>
-
-  <ul class="response-links">
-    <% @content['links'].each do |update, label| %>
-      <li><%= button_to_status_update @opportunity_stage.name, update, label %></li>
-    <% end %>
-  </ul>
 <% end %>

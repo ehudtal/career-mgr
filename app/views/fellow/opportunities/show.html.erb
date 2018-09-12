@@ -11,10 +11,10 @@
   <strong>Job Posting URL:</strong>
   <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
 </p>
-<p><strong>Industries</strong></p>
 <%= render 'admin/industries/list', object: @candidate.opportunity %>
 <%= render 'admin/interests/list', object: @candidate.opportunity %>
 <h2>Where am I in the process?</h2>
+<p><strong>Note:</strong> You're not expected to do everything below in one go. If you take a break we'll simply send you a helpful reminder so you can pick up where you left off.</p>
 <table class="opportunity-stages">
   <thead>
     <th class="phase">Phase</th>
@@ -38,7 +38,7 @@
 
             <td class="stage active-stage phase-<%= phase.downcase %>">
               <% if flash[:stage_notice] %>
-                <div id="stage-notice"><%= flash[:stage_notice]%></div>
+                <div id="stage-notice"><%= interpolate(flash[:stage_notice]) %></div>
               <% end %>
               
               <h3>

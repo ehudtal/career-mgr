@@ -24,7 +24,7 @@ RSpec.describe FellowMailer, type: :mailer do
     let(:mail) { FellowMailer.with(access_token: access_token).profile }
     
     it "renders the headers" do
-      expect(mail.subject).to eq("Please Update Your Profile")
+      expect(mail.subject).to eq("#{fellow.first_name} - Please update your profile")
       expect(mail.to).to include(email)
       expect(mail.from).to include(Rails.application.secrets.mailer_from_email)
     end

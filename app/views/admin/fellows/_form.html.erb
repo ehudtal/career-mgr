@@ -32,7 +32,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :graduation_semester %>
+    <%= form.label :graduation_semester, 'Graduation term' %>
     <%= form.select :graduation_semester, options_for_select(Course::VALID_SEMESTERS) %>
   </div>
 
@@ -90,21 +90,23 @@
   <div id="interests-collection">
     <h3>Industries/Interests/Majors</h3>
 
-    <%= link_to 'full list', combined_admin_industries_path, target: '_blank' %>
-
     <div id="industry-interest-tags" class="jquery-tags">
       <%= form.text_area :industry_interest_tags %>
     </div>
+
+    <%= link_to 'full list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+
   </div>
   
   <div id="metros-collection">
     <h3>Where Fellow Would Like to Work</h3>
   
-    <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
-
     <div id="metro-tags" class="jquery-tags">
       <%= form.text_area :metro_tags, class: 'metro-tags' %>
     </div>
+
+    <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
+    
   </div>
 
   <div class="actions">
