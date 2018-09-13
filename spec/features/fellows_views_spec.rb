@@ -47,7 +47,7 @@ RSpec.feature "FellowViews", type: :feature do
     fill_in 'First name', with: fellow_attributes[:first_name]
     fill_in 'Last name', with: fellow_attributes[:last_name]
     fill_in 'Graduation year', with: fellow_attributes[:graduation_year]
-    select fellow_attributes[:graduation_semester], from: 'Graduation semester'
+    select fellow_attributes[:graduation_semester], from: 'Graduation term'
     
     contact_attributes = attributes_for :contact
     

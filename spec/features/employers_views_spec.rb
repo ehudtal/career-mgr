@@ -69,7 +69,7 @@ RSpec.feature "Employer Views", type: :feature do
 
     expect(page).to have_content(/Editing Employer/i)
     expect(page).to have_content(industry.name)
-    
+
     fill_in 'Name', with: 'New Name'
 
     expect_list_link_for :industries
@@ -77,7 +77,7 @@ RSpec.feature "Employer Views", type: :feature do
     add_tag(:employer, :industry, industry_other.name)
 
     click_on 'Update Employer'
-    
+
     employer.reload
     expect(employer.name).to eq('New Name')
     expect(employer.industries).to_not include(industry)
@@ -85,13 +85,13 @@ RSpec.feature "Employer Views", type: :feature do
 
     expect(page).to have_current_path(admin_employer_path(employer.id))
   end
-  
+
   scenario "Deleting", js: true do
     visit_employers
-    
+
     click_on 'Delete'
     page.driver.browser.switch_to.alert.accept
-    
+
     expect(page).to have_current_path(admin_employers_path)
     expect(page).to have_content("Employer #{employer.name} was successfully deleted.")
     expect(Employer.count).to eq(0)
