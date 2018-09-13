@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_10_182323) do
+ActiveRecord::Schema.define(version: 2018_09_13_173914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 2018_09_10_182323) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.boolean "receive_opportunities", default: true
+    t.integer "portal_course_id"
     t.index ["employment_status_id"], name: "index_fellows_on_employment_status_id"
     t.index ["key"], name: "index_fellows_on_key", unique: true
     t.index ["receive_opportunities"], name: "index_fellows_on_receive_opportunities"
