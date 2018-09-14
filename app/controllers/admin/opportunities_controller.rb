@@ -31,6 +31,7 @@ class Admin::OpportunitiesController < ApplicationController
   def new
     @opportunity = @opportunities.build
     @opportunity.tasks.build
+    @opportunity.set_default_industries
   end
 
   # GET /opportunities/1/edit
