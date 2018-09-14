@@ -486,4 +486,28 @@ RSpec.describe Opportunity, type: :model do
       it { should eq(false) }
     end
   end
+  
+  describe '#set_default_industries' do
+    let(:industry_included) { create :industry } 
+    let(:industry_excluded) { create :industry } 
+    let(:employer) { create :employer }
+    
+    before { employer.industry_ids << industry_included.id }
+    
+    subject { o = Opportunity.new employer: chosen_employer; o.set_default_industries; o.industry_ids }
+    
+    describe 'when employer has industries' do
+      let(:chosen_employer) { employer }
+      
+      it { should include(industry_included.id) }
+      it { should_not include(industry_excluded.id) }
+    end
+    
+    describe 'when employer has no industries' do
+      let(:chosen_employer) { create :employer }
+      
+      it { should_not include(industry_included.id) }
+      it { should_not include(industry_excluded.id) }
+    end
+  end
 end

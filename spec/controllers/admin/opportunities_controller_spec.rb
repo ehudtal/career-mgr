@@ -236,6 +236,11 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         get :new, params: {employer_id: employer.id}, session: valid_session
         expect(response).to be_successful
       end
+
+      it "sets the default industry_ids" do
+        expect_any_instance_of(Opportunity).to receive(:set_default_industries).once
+        get :new, params: {employer_id: employer.id}, session: valid_session
+      end
     end
 
     describe "POST #create" do
