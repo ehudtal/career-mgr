@@ -225,6 +225,10 @@ class Opportunity < ApplicationRecord
     update published: false
   end
   
+  def set_default_industries
+    self.industry_ids = employer.industry_ids
+  end
+  
   private
   
   def archived_fellow_opp candidate_id
