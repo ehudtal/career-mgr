@@ -2,6 +2,7 @@ require 'digest/md5'
 require 'csv'
 require 'fellow_user_matcher'
 require 'taggable'
+require 'open-uri'
 
 class Fellow < ApplicationRecord
   include Taggable
@@ -164,6 +165,35 @@ class Fellow < ApplicationRecord
   
   def select_all_opportunity_types
     self.opportunity_types << OpportunityType.all if self.opportunity_types.empty?
+  end
+  
+  def portal_url_for page_name
+    return nil if portal_course_id == 0
+
+    page_name = page_name.downcase.gsub(/\s+/, '-')
+    "https://portal.bebraven.org/courses/42/pages/#{page_name}"
+  end
+  
+  def portal_course_id
+    return attributes['portal_course_id'] if attributes['portal_course_id']
+    
+    self.update portal_course_id: get_portal_course_id
+    attributes['portal_course_id']
+  end
+  
+  def get_portal_course_id
+    default = 0
+    
+    begin
+      return default unless contact && contact.email
+      
+      response = open("https://portal.bebraven.org/bz/courses_for_email?email=#{contact.email}")
+      data = JSON.parse(response)
+    
+      data['course_ids'].max || default
+    rescue
+      default
+    end
   end
   
   private

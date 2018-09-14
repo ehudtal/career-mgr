@@ -481,4 +481,105 @@ RSpec.describe Fellow, type: :model do
       it { should_not include(type3) }
     end
   end
+  
+  describe '#portal_url_for(page_name)' do
+    let(:fellow) { build :fellow, portal_course_id: portal_course_id }
+    let(:portal_course_id) { 42 }
+    
+    subject { fellow.portal_url_for(page_name) }
+    
+    describe 'when page_name is dashed and lowercase' do
+      let(:page_name) { 'onboard-to-braven' }
+      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+    end
+    
+    describe 'when page_name uses spaces' do
+      let(:page_name) { 'onboard to braven' }
+      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+    end
+    
+    describe 'when page_name uses capitalization' do
+      let(:page_name) { 'Onboard To Braven' }
+      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+    end
+    
+    describe 'when portal course id is zero (ergo, invalid)' do
+      let(:portal_course_id) { 0 }
+      let(:page_name) { 'onboard-to-braven' }
+      
+      it { should be_nil }
+    end
+  end
+  
+  describe '#portal_course_id' do
+    let(:fellow) { create :fellow, portal_course_id: portal_course_id }
+    let(:server_answer) { 52 }
+    
+    before { allow(fellow).to receive(:get_portal_course_id).and_return(server_answer) }
+    
+    subject { fellow.portal_course_id }
+    
+    describe 'when portal_course_id is set in the database' do
+      let(:portal_course_id) { 42 }
+      it { should eq(portal_course_id) }
+    end
+    
+    describe 'when portal_course_id is not set in the database' do
+      let(:portal_course_id) { nil }
+      
+      it { should eq(server_answer) }
+      
+      it "saves the result to th database" do
+        subject
+        expect(fellow.reload.attributes['portal_course_id']).to eq(server_answer)
+      end
+    end
+  end
+  
+  describe '#get_portal_course_id' do
+    let(:contact) { build :contact, email: 'test@example.com'}
+    let(:fellow) { build :fellow, contact: contact }
+    let(:best_answer) { 42 }
+    let(:default_answer) { 0 }
+    
+    before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
+    
+    subject { fellow.get_portal_course_id }
+    
+    require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+    
+    describe "when there is one course id returned" do
+      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      it { should eq(best_answer) }
+    end
+    
+    describe 'when there are multiple course ids returned' do
+      let(:response) { "{\"course_ids\":[2,4,#{best_answer},8]}" }
+      it { should eq(best_answer) }
+    end
+    
+    describe 'when no course ids are returned' do
+      let(:response) { "{\"course_ids\":[]}" }
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when bad JSON data is returned' do
+      let(:response) { '' }
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow has no contact' do
+      let(:contact) { nil }
+      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow\'s contact email is nil' do
+      let(:contact) { build :contact, email: nil }
+      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      
+      it { should eq(default_answer) }
+    end
+  end
 end
