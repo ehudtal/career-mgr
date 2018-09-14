@@ -63,6 +63,14 @@ class FellowOpportunity < ApplicationRecord
     self.update active: false
   end
   
+  def notice_for update
+    if opportunity_stage && opportunity_stage.content && opportunity_stage.content['notices']
+      opportunity_stage.content['notices'][update]
+    else
+      nil
+    end
+  end
+  
   private
   
   def next_opportunity_stage from=nil

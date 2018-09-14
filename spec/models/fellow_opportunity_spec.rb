@@ -228,4 +228,41 @@ RSpec.describe FellowOpportunity, type: :model do
       expect(fellow_opportunity.logs.last.status).to eq(status_message)
     end
   end
+  
+  describe '#notice_for(update)' do
+    let(:fellow) { build :fellow }
+    let(:fellow_opportunity) { build :fellow_opportunity, fellow: fellow, opportunity_stage: opportunity_stage }
+    let(:opportunity_stage) { build :opportunity_stage, name: stage_name }
+    let(:stage_name) { 'research employer' }
+    let(:update) { 'next' }
+    let(:yaml) { {'research employer' => {'notices' => {'next' => 'hello'}}} }
+    
+    before { allow(YAML).to receive(:load).and_return(yaml) }
+    
+    subject { fellow_opportunity.notice_for(update) }
+
+    describe 'when notice exists' do
+      it { should eq('hello') }
+    end
+    
+    describe 'when content exists for stage, but update does not' do
+      let(:update) { 'other' }
+      it { should be_nil }
+    end
+    
+    describe 'when content doesn\'t exist at all for stage' do
+      let(:stage_name) { 'other' }
+      it { should be_nil }
+    end
+    
+    describe 'when content doesn\t have notices' do
+      let(:yaml) { {'research employer' => {'other' => {'next' => 'hello'}}} }
+      it { should be_nil }
+    end
+    
+    describe 'when opportunity stage doesn\'t exist' do
+      let(:opportunity_stage) { nil }
+      it { should be_nil }
+    end
+  end
 end
