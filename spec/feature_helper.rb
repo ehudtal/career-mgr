@@ -2,20 +2,22 @@ module FeatureHelper
   def login user_type=:admin
     create :"#{user_type}_user", email: 'admin@beyondz.org' unless User.find_by(email: 'admin@beyondz.org')
     visit root_path
+    
+    logged_in = '#menu-icon'
   
     begin
-      find('a[href="/users/sign_out_sso"]')
+      find(logged_in)
     rescue Capybara::ElementNotFound
       find("img[alt='Braven']").click
 
       begin
-        find('a[href="/users/sign_out_sso"]')
+        find(logged_in)
       rescue
         expect(page).to have_content('PLATFORM LOGIN')
-      
-        fill_in 'username', with: 'admin@beyondz.org'
-        fill_in 'password', with: 'test1234'
-  
+    
+        fill_in 'username', with: Rails.application.secrets.test_sso_username
+        fill_in 'password', with: Rails.application.secrets.test_sso_password
+
         click_on 'Log in'
       end
     end
