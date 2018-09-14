@@ -19,6 +19,7 @@ RSpec.describe CandidateMailer, type: :mailer do
       it { expect(mail.subject).to eq(subject) }
       it { expect(mail.to).to include(email) }
       it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
+      it { expect(header('List-Unsubscribe')).to match(%r!^<http://localhost:3011/fellow/profile/unsubscribe\?token=[0-9a-f]{16}>$!) }
     end
     
     def expect_content content
@@ -44,6 +45,10 @@ RSpec.describe CandidateMailer, type: :mailer do
         end
       end
     end
+  end
+  
+  def header name
+    mail.header_fields.detect{|h| h.name == name}.value
   end
   
   describe 'respond to invitation' do
