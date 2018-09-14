@@ -1,7 +1,5 @@
 class CandidateMailer < ApplicationMailer
   add_template_helper(ApplicationHelper)
-  
-  after_action :set_unsubscribe_header
 
   def respond_to_invitation
     set_objects
@@ -33,10 +31,6 @@ class CandidateMailer < ApplicationMailer
     @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
     @opportunity = @fellow_opp.opportunity
-  end
-  
-  def set_unsubscribe_header
-    link = AccessToken.for(@fellow).path_with_token('Unsubscribe')
-    headers['List-Unsubscribe'] = "<#{link}>"
+    @unsubscriber = @fellow
   end
 end

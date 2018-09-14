@@ -13,10 +13,6 @@ RSpec.describe FellowMailer, type: :mailer do
       end
     end
   end
-  
-  def header name
-    mail.header_fields.detect{|h| h.name == name}.value
-  end
 
   describe 'profile' do
     let(:access_token) { AccessToken.for(fellow) }
@@ -31,8 +27,9 @@ RSpec.describe FellowMailer, type: :mailer do
       expect(mail.subject).to eq("#{fellow.first_name} - Please update your profile")
       expect(mail.to).to include(email)
       expect(mail.from).to include(Rails.application.secrets.mailer_from_email)
-      expect(header('List-Unsubscribe')).to match(%r!^<http://localhost:3011/fellow/profile/unsubscribe\?token=[0-9a-f]{16}>$!)
     end
+    
+    it_behaves_like 'unsubscribable'
     
     it "renders the body with interest links" do
       body = mail.body.encoded

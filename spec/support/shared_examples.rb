@@ -34,3 +34,11 @@ shared_examples_for "valid url" do |attribute, options={}|
   end
 end
 
+shared_examples_for "unsubscribable" do
+  def header name
+    field = mail.header_fields.detect{|h| h.name == name}
+    field ? field.value : nil
+  end
+
+  it { expect(header('List-Unsubscribe')).to match(%r!^<http://localhost:3011/fellow/profile/unsubscribe\?token=[0-9a-f]{16}>$!) }
+end
