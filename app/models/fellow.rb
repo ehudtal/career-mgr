@@ -207,6 +207,8 @@ class Fellow < ApplicationRecord
   end
   
   def generate_career_steps
+    return unless career_steps.empty?
+
     YAML.load(File.read("#{Rails.root}/config/career_steps.yml")).each_with_index do |step, position|
       career_steps.create position: position, name: step['name'], description: step['description']
     end
