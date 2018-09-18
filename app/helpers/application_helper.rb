@@ -28,7 +28,7 @@ module ApplicationHelper
   end
   
   def interpolate string
-    ERB.new(string || '').result(binding)
+    ERB.new(string || '').result(binding).html_safe
   end
   
   def split_list list
