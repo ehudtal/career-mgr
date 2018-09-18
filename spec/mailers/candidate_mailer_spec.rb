@@ -19,6 +19,7 @@ RSpec.describe CandidateMailer, type: :mailer do
       it { expect(mail.subject).to eq(subject) }
       it { expect(mail.to).to include(email) }
       it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
+      it_behaves_like 'unsubscribable'
     end
     
     def expect_content content

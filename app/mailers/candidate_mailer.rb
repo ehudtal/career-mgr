@@ -31,5 +31,6 @@ class CandidateMailer < ApplicationMailer
     @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
     @opportunity = @fellow_opp.opportunity
+    @unsubscriber = @fellow
   end
 end

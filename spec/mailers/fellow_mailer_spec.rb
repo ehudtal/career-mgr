@@ -29,6 +29,8 @@ RSpec.describe FellowMailer, type: :mailer do
       expect(mail.from).to include(Rails.application.secrets.mailer_from_email)
     end
     
+    it_behaves_like 'unsubscribable'
+    
     it "renders the body with interest links" do
       body = mail.body.encoded
       expect(body).to include("http://localhost:3011/fellows/#{fellow.id}/edit?token=#{access_token.code}")
