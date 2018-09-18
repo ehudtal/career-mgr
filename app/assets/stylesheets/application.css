@@ -560,3 +560,29 @@ span.burden {
     width: 672px;
   }
 }
+
+.response-links li {
+  display: inline-block;
+  margin-right: 0.75em;
+}
+
+ul.response-links {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.response-links li {
+  padding: 10px 0;
+}
+
+.response-links .button {
+  background: #999;
+}
+
+.response-links .yes .button {
+  background: green;
+}
+
+.response-links .yes .button:hover {
+  background: darkgreen;
+}
