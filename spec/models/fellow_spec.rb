@@ -392,6 +392,14 @@ RSpec.describe Fellow, type: :model do
     it { expect(subject[11].position).to eq(11) }
     it { expect(subject[11].name).to eq('employers') }
     it { expect(subject[11].description).to eq("I've made a shortlist of positions and/or employers") }
+    
+    it "does not generate steps when they already exist" do
+      subject
+      
+      expect {
+        fellow.send(:generate_career_steps)
+      }.to change{fellow.reload.career_steps.count}.by(0)
+    end
   end
   
   describe '#completed_career_steps' do
