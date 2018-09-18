@@ -3,7 +3,6 @@ lock "~> 3.11.0"
 
 set :application, 'careermgr'
 set :repo_url, 'git@github.com:beyond-z/career-mgr.git'
-set :rails_env,     'production'
 set :user,          'careermanageradmin'
 set :group,         'careermanageradmin'
 
