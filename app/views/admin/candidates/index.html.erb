@@ -20,10 +20,13 @@
     
     <% EmploymentStatus.order(position: :asc).pluck(:id, :name).each do |id, name| %>
       <% tag_id = "employment_status_#{id}" %>
+      <% checked = params[:search].nil? || params[:search][:employment_statuses].nil? || params[:search][:employment_statuses].include?(id.to_s) %>
       
-      <%= check_box_tag 'employment_statuses[]', id, true, id: tag_id %>
+      <%= check_box_tag 'search[employment_statuses][]', id, checked, id: tag_id %>
       <%= label_tag tag_id, name, class: 'checkbox' %>
     <% end %>
+    
+    <p><%= submit_tag 'Search' %></p>
   </div>
 <% end %>
 
