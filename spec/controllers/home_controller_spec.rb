@@ -41,6 +41,25 @@ RSpec.describe HomeController, type: :controller do
     end
   end
   
+  describe 'GET sso' do
+    let(:referer) { '/welcome' }
+    
+    it "sets braven as the sso portal" do
+      get :sso, params: {id: 'braven'}, session: {last: referer}
+      expect(session[:sso]).to eq('https://stagingsso.bebraven.org/')
+    end
+    
+    it "sets NLU as the sso portal" do
+      get :sso, params: {id: 'nlu'}, session: {last: referer}
+      expect(session[:sso]).to eq('https://cps66.quicklaunchsso.com/cas/')
+    end
+    
+    it "redirects to referer" do
+      get :sso, params: {id: 'braven'}, session: {last: referer}
+      expect(response).to redirect_to(referer)
+    end
+  end
+  
   describe 'GET health_check' do
     before { allow(User).to receive(:count) }
     
