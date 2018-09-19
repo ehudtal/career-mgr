@@ -42,6 +42,10 @@ class Opportunity < ApplicationRecord
     
     candidate_ids &= fellow_ids_for_opportunity_type
     
+    if search_params[:employment_statuses] && !search_params[:employment_statuses].empty?
+      candidate_ids &= fellow_ids_for_employment_statuses(search_params[:employment_statuses])
+    end
+    
     unless search_params[:industries_interests] == ''
       candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
     end
@@ -60,6 +64,10 @@ class Opportunity < ApplicationRecord
   
   def formatted_name
     [employer.name, name].join(' - ')
+  end
+  
+  def fellow_ids_for_employment_statuses employment_status_ids
+    Fellow.where(employment_status_id: employment_status_ids).pluck(:id)
   end
   
   def fellow_ids_for_opportunity_type

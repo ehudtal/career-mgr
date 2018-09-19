@@ -561,3 +561,7 @@ span.burden {
     width: 672px;
   }
 }
+
+#advanced-search {
+  clear: both;
+}
