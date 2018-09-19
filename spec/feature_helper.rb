@@ -6,19 +6,22 @@ module FeatureHelper
     logged_in = '#menu-icon'
   
     begin
-      find(logged_in)
+      find(logged_in, wait: 5)
     rescue Capybara::ElementNotFound
       find("img[alt='Braven']").click
 
       begin
-        find(logged_in)
+        find(logged_in, wait: 5)
       rescue
-        expect(page).to have_content('PLATFORM LOGIN')
+        begin
+          expect(page).to have_content('PLATFORM LOGIN')
     
-        fill_in 'username', with: Rails.application.secrets.test_sso_username
-        fill_in 'password', with: Rails.application.secrets.test_sso_password
+          fill_in 'username', with: Rails.application.secrets.test_sso_username
+          fill_in 'password', with: Rails.application.secrets.test_sso_password
 
-        click_on 'Log in'
+          click_on 'Log in'
+        rescue
+        end
       end
     end
   end
