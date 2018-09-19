@@ -39,3 +39,14 @@ $(document).on "turbolinks:load",  ->
       10: {sorter: false}
     }
   })
+  
+  $('#advanced-search-toggle a').click (event) ->
+    event.preventDefault()
+    
+    if /show/.test($(this).text())
+      $(this).text('- hide advanced search')
+      $('#advanced-search').show();
+    else
+      $(this).text('+ show advanced search')
+      $('#advanced-search').hide();
+  

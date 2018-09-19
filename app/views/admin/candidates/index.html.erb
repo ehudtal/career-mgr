@@ -15,6 +15,8 @@
     <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
   </div>
   
+  <p id="advanced-search-toggle"><a href="#">+ show advanced search</a></p>
+  
   <div id="advanced-search">
     <h3>Candidate's Current Employment Status</h3>
     
@@ -27,6 +29,8 @@
     <% end %>
     
     <p><%= submit_tag 'Search' %></p>
+    
+    <hr>
   </div>
 <% end %>
 

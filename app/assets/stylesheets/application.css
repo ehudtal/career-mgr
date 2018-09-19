@@ -562,6 +562,10 @@ span.burden {
   }
 }
 
-#advanced-search {
+#advanced-search-toggle {
   clear: both;
+}
+
+#advanced-search {
+  display: none;
 }
