@@ -31,7 +31,7 @@ RSpec.describe FellowsController, type: :controller do
       before { get :edit, params: {id: fellow.id} }
       
       it "redirects" do
-        expect(response).to redirect_to(login_path)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
     
@@ -46,7 +46,7 @@ RSpec.describe FellowsController, type: :controller do
       before { put :update, params: {id: fellow.id, fellow: {}} }
       
       it "redirects" do
-        expect(response).to redirect_to(login_path)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
 
