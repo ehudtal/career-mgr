@@ -46,12 +46,12 @@ RSpec.describe HomeController, type: :controller do
     
     it "sets braven as the sso portal" do
       get :sso, params: {id: 'braven'}, session: {last: referer}
-      expect(session[:sso]).to eq('https://stagingsso.bebraven.org/')
+      expect(session[:sso]).to eq(Rails.application.secrets.sso_url)
     end
     
     it "sets NLU as the sso portal" do
       get :sso, params: {id: 'nlu'}, session: {last: referer}
-      expect(session[:sso]).to eq('https://cps66.quicklaunchsso.com/cas/')
+      expect(session[:sso]).to eq(Rails.application.secrets.nlu_sso_url)
     end
     
     it "redirects to referer" do
