@@ -14,6 +14,17 @@
     <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
     <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
   </div>
+  
+  <div id="advanced-search">
+    <h3>Candidate's Current Employment Status</h3>
+    
+    <% EmploymentStatus.order(position: :asc).pluck(:id, :name).each do |id, name| %>
+      <% tag_id = "employment_status_#{id}" %>
+      
+      <%= check_box_tag 'employment_statuses[]', id, true, id: tag_id %>
+      <%= label_tag tag_id, name, class: 'checkbox' %>
+    <% end %>
+  </div>
 <% end %>
 
 <h3 style="clear: both;"><%= pluralize(@candidates.count, 'Match')%></h3>
