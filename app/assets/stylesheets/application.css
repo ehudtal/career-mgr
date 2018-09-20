@@ -57,6 +57,7 @@ ul.inline-list {
 
 label.checkbox {
   display: inline;
+  margin-right: 20px;
 }
 
 form#opportunity-filters {
@@ -559,6 +560,14 @@ span.burden {
   table.tablesorter {
     width: 672px;
   }
+}
+
+#advanced-search-toggle {
+  clear: both;
+}
+
+#advanced-search {
+  display: none;
 }
 
 .response-links li {
