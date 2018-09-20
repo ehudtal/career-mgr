@@ -50,7 +50,7 @@ class Opportunity < ApplicationRecord
       candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
     end
 
-    unless search_params[:metros].nil? || search_params[:metros] == ''
+    unless search_params[:metros] == ''
       candidate_ids &= fellow_ids_for_metros(search_params[:metros])
     end
 
