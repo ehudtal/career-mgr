@@ -45,7 +45,10 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_user!
-    super unless authorized_by_token?
+    unless authorized_by_token?
+      session[:last] = request.fullpath
+      super
+    end
   end
   
   def authorized_by_token?

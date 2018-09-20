@@ -18,10 +18,5 @@
   <% end -%>
 <% end -%>
 
-<% if @content['links'] -%>
-  <% @content['links'].each do |update, label| -%>
-<%= label %>:
-<%= @token.path_with_token('status', from: @opportunity_stage.name, update: update) %>
-
-  <% end -%>
-<% end -%>
+Update us on your progress:
+<%= @token.path_with_token('view') %>
