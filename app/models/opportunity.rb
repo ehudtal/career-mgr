@@ -39,7 +39,7 @@ class Opportunity < ApplicationRecord
     return @candidates if defined?(@candidates)
     
     candidate_ids = Fellow.receive_opportunities.pluck(:id)
-    
+
     candidate_ids &= fellow_ids_for_opportunity_type
     
     if search_params[:employment_statuses] && !search_params[:employment_statuses].empty?
@@ -50,10 +50,10 @@ class Opportunity < ApplicationRecord
       candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
     end
 
-    unless search_params[:metros] == ''
+    unless search_params[:metros].nil? || search_params[:metros] == ''
       candidate_ids &= fellow_ids_for_metros(search_params[:metros])
     end
-    
+
     candidate_ids.uniq!
     
     # remove already-activated candidates
