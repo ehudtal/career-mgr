@@ -40,6 +40,9 @@ services:
       
   redis:
     image: redis
+    
+  redis-spec:
+    image: redis
 
 volumes:
   db-data:
