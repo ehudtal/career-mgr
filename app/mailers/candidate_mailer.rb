@@ -3,7 +3,7 @@ class CandidateMailer < ApplicationMailer
 
   def respond_to_invitation
     set_objects
-    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: "#{@opportunity.name} matches your career profile")
+    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: interpolate(@split.settings['subject']))
   end
   
   def notify
@@ -28,9 +28,14 @@ class CandidateMailer < ApplicationMailer
   
   def set_objects
     @token = params[:access_token]
+    @split = AccessTokenSplit.new(@token, 'invite')
     @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
     @opportunity = @fellow_opp.opportunity
     @unsubscriber = @fellow
+  end
+  
+  def interpolate string
+    ERB.new(string || '').result(binding).html_safe
   end
 end

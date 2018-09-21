@@ -16,7 +16,7 @@ RSpec.describe CandidateMailer, type: :mailer do
   
   class << self
     def expect_headers subject
-      it { expect(mail.subject).to eq(subject) }
+      it { expect(mail.subject).to include(subject) }
       it { expect(mail.to).to include(email) }
       it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
       it_behaves_like 'unsubscribable'
@@ -52,7 +52,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     
     let(:mail) { CandidateMailer.with(access_token: access_token).respond_to_invitation }
 
-    expect_headers "New Opportunity matches your career profile"
+    expect_headers "New Opportunity"
     expect_content 'New Opportunity'
 
     expect_status_link 'respond to invitation', 'research employer'
