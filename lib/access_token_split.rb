@@ -1,22 +1,30 @@
 class AccessTokenSplit
-  attr_reader :token, :name, :variants
+  attr_reader :token, :name
   
-  def initialize access_token, experiment_name, variants=[]
+  def initialize access_token, experiment_name
     @token = access_token.code
     @name = experiment_name
-    @variants = variants
+    
+    value
   end
   
-  def select
+  def value
+    return @value if defined?(@value)
+    
     trial.choose!
-    trial.alternative.name
+    @value = trial.alternative.name
   end
   
-  def finish
+  def settings
+    return @settings if defined?(@settings)
+    @settings = trial.metadata
+  end
+  
+  def finish goal=nil
     trial.choose!
 
     unless already_finished?
-      trial.complete!
+      goal ? trial.complete!(goal) : trial.complete!
       finish!
     end
   end
@@ -33,12 +41,7 @@ class AccessTokenSplit
   
   def experiment
     return @experiment if defined?(@experiment)
-
-    @experiment = if variants.empty?
-      Split::ExperimentCatalog.find(name)
-    else
-      Split::ExperimentCatalog.find_or_create(name, *variants)
-    end
+    @experiment = Split::ExperimentCatalog.find_or_create(name)
   end
   
   def trial
@@ -48,8 +51,8 @@ class AccessTokenSplit
   
   private
   
-  def tokenize string
-    string.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9-]/, '')
+  def tokenize string_or_symbol
+    string_or_symbol.to_s.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9-]/, '')
   end
   
   def already_finished?
