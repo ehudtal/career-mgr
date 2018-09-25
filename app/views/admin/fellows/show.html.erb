@@ -64,5 +64,24 @@
   </tbody>
 </table>
 
+<h3>Contact Info</h3>
+
+<table>
+  <tbody>
+    <tr class="key">
+      <th>Phone:</th>
+      <td><%= @fellow.contact.phone %></td>
+    </tr>
+    <tr>
+      <th>E-Mail:</th>
+      <td><%= @fellow.contact.email %></td>
+    </tr>
+    <tr>
+      <th>Address:</th>
+      <td><%= address_for(@fellow.contact) %></td>
+    </tr>
+  </tbody>
+</table>
+
 <%= link_to 'Edit', edit_admin_fellow_path(@fellow) %> |
 <%= link_to 'Back', admin_fellows_path %>

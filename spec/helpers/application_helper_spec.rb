@@ -156,4 +156,103 @@ RSpec.describe ApplicationHelper, type: :helper do
       it { should be_html_safe }
     end
   end
+  
+  describe '#address_parts(contact)' do
+    let(:contact) { build :contact, address_1: address_1, address_2: address_2, city: city, state: state, postal_code: postal_code }
+    
+    let(:address_1) { '123 Way Street' }
+    let(:address_2) { 'Apt #A' }
+    let(:city) { 'Lincoln' }
+    let(:state) { 'NE' }
+    let(:postal_code) { '68521' }
+    
+    subject { address_parts(contact) }
+    
+    describe 'when all parts of the address exist' do
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(3) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+      it { should include('Lincoln, NE 68521') }
+    end
+    
+    describe 'when there is no address_2' do
+      let(:address_2) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(2) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Lincoln, NE 68521') }
+    end
+    
+    describe 'when there is no city' do
+      let(:city) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(3) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+      it { should include('NE 68521') }
+    end
+    
+    describe 'when there is no state' do
+      let(:state) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(3) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+      it { should include('Lincoln 68521') }
+    end
+    
+    describe 'when there is no city or state' do
+      let(:city) { nil }
+      let(:state) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(3) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+      it { should include('68521') }
+    end
+    
+    describe 'when there is no postal code' do
+      let(:postal_code) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(3) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+      it { should include('Lincoln, NE') }
+    end
+    
+    describe 'when there is no city, state, postal_code' do
+      let(:city) { nil }
+      let(:state) { nil }
+      let(:postal_code) { nil }
+      
+      it { should be_an(Array) }
+      it { expect(subject.size).to eq(2) }
+      
+      it { should include('123 Way Street') }
+      it { should include('Apt #A') }
+    end
+  end
+  
+  describe '#address_for(contact)' do
+    let(:contact) { build :contact }
+    
+    before { allow_any_instance_of(ApplicationHelper).to receive(:address_parts).with(contact).and_return(['a', 'b', 'c'])}
+    
+    subject { address_for(contact) }
+    
+    it { should eq("a<br>b<br>c") }
+    it { should be_html_safe }
+  end
 end
