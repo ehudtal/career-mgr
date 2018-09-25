@@ -73,7 +73,11 @@
     </tr>
     <tr>
       <th>E-Mail:</th>
-      <td><%= @fellow.contact.email %></td>
+      <td>
+        <% if @fellow.contact.email.present? %>
+          <%= link_to @fellow.contact.email, "mailto:#{@fellow.contact.email}" %>
+        <% end %>
+      </td>
     </tr>
     <tr>
       <th>Address:</th>
