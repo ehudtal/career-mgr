@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Career Manager</title>
+  </head>
+
+  <body>
+    <main>
+      <h1>Majors</h1>
+      
+      <ul>
+        <% @majors.each do |major| %>
+          <li><%= major.name %></li>
+        <% end %>
+      </ul>
+    </main>
+  </body>
+</html>

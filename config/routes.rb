@@ -80,6 +80,13 @@ Rails.application.routes.draw do
         get :search
       end
     end
+    
+    resources :majors, only: [:index] do
+      collection do
+        get :list
+      end
+    end
+    
     resources :cohort_fellows
     resources :cohorts
   end
