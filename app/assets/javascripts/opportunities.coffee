@@ -61,7 +61,7 @@ $(document).on "turbolinks:load",  ->
         
         element.tagsInput
           autocomplete: {source: data}
-          placeholder: 'Add Industries/Interests/Majors'
+          placeholder: 'Add Industries or Interests'
           delimiter: ';'
           validationPattern: new RegExp('^[()a-zA-Z0-9, \&/-]+$')
           onAddTag: (tag) ->
