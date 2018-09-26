@@ -61,6 +61,16 @@ RSpec.describe Admin::IndustriesController, type: :controller do
         get :combined, params: {}, session: valid_session
         expect(response).to be_successful
       end
+      
+      it "includes industry names" do
+        expect(Industry).to receive(:pluck).with(:name).once.and_return([])
+        get :combined, params: {}, session: valid_session
+      end
+      
+      it "includes interest names" do
+        expect(Interest).to receive(:pluck).with(:name).once.and_return([])
+        get :combined, params: {}, session: valid_session
+      end
     end
     
     it "redirects GET #show to home" do
@@ -113,6 +123,16 @@ RSpec.describe Admin::IndustriesController, type: :controller do
     it "returns successfully" do
       get :combined, params: {}, session: valid_session
       expect(response).to be_successful
+    end
+    
+    it "includes industry names" do
+      expect(Industry).to receive(:pluck).with(:name).once.and_return([])
+      get :combined, params: {}, session: valid_session
+    end
+    
+    it "includes interest names" do
+      expect(Interest).to receive(:pluck).with(:name).once.and_return([])
+      get :combined, params: {}, session: valid_session
     end
   end
 
