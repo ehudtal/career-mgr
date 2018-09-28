@@ -45,13 +45,23 @@ class Metro < ApplicationRecord
     state_list.split('-')
   end
   
-  def all_parents
+  def all_parents existing_parents=[]
     return [] if parents.empty?
-    (parents + parents.map(&:all_parents).flatten).compact
+    
+    more_parents = parents + (parents - existing_parents).map do |p|
+      p.all_parents(existing_parents + parents)
+    end
+    
+    more_parents.flatten.compact
   end
   
-  def all_children
+  def all_children existing_children=[]
     return [] if children.empty?
-    (children + children.map(&:all_children).flatten).compact
+
+    more_children = children + (children - existing_children).map do |c|
+      c.all_children(existing_children + children)
+    end
+    
+    more_children.flatten.compact
   end
 end
