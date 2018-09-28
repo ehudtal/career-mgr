@@ -43,11 +43,6 @@
   </div>
 
   <div class="field">
-    <%= form.label :major %>
-    <%= form.text_field :major %>
-  </div>
-
-  <div class="field">
     <%= form.label :affiliations, 'Affiliations (e.g. professional associations, greek orgs, clubs)' %>
     <%= form.text_area :affiliations %>
   </div>
@@ -84,7 +79,15 @@
     <%= form.text_area :industry_interest_tags %>
   </div>
 
-  <%= link_to 'full industries/interests list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+  <%= link_to 'full list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+
+  <h3 id="info-majors">College Majors</h3>
+  
+  <div id="major-tags" class="jquery-tags">
+    <%= form.text_area :major_tags %>
+  </div>
+
+  <%= link_to 'full list', list_admin_majors_path, target: '_blank', class: 'full-list' %>
  
   <h3 id="info-metro">Where You'd Like to Work</h3>
   
@@ -94,7 +97,7 @@
     <%= form.text_area :metro_tags, class: 'metro-tags' %>
   </div>
 
-  <%= link_to 'full metro areas list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
+  <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
 
   <div class="actions">
     <%= form.submit 'Update Profile' %>

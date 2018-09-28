@@ -4,9 +4,15 @@
 
 <%= form_tag admin_opportunity_candidates_path(@opportunity), method: :get do %>
   <div id="industry-interest-tags" class="floating-search jquery-tags" style="float: left;">
-    <h3>Industries/Interests/Majors</h3>
+    <h3>Industries/Interests</h3>
     <%= link_to 'full list', combined_admin_industries_path, target: '_blank' %>
     <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
+  </div>
+
+  <div id="major-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Majors</h3>
+    <%= link_to 'full list', list_admin_majors_path, target: '_blank' %>
+    <%= text_area_tag :opportunity_major_tags, params[:search][:majors], name: "search[majors]", class: 'auto-refresh' %>
   </div>
 
   <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
@@ -45,7 +51,7 @@
         <th>Graduation</th>
         <th>GPA</th>
         <th>Efficacy</th>
-        <th>Industries / Interests / Majors</th>
+        <th>Career Interests</th>
         <th>Locations</th>
         <th>Distance</th>
         <th>Status</th>
@@ -70,13 +76,7 @@
           <td><%= fellow.gpa || 'N/A' %></td>
           <td><%= fellow.efficacy_score || 'N/A' %></td>
           <td>
-            <% split_list((fellow.industries + fellow.interests + fellow.majors).map(&:name)).each do |list| %>
-              <ul class="inline-list">
-                <% list.each do |item| %>
-                  <li><%= item %></li>
-                <% end %>
-              </ul>
-            <% end %>
+            <%= (fellow.industries + fellow.interests + fellow.majors).map(&:name).uniq.sort.join(', ') %>
           </td>
           <td>
             <ul>

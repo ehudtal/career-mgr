@@ -237,7 +237,7 @@ RSpec.describe Opportunity, type: :model do
         expect(opportunity.candidates).to_not include(fellow)
       end
       
-      it "excludes fellow when unsubscribed from recieving opportunities" do
+      it "excludes fellow when unsubscribed from receiving opportunities" do
         matching_industry
         unsubscribed
         

@@ -29,8 +29,16 @@
       <td><%= @fellow.graduation_fiscal_year %></td>
     </tr>
     <tr>
-      <th>Major:</th>
-      <td><%= @fellow.major %></td>
+      <th>Industries/Interests:</th>
+      <td><%= @fellow.industry_interest_tags.gsub(';', ', ') %></td>
+    </tr>
+    <tr>
+      <th>Majors:</th>
+      <td><%= @fellow.major_tags.gsub(';', ', ') %></td>
+    </tr>
+    <tr>
+      <th>Preferred Locations:</th>
+      <td><%= @fellow.metro_tags.gsub(';', ', ') %></td>
     </tr>
     <tr>
       <th>Affiliations:</th>

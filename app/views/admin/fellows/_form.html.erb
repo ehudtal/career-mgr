@@ -42,11 +42,6 @@
   </div>
 
   <div class="field">
-    <%= form.label :major %>
-    <%= form.text_field :major %>
-  </div>
-
-  <div class="field">
     <%= form.label :affiliations %>
     <%= form.text_area :affiliations %>
   </div>
@@ -88,14 +83,23 @@
   <%= render 'admin/opportunity_types/check_boxes', fellow: fellow %>
   
   <div id="interests-collection">
-    <h3>Industries/Interests/Majors</h3>
+    <h3>Industries/Interests</h3>
 
     <div id="industry-interest-tags" class="jquery-tags">
       <%= form.text_area :industry_interest_tags %>
     </div>
 
     <%= link_to 'full list', combined_admin_industries_path, target: '_blank', class: 'full-list' %>
+  </div>
+  
+  <div id="majors-collection">
+    <h3>Majors</h3>
 
+    <div id="major-tags" class="jquery-tags">
+      <%= form.text_area :major_tags %>
+    </div>
+
+    <%= link_to 'full list', list_admin_majors_path, target: '_blank', class: 'full-list' %>
   </div>
   
   <div id="metros-collection">
@@ -106,7 +110,6 @@
     </div>
 
     <%= link_to 'full list', list_admin_metros_path, target: '_blank', class: 'full-list' %>
-    
   </div>
 
   <div class="actions">

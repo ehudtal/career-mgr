@@ -141,6 +141,16 @@
     </div>
   </div>
   
+  <div id="majors">
+    <h3>Majors (Related Courses of Study)</h3>
+
+    <%= link_to 'full list', list_admin_majors_path, target: '_blank' %>
+  
+    <div id="major-tags" class="jquery-tags">
+      <%= form.text_area :major_tags, class: 'major-tags' %>
+    </div>
+  </div>
+  
   <div id="metros-collection">
     <h3>Metro Areas</h3>
 
