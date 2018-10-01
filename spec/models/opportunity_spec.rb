@@ -130,8 +130,11 @@ RSpec.describe Opportunity, type: :model do
     let(:industry) { create :industry }
     let(:major_parent) { create :major }
     let(:major_child) { create :major, parent: major_parent }
-    let(:metro) { create :metro }
     let(:opportunity_type) { create :opportunity_type }
+
+    let(:metro) { create :metro }
+    let(:anywhere) { create :metro, name: 'Anywhere' }
+    let(:remote) { create :metro, name: 'Remote'}
     
     def matching_industry
       opportunity.industries << industry
@@ -160,6 +163,9 @@ RSpec.describe Opportunity, type: :model do
     before do
       opportunity.opportunity_type = opportunity_type
       fellow.opportunity_types << opportunity_type
+      
+      anywhere.children = [metro, remote]
+      remote.children = [metro, anywhere]
     end
     
     describe 'with matching metro' do
@@ -231,7 +237,7 @@ RSpec.describe Opportunity, type: :model do
         expect(opportunity.candidates).to_not include(fellow)
       end
       
-      it "excludes fellow when unsubscribed from recieving opportunities" do
+      it "excludes fellow when unsubscribed from receiving opportunities" do
         matching_industry
         unsubscribed
         
@@ -264,6 +270,18 @@ RSpec.describe Opportunity, type: :model do
       
       expect(opportunity.candidates).to include(fellow)
       expect(opportunity.candidates.size).to eq(1)
+    end
+    
+    describe 'with "anywhere" opp and "remote" fellow' do
+      before do
+        fellow.metros << remote
+        opportunity.metros << anywhere
+      end
+      
+      it "matches cross-parented siblings" do
+        matching_interest
+        expect(opportunity.candidates).to include(fellow)
+      end
     end
   end
   

@@ -26,13 +26,13 @@
       <th>Industries/Interests:</th>
       <td><%= @fellow.industry_interest_tags.gsub(';', ', ') %></td>
     </tr>
+    <tr>
+      <th>Majors:</th>
+      <td><%= @fellow.major_tags.gsub(';', ', ') %></td>
+    </tr>
     <tr class="new-section">
       <th>Available In:</th>
       <td><%= @fellow.metro_tags.gsub(';', ', ') %></td>
-    </tr>
-    <tr>
-      <th>Major:</th>
-      <td><%= @fellow.major %></td>
     </tr>
     <tr>
       <th>Affiliations:</th>

@@ -63,13 +63,12 @@ module Taggable
   
   module IndustryInterestMethods
     def industry_interest_tags
-      (industry_tags.split(';') | interest_tags.split(';') | major_tags.split(';')).sort.join(';')
+      (industry_tags.split(';') | interest_tags.split(';')).sort.join(';')
     end
   
     def industry_interest_tags= tag_string
       self.industry_tags = tag_string
       self.interest_tags = tag_string
-      self.major_tags = tag_string
     end
   end
   

@@ -37,6 +37,7 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
   
   let(:industry) { create :industry }
   let(:interest) { create :interest }
+  let(:major) { create :major }
   let(:saved_employer) { create :employer }
   let(:contact)  { create :contact}
   let(:location) { create :location, contact: contact, locateable: saved_employer }
@@ -159,6 +160,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
         opportunity.reload
       
         expect(opportunity.interests).to include(interest)
+      end
+
+      it "associates specified majors with the opportunity" do
+        opportunity = create :opportunity
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(major_ids: [major.id.to_s])}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.majors).to include(major)
       end
 
       it "associates specified locations with the opportunity" do

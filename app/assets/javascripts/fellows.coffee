@@ -59,6 +59,7 @@ $(document).on "turbolinks:load",  ->
           
   enableFellowTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableFellowTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
+  enableFellowTagChecklistToggle("major",    '/admin/majors/list.json', 'Add a Major')
   enableFellowTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Location')
 
   preventPartialTags()

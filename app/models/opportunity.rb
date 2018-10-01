@@ -46,11 +46,15 @@ class Opportunity < ApplicationRecord
       candidate_ids &= fellow_ids_for_employment_statuses(search_params[:employment_statuses])
     end
     
-    unless search_params[:industries_interests] == ''
-      candidate_ids &= fellow_ids_for_industries_interests(search_params[:industries_interests])
+    
+    unless [:industries_interests, :majors].all?{|key| search_params[key] == ''}
+      career_interests = [:industries_interests, :majors].map{|i| (search_params[i] || '').split(';')}.flatten.compact.uniq.sort.join(';')
+      career_interests = nil if career_interests.blank?
+      
+      candidate_ids &= fellow_ids_for_industries_interests(career_interests)
     end
 
-    unless search_params[:metros].nil? || search_params[:metros] == ''
+    unless search_params[:metros] == ''
       candidate_ids &= fellow_ids_for_metros(search_params[:metros])
     end
 

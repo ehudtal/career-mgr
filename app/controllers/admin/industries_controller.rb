@@ -15,7 +15,7 @@ class Admin::IndustriesController < ApplicationController
   end
   
   def combined
-    @names = (Industry.pluck(:name) | Interest.pluck(:name) | Major.pluck(:name)).sort
+    @names = (Industry.pluck(:name) | Interest.pluck(:name)).sort
     
     respond_to do |format|
       format.html { render layout: false }
