@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   default_url_options Rails.application.config.action_mailer.default_url_options
 
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
+  
+  mount Split::Dashboard, at: 'split'
 
   get 'home/welcome'
   get 'health_check', to: 'home#health_check'

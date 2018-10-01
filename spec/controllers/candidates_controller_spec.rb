@@ -53,5 +53,10 @@ RSpec.describe CandidatesController, type: :controller do
       get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: access_token.code}
       expect(flash[:stage_notice]).to eq('Congrats!')
     end
+    
+    it "completes any a/b tests" do
+      expect(controller).to receive(:split_test_complete).once
+      get :status, params: {fellow_opportunity_id: fellow_opportunity.id, update: 'accepted', token: access_token.code}
+    end
   end
 end

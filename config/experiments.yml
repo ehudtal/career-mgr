@@ -1,0 +1,15 @@
+invite:
+  alternatives:
+    - ehud
+    - tess
+    - brian
+  goals:
+    - interested
+    - not interested
+  metadata:
+    ehud:
+      subject: "<%= @opportunity.name %> matches your career profile"
+    tess:
+      subject: "Are you interested in the <%= @opportunity.name %> role?"
+    brian:
+      subject: "We found an opportunity for you! It's the <%= @opportunity.name %> role."

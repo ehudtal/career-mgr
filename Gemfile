@@ -95,3 +95,5 @@ gem 'devise'
 gem 'devise_cas_authenticatable'
 gem 'safety_mailer'
 gem 'aws-sdk-s3', require: false
+
+gem 'split', require: 'split/dashboard'
