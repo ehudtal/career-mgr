@@ -11,7 +11,10 @@ class CandidatesController < ApplicationController
       split_test_complete
       
       flash[:stage_notice] = notice if notice
-      redirect_to fellow_opportunity_path(@fellow_opportunity)
+
+      redirect_to @fellow_opportunity.reload.active ?
+        fellow_opportunity_path(@fellow_opportunity) :
+        root_path
     else
       fail_token_authorize!
     end
