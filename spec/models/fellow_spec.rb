@@ -569,6 +569,34 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  describe '#resume_url' do
+    let(:fellow) { create :fellow, resume_url: resume_url }
+    let(:server_answer) { 'http://example.com/resume.pdf' }
+    
+    before do
+      allow(fellow).to receive(:get_portal_resume_url).and_return(server_answer)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.resume_url }
+    
+    describe 'when resume_url is set in the database' do
+      let(:resume_url) { 'http://example.com/resume_saved.pdf' }
+      it { should eq(resume_url) }
+    end
+    
+    describe 'when resume_url is not set in the database' do
+      let(:resume_url) { nil }
+      
+      it { should eq(server_answer) }
+      
+      it "saves the result to the database" do
+        subject
+        expect(fellow.reload.attributes['resume_url']).to eq(server_answer)
+      end
+    end
+  end
+  
   describe '#portal_course_id' do
     let(:fellow) { create :fellow, portal_course_id: portal_course_id }
     let(:server_answer) { 52 }

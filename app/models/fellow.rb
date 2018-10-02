@@ -205,6 +205,15 @@ class Fellow < ApplicationRecord
     end
   end
   
+  def resume_url
+    return attributes['resume_url'] if attributes['resume_url']
+    
+    new_url = get_portal_resume_url
+    self.update resume_url: new_url unless new_url.nil?
+
+    attributes['resume_url']
+  end
+  
   def portal_course_id
     return attributes['portal_course_id'] if attributes['portal_course_id']
     
