@@ -511,8 +511,8 @@ RSpec.describe Fellow, type: :model do
       it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
-    describe 'when portal course id is zero (ergo, invalid)' do
-      let(:portal_course_id) { 0 }
+    describe 'when portal course id is nil (ergo, invalid)' do
+      let(:portal_course_id) { nil }
       let(:page_name) { 'onboard-to-braven' }
       
       it { should be_nil }
@@ -573,7 +573,7 @@ RSpec.describe Fellow, type: :model do
     let(:contact) { build :contact, email: 'test@example.com'}
     let(:fellow) { build :fellow, contact: contact }
     let(:best_answer) { 42 }
-    let(:default_answer) { 0 }
+    let(:default_answer) { nil }
     
     before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
     

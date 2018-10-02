@@ -168,7 +168,7 @@ class Fellow < ApplicationRecord
   end
   
   def portal_url_for page_name
-    return nil if portal_course_id == 0
+    return nil if portal_course_id.nil?
 
     page_name = page_name.downcase.gsub(/\s+/, '-')
     "https://portal.bebraven.org/courses/42/pages/#{page_name}"
@@ -177,19 +177,23 @@ class Fellow < ApplicationRecord
   def portal_course_id
     return attributes['portal_course_id'] if attributes['portal_course_id']
     
-    self.update portal_course_id: get_portal_course_id
+    new_id = get_portal_course_id
+    self.update portal_course_id: new_id unless new_id.nil?
+
     attributes['portal_course_id']
   end
   
   def portal_user_id
     return attributes['portal_user_id'] if attributes['portal_user_id']
     
-    self.update portal_user_id: get_portal_user_id
+    new_id = get_portal_user_id
+    self.update portal_user_id: new_id unless new_id.nil?
+
     attributes['portal_user_id']
   end
   
   def get_portal_course_id
-    default = 0
+    default = nil
     
     begin
       return default unless contact && contact.email
