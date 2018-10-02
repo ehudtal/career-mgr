@@ -537,9 +537,34 @@ RSpec.describe Fellow, type: :model do
       
       it { should eq(server_answer) }
       
-      it "saves the result to th database" do
+      it "saves the result to the database" do
         subject
         expect(fellow.reload.attributes['portal_course_id']).to eq(server_answer)
+      end
+    end
+  end
+  
+  describe '#portal_user_id' do
+    let(:fellow) { create :fellow, portal_user_id: portal_user_id }
+    let(:server_answer) { 52 }
+    
+    before { allow(fellow).to receive(:get_portal_user_id).and_return(server_answer) }
+    
+    subject { fellow.portal_user_id }
+    
+    describe 'when portal_user_id is set in the database' do
+      let(:portal_user_id) { 42 }
+      it { should eq(portal_user_id) }
+    end
+    
+    describe 'when portal_course_id is not set in the database' do
+      let(:portal_user_id) { nil }
+      
+      it { should eq(server_answer) }
+      
+      it "saves the result to the database" do
+        subject
+        expect(fellow.reload.attributes['portal_user_id']).to eq(server_answer)
       end
     end
   end
@@ -557,17 +582,17 @@ RSpec.describe Fellow, type: :model do
     require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
     
     describe "when there is one course id returned" do
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
       it { should eq(best_answer) }
     end
     
     describe 'when there are multiple course ids returned' do
-      let(:response) { "{\"course_ids\":[2,4,#{best_answer},8]}" }
+      let(:response) { {course_ids: [2,4,best_answer], user_id: 1001}.to_json }
       it { should eq(best_answer) }
     end
     
     describe 'when no course ids are returned' do
-      let(:response) { "{\"course_ids\":[]}" }
+      let(:response) { {course_ids: [], user_id: 1001}.to_json }
       it { should eq(default_answer) }
     end
     
@@ -578,14 +603,49 @@ RSpec.describe Fellow, type: :model do
     
     describe 'when fellow has no contact' do
       let(:contact) { nil }
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
       
       it { should eq(default_answer) }
     end
     
     describe 'when fellow\'s contact email is nil' do
       let(:contact) { build :contact, email: nil }
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
+      
+      it { should eq(default_answer) }
+    end
+  end
+  
+  describe '#get_portal_user_id' do
+    let(:contact) { build :contact, email: 'test@example.com'}
+    let(:fellow) { build :fellow, contact: contact }
+    let(:portal_user_id) { 1001 }
+    let(:default_answer) { nil }
+    
+    before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
+    
+    subject { fellow.get_portal_user_id }
+    
+    describe 'when user_id is returned' do
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
+      it { should eq(portal_user_id) }
+    end
+    
+    describe 'when bad JSON data is returned' do
+      let(:response) { '' }
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow has no contact' do
+      let(:contact) { nil }
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
+      
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow\'s contact email is nil' do
+      let(:contact) { build :contact, email: nil }
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
       
       it { should eq(default_answer) }
     end

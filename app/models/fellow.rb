@@ -181,22 +181,51 @@ class Fellow < ApplicationRecord
     attributes['portal_course_id']
   end
   
+  def portal_user_id
+    return attributes['portal_user_id'] if attributes['portal_user_id']
+    
+    self.update portal_user_id: get_portal_user_id
+    attributes['portal_user_id']
+  end
+  
   def get_portal_course_id
     default = 0
     
     begin
       return default unless contact && contact.email
-      
-      response = open("https://portal.bebraven.org/bz/courses_for_email?email=#{contact.email}")
-      data = JSON.parse(response)
+      portal_data['course_ids'].max || default
+    rescue
+      default
+    end
+  end
+  
+  def get_portal_user_id
+    default = nil
     
-      data['course_ids'].max || default
+    begin
+      return default unless contact && contact.email
+      portal_data['user_id'] || default
     rescue
       default
     end
   end
   
   private
+  
+  def portal_data
+    return @portal_data if defined?(@portal_data)
+    
+    default = {}
+    
+    begin
+      return default unless contact && contact.email
+      
+      response = open("https://portal.bebraven.org/bz/courses_for_email?email=#{contact.email}")
+      @portal_data = JSON.parse(response)
+    rescue
+      default
+    end
+  end
   
   def generate_key
     return unless key.nil?
