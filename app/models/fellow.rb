@@ -167,11 +167,41 @@ class Fellow < ApplicationRecord
     self.opportunity_types << OpportunityType.all if self.opportunity_types.empty?
   end
   
-  def portal_url_for page_name
+  def portal_page_url page_name
     return nil if portal_course_id.nil?
 
     page_name = page_name.downcase.gsub(/\s+/, '-')
-    "https://portal.bebraven.org/courses/42/pages/#{page_name}"
+    "#{canvas_url}/courses/#{portal_course_id}/pages/#{page_name}"
+  end
+  
+  def portal_resume_url
+    return nil if portal_course_id.nil? || portal_user_id.nil?
+    
+    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_assignment_id('resume')}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+    begin
+      response = open_url(url)
+      data = JSON.parse(response)
+      
+      data['attachments'].detect{|a| a.has_key?('url')}['url']
+    rescue
+      nil
+    end
+  end
+  
+  def portal_assignment_id assignment_name
+    return nil if portal_course_id.nil?
+    
+    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+    begin
+      response = open_url(url)
+      data = JSON.parse(response)
+      
+      data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}['id']
+    rescue
+      nil
+    end
   end
   
   def portal_course_id
@@ -216,6 +246,21 @@ class Fellow < ApplicationRecord
   
   private
   
+  def open_url url
+    open(url).read
+  end
+  
+  def canvas_url
+    url = Rails.application.secrets.canvas_use_ssl ? 'https://' : 'http://'
+    url += Rails.application.secrets.canvas_server
+    
+    unless Rails.application.secrets.canvas_port.blank?
+      url += ":#{Rails.application.secrets.canvas_port}"
+    end
+    
+    url
+  end
+  
   def portal_data
     return @portal_data if defined?(@portal_data)
     
@@ -224,7 +269,7 @@ class Fellow < ApplicationRecord
     begin
       return default unless contact && contact.email
       
-      response = open("https://portal.bebraven.org/bz/courses_for_email?email=#{contact.email}")
+      response = open_url("#{canvas_url}/bz/courses_for_email?email=#{contact.email}")
       @portal_data = JSON.parse(response)
     rescue
       default

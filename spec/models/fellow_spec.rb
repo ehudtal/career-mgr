@@ -490,25 +490,30 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
-  describe '#portal_url_for(page_name)' do
+  describe '#portal_page_url(page_name)' do
     let(:fellow) { build :fellow, portal_course_id: portal_course_id }
     let(:portal_course_id) { 42 }
     
-    subject { fellow.portal_url_for(page_name) }
+    before do
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org") 
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.portal_page_url(page_name) }
     
     describe 'when page_name is dashed and lowercase' do
       let(:page_name) { 'onboard-to-braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
     describe 'when page_name uses spaces' do
       let(:page_name) { 'onboard to braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
     describe 'when page_name uses capitalization' do
       let(:page_name) { 'Onboard To Braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
     describe 'when portal course id is nil (ergo, invalid)' do
@@ -519,11 +524,59 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
+  describe '#portal_resume_url' do
+    let(:fellow) { build :fellow, portal_course_id: portal_course_id, portal_user_id: portal_user_id }
+    let(:portal_course_id) { 11 }
+    let(:portal_user_id) { 12 }
+    let(:assignment_id) { 387 }
+    let(:token) { Rails.application.secrets.canvas_access_token }
+    let(:submission_url) { "https://stagingportal.bebraven.org/api/v1/courses/11/assignments/387/submissions/12?access_token=#{token}" }
+    let(:submission_fixture) { File.read("#{Rails.root}/spec/fixtures/portal_submission_resume.json")}
+
+    before do
+      allow(fellow).to receive(:portal_assignment_id).with('resume').and_return(assignment_id)
+      allow(fellow).to receive(:open_url).with(submission_url).and_return(submission_fixture)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.portal_resume_url }
+    
+    it { should eq('http://example.com/resume.doc') }
+  end
+  
+  describe '#portal_assignment_id(assignment_name)' do
+    let(:fellow) { build :fellow, portal_course_id: portal_course_id }
+    let(:portal_course_id) { 42 }
+    let(:token) { Rails.application.secrets.canvas_access_token }
+    let(:assignment_url) { "https://stagingportal.bebraven.org/api/v1/courses/42/assignments?access_token=#{token}" }
+    let(:assignment_fixture) { File.read("#{Rails.root}/spec/fixtures/portal_assignments.json") }
+    
+    before do
+      allow(fellow).to receive(:open_url).with(assignment_url).and_return(assignment_fixture)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.portal_assignment_id(assignment_name) }
+    
+    describe 'when looking for resume assignment' do
+      let(:assignment_name) { 'Resume' }
+      it { should eq(387) }
+    end
+    
+    describe 'when looking for linkedin assignment' do
+      let(:assignment_name) { 'LinkedIn' }
+      it { should eq(389) }
+    end
+  end
+  
   describe '#portal_course_id' do
     let(:fellow) { create :fellow, portal_course_id: portal_course_id }
     let(:server_answer) { 52 }
     
-    before { allow(fellow).to receive(:get_portal_course_id).and_return(server_answer) }
+    before do
+      allow(fellow).to receive(:get_portal_course_id).and_return(server_answer)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
     
     subject { fellow.portal_course_id }
     
@@ -575,7 +628,10 @@ RSpec.describe Fellow, type: :model do
     let(:best_answer) { 42 }
     let(:default_answer) { nil }
     
-    before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
+    before do
+      allow(fellow).to receive(:open_url).with('https://stagingportal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
     
     subject { fellow.get_portal_course_id }
     
@@ -622,7 +678,10 @@ RSpec.describe Fellow, type: :model do
     let(:portal_user_id) { 1001 }
     let(:default_answer) { nil }
     
-    before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
+    before do
+      allow(fellow).to receive(:open_url).with('https://stagingportal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
     
     subject { fellow.get_portal_user_id }
     
