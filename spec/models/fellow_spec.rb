@@ -524,7 +524,7 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
-  describe '#portal_resume_url' do
+  describe '#get_portal_resume_url' do
     let(:fellow) { build :fellow, portal_course_id: portal_course_id, portal_user_id: portal_user_id }
     let(:portal_course_id) { 11 }
     let(:portal_user_id) { 12 }
@@ -539,7 +539,7 @@ RSpec.describe Fellow, type: :model do
       allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
     end
     
-    subject { fellow.portal_resume_url }
+    subject { fellow.get_portal_resume_url }
     
     it { should eq('http://example.com/resume.doc') }
   end
