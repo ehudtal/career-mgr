@@ -56,6 +56,10 @@ Rails.application.routes.draw do
         get :upload
         post :upload
       end
+      
+      member do
+        get :resume
+      end
     end
 
     resources :fellow_opportunities
