@@ -66,11 +66,12 @@ $(document).on "turbolinks:load",  ->
         url = data['url']
         
         if url == null
-          resume.html('unavailable')
-          resume.removeClass('faded')
+          resume.html('')
         else
-          resume.html("<a href=\"#{data['url']}\" target=\"_blank\">available</a>")
+          resume.html("<a href=\"#{data['url']}\" target=\"_blank\">view</a>")
           resume.removeClass('faded')
+      .fail ->
+        resume.html('')
           
   enableFellowTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableFellowTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')

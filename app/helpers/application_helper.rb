@@ -87,6 +87,14 @@ module ApplicationHelper
   end
   
   def resume_link fellow
-    return "<div class=\"fellow-resume-url faded\" data-fellow=\"#{fellow.id}\">loading...</div>".html_safe
+    if !fellow.respond_to?(:resume)
+      ''
+    elsif fellow.resume.attached?
+      link_to('view', url_for(fellow.resume), target: '_blank').html_safe
+    elsif fellow.attributes['resume_url']
+      link_to('view', fellow.resume_url, target: '_blank').html_safe
+    else
+      "<div class=\"fellow-resume-url faded\" data-fellow=\"#{fellow.id}\">searching...</div>".html_safe
+    end
   end
 end
