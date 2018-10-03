@@ -595,3 +595,7 @@ ul.response-links li {
 .response-links .yes .button:hover {
   background: darkgreen;
 }
+
+.faded {
+  color: #ddd;
+}

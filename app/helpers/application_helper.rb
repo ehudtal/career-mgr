@@ -87,14 +87,6 @@ module ApplicationHelper
   end
   
   def resume_link fellow
-    if !fellow.respond_to?(:resume)
-      'unavailable'
-    elsif fellow.resume.attached?
-      link_to('available', url_for(fellow.resume), target: '_blank').html_safe
-    elsif fellow.resume_url
-      link_to('available', fellow.resume_url, target: '_blank').html_safe
-    else
-      'unavailable'
-    end
+    return "<div class=\"fellow-resume-url faded\" data-fellow=\"#{fellow.id}\">loading...</div>".html_safe
   end
 end
