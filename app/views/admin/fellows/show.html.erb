@@ -8,15 +8,7 @@
     </tr>
     <tr>
       <th>Resumé:</th>
-      <td>
-        <% if @fellow.resume.attached? %>
-          <%= link_to 'available', url_for(@fellow.resume), target: '_blank' %>
-        <% elsif @fellow.resume_url %>
-          <%= link_to 'available', @fellow.resume_url, target: '_blank' %>
-        <% else %>
-          unavailable
-        <% end %>
-      </td>
+      <td><%= resume_link(@fellow) %></td>
     </tr>
     <tr class="new-section">
       <th>Graduation year:</th>
