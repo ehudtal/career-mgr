@@ -3,7 +3,10 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
   
-  mount Split::Dashboard, at: 'split'
+  match "/split" => Split::Dashboard, anchor: false, via: [:get, :post, :delete], constraints: ->(request) do
+    request.env['warden'].authenticated?
+    request.env['warden'].authenticate!
+  end
 
   get 'home/welcome'
   get 'health_check', to: 'home#health_check'
