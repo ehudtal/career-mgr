@@ -193,7 +193,12 @@ class Fellow < ApplicationRecord
   def portal_resume_assignment_id
     return attributes['portal_resume_assignment_id'] if attributes['portal_resume_assignment_id']
     
-    new_id = get_portal_assignment_id('resume')
+    new_id = if classmate = Fellow.where(portal_course_id: portal_course_id).where.not(portal_resume_assignment_id: nil).first
+      classmate.portal_resume_assignment_id
+    else
+      get_portal_assignment_id('resume')
+    end
+    
     self.update portal_resume_assignment_id: new_id unless new_id.nil?
 
     attributes['portal_resume_assignment_id']
