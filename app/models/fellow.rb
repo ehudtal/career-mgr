@@ -193,16 +193,28 @@ class Fellow < ApplicationRecord
   def portal_assignment_id assignment_name
     return nil if portal_course_id.nil?
     
-    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?access_token=#{Rails.application.secrets.canvas_access_token}"
+    page = 1
+    assignment_id = nil
+    link = 'rel="next"'
     
-    begin
-      response = open_url(url)
-      data = JSON.parse(response)
+    while assignment_id.nil? && link.include?('rel="next"')
+      url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?per_page=25&page=#{page}&access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+      begin
+        response = open(url)
+        
+        link = response.meta['link']
+        data = JSON.parse(response.read)
+
+        assignment_id = data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}['id']
+      rescue
+        nil
+      end
       
-      data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}['id']
-    rescue
-      nil
+      page += 1
     end
+    
+    assignment_id
   end
   
   def resume_url
