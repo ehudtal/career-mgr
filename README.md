@@ -135,6 +135,94 @@ You can open a dedicated terminal window and have tests run automatically as you
 
     docker-compose exec career-mgr guard
 
+## A/B Testing
+
+We're using the [Split](https://github.com/splitrb/split) gem to manage A/B testing. The gem's README is very good, but here are the MCM-unique pieces. This has nothing to do with automated unit/integration tests - it's about seeing which variations in the UX result in more of a desired result.
+
+### Dashboard Authentication
+
+You must be logged in with an admin account, which by default is any bebraven.org account. This is implemented with some routing voodoo in the `routes.rb` file.
+
+### Configuration
+
+All tests (called "experiments") are listed in the `config/experiments.yml` file. Experiments *can* be created ad hoc within the application, but shouldn't be. This gives us one defined place for all current experiments.
+
+### Basic A/B Testing Flow
+
+1. Add to `config/experiments.yml` file
+2. Include custom testing code in views/controllers per Split's documentation
+3. Include a way to "complete" an experiment (like when a user clicks "buy now", which indicates the test worked)
+4. Let the experiment run, checking the dashboard at `/split` for results
+5. When a "best choice" has been identified, click this choice's "use this" button
+6. Go back and remove all code related to this experiment in the experiments config, views, and controllers; replace with the static "winning" choice
+
+### Non-Browser A/B Tests
+
+Browser-based experiments are easy, and well outlined in Split's documentation. But we need to test things like e-mail subjects as well. These are tied to our `AccessToken`s via our custom `AccessTokenSplit` class. This class takes an access token, which every outgoing e-mail has, and uses it to gain access to the necessary variables (like opportunity name) in the experiment itself. This does the custom work of creating/finishing experiment in a way that doesn't rely on automatic browser flow of assigning users to experiment groups in the view, because e-mails don't have cookies and browser sessions.
+
+Because this is custom and slightly complicated, here's a full example. In `config/experiments.yml`:
+
+    invitation:
+      alternatives:
+        - simple
+        - question
+        - verbose
+      goals:
+        - accept
+        - decline
+      metadata:
+        simple:
+          subject: "We found something."
+        question:
+          subject: "Are you interested in the <%= @token.owner.opportunity.name %> role?"
+        verbose:
+          subject: "We found an opportunity for you! It's the <%= @token.owner.opportunity.name %> role. Are you interested? Do you like turtles??"
+
+We've defined an experiment called "invitation". Now we use this experiment in our mailer subject:
+
+    class SimpleMailer < ApplicationMailer
+      add_template_helper(ApplicationHelper)
+    
+      def respond_to_invitation
+        @split = AccessTokenSplit.new(params[:access_token], 'invitation')
+        mail(to: @fellow.contact.email, subject: interpolate(@split.settings['subject']))
+      end
+    
+      private
+    
+      def interpolate string
+        ERB.new(string || '').result(binding).html_safe
+      end
+    end
+
+Okay, we have a few things going on here. First, this mailer expects an access token to be passed in as a parameter. This particular token describes the relationship between a fellow and an opportunity, so the token's "owner" is the `fellow_opportunity` model, which has access to both the fellow and the opportunity. We leveraged this in some of the e-mail subject versions of our experiment. 
+
+In order to use ERB-style notation in the YAML file, we have to use an `interpolate` method which pumps the raw string through the ERB interpreter, passing in the current binding. A "binding" in Ruby is the current scope which includes all the currently defined variables like `@token`. Otherwise, the ERB interpreter itself wouldn't know what `@token` means. We wouldn't need this step if the subjects didn't contain dynamic elements.
+
+Now our mailer template would need to include a couple of links, one for each "goal" (or choice):
+
+    <a href="/accept?access_token=123">Accept</a>
+    <a href="/decline?access_token=123">Decline</a>
+
+The access token parameter is very important - this is how Split will know which version of the experiment the user interacted with.
+
+Now we have to *complete* the experiment when a given user does what we're hoping they do, like click the "accept" button:
+
+    class SimpleController < ApplicationController
+      def accept
+        experiment = AccessTokenSplit.new(params[:access_token], 'invitation')
+        experiment.finish('accept')
+      end
+      
+      def decline
+        experiment = AccessTokenSplit.new(params[:access_token], 'invitation')
+        experiment.finish('decline')
+      end
+    end
+
+Here, we re-load the same experiment based on the access token. Now that we have the correct a/b test loaded, we call `finish`, passing in which goal was completed (or, which choice the user made), and we're done. If our a/b test doesn't have multiple goals, we can just call `experiment.finish` with no parameter.
+
+Now, the experiment works like any browser-based experiment, and you can view the results in the Split dashboard.
 
 ## Conclusion
 
