@@ -176,9 +176,9 @@ class Fellow < ApplicationRecord
   
   def get_portal_resume_url
     return @portal_resume_url if defined?(@portal_resume_url)
-    return nil if portal_course_id.nil? || portal_user_id.nil?
+    return nil if portal_course_id.nil? || portal_user_id.nil? || portal_resume_assignment_id.to_i == 0
     
-    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_assignment_id('resume')}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
+    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_resume_assignment_id}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
     
     begin
       response = open_url(url)
@@ -190,7 +190,16 @@ class Fellow < ApplicationRecord
     end
   end
   
-  def portal_assignment_id assignment_name
+  def portal_resume_assignment_id
+    return attributes['portal_resume_assignment_id'] if attributes['portal_resume_assignment_id']
+    
+    new_id = get_portal_assignment_id('resume')
+    self.update portal_resume_assignment_id: new_id unless new_id.nil?
+
+    attributes['portal_resume_assignment_id']
+  end
+  
+  def get_portal_assignment_id assignment_name
     return nil if portal_course_id.nil?
     
     page = 1
@@ -214,7 +223,7 @@ class Fellow < ApplicationRecord
       page += 1
     end
     
-    assignment_id
+    assignment_id || 0
   end
   
   def resume_url
