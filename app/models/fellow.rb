@@ -196,7 +196,7 @@ class Fellow < ApplicationRecord
     new_id = if classmate = Fellow.where(portal_course_id: portal_course_id).where.not(portal_resume_assignment_id: nil).first
       classmate.portal_resume_assignment_id
     else
-      get_portal_assignment_id('resume')
+      get_portal_assignment_id('resume', 'hustle to career project')
     end
     
     self.update portal_resume_assignment_id: new_id unless new_id.nil?
@@ -204,7 +204,7 @@ class Fellow < ApplicationRecord
     attributes['portal_resume_assignment_id']
   end
   
-  def get_portal_assignment_id assignment_name
+  def get_portal_assignment_id *assignment_names
     return nil if portal_course_id.nil?
     
     page = 1
@@ -220,7 +220,12 @@ class Fellow < ApplicationRecord
         link = response.meta['link']
         data = JSON.parse(response.read)
 
-        assignment_id = data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}['id']
+        assignment_names.each do |assignment_name|
+          if assignment = data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}
+            assignment_id = assignment['id']
+            break
+          end
+        end
       rescue
         nil
       end
