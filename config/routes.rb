@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   match "/split" => Split::Dashboard, anchor: false, via: [:get, :post, :delete], constraints: ->(request) do
     request.env['warden'].authenticated?
     request.env['warden'].authenticate!
+    
+    request.env['warden'].user.is_admin?
   end
 
   get 'home/welcome'
