@@ -106,6 +106,50 @@ RSpec.describe Admin::FellowsController, type: :controller do
     end
   end
 
+  describe "GET #resume.json" do
+    let(:fellow) { create :fellow, resume_url: resume_url }
+    
+    before do
+      fellow.resume.attach fixture_file_upload('files/resume.pdf') if attached_status
+    end
+    
+    describe 'when resume is attached' do
+      let(:attached_status) { true }
+      let(:resume_url) { 'http://example.com/linked.pdf' }
+
+      it "returns the attached resume url" do
+        get :resume, params: {id: fellow.to_param, format: 'json'}
+        data = JSON.parse(response.body)
+        
+        expect(data['url']).to eq(Rails.application.routes.url_helpers.url_for(fellow.resume))
+      end
+    end
+    
+    describe 'when resume is not attached, but resume_url is set' do
+      let(:attached_status) { false }
+      let(:resume_url) { 'http://example.com/linked.pdf' }
+
+      it "returns the linked resume_url" do
+        get :resume, params: {id: fellow.to_param, format: 'json'}
+        data = JSON.parse(response.body)
+        
+        expect(data['url']).to eq(resume_url)
+      end
+    end
+    
+    describe 'when there is no resume attached, OR resume_url set' do
+      let(:attached_status) { false }
+      let(:resume_url) { nil }
+
+      it "returns the linked resume_url" do
+        get :resume, params: {id: fellow.to_param, format: 'json'}
+        data = JSON.parse(response.body)
+        
+        expect(data['url']).to eq(nil)
+      end
+    end
+  end
+
   describe "GET #new" do
     it "returns a success response" do
       get :new, params: {}, session: valid_session
