@@ -64,6 +64,14 @@ module ApplicationHelper
     "<p>#{cleaned_text}</p>".html_safe
   end
   
+  def date_format date
+    if date.respond_to?(:strftime)
+      date.strftime('%b %-d, %Y')
+    else
+      ''
+    end
+  end
+  
   def address_parts contact
     parts = []
     
