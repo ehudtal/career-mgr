@@ -176,9 +176,9 @@ class Fellow < ApplicationRecord
   
   def get_portal_resume_url
     return @portal_resume_url if defined?(@portal_resume_url)
-    return nil if portal_course_id.nil? || portal_user_id.nil?
+    return nil if portal_course_id.nil? || portal_user_id.nil? || portal_resume_assignment_id.to_i == 0
     
-    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_assignment_id('resume')}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
+    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_resume_assignment_id}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
     
     begin
       response = open_url(url)
@@ -190,19 +190,50 @@ class Fellow < ApplicationRecord
     end
   end
   
-  def portal_assignment_id assignment_name
+  def portal_resume_assignment_id
+    return attributes['portal_resume_assignment_id'] if attributes['portal_resume_assignment_id']
+    
+    new_id = if classmate = Fellow.where(portal_course_id: portal_course_id).where.not(portal_resume_assignment_id: nil).first
+      classmate.portal_resume_assignment_id
+    else
+      get_portal_assignment_id('resume', 'hustle to career project')
+    end
+    
+    self.update portal_resume_assignment_id: new_id unless new_id.nil?
+
+    attributes['portal_resume_assignment_id']
+  end
+  
+  def get_portal_assignment_id *assignment_names
     return nil if portal_course_id.nil?
     
-    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?access_token=#{Rails.application.secrets.canvas_access_token}"
+    page = 1
+    assignment_id = nil
+    link = 'rel="next"'
     
-    begin
-      response = open_url(url)
-      data = JSON.parse(response)
+    while assignment_id.nil? && link.include?('rel="next"')
+      url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?per_page=25&page=#{page}&access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+      begin
+        response = open(url)
+        
+        link = response.meta['link']
+        data = JSON.parse(response.read)
+
+        assignment_names.each do |assignment_name|
+          if assignment = data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}
+            assignment_id = assignment['id']
+            break
+          end
+        end
+      rescue
+        nil
+      end
       
-      data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}['id']
-    rescue
-      nil
+      page += 1
     end
+    
+    assignment_id || 0
   end
   
   def resume_url

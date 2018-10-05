@@ -534,7 +534,7 @@ RSpec.describe Fellow, type: :model do
     let(:submission_fixture) { File.read("#{Rails.root}/spec/fixtures/portal_submission_resume.json")}
 
     before do
-      allow(fellow).to receive(:portal_assignment_id).with('resume').and_return(assignment_id)
+      allow(fellow).to receive(:get_portal_assignment_id).with('resume', 'hustle to career project').and_return(assignment_id)
       allow(fellow).to receive(:open_url).with(submission_url).and_return(submission_fixture)
       allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
     end
@@ -544,19 +544,23 @@ RSpec.describe Fellow, type: :model do
     it { should eq('http://example.com/resume.doc') }
   end
   
-  describe '#portal_assignment_id(assignment_name)' do
+  describe '#get_portal_assignment_id(assignment_name)' do
     let(:fellow) { build :fellow, portal_course_id: portal_course_id }
     let(:portal_course_id) { 42 }
     let(:token) { Rails.application.secrets.canvas_access_token }
-    let(:assignment_url) { "https://stagingportal.bebraven.org/api/v1/courses/42/assignments?access_token=#{token}" }
-    let(:assignment_fixture) { File.read("#{Rails.root}/spec/fixtures/portal_assignments.json") }
-    
-    before do
-      allow(fellow).to receive(:open_url).with(assignment_url).and_return(assignment_fixture)
-      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    let(:assignment_url) { "https://stagingportal.bebraven.org/api/v1/courses/42/assignments?per_page=25&page=1&access_token=#{token}" }
+
+    let(:assignment_fixture) do
+      read = File.read("#{Rails.root}/spec/fixtures/portal_assignments.json")
+      double('response', read: read, meta: {'link' => ''})
     end
     
-    subject { fellow.portal_assignment_id(assignment_name) }
+    before do
+      expect(fellow).to receive(:open).with(assignment_url).and_return(assignment_fixture)
+      expect(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.get_portal_assignment_id(assignment_name) }
     
     describe 'when looking for resume assignment' do
       let(:assignment_name) { 'Resume' }
