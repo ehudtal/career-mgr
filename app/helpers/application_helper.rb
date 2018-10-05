@@ -85,4 +85,16 @@ module ApplicationHelper
   def address_for contact
     address_parts(contact).join('<br>').html_safe
   end
+  
+  def resume_link fellow
+    if !fellow.respond_to?(:resume)
+      ''
+    elsif fellow.resume.attached?
+      link_to('view', url_for(fellow.resume), target: '_blank').html_safe
+    elsif fellow.attributes['resume_url']
+      link_to('view', fellow.resume_url, target: '_blank').html_safe
+    else
+      "<div class=\"fellow-resume-url faded\" data-fellow=\"#{fellow.id}\">searching...</div>".html_safe
+    end
+  end
 end
