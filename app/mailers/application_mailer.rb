@@ -21,7 +21,9 @@ class ApplicationMailer < ActionMailer::Base
   end
   
   def set_unsubscribe_header
-    link = AccessToken.for(@unsubscriber).path_with_token('Unsubscribe')
-    headers['List-Unsubscribe'] = "<#{link}>"
+    if @unsubscriber
+      link = AccessToken.for(@unsubscriber).path_with_token('Unsubscribe')
+      headers['List-Unsubscribe'] = "<#{link}>"
+    end
   end
 end
