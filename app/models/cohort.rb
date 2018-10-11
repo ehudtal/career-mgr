@@ -26,6 +26,9 @@ class Cohort < ApplicationRecord
           fellow = create fellow_attributes.merge({
             contact_attributes: contact_attributes
           })
+          
+          access_token = AccessToken.for(fellow)
+          FellowMailer.with(access_token: access_token).profile.deliver_later
         end
 
         fellow.add_metro(fellow.default_metro)
