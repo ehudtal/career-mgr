@@ -3,7 +3,9 @@ class CrossParentAnywhereAndRemoteTags < ActiveRecord::Migration[5.2]
     remote = Metro.find_by name: 'Remote'
     anywhere = Metro.find_by name: 'Anywhere'
     
-    remote.children << anywhere
-    anywhere.children << remote
+    if remote && anywhere
+      remote.children << anywhere
+      anywhere.children << remote
+    end
   end
 end
