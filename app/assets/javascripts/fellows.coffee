@@ -56,6 +56,22 @@ $(document).on "turbolinks:load",  ->
   
   reenableSubmit = () ->
     $('form input[type="submit"]').removeAttr('disabled', 'false')
+    
+  loadResumes = () ->
+    $('.fellow-resume-url').each ->
+      resume = $(this)
+      id = resume.data('fellow')
+      
+      $.get "/admin/fellows/#{id}/resume.json", (data) ->
+        url = data['url']
+        
+        if url == null
+          resume.html('')
+        else
+          resume.html("<a href=\"#{data['url']}\" target=\"_blank\">view</a>")
+          resume.removeClass('faded')
+      .fail ->
+        resume.html('')
           
   enableFellowTagChecklistToggle("interest", '/admin/interests/list.json', 'Add an Interest')
   enableFellowTagChecklistToggle("industry", '/admin/industries/list.json', 'Add an Industry')
@@ -63,3 +79,4 @@ $(document).on "turbolinks:load",  ->
   enableFellowTagChecklistToggle("metro",    '/admin/metros/list.json', 'Add a Location')
 
   preventPartialTags()
+  loadResumes()

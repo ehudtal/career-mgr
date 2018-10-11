@@ -1,15 +1,15 @@
 invite:
   alternatives:
-    - ehud
-    - tess
-    - brian
+    - (ehud) {opportunity} matches your career profile
+    - (tess) Are you interested in the {opportunity} role?
+    - (brian) We found an opportunity for you! It's the {opportunity} role.
   goals:
     - interested
     - not interested
   metadata:
-    ehud:
+    (ehud) {opportunity} matches your career profile:
       subject: "<%= @opportunity.name %> matches your career profile"
-    tess:
+    (tess) Are you interested in the {opportunity} role?:
       subject: "Are you interested in the <%= @opportunity.name %> role?"
-    brian:
+    (brian) We found an opportunity for you! It's the {opportunity} role.:
       subject: "We found an opportunity for you! It's the <%= @opportunity.name %> role."

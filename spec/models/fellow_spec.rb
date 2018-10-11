@@ -490,32 +490,114 @@ RSpec.describe Fellow, type: :model do
     end
   end
   
-  describe '#portal_url_for(page_name)' do
+  describe '#portal_page_url(page_name)' do
     let(:fellow) { build :fellow, portal_course_id: portal_course_id }
     let(:portal_course_id) { 42 }
     
-    subject { fellow.portal_url_for(page_name) }
+    before do
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org") 
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.portal_page_url(page_name) }
     
     describe 'when page_name is dashed and lowercase' do
       let(:page_name) { 'onboard-to-braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
     describe 'when page_name uses spaces' do
       let(:page_name) { 'onboard to braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
     describe 'when page_name uses capitalization' do
       let(:page_name) { 'Onboard To Braven' }
-      it { should eq('https://portal.bebraven.org/courses/42/pages/onboard-to-braven') }
+      it { should eq('https://stagingportal.bebraven.org/courses/42/pages/onboard-to-braven') }
     end
     
-    describe 'when portal course id is zero (ergo, invalid)' do
-      let(:portal_course_id) { 0 }
+    describe 'when portal course id is nil (ergo, invalid)' do
+      let(:portal_course_id) { nil }
       let(:page_name) { 'onboard-to-braven' }
       
       it { should be_nil }
+    end
+  end
+  
+  describe '#get_portal_resume_url' do
+    let(:fellow) { build :fellow, portal_course_id: portal_course_id, portal_user_id: portal_user_id }
+    let(:portal_course_id) { 11 }
+    let(:portal_user_id) { 12 }
+    let(:assignment_id) { 387 }
+    let(:token) { Rails.application.secrets.canvas_access_token }
+    let(:submission_url) { "https://stagingportal.bebraven.org/api/v1/courses/11/assignments/387/submissions/12?access_token=#{token}" }
+    let(:submission_fixture) { File.read("#{Rails.root}/spec/fixtures/portal_submission_resume.json")}
+
+    before do
+      allow(fellow).to receive(:get_portal_assignment_id).with('resume', 'hustle to career project').and_return(assignment_id)
+      allow(fellow).to receive(:open_url).with(submission_url).and_return(submission_fixture)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.get_portal_resume_url }
+    
+    it { should eq('http://example.com/resume.doc') }
+  end
+  
+  describe '#get_portal_assignment_id(assignment_name)' do
+    let(:fellow) { build :fellow, portal_course_id: portal_course_id }
+    let(:portal_course_id) { 42 }
+    let(:token) { Rails.application.secrets.canvas_access_token }
+    let(:assignment_url) { "https://stagingportal.bebraven.org/api/v1/courses/42/assignments?per_page=25&page=1&access_token=#{token}" }
+
+    let(:assignment_fixture) do
+      read = File.read("#{Rails.root}/spec/fixtures/portal_assignments.json")
+      double('response', read: read, meta: {'link' => ''})
+    end
+    
+    before do
+      expect(fellow).to receive(:open).with(assignment_url).and_return(assignment_fixture)
+      expect(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.get_portal_assignment_id(assignment_name) }
+    
+    describe 'when looking for resume assignment' do
+      let(:assignment_name) { 'Resume' }
+      it { should eq(387) }
+    end
+    
+    describe 'when looking for linkedin assignment' do
+      let(:assignment_name) { 'LinkedIn' }
+      it { should eq(389) }
+    end
+  end
+  
+  describe '#resume_url' do
+    let(:fellow) { create :fellow, resume_url: resume_url }
+    let(:server_answer) { 'http://example.com/resume.pdf' }
+    
+    before do
+      allow(fellow).to receive(:get_portal_resume_url).and_return(server_answer)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.resume_url }
+    
+    describe 'when resume_url is set in the database' do
+      let(:resume_url) { 'http://example.com/resume_saved.pdf' }
+      it { should eq(resume_url) }
+    end
+    
+    describe 'when resume_url is not set in the database' do
+      let(:resume_url) { nil }
+      
+      it { should eq(server_answer) }
+      
+      it "saves the result to the database" do
+        subject
+        expect(fellow.reload.attributes['resume_url']).to eq(server_answer)
+      end
     end
   end
   
@@ -523,7 +605,10 @@ RSpec.describe Fellow, type: :model do
     let(:fellow) { create :fellow, portal_course_id: portal_course_id }
     let(:server_answer) { 52 }
     
-    before { allow(fellow).to receive(:get_portal_course_id).and_return(server_answer) }
+    before do
+      allow(fellow).to receive(:get_portal_course_id).and_return(server_answer)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
     
     subject { fellow.portal_course_id }
     
@@ -537,9 +622,34 @@ RSpec.describe Fellow, type: :model do
       
       it { should eq(server_answer) }
       
-      it "saves the result to th database" do
+      it "saves the result to the database" do
         subject
         expect(fellow.reload.attributes['portal_course_id']).to eq(server_answer)
+      end
+    end
+  end
+  
+  describe '#portal_user_id' do
+    let(:fellow) { create :fellow, portal_user_id: portal_user_id }
+    let(:server_answer) { 52 }
+    
+    before { allow(fellow).to receive(:get_portal_user_id).and_return(server_answer) }
+    
+    subject { fellow.portal_user_id }
+    
+    describe 'when portal_user_id is set in the database' do
+      let(:portal_user_id) { 42 }
+      it { should eq(portal_user_id) }
+    end
+    
+    describe 'when portal_course_id is not set in the database' do
+      let(:portal_user_id) { nil }
+      
+      it { should eq(server_answer) }
+      
+      it "saves the result to the database" do
+        subject
+        expect(fellow.reload.attributes['portal_user_id']).to eq(server_answer)
       end
     end
   end
@@ -548,26 +658,29 @@ RSpec.describe Fellow, type: :model do
     let(:contact) { build :contact, email: 'test@example.com'}
     let(:fellow) { build :fellow, contact: contact }
     let(:best_answer) { 42 }
-    let(:default_answer) { 0 }
+    let(:default_answer) { nil }
     
-    before { allow(fellow).to receive(:open).with('https://portal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)}
+    before do
+      allow(fellow).to receive(:open_url).with('https://stagingportal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
     
     subject { fellow.get_portal_course_id }
     
     require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
     
     describe "when there is one course id returned" do
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
       it { should eq(best_answer) }
     end
     
     describe 'when there are multiple course ids returned' do
-      let(:response) { "{\"course_ids\":[2,4,#{best_answer},8]}" }
+      let(:response) { {course_ids: [2,4,best_answer], user_id: 1001}.to_json }
       it { should eq(best_answer) }
     end
     
     describe 'when no course ids are returned' do
-      let(:response) { "{\"course_ids\":[]}" }
+      let(:response) { {course_ids: [], user_id: 1001}.to_json }
       it { should eq(default_answer) }
     end
     
@@ -578,14 +691,52 @@ RSpec.describe Fellow, type: :model do
     
     describe 'when fellow has no contact' do
       let(:contact) { nil }
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
       
       it { should eq(default_answer) }
     end
     
     describe 'when fellow\'s contact email is nil' do
       let(:contact) { build :contact, email: nil }
-      let(:response) { "{\"course_ids\":[#{best_answer}]}" }
+      let(:response) { {course_ids: [best_answer], user_id: 1001}.to_json }
+      
+      it { should eq(default_answer) }
+    end
+  end
+  
+  describe '#get_portal_user_id' do
+    let(:contact) { build :contact, email: 'test@example.com'}
+    let(:fellow) { build :fellow, contact: contact }
+    let(:portal_user_id) { 1001 }
+    let(:default_answer) { nil }
+    
+    before do
+      allow(fellow).to receive(:open_url).with('https://stagingportal.bebraven.org/bz/courses_for_email?email=test@example.com').and_return(response)
+      allow(fellow).to receive(:canvas_url).and_return("https://stagingportal.bebraven.org")
+    end
+    
+    subject { fellow.get_portal_user_id }
+    
+    describe 'when user_id is returned' do
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
+      it { should eq(portal_user_id) }
+    end
+    
+    describe 'when bad JSON data is returned' do
+      let(:response) { '' }
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow has no contact' do
+      let(:contact) { nil }
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
+      
+      it { should eq(default_answer) }
+    end
+    
+    describe 'when fellow\'s contact email is nil' do
+      let(:contact) { build :contact, email: nil }
+      let(:response) { {course_ids: [1], user_id: portal_user_id}.to_json }
       
       it { should eq(default_answer) }
     end
