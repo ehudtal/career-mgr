@@ -1,24 +1,5 @@
 <div id="career-progress" class="<%= @fellow.career_steps.all?(&:completed?) ? ' all-done' : '' %>">
-<!--  <h2>Career Progress</h2>
 
-  <p>Complete these important milestones to set yourself up for successful job hunting. Most of the items can be completed as part of the Braven Accelerator.</p>
-
-  <%= form_tag fellow_home_career_path, class: 'career-tracker-form' do %>
-    <div id="career-tracker">
-      <% @fellow.career_steps.order(position: 'asc').each do |career_step| %>
-        <% label = "career-item-#{sprintf('%02d', career_step.position + 1)}" %>
-        
-        <div class="tracker-item">
-          <%= check_box_tag('career_steps[]', career_step.position, career_step.completed, id: label, class: 'career') %>
-          
-          <label for="<%= label %>">
-            <h4><%= career_step.position + 1 %></h4>
-            <p><%= career_step.description %></p>
-          </label></div>
-      <% end %>
-    </div>
-  <% end %>
--->
   <h2>Braven Job Hunter</h2>
 
   <p>You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>

@@ -620,3 +620,7 @@ ul.response-links li {
 .faded {
   color: #ddd;
 }
+
+#career-tracker {
+  display: none;
+}
