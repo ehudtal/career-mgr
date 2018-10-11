@@ -37,7 +37,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :summary, 'Summary (please keep it short!)' %>
+    <%= form.label :summary, 'Summary (make it specific, explain acronyms, and keep it short!)' %>
     <%= form.text_area :summary %>
   </div>
 
@@ -47,7 +47,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :job_posting_url %>
+    <%= form.label :job_posting_url, 'Direct link to the job posting (i.e. not just the homepage)' %>
     <%= form.text_field :job_posting_url, required: true %>
   </div>
   
@@ -142,7 +142,7 @@
   </div>
   
   <div id="majors">
-    <h3>Majors (Related Courses of Study)</h3>
+    <h3>Majors/Minors (Related Courses of Study)</h3>
 
     <%= link_to 'full list', list_admin_majors_path, target: '_blank' %>
   

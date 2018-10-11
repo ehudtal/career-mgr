@@ -29,6 +29,7 @@ body {
 }
 
 main {
+  width: 672px;
   margin: 0 5vw;
   position: relative;
 }
@@ -38,7 +39,8 @@ th,
 .logout,
 .button,
 input[type="submit"],
-.tracker-item {
+.tracker-item,
+.tags-header {
   font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
@@ -47,6 +49,17 @@ input[type="submit"],
 
 h2, h3 {
   margin-top: 2em;
+}
+
+.phase h2,
+th,
+.tags-header {
+  font-size: 1.2em;
+  margin-top: 0;
+}
+
+.tags-header strong {
+  font-weight: normal;
 }
 
 ul.inline-list {
@@ -73,7 +86,8 @@ td.checkmark {
 }
 
 a:link, a:visited,
-.toggle-next:active {
+.toggle-next:active,
+.tip-cue {
   color: #0081bd;
   text-decoration: none;
   background: none;
@@ -175,11 +189,12 @@ tr:first-child {
 
 #header-logo {
   margin-left: 2vw;
-  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
-  background-size: contain;
-  width: 110px;
+  background: none;
+}
+
+#header-logo img {
+  width: 93px;
   height: 22px;
-  background-repeat: no-repeat;
 }
 
 #masthead h1 {
@@ -319,15 +334,21 @@ table.tablesorter tfoot tr th {
   text-align: center;
 }
 
-.phase h2,
-th {
-  font-size: 1.2em;
-  margin-top: 0;
-}
-
 .phase {
   padding: 10px;
   text-align: center;
+}
+
+.inline-phase {
+  margin-right: 1em;
+}
+
+.inline-phase::after {
+  content: " \003e";
+}
+
+.tip-cue::before {
+  content: "Click for ";
 }
 
 .opportunity-stages .completed {
@@ -529,14 +550,14 @@ span.burden {
 
 /* Media Queries */
 
-@media all and (max-width: 1170px) {
+@media all and (min-width: 730px) and (max-width: 1170px) {
   #career-tracker {
     width: 672px;
     margin: 0 -5px;
   }
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 730px) {
   main {
     width: 100%;
     padding: 0 1vw;
@@ -594,4 +615,12 @@ ul.response-links li {
 
 .response-links .yes .button:hover {
   background: darkgreen;
+}
+
+.faded {
+  color: #ddd;
+}
+
+#career-tracker {
+  display: none;
 }

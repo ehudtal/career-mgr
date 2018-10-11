@@ -15,6 +15,10 @@ RSpec.describe Admin::FellowsController, type: :routing do
       expect(:get => "/admin/fellows/1").to route_to("admin/fellows#show", :id => "1")
     end
 
+    it "routes to #resume" do
+      expect(:get => "/admin/fellows/1/resume.json").to route_to("admin/fellows#resume", id: '1', format: 'json')
+    end
+
     it "routes to #edit" do
       expect(:get => "/admin/fellows/1/edit").to route_to("admin/fellows#edit", :id => "1")
     end

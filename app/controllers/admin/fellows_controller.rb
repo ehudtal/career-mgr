@@ -1,7 +1,7 @@
 class Admin::FellowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_admin!
-  before_action :set_fellow, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_admin!, except: [:resume]
+  before_action :set_fellow, only: [:show, :edit, :update, :destroy, :resume]
 
   # GET /fellows
   # GET /fellows.json
@@ -12,6 +12,19 @@ class Admin::FellowsController < ApplicationController
   # GET /fellows/1
   # GET /fellows/1.json
   def show
+  end
+  
+  # GET /fellows/1/resume.json
+  def resume
+    url = if @fellow.resume.attached?
+      Rails.application.routes.url_helpers.url_for(@fellow.resume)
+    else
+      @fellow.resume_url
+    end
+    
+    respond_to do |format|
+      format.json { render json: {url: url}}
+    end
   end
 
   # GET /fellows/new

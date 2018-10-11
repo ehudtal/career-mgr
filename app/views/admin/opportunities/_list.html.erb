@@ -14,6 +14,7 @@
           <th>Employer</th>
           <th>Title</th>
           <th>Summary</th>
+          <th>Deadline</th>
           <th>Published</th>
           <th>Partner</th>
           <th>Inbound</th>
@@ -29,6 +30,7 @@
             <td><%= opportunity.employer.name %>
             <td><%= link_to opportunity.name, admin_opportunity_path(opportunity) %></td>
             <td><%= truncate(opportunity.summary, length: 100, separator: ' ') %></td>
+            <td><%= date_format(opportunity.application_deadline) %></td>
             <td class="checkmark"><%= checkmark(opportunity.published?) %></td>
             <td class="checkmark"><%= checkmark(opportunity.employer.employer_partner) %>
             <td class="checkmark"><%= checkmark(opportunity.inbound) %></td>

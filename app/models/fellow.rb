@@ -167,36 +167,155 @@ class Fellow < ApplicationRecord
     self.opportunity_types << OpportunityType.all if self.opportunity_types.empty?
   end
   
-  def portal_url_for page_name
-    return nil if portal_course_id == 0
+  def portal_page_url page_name
+    return nil if portal_course_id.nil?
 
     page_name = page_name.downcase.gsub(/\s+/, '-')
-    "https://portal.bebraven.org/courses/42/pages/#{page_name}"
+    "#{canvas_url}/courses/#{portal_course_id}/pages/#{page_name}"
+  end
+  
+  def get_portal_resume_url
+    return @portal_resume_url if defined?(@portal_resume_url)
+    return nil if portal_course_id.nil? || portal_user_id.nil? || portal_resume_assignment_id.to_i == 0
+    
+    url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments/#{portal_resume_assignment_id}/submissions/#{portal_user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+    begin
+      response = open_url(url)
+      data = JSON.parse(response)
+      
+      @portal_resume_url = data['attachments'].detect{|a| a.has_key?('url')}['url']
+    rescue
+      nil
+    end
+  end
+  
+  def portal_resume_assignment_id
+    return attributes['portal_resume_assignment_id'] if attributes['portal_resume_assignment_id']
+    
+    new_id = if classmate = Fellow.where(portal_course_id: portal_course_id).where.not(portal_resume_assignment_id: nil).first
+      classmate.portal_resume_assignment_id
+    else
+      get_portal_assignment_id('resume', 'hustle to career project')
+    end
+    
+    self.update portal_resume_assignment_id: new_id unless new_id.nil?
+
+    attributes['portal_resume_assignment_id']
+  end
+  
+  def get_portal_assignment_id *assignment_names
+    return nil if portal_course_id.nil?
+    
+    page = 1
+    assignment_id = nil
+    link = 'rel="next"'
+    
+    while assignment_id.nil? && link.include?('rel="next"')
+      url = "#{canvas_url}/api/v1/courses/#{portal_course_id}/assignments?per_page=25&page=#{page}&access_token=#{Rails.application.secrets.canvas_access_token}"
+    
+      begin
+        response = open(url)
+        
+        link = response.meta['link']
+        data = JSON.parse(response.read)
+
+        assignment_names.each do |assignment_name|
+          if assignment = data.detect{|x| x['name'].downcase.include?(assignment_name.downcase)}
+            assignment_id = assignment['id']
+            break
+          end
+        end
+      rescue
+        nil
+      end
+      
+      page += 1
+    end
+    
+    assignment_id || 0
+  end
+  
+  def resume_url
+    return attributes['resume_url'] if attributes['resume_url']
+    
+    new_url = get_portal_resume_url
+    self.update resume_url: new_url unless new_url.nil?
+
+    attributes['resume_url']
   end
   
   def portal_course_id
     return attributes['portal_course_id'] if attributes['portal_course_id']
     
-    self.update portal_course_id: get_portal_course_id
+    new_id = get_portal_course_id
+    self.update portal_course_id: new_id unless new_id.nil?
+
     attributes['portal_course_id']
   end
   
+  def portal_user_id
+    return attributes['portal_user_id'] if attributes['portal_user_id']
+    
+    new_id = get_portal_user_id
+    self.update portal_user_id: new_id unless new_id.nil?
+
+    attributes['portal_user_id']
+  end
+  
   def get_portal_course_id
-    default = 0
+    default = nil
     
     begin
       return default unless contact && contact.email
-      
-      response = open("https://portal.bebraven.org/bz/courses_for_email?email=#{contact.email}")
-      data = JSON.parse(response)
+      portal_data['course_ids'].max || default
+    rescue
+      default
+    end
+  end
+  
+  def get_portal_user_id
+    default = nil
     
-      data['course_ids'].max || default
+    begin
+      return default unless contact && contact.email
+      portal_data['user_id'] || default
     rescue
       default
     end
   end
   
   private
+  
+  def open_url url
+    open(url).read
+  end
+  
+  def canvas_url
+    url = Rails.application.secrets.canvas_use_ssl ? 'https://' : 'http://'
+    url += Rails.application.secrets.canvas_server
+    
+    unless Rails.application.secrets.canvas_port.blank?
+      url += ":#{Rails.application.secrets.canvas_port}"
+    end
+    
+    url
+  end
+  
+  def portal_data
+    return @portal_data if defined?(@portal_data)
+    
+    default = {}
+    
+    begin
+      return default unless contact && contact.email
+      
+      response = open_url("#{canvas_url}/bz/courses_for_email?email=#{contact.email}")
+      @portal_data = JSON.parse(response)
+    rescue
+      default
+    end
+  end
   
   def generate_key
     return unless key.nil?

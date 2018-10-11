@@ -157,6 +157,20 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
   
+  describe '#date_format(date)' do
+    subject { date_format(date) }
+    
+    describe 'when date is valid' do
+      let(:date) { Date.parse('1977-04-09') }
+      it { should eq('Apr 9, 1977') }
+    end
+    
+    describe 'when date is nil' do
+      let(:date) { nil }
+      it { should eq('') }
+    end
+  end
+  
   describe '#address_parts(contact)' do
     let(:contact) { build :contact, address_1: address_1, address_2: address_2, city: city, state: state, postal_code: postal_code }
     
