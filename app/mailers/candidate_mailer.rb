@@ -16,7 +16,7 @@ class CandidateMailer < ApplicationMailer
     @opportunity_stage = OpportunityStage.find_by(name: params[:stage_name])
     @content = @opportunity_stage.content
 
-    options = {to: @fellow.contact.email, subject: "#{@opportunity.name}: #{@content['title']}"}
+    options = {to: @fellow.contact.email, subject: interpolate("#{@opportunity.name}: #{@content['title']}")}
     options.merge!(bcc: Rails.application.secrets.mailer_bcc) if Rails.application.secrets.mailer_bcc
 
     mail_subscribed(@fellow.receive_opportunities, options)
@@ -30,7 +30,7 @@ class CandidateMailer < ApplicationMailer
 
     @content = @opportunity_stage.content
 
-    mail(to: @fellow.contact.email, subject: "#{@opportunity.name}: #{@content['title']}", template_name: 'notify')
+    mail(to: @fellow.contact.email, subject:  interpolate("#{@opportunity.name}: #{@content['title']}"), template_name: 'notify')
   end
   
   def set_objects

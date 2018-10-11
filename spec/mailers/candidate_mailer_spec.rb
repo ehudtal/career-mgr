@@ -85,7 +85,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'research employer' do
       let(:stage_name) { 'research employer' }
 
-      expect_headers "New Opportunity: Research this Employer"
+      expect_headers "New Opportunity: Research #{@employer.name}"
       expect_content 'Have you researched'
       expect_bcc
 
@@ -177,7 +177,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'research interview process' do
       let(:stage_name) { 'research interview process' }
 
-      expect_headers "New Opportunity: Research the Interview Process"
+      expect_headers "New Opportunity: Research #{@employer.name}'s Interview Process"
       expect_content "Have you researched"
       expect_bcc
 
@@ -238,7 +238,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'receive offer' do
       let(:stage_name) { 'receive offer' }
 
-      expect_headers "New Opportunity: Look for an Offer"
+      expect_headers "New Opportunity: Look out for an Offer"
       expect_content "Have you received"
       expect_bcc
 
@@ -253,7 +253,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'submit counter-offer' do
       let(:stage_name) { 'submit counter-offer' }
 
-      expect_headers "New Opportunity: Consider a Counter Offer"
+      expect_headers "New Opportunity: Consider making a Counter Offer"
       expect_content "Have you submitted"
       expect_bcc
 
