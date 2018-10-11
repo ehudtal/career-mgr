@@ -105,4 +105,8 @@ module ApplicationHelper
       "<div class=\"fellow-resume-url faded\" data-fellow=\"#{fellow.id}\">searching...</div>".html_safe
     end
   end
+  
+  def nav_link label, url
+    link_to(label, url, class: (current_page?(url) ? 'current' : ''))
+  end
 end

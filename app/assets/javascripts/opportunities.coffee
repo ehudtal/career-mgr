@@ -16,10 +16,11 @@ $(document).on "turbolinks:load",  ->
           autocomplete: {source: data}
           placeholder: placeholder
           delimiter: ";"
-          validationPattern: new RegExp('^[()a-zA-Z0-9, \&/-]+$')
+          validationPattern: new RegExp('^(' + data.join('|') + ')$')
           onAddTag: (tag) ->
             if $(tag).hasClass('auto-refresh')
               $(tag).form().submit()
+              
           onRemoveTag: (tag) ->
             if $(tag).hasClass('auto-refresh')
               $(tag).form().submit()
@@ -63,7 +64,7 @@ $(document).on "turbolinks:load",  ->
           autocomplete: {source: data}
           placeholder: 'Add Industries or Interests'
           delimiter: ';'
-          validationPattern: new RegExp('^[()a-zA-Z0-9, \&/-]+$')
+          validationPattern: new RegExp('^(' + data.join('|') + ')$')
           onAddTag: (tag) ->
             if $(tag).hasClass('auto-refresh')
               $(tag).form().submit()
