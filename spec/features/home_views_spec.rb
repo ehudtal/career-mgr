@@ -27,7 +27,7 @@ RSpec.feature "HomeViews", type: :feature do
     end
     
     scenario "Viewing the homepage", js: true do
-      expect(page).to have_content(/Career Dashboard/i)
+      expect(page).to have_content(/Job Hunter/i)
     end
   end
 end
