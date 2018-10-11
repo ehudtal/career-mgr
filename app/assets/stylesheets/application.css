@@ -39,7 +39,8 @@ th,
 .logout,
 .button,
 input[type="submit"],
-.tracker-item {
+.tracker-item,
+.tags-header {
   font-family: DIN, "TradeGothicNo.20-CondBold", "Oswald", sans-serif;
   text-transform: uppercase;
   line-height: normal;
@@ -48,6 +49,17 @@ input[type="submit"],
 
 h2, h3 {
   margin-top: 2em;
+}
+
+.phase h2,
+th,
+.tags-header {
+  font-size: 1.2em;
+  margin-top: 0;
+}
+
+.tags-header strong {
+  font-weight: normal;
 }
 
 ul.inline-list {
@@ -74,7 +86,8 @@ td.checkmark {
 }
 
 a:link, a:visited,
-.toggle-next:active {
+.toggle-next:active,
+.tip-cue {
   color: #0081bd;
   text-decoration: none;
   background: none;
@@ -321,15 +334,21 @@ table.tablesorter tfoot tr th {
   text-align: center;
 }
 
-.phase h2,
-th {
-  font-size: 1.2em;
-  margin-top: 0;
-}
-
 .phase {
   padding: 10px;
   text-align: center;
+}
+
+.inline-phase {
+  margin-right: 1em;
+}
+
+.inline-phase::after {
+  content: " \003e";
+}
+
+.tip-cue::before {
+  content: "Click for ";
 }
 
 .opportunity-stages .completed {

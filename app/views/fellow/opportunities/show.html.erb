@@ -1,18 +1,25 @@
 <h1><%= @candidate.opportunity.formatted_name %></h1>
-<p>
-  <strong>Summary:</strong>
-  <%= @candidate.opportunity.summary %>
-</p>
-<p>
-  <strong>How to Apply:</strong>
-  <%= @candidate.opportunity.how_to_apply %>
-</p>
-<p>
-  <strong>Job Posting URL:</strong>
-  <a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a>
-</p>
-<%= render 'admin/industries/list', object: @candidate.opportunity %>
-<%= render 'admin/interests/list', object: @candidate.opportunity %>
+<table>
+  <tbody>
+    <tr>
+      <th>About this opportunity:</th>
+      <td colspan=""><%= @candidate.opportunity.summary %></td>
+    </tr>
+    <tr class="lists">
+      <td><%= render('admin/industries/list', object: @candidate.opportunity) unless @candidate.opportunity.industries.empty? %></td>
+      <td><%= render('admin/interests/list', object: @candidate.opportunity) unless @candidate.opportunity.interests.empty? %></td>
+    </tr>
+    <tr>
+      <th>How to Apply:</th>
+      <td><%= @candidate.opportunity.how_to_apply %></td>
+    </tr>
+    <tr>
+      <th>Job Posting URL:</th>
+      <td><a href="<%= @candidate.opportunity.job_posting_url %>" target="_blank"><%= @candidate.opportunity.job_posting_url %></a></td>
+    </tr>
+  </tbody>
+</table>
+
 
 <% if @candidate.stage == 'respond to invitation' %>
   <h2>Are you Interested in This Opportunity?</h2>
@@ -24,14 +31,11 @@
 <% else %>
   <h2>Where am I in the process?</h2>
 
-  <p><strong>Note:</strong> You're not expected to do everything below in one go. If you take a break we'll simply send you a helpful reminder so you can pick up where you left off.</p>
+  <p><strong>Note:</strong> You're not expected to do everything below in one go.<br />If you take a break we'll simply send you a helpful reminder so you can pick up where you left off.</p>
+
+  <h3>Recommended Action</h3>
 
   <table class="opportunity-stages">
-    <thead>
-      <th class="phase">Phase</th>
-      <th class="recommended-action">Recommended Action</th>
-    </thead>
-  
     <tbody>
       <% completion = 'completed' %>
 
@@ -40,10 +44,6 @@
 
         <% phase_content.each do |stage_name, content| %>
           <tr>
-            <% if content['phase_position'].to_i == 1 %>
-              <td class="phase phase-<%= phase.downcase %>" rowspan="<%= phase_content.size %>"><h2><%= phase %></h2></td>
-            <% end %>
-
             <% if stage_name == @candidate.stage # Active Stage %>
               <% completion = 'not-completed' %> 
 
@@ -53,23 +53,14 @@
                 <% end %>
               
                 <h3>
-                  <%= content['phase_position'] %>. <%= content['title'] %>
+                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= content['title'] %>
                 </h3>
                 <% if content['burden'] %>
-                    <p class="burden">About <%= interpolate(content['burden']) %></p>
-                  <% end %>
-                <% if content['links'] %>
-                  <h4 class="question"><%= interpolate(content['question']) %></h4>     
-                  <ul class="response-links">
-                    <% content['links'].each do |update, label| %>
-                      <li><%= link_to_status_update update, label %></li>
-                    <% end %>
-                  </ul>
+                  <p class="burden">This usually takes about <%= interpolate(content['burden']) %> to do.</p>
                 <% end %>
-          
                 <% if content['tips'] %>
-                  <h4 class="tips-toggle">How to do this like a pro</h4>
-                  <div class="tips">
+                  <p class="tip-cue toggle-next">Pro Tips on how to do this</p>
+                  <div class="tips more collapsed">
                     <% if content['tips']['header'] %>
                       <p><%= interpolate(content['tips']['header']) %></p>
                     <% end %>
@@ -82,12 +73,20 @@
                     <% end %>
                   </div>
                 <% end %>
+                <% if content['links'] %>
+                  <h4 class="question"><%= interpolate(content['question']) %></h4>     
+                  <ul class="response-links">
+                    <% content['links'].each do |update, label| %>
+                      <li><%= button_to_status_update @opportunity_stage.name, update, label %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </td>
 
             <% else # Not the active Stage %>
               <td class="stage <%= completion %> phase-<%= phase.downcase %> inactive">
                 <h4 class="toggle-next">
-                  <%= content['phase_position'] %>. <%= content['title'] %>
+                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= content['title'] %>
                   <% if content['burden'] %>
                     <span class="burden">About <%= interpolate(content['burden']) %></span>
                   <% end %>    

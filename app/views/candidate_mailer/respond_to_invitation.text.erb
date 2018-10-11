@@ -1,8 +1,8 @@
-<%= @fellow.first_name %>, we found the following opportunity for you:
+<%= @fellow.first_name %>, we found an opportunity that matches your Braven Job Hunter profile:
 
 <%= @opportunity.name %>
 <%= paragraph_format @opportunity.summary %>
 
-Please let us know if you're interested in this opportunity:
+Are you interested in this opportunity?
 
 <%= @token.path_with_token('view') %>

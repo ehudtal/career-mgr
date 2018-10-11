@@ -1,7 +1,5 @@
 <div id="career-progress" class="<%= @fellow.career_steps.all?(&:completed?) ? ' all-done' : '' %>">
-  <h1><%= @fellow.first_name %>&rsquo;s Career Dashboard</h1>
-
-  <h2>Career Progress</h2>
+<!--  <h2>Career Progress</h2>
 
   <p>Complete these important milestones to set yourself up for successful job hunting. Most of the items can be completed as part of the Braven Accelerator.</p>
 
@@ -20,10 +18,12 @@
       <% end %>
     </div>
   <% end %>
+-->
+  <h2>Braven Job Hunter</h2>
 
-  <h2>Job Hunter</h2>
+  <p>You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>
 
-  <p>This tool shows career opportunities for selected Braven Fellows from our employer partners. You can get more relevant opportunities by keeping <%= link_to 'your profile', fellow_profile_path %> up to date.</p>
+  <h3><%= @fellow.first_name %>&rsquo;s Matches</h3>
 
   <% if @fellow.fellow_opportunities.empty? %>
     <p>None at this time. You'll be notified when new ones come up that match <%= link_to 'your profile', fellow_profile_path %>.</p>
