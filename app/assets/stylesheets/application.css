@@ -29,6 +29,7 @@ body {
 }
 
 main {
+  width: 672px;
   margin: 0 5vw;
   position: relative;
 }
@@ -174,11 +175,12 @@ tr:first-child {
 
 #header-logo {
   margin-left: 2vw;
-  background-image:url("https://s3.amazonaws.com/canvas-prod-assets/braven_logo_canvas_red_white.png");
-  background-size: contain;
-  width: 110px;
+  background: none;
+}
+
+#header-logo img {
+  width: 93px;
   height: 22px;
-  background-repeat: no-repeat;
 }
 
 #masthead h1 {
@@ -528,14 +530,14 @@ span.burden {
 
 /* Media Queries */
 
-@media all and (max-width: 1170px) {
+@media all and (min-width: 730px) and (max-width: 1170px) {
   #career-tracker {
     width: 672px;
     margin: 0 -5px;
   }
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 730px) {
   main {
     width: 100%;
     padding: 0 1vw;
