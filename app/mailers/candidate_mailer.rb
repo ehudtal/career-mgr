@@ -3,7 +3,11 @@ class CandidateMailer < ApplicationMailer
 
   def respond_to_invitation
     set_objects
-    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: "#{@opportunity.name} matches your career profile")
+    
+    options = {to: @fellow.contact.email, subject: interpolate(@split.settings['subject'])}
+    options.merge!(bcc: Rails.application.secrets.mailer_bcc) if Rails.application.secrets.mailer_bcc
+
+    mail_subscribed(@fellow.receive_opportunities, options)
   end
   
   def notify
@@ -12,7 +16,10 @@ class CandidateMailer < ApplicationMailer
     @opportunity_stage = OpportunityStage.find_by(name: params[:stage_name])
     @content = @opportunity_stage.content
 
-    mail_subscribed(@fellow.receive_opportunities, to: @fellow.contact.email, subject: "#{@opportunity.name}: #{@content['title']}")
+    options = {to: @fellow.contact.email, subject: "#{@opportunity.name}: #{@content['title']}"}
+    options.merge!(bcc: Rails.application.secrets.mailer_bcc) if Rails.application.secrets.mailer_bcc
+
+    mail_subscribed(@fellow.receive_opportunities, options)
   end
   
   private
@@ -28,9 +35,14 @@ class CandidateMailer < ApplicationMailer
   
   def set_objects
     @token = params[:access_token]
+    @split = AccessTokenSplit.new(@token, 'invite')
     @fellow_opp = @token.owner
     @fellow = @fellow_opp.fellow
     @opportunity = @fellow_opp.opportunity
     @unsubscriber = @fellow
+  end
+  
+  def interpolate string
+    ERB.new(string || '').result(binding).html_safe
   end
 end

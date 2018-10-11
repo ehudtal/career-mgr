@@ -28,7 +28,7 @@ module ApplicationHelper
   end
   
   def interpolate string
-    ERB.new(string || '').result(binding)
+    ERB.new(string || '').result(binding).html_safe
   end
   
   def split_list list
@@ -62,5 +62,27 @@ module ApplicationHelper
   def paragraph_format text
     cleaned_text = text.gsub(/\r/, '').gsub(/\n+/, '</p><p>')
     "<p>#{cleaned_text}</p>".html_safe
+  end
+  
+  def address_parts contact
+    parts = []
+    
+    parts << contact.address_1 if contact.address_1.present?
+    parts << contact.address_2 if contact.address_2.present?
+    
+    city_state_zip = ''
+    city_state_zip += contact.city if contact.city.present?
+    city_state_zip += ", " if contact.city.present? && contact.state.present?
+    city_state_zip += contact.state if contact.state.present?
+    city_state_zip += ' ' if (contact.city.present? || contact.state.present?) && contact.postal_code.present?
+    city_state_zip += contact.postal_code if contact.postal_code.present?
+    
+    parts << city_state_zip if city_state_zip.present?
+
+    parts
+  end
+  
+  def address_for contact
+    address_parts(contact).join('<br>').html_safe
   end
 end

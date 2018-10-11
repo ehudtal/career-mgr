@@ -26,10 +26,10 @@ research employer:
   tips:
     header: "Look up the employer's own website (see link above) and on other sites such as:"
     list:
-      - "LinkedIn"
-      - "GlassDoor"
-      - "Better Business Bureau"
-      - "Idealist.org (for mission-driven organizations)"
+      - "<%= link_to 'LinkedIn', 'https://www.linkedin.com', target: '_blank' %>"
+      - "<%= link_to 'GlassDoor', 'https://www.glassdoor.com', target: '_blank' %>"
+      - "<%= link_to 'Better Business Bureau', 'https://www.bbb.org', target: '_blank' %>"
+      - "<%= link_to 'Idealist.org (for mission-driven organizations)', 'https://www.idealist.org', target: '_blank' %>"
   links: *default_links
   notices: *default_notices
   burden: "15 minutes"

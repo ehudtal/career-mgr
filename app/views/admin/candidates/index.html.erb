@@ -4,15 +4,39 @@
 
 <%= form_tag admin_opportunity_candidates_path(@opportunity), method: :get do %>
   <div id="industry-interest-tags" class="floating-search jquery-tags" style="float: left;">
-    <h3>Industries/Interests/Majors</h3>
+    <h3>Industries/Interests</h3>
     <%= link_to 'full list', combined_admin_industries_path, target: '_blank' %>
     <%= text_area_tag :opportunity_industry_interest_tags, params[:search][:industries_interests], name: "search[industries_interests]", class: 'auto-refresh' %>
+  </div>
+
+  <div id="major-tags" class="floating-search jquery-tags" style="float: left;">
+    <h3>Majors</h3>
+    <%= link_to 'full list', list_admin_majors_path, target: '_blank' %>
+    <%= text_area_tag :opportunity_major_tags, params[:search][:majors], name: "search[majors]", class: 'auto-refresh' %>
   </div>
 
   <div id="metro-tags" class="floating-search jquery-tags" style="float: left;">
     <h3>Locations</h3>
     <%= link_to 'full list', list_admin_metros_path, target: '_blank' %>
     <%= text_area_tag :opportunity_metro_tags, params[:search][:metros], name: "search[metros]", class: 'auto-refresh' %>
+  </div>
+  
+  <p id="advanced-search-toggle"><a href="#">+ show advanced search</a></p>
+  
+  <div id="advanced-search">
+    <h3>Candidate's Current Employment Status</h3>
+    
+    <% EmploymentStatus.order(position: :asc).pluck(:id, :name).each do |id, name| %>
+      <% tag_id = "employment_status_#{id}" %>
+      <% checked = params[:search].nil? || params[:search][:employment_statuses].nil? || params[:search][:employment_statuses].include?(id.to_s) %>
+      
+      <%= check_box_tag 'search[employment_statuses][]', id, checked, id: tag_id %>
+      <%= label_tag tag_id, name, class: 'checkbox' %>
+    <% end %>
+    
+    <p><%= submit_tag 'Search' %></p>
+    
+    <hr>
   </div>
 <% end %>
 
@@ -27,7 +51,7 @@
         <th>Graduation</th>
         <th>GPA</th>
         <th>Efficacy</th>
-        <th>Industries / Interests / Majors</th>
+        <th>Career Interests</th>
         <th>Locations</th>
         <th>Distance</th>
         <th>Status</th>
@@ -52,13 +76,7 @@
           <td><%= fellow.gpa || 'N/A' %></td>
           <td><%= fellow.efficacy_score || 'N/A' %></td>
           <td>
-            <% split_list((fellow.industries + fellow.interests + fellow.majors).map(&:name)).each do |list| %>
-              <ul class="inline-list">
-                <% list.each do |item| %>
-                  <li><%= item %></li>
-                <% end %>
-              </ul>
-            <% end %>
+            <%= (fellow.industries + fellow.interests + fellow.majors).map(&:name).uniq.sort.join(', ') %>
           </td>
           <td>
             <ul>

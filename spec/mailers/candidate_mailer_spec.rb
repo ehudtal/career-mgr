@@ -16,7 +16,7 @@ RSpec.describe CandidateMailer, type: :mailer do
   
   class << self
     def expect_headers subject
-      it { expect(mail.subject).to eq(subject) }
+      it { expect(mail.subject).to include(subject) }
       it { expect(mail.to).to include(email) }
       it { expect(mail.from).to include(Rails.application.secrets.mailer_from_email) }
       it_behaves_like 'unsubscribable'
@@ -45,6 +45,22 @@ RSpec.describe CandidateMailer, type: :mailer do
         end
       end
     end
+    
+    def expect_bcc
+      describe 'setting bcc' do
+        before { allow(Rails.application.secrets).to receive(:mailer_bcc).and_return(mailer_bcc) }
+
+        describe 'when mailer_bcc is nil' do
+          let(:mailer_bcc) { nil }
+          it { expect(mail.bcc).to be_nil }
+        end
+        
+        describe 'when mailer_bcc is an e-mail' do
+          let(:mailer_bcc) { 'test@example.com' }
+          it { expect(mail.bcc).to include(mailer_bcc) }
+        end
+      end
+    end
   end
   
   describe 'respond to invitation' do
@@ -52,8 +68,9 @@ RSpec.describe CandidateMailer, type: :mailer do
     
     let(:mail) { CandidateMailer.with(access_token: access_token).respond_to_invitation }
 
-    expect_headers "New Opportunity matches your career profile"
+    expect_headers "New Opportunity"
     expect_content 'New Opportunity'
+    expect_bcc
 
     expect_status_link 'respond to invitation', 'research employer'
     expect_status_link 'respond to invitation', 'fellow decline'
@@ -70,6 +87,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Research this Employer"
       expect_content 'Have you researched'
+      expect_bcc
 
       expect_status_link 'research employer', 'next'
       expect_status_link 'research employer', 'no change'
@@ -84,6 +102,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Connect with Current Employees"
       expect_content "Have you networked"
+      expect_bcc
 
       expect_status_link 'connect with employees', 'next'
       expect_status_link 'connect with employees', 'no change'
@@ -98,6 +117,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Customize Your Application Materials"
       expect_content "Have you customized"
+      expect_bcc
 
       expect_status_link 'customize application materials', 'next'
       expect_status_link 'customize application materials', 'no change'
@@ -112,6 +132,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Submit Your Application"
       expect_content "Have you submitted"
+      expect_bcc
 
       expect_status_link 'submit application', 'next'
       expect_status_link 'submit application', 'no change'
@@ -126,6 +147,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Follow Up on Your Application"
       expect_content "Have you followed"
+      expect_bcc
 
       expect_status_link 'follow up after application', 'next'
       expect_status_link 'follow up after application', 'no change'
@@ -141,6 +163,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Schedule an Interview"
       expect_content "Have you scheduled"
+      expect_bcc
 
       expect_status_link 'schedule interview', 'next'
       expect_status_link 'schedule interview', 'no change'
@@ -156,6 +179,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Research the Interview Process"
       expect_content "Have you researched"
+      expect_bcc
 
       expect_status_link 'research interview process', 'next'
       expect_status_link 'research interview process', 'no change'
@@ -170,6 +194,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Practice for Your Interview"
       expect_content "Have you practiced"
+      expect_bcc
 
       expect_status_link 'practice for interview', 'next'
       expect_status_link 'practice for interview', 'no change'
@@ -184,6 +209,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Ace Your Interview!"
       expect_content "Have you attended"
+      expect_bcc
 
       expect_status_link 'attend interview', 'next'
       expect_status_link 'attend interview', 'no change'
@@ -198,6 +224,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Follow Up After Your Interview"
       expect_content "Have you followed"
+      expect_bcc
 
       expect_status_link 'follow up after interview', 'next'
       expect_status_link 'follow up after interview', 'no change'
@@ -213,6 +240,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Look for an Offer"
       expect_content "Have you received"
+      expect_bcc
 
       expect_status_link 'receive offer', 'next'
       expect_status_link 'receive offer', 'no change'
@@ -227,6 +255,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Consider a Counter Offer"
       expect_content "Have you submitted"
+      expect_bcc
 
       expect_status_link 'submit counter-offer', 'receive offer'
       expect_status_link 'submit counter-offer', 'no change'
@@ -241,6 +270,7 @@ RSpec.describe CandidateMailer, type: :mailer do
 
       expect_headers "New Opportunity: Accept Your Offer!"
       expect_content "Have you accepted"
+      expect_bcc
 
       expect_status_link 'accept offer', 'next'
       expect_status_link 'accept offer', 'no change'
