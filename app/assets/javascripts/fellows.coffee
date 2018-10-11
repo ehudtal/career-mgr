@@ -12,7 +12,7 @@ $(document).on "turbolinks:load",  ->
           autocomplete: {source: data}
           placeholder: placeholder
           delimiter: ";"
-          validationPattern: new RegExp('^[a-zA-Z0-9, \&/-]+$')
+          validationPattern: new RegExp('^(' + data.join('|') + ')$')
 
         $("a##{element}-full-list").click (event) ->
           event.preventDefault()
