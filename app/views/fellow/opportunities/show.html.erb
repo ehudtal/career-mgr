@@ -31,6 +31,8 @@
 <% else %>
   <h2>Where am I in the process?</h2>
 
+  <%= @candidate.stage %>
+
   <p><strong>Note:</strong> You're not expected to do everything below in one go.<br />If you take a break we'll simply send you a helpful reminder so you can pick up where you left off.</p>
 
   <h3>Recommended Action</h3>
@@ -53,13 +55,13 @@
                 <% end %>
               
                 <h3>
-                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= content['title'] %>
+                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= interpolate(content['title']) %>
                 </h3>
                 <% if content['burden'] %>
                   <p class="burden">This usually takes about <%= interpolate(content['burden']) %> to do.</p>
                 <% end %>
                 <% if content['tips'] %>
-                  <p class="tip-cue toggle-next">Pro Tips on how to do this</p>
+                  <p class="tip-cue toggle-next">How to do this?</p>
                   <div class="tips more collapsed">
                     <% if content['tips']['header'] %>
                       <p><%= interpolate(content['tips']['header']) %></p>
@@ -86,7 +88,7 @@
             <% else # Not the active Stage %>
               <td class="stage <%= completion %> phase-<%= phase.downcase %> inactive">
                 <h4 class="toggle-next">
-                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= content['title'] %>
+                  <span class="inline-phase"><%= phase %></span><%= content['phase_position'] %>. <%= interpolate(content['title']) %>
                   <% if content['burden'] %>
                     <span class="burden">About <%= interpolate(content['burden']) %></span>
                   <% end %>    

@@ -26,12 +26,14 @@ html {
 body {
   margin: 0;
   font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 main {
   width: 672px;
   margin: 0 auto;
-  padding: 0 5vw;
+  padding: 0;
   position: relative;
 }
 
@@ -55,7 +57,6 @@ h2, h3 {
 .phase h2,
 th,
 .tags-header {
-  font-size: 1.2em;
   margin-top: 0;
 }
 
@@ -134,10 +135,17 @@ table .back,
 table {
   border-collapse: collapse;
   margin: 2em 0;
+  width: 100%;
+  table-layout: fixed;
 }
 
 th {
   text-align: left;
+  width: 1%;
+}
+
+td {
+  width: 2%;
 }
 
 td, th {
@@ -168,6 +176,11 @@ tr:first-child {
 
 .red-border {
   border: 2px solid red;
+}
+
+.edit::before {
+  content: "\270E \00a0";
+  font-size: 1.2em;
 }
 
 /* Header and main nav */
@@ -348,18 +361,38 @@ table.tablesorter tfoot tr th {
   content: " \003e";
 }
 
+.tip-cue {
+  margin-top: 0;
+}
+
 .tip-cue::before {
-  content: "Click for ";
+  content: "i";
+  font-style: italic;
+  font-weight: bold;
+  font-size: 10px;
+  color: #fff;
+  background: #0081bd;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 30px;
+  margin-right: 5px;
 }
 
 .opportunity-stages .completed {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0,0,0,0.02);
   padding-right: 25px;
   position: relative;
+  color: #999;
+}
+
+.opportunity-stages .completed .burden {
+  display: none;
 }
 
 .opportunity-stages .not-completed {
-  color: #999;
+  background: rgba(0,0,0,0.02);
 }
 
 .opportunity-stages .completed:after {
@@ -393,6 +426,10 @@ table.tablesorter tfoot tr th {
 span.burden {
   font-size: 0.8em;
   margin-left: 1em;
+}
+
+p.burden {
+  margin-bottom: 0;
 }
 
 .burden::before {
@@ -549,6 +586,51 @@ span.burden {
   margin: 0 auto;
 }
 
+#advanced-search-toggle {
+  clear: both;
+}
+
+#advanced-search {
+  display: none;
+}
+
+.response-links li {
+  display: inline-block;
+  margin-right: 0.75em;
+}
+
+ul.response-links {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.response-links li {
+  padding: 10px 0;
+}
+
+.response-links .button {
+  background: #999;
+}
+
+.response-links .yes .button,
+.response-links [href$="next"] {
+  background: green;
+}
+
+.response-links .yes .button:hover,
+.response-links [href$="next"]:hover {
+  background: darkgreen;
+}
+
+.faded {
+  color: #ddd;
+}
+
+#career-tracker {
+  display: none;
+}
+
+
 /* Media Queries */
 
 @media all and (min-width: 730px) and (max-width: 1170px) {
@@ -582,46 +664,4 @@ span.burden {
   table.tablesorter {
     width: 672px;
   }
-}
-
-#advanced-search-toggle {
-  clear: both;
-}
-
-#advanced-search {
-  display: none;
-}
-
-.response-links li {
-  display: inline-block;
-  margin-right: 0.75em;
-}
-
-ul.response-links {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-ul.response-links li {
-  padding: 10px 0;
-}
-
-.response-links .button {
-  background: #999;
-}
-
-.response-links .yes .button {
-  background: green;
-}
-
-.response-links .yes .button:hover {
-  background: darkgreen;
-}
-
-.faded {
-  color: #ddd;
-}
-
-#career-tracker {
-  display: none;
 }
