@@ -30,7 +30,8 @@ body {
 
 main {
   width: 672px;
-  margin: 0 5vw;
+  margin: 0 auto;
+  padding: 0 5vw;
   position: relative;
 }
 
