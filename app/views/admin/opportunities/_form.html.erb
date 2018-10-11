@@ -17,6 +17,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :referral_email, 'Referral Contact E-mail' %>
+    <%= form.text_field :referral_email %>
+  </div>
+
+  <div class="field">
     <%= form.label :opportunity_type_id, 'Opportunity Type' %>
     <%= form.collection_select(:opportunity_type_id, OpportunityType.order(position: :asc), :id, :name) %>
   </div>

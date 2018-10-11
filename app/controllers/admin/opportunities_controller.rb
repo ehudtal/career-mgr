@@ -111,7 +111,7 @@ class Admin::OpportunitiesController < ApplicationController
     params.require(:opportunity).permit(
       :_destroy,
       :name, :summary, :employer_id, :job_posting_url, :application_deadline, 
-      :inbound, :recurring, :opportunity_type_id, :region_id, :how_to_apply,
+      :inbound, :recurring, :opportunity_type_id, :region_id, :how_to_apply, :referral_email,
       :industry_tags, :interest_tags, :metro_tags, :major_tags, :industry_interest_tags,
       steps: [],
       industry_ids: [], interest_ids: [], metro_ids: [], major_ids: [], location_ids: [],

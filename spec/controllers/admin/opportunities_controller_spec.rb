@@ -185,6 +185,14 @@ RSpec.describe Admin::OpportunitiesController, type: :controller do
       
         expect(opportunity.how_to_apply).to eq("Just Try It!")
       end
+      
+      it "sets the referral e-mail" do
+        opportunity = create :opportunity
+        put :update, params: {id: opportunity.to_param, opportunity: new_attributes.merge(referral_email: 'bob@example.com')}, session: valid_session
+        opportunity.reload
+      
+        expect(opportunity.referral_email).to eq('bob@example.com')
+      end
     end
 
     context "with invalid params" do
