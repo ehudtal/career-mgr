@@ -20,7 +20,7 @@ respond to invitation:
     
 research employer:
   phase: "Apply"
-  title: "Research this Employer"
+  title: "Research <%= @opportunity.employer.name %>"
   phase_position: 1
   question: "Have you researched <%= @opportunity.employer.name %> online?"
   tips:
@@ -103,7 +103,7 @@ schedule interview:
   
 research interview process:
   phase: "Interview"
-  title: "Research the Interview Process"
+  title: "Research <%= @opportunity.employer.name %>'s interview Process"
   phase_position: 2
   question: "Have you researched the interview process at <%= @opportunity.employer.name %>?"
   tips:
@@ -155,7 +155,7 @@ follow up after interview:
   
 receive offer:
   phase: "Offer"
-  title: "Look for an Offer"
+  title: "Look out for an Offer"
   phase_position: 1
   question: "Have you received an offer from <%= @opportunity.employer.name %> yet?"
   links:
@@ -167,7 +167,7 @@ receive offer:
 
 submit counter-offer:
   phase: "Offer"
-  title: "Consider a Counter Offer"
+  title: "Consider making a Counter Offer"
   phase_position: 2
   question: "Have you submitted a counter offer to <%= @opportunity.employer.name %>?"
   tips:
@@ -189,7 +189,7 @@ accept offer:
   phase: "Offer"
   title: "Accept Your Offer!"
   phase_position: 3
-  question: "Have you accepted your offer with <%= @opportunity.employer.name %>?"
+  question: "Have you accepted the offer you got from <%= @opportunity.employer.name %>?"
   links: *default_links
   notices:
     <<: *default_notices
