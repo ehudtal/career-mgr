@@ -78,7 +78,9 @@ class FellowOpportunity < ApplicationRecord
   
   def transition from, to
     if from == 'submit application'
-      AdminMailer.with(fellow_opportunity: self).application_submitted.deliver_later
+      unless opportunity.referral_email.blank?
+        AdminMailer.with(fellow_opportunity: self).application_submitted.deliver_later
+      end
     end
     
   end
