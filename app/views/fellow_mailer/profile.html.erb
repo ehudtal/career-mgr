@@ -1,10 +1,10 @@
-<p>Now that you are a Post-Accelerator Fellow you have unlocked access to the <strong>Braven Career Manager</strong>.</p>
+<p><%= @fellow.first_name %> - You have unlocked access to the <strong>Braven Career Manager</strong>!</p>
 <p>The Career Manager is a tool to help you:</p>
 <ul>
   <li>Secure career opportunities based on your interests (fields/professions, industries, locations)</li>
   <li>Support you as you apply to an opportunity by giving you all the information you need and sending helpful reminders so you don't miss any deadlines</li>
 </ul>
 
-<p>If you want to get opportunities sent your way you must first take a couple of minutes right now to update your profile, including your interests, industries, and desired locations:</p>
+<p>If you want to get opportunities sent your way <strong>you must first take a couple of minutes</strong> to update your profile, including your interests, industries, and desired locations:</p>
 
 <p><%= link_to_access_token(@token, 'Edit Your Profile', class: 'button') %></p>
