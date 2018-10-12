@@ -116,10 +116,28 @@ RSpec.describe FellowOpportunity, type: :model do
     describe '#update_stage(stage_name, options={})' do
       let(:name_update) { name_second }
       let(:options) { {} }
+      let(:delayed_job_count) { Delayed::Job.where(queue: 'mailers').count }
+      let(:next_opportunity_stage) { nil }
       
       before do
+        delayed_job_count
+        
+        if next_opportunity_stage
+          allow(fellow_opportunity).to receive(:next_opportunity_stage).with(options[:from]).and_return(next_opportunity_stage)
+        end
+        
         fellow_opportunity.update_stage(name_update, options)
         fellow_opportunity.reload
+      end
+      
+      describe 'when moving to "next" from "submit application"' do
+        let(:name_update) { 'next' }
+        let(:options) { {from: 'submit application'} }
+        let(:next_opportunity_stage) { stage_second }
+        
+        it "sends a notification to staff" do
+          expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count + 1)
+        end
       end
       
       it "sets the opportunity_stage based on name" do
