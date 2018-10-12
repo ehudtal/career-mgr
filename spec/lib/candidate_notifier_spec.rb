@@ -42,9 +42,11 @@ RSpec.describe CandidateNotifier do
     let(:opportunity_stage) { create :opportunity_stage, name: stage_name}
     let(:stage_name) { 'research employer' }
     let(:active) { true }
+    let(:delayed_job_count) { Delayed::Job.count }
     
     before do
       access_token 
+      delayed_job_count
       CandidateNotifier.send_notifications
     end
     
@@ -64,7 +66,7 @@ RSpec.describe CandidateNotifier do
       let(:last_contact_at) { (CandidateNotifier::MAILER_FREQUENCY - 1).hours.ago }
       
       it 'doesn\'t notify the candidate' do
-        expect(Delayed::Job.where(queue: 'mailers').count).to eq(0)
+        expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count)
       end
       
       it "DOES NOT update the last_contact_at field" do
@@ -90,7 +92,7 @@ RSpec.describe CandidateNotifier do
       let(:active) { false }
       
       it 'doesn\'t notify the candidate' do
-        expect(Delayed::Job.where(queue: 'mailers').count).to eq(0)
+        expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count)
       end
 
       it "DOES NOT update the last_contact_at field" do

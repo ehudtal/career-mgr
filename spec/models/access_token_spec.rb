@@ -34,6 +34,7 @@ RSpec.describe AccessToken, type: :model do
   
   describe 'validating uniqueness' do
     before do
+      allow_any_instance_of(Fellow).to receive(:send_profile_mailer).and_return(nil)
       allow_any_instance_of(AccessToken).to receive(:generate_token).and_return(nil)
       create :access_token, code: '11112222aaaabbbb'
     end

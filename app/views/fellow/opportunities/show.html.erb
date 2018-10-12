@@ -9,6 +9,12 @@
       <td><%= render('admin/industries/list', object: @candidate.opportunity) unless @candidate.opportunity.industries.empty? %></td>
       <td><%= render('admin/interests/list', object: @candidate.opportunity) unless @candidate.opportunity.interests.empty? %></td>
     </tr>
+    <% unless @candidate.opportunity.referral_email.blank? %>
+      <tr>
+        <th>Referral Contact E-mail:</th>
+        <td><%= link_to @candidate.opportunity.referral_email, "mailto:#{@candidate.opportunity.referral_email}" %></td>
+      </tr>
+    <% end %>
     <tr>
       <th>How to Apply:</th>
       <td><%= @candidate.opportunity.how_to_apply %></td>
