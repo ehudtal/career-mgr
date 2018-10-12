@@ -8,6 +8,7 @@ class Cohort < ApplicationRecord
   has_many :fellows, through: :cohort_fellows do
     def create_or_update attributes
       employment_status = EmploymentStatus.order('position asc').first
+      anywhere = Metro.find_by name: 'Anywhere'
 
       contact_attributes = attributes.slice(*Contact.attribute_names.map(&:to_sym))
       cohort_fellow_attributes = attributes.slice(*CohortFellow.attribute_names.map(&:to_sym))
@@ -28,6 +29,7 @@ class Cohort < ApplicationRecord
         end
 
         fellow.add_metro(fellow.default_metro)
+        fellow.add_metro(anywhere)
 
         proxy_association.owner.cohort_fellows.find_or_create_by(fellow_id: fellow.id).update(cohort_fellow_attributes)
       rescue ActiveRecord::RecordInvalid

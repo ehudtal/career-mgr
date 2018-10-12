@@ -38,6 +38,7 @@ class Fellow < ApplicationRecord
   before_create :generate_key
   after_create :generate_career_steps
   after_create :select_all_opportunity_types
+  after_create :send_profile_mailer
   after_save :attempt_fellow_match, if: :missing_user?
   
   scope :receive_opportunities, -> { where(receive_opportunities: true) }
@@ -340,5 +341,14 @@ class Fellow < ApplicationRecord
   def attempt_fellow_match
     return if contact.nil?
     FellowUserMatcher.match(contact.email)
+  end
+  
+  def access_token
+    return @access_token if defined?(@access_token)
+    @access_token = AccessToken.for(self)
+  end
+  
+  def send_profile_mailer
+    FellowMailer.with(access_token: access_token).profile.deliver_later
   end
 end

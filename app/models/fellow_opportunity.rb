@@ -41,6 +41,9 @@ class FellowOpportunity < ApplicationRecord
       self.update opportunity_stage: next_stage
       log next_stage.name
 
+      # handle any specific transitions from one state to another
+      transition(options[:from], next_stage.name)
+
     when 'skip'
       next_stage = next_opportunity_stage(options[:from])
 
@@ -72,6 +75,13 @@ class FellowOpportunity < ApplicationRecord
   end
   
   private
+  
+  def transition from, to
+    if from == 'submit application'
+      AdminMailer.with(fellow_opportunity: self).application_submitted.deliver_later
+    end
+    
+  end
   
   def next_opportunity_stage from=nil
     position = if from
