@@ -142,8 +142,8 @@ GEM
     factory_bot_rails (4.8.2)
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
-    ffi (1.9.23)
-    ffi (1.9.23-x64-mingw32)
+    ffi (1.9.25)
+    ffi (1.9.25-x64-mingw32)
     formatador (0.2.5)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
@@ -277,7 +277,7 @@ GEM
     ruby_dep (1.5.0)
     rubycas-client (2.3.9)
       activesupport
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     safety_mailer (0.0.10)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
@@ -371,6 +371,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   dotenv
   factory_bot_rails
+  ffi (>= 1.9.25)
   guard-rspec
   jbuilder (~> 2.5)
   jquery-rails
@@ -381,6 +382,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rails (~> 5.2.0)
   rspec-rails (~> 3.6)
+  rubyzip (>= 1.2.2)
   safety_mailer
   sass-rails (~> 5.0)
   selenium-webdriver (~> 3.7)
