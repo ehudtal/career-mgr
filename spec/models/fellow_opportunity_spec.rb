@@ -92,7 +92,10 @@ RSpec.describe FellowOpportunity, type: :model do
     let(:stage_second) { create :opportunity_stage, name: name_second, position: 1, active_status: true }
     let(:stage_third) { create :opportunity_stage, name: name_third, position: 2, active_status: false }
 
-    let(:fellow_opportunity) { create :fellow_opportunity, opportunity_stage: stage_first }
+    let(:fellow_opportunity) { create :fellow_opportunity, opportunity_stage: stage_first, opportunity: opportunity }
+    let(:opportunity) { create :opportunity, referral_email: referral_email }
+    let(:referral_email) { nil }
+    
     
     before do
       fellow_opportunity; stage_second; stage_third
@@ -134,9 +137,21 @@ RSpec.describe FellowOpportunity, type: :model do
         let(:name_update) { 'next' }
         let(:options) { {from: 'submit application'} }
         let(:next_opportunity_stage) { stage_second }
+
+        describe 'and opp referral_email is set' do
+          let(:referral_email) { 'test@example.com' }
         
-        it "sends a notification to staff" do
-          expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count + 1)
+          it "sends a notification to staff" do
+            expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count + 1)
+          end
+        end
+        
+        describe 'and opp referral_email is NOT set' do
+          let(:referral_email) { nil }
+        
+          it "doesn't send a notification to staff" do
+            expect(Delayed::Job.where(queue: 'mailers').count).to eq(delayed_job_count)
+          end
         end
       end
       

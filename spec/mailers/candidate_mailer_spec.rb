@@ -85,7 +85,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'research employer' do
       let(:stage_name) { 'research employer' }
 
-      expect_headers "New Opportunity: Research #{@employer.name}"
+      expect_headers "New Opportunity"
       expect_content 'Have you researched'
       expect_bcc
 
@@ -177,7 +177,7 @@ RSpec.describe CandidateMailer, type: :mailer do
     describe 'research interview process' do
       let(:stage_name) { 'research interview process' }
 
-      expect_headers "New Opportunity: Research #{@employer.name}'s Interview Process"
+      expect_headers "New Opportunity"
       expect_content "Have you researched"
       expect_bcc
 

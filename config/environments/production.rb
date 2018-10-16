@@ -13,6 +13,9 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  # TODO: re-enable this once we figure out bug where a PATCH fails with: ActionController::InvalidAuthenticityToken
+  # This happened when responding to the welcome email and clicking the link to update your profile. Hitting Save error'd out.
+  config.action_controller.forgery_protection_origin_check = false
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
@@ -22,7 +25,7 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Compress JavaScripts and CSS.
+  # Compress JavaScripts and CSS.`
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
@@ -65,7 +68,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = {host: 'career.bebraven.org'}
+  config.action_mailer.default_url_options = {host: 'career.bebraven.org', protocol: 'https'}
   config.action_mailer.delivery_method = :safety_mailer
   config.action_mailer.safety_mailer_settings = {
     allowed_matchers: [/@/],
