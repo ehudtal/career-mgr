@@ -13,6 +13,8 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  # TODO: re-enable this once we figure out bug where a PATCH fails with: ActionController::InvalidAuthenticityToken
+  # This happened when responding to the welcome email and clicking the link to update your profile. Hitting Save error'd out.
   config.action_controller.forgery_protection_origin_check = false
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
