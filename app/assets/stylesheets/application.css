@@ -139,9 +139,19 @@ table {
   table-layout: fixed;
 }
 
+table.wide {
+  width: 90vw;
+  margin: 2em calc(-45vw - -336px);
+  table-layout: auto;
+}
+
 th {
   text-align: left;
   width: 1%;
+}
+
+th.numeric {
+  text-align: right;
 }
 
 td {
@@ -181,6 +191,11 @@ tr:first-child {
 .edit::before {
   content: "\270E \00a0";
   font-size: 1.2em;
+}
+
+.delete::before {
+  content: "\2718 \00a0";
+  font-size: 1.2em;  
 }
 
 /* Header and main nav */
